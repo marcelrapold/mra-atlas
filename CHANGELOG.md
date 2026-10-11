@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.7.1 — 2026-10-12
+
+- Die sechs mit 0.7.0 ergänzten Signets (Lotse, Cockpit, Auditor, Rapold Auth, PocketForge, Atlas) sind freigegeben; der Katalog führt alle zehn Zeichen als `approved`. Nachweis in `provenance.json`.
+- Markenseite zeigt die Familie als eine Gruppe und neu alle Zeichen in allen Varianten in einer Übersicht.
+
 ## 0.7.0 — 2026-10-11
 
 - Sechs Signet-Vorschläge in der Rapold-Familie: Lotse, Cockpit, Auditor, Rapold Auth, PocketForge und das Designsystem Atlas. Jeder Vorschlag greift das bisherige Zeichen des Produkt-Repositorys auf und überträgt es in die Raumfalten-Grammatik (Herkunft je Zeichen in `provenance.json`).

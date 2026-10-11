@@ -19,7 +19,7 @@ const brandFaqs:Record<string,[string,string][]>={
  ],
  rapold:[
   ['Sind Bilder und Logos dabei?','Die Produktzeichen für AI Fabric, Argus, ÆON Learn und EdgePortal stehen im Rapold-Assetkatalog. Für das gemeinsame Theme ist kein Dachmarkenlogo festgelegt. Fotografische Motive liefert das Projekt.'],
-  ['Welche Vorgaben gelten?','Rapold-Farben und Geist ergänzen die vermessenen Layouts. Die vier ursprünglichen Produktsignets sind freigegeben, sechs weitere liegen als Vorschlag vor; der gemeinsame UI-Adapter ist separat als Entwurf dokumentiert.']
+  ['Welche Vorgaben gelten?','Rapold-Farben und Geist ergänzen die vermessenen Layouts. Alle zehn Produktsignets sind freigegeben; der gemeinsame UI-Adapter ist separat als Entwurf dokumentiert.']
  ]
 };
 function RenderedSlide({brand,id,large=false}:{brand:string;id:string;large?:boolean}){return <img className="rendered-slide" src={`/brands/${brand}/reference/${id}.png`} width={1280} height={720} alt={`Gerenderte Musterfolie: ${slides.find(s=>s.id===id)?.titel}`} loading={large?'eager':'lazy'}/>;}
