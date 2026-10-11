@@ -1,12 +1,12 @@
 # Rapold-Produktwelten
 
-Stand: **11.10.2026**. **Framework 0.6.0 ist lokal umgesetzt und geprüft.** Dieses Dokument hält die belegten Gestaltungsquellen, den Integrationsvertrag und den tatsächlichen lokalen Prüfstand fest. Produktionsauslieferung und neue Browserabnahme stehen noch aus. Der historische Produktionsnachweis für 0.5.0 bleibt im [Apple-Design-Audit, Abschnitt 6](apple-design-audit.md#6-produktions--und-browsernachprüfung--11102026).
+Stand: **11.10.2026**. **Framework 0.6.0 ist umgesetzt, lokal geprüft und produktiv ausgeliefert.** Dieses Dokument hält die belegten Gestaltungsquellen, den Integrationsvertrag sowie die lokalen und öffentlichen Prüfergebnisse fest. Die gezielte Produktions-Browserprüfung ist mit den dokumentierten Bedienfällen bestanden; ihre Grenzen stehen im Prüfstand unten. Der historische Produktionsnachweis für 0.5.0 bleibt im [Apple-Design-Audit, Abschnitt 6](apple-design-audit.md#6-produktions--und-browsernachprüfung--11102026).
 
 ## Umfang und Einordnung
 
 Die Ergänzung zeigt Produktatmosphäre innerhalb begrenzter Rapold-Referenzcontainer: Hintergrund, Licht, Glas, neues Produktzeichen, Beispielinhalt und kontrollierbare Bewegung. Die Atlas-basierte Navigation und Seitenarchitektur bleiben der Rahmen. Eine vollständige Source-App samt Anmeldung, Backend oder Nutzerdaten ist kein Bestandteil dieser Referenzen. Massgeblich sind der [Brand-Vertrag](brand-contract.md), die [Atlas-Referenz](atlas-reference.md) und das [Rapold-Brand-Paket](../brands/rapold/README.md).
 
-Für den lokalen Stand 0.6.0 besteht die aktive Brand-Auswahl aus `neutral`, `dominicano-express` und `rapold`. Die Produktwelten `fabric`, `learn`, `argus` und `edgeportal` sind Ausprägungen der gemeinsamen Rapold-Brand. Sie sind keine vier weiteren Farbpresets. Goldbach und Sygnum sind auf Nutzerauftrag aus dem aktiven lokalen System entfernt; historische 0.5.0-Prüfbeobachtungen bleiben unverändert.
+Für den lokal und produktiv bestätigten Stand 0.6.0 besteht die aktive Brand-Auswahl aus `neutral`, `dominicano-express` und `rapold`. Die Produktwelten `fabric`, `learn`, `argus` und `edgeportal` sind Ausprägungen der gemeinsamen Rapold-Brand. Sie sind keine vier weiteren Farbpresets. Goldbach und Sygnum sind auf Nutzerauftrag aus dem aktiven System entfernt; historische 0.5.0-Prüfbeobachtungen bleiben unverändert.
 
 | Ebene | Einordnung |
 |---|---|
@@ -71,7 +71,7 @@ Facetten und Spektrum sind neue gemeinsame CI-Anwendungen: geometrische Flächen
 
 ## Bedienkontrakt für die Referenzen
 
-Dieser Abschnitt definiert die noch zu prüfenden Anforderungen an 0.6.0. Er beschreibt keine bereits bestandene Laufzeitabnahme.
+Dieser Abschnitt definiert die Anforderungen an 0.6.0. Die tatsächlich geprüften Teilabläufe und die weiterhin offenen Prüfgrenzen sind im Prüfstand unten getrennt dokumentiert; die Anforderungen selbst sind kein pauschaler Abnahmenachweis.
 
 ### Eine gemeinsame Stillsetzung
 
@@ -83,7 +83,7 @@ Ein sichtbarer Bewegungsregler ist mit Tastatur erreichbar und vermittelt den ak
 
 Regulärer Text muss auch über der hellsten Phase des bewegten Hintergrunds mindestens 4,5:1 erreichen; grosser Text darf nach den üblichen Grössenregeln mit 3:1 bewertet werden. Entscheidend ist die tatsächlich zusammengesetzte Fläche, nicht bloss der Kontrast zweier Basistokens. Text selbst wird nicht durch dekorative Opazität abgeschwächt. Glas erhält deshalb eine ausreichend deckende Kartenfläche; bei fehlendem Blur bleiben Oberfläche, Text und Fokus lesbar. Quelle: [W3C, Contrast Minimum](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) und die bestehenden Messregeln im [Audit](apple-design-audit.md).
 
-Dekorative Ebenen fangen weder Zeigerereignisse noch Tastaturfokus ab und erhalten keine redundante Vorlesebeschreibung. Die bekannten historischen Reflow-Grenzen bleiben offen, bis die neuen Container tatsächlich in schmalen Ansichten und mit vergrössertem Text geprüft werden.
+Dekorative Ebenen fangen weder Zeigerereignisse noch Tastaturfokus ab und erhalten keine redundante Vorlesebeschreibung. Die neuen Referenzcontainer wurden bei 320 px, Learn zusätzlich bei 390 px geprüft. Vollständige schmale Browser-Viewports, vergrösserter Text und die übrigen historischen Reflow-Grenzen sind damit nicht abgenommen.
 
 ### Ehrliche Zustände
 
@@ -97,7 +97,7 @@ Das öffentliche Learn-Repository führt die [Apache License 2.0](https://github
 
 Die private AI-Quelle besitzt keine belegte offene Repository-Lizenz. Der Nutzerauftrag autorisiert die hier beschriebene eng abgegrenzte Gestaltungsableitung. Er wird nicht als pauschale Open-Source-Lizenz dargestellt. Es werden keine privaten AI-App-Dateien, Nutzerdaten oder Auth-/Backend-Dateien in das Assetpaket kopiert. Rechte und Lizenzen der freigegebenen Signets, der Geist-Fonts und der Learn-Originalbilder bleiben jeweils getrennt nachvollziehbar.
 
-## Prüfstand und spätere Evidenz
+## Prüfstand und dokumentierte Grenzen
 
 Belegt sind die Quellenlektüre, die unveränderten Learn-Originalassets und ihre lokale Datei-/Sichtprüfung. React-/CSS-Integration, Export-Kit und die reduzierte Brand-Auswahl sind lokal umgesetzt. **`npm run check` endete am 11.10.2026 zwischen 09:50 und 09:51 UTC mit Exit 0:** 47 von 47 Tests bestanden, 0 Fehler; TypeScript, Next.js 16.3.5 Production Build und Postbuild erfolgreich. Der tatsächliche LibreOffice-Referenzrender ist im [Audit, Abschnitt 7.4](apple-design-audit.md#74-tatsächlich-ausgeführter-referenzrender--11102026) dokumentiert.
 
@@ -113,6 +113,20 @@ Das portable Kit enthält die vier Welten, Hell/Dunkel/Produktstandard, Facetten
 
 Der versionierte [Kontrastbericht](review/product-worlds-contrast.json) modelliert konservativ 625 Alpha-Kombinationen und sampelt Verläufe in sRGB/Oklab. Nach der Korrektur erreicht Fabric-Hero-Fliesstext mindestens **6,06:1 in Hell / 8,65:1 in Dunkel**, die grosse fette Facetten-Wortmarke **3,70:1 / 6,49:1**, Spektrum **5,57:1 / 5,19:1**. Für die Wortmarken gilt mindestens 20 px / Gewicht 700 und eine Modellgrenze von 3:1; die Facettenfarben sind damit nicht pauschal für kleinen Text freigegeben. Das Learn-Terminal erreicht mit 95-%-Terminalfläche und Text auf Ebene 3 mindestens **6,18:1** selbst gegen die modellierten Schwarz-/Weiss-Hintergrundgrenzen. **Keine Browser-Pixelmessung:** Learn-Hero-Text ausserhalb des Terminals wurde nur auf der flachen CSS-Basis bewertet; Bildkomposition, sämtliche Animationsphasen und tatsächliche Bedienung sind dadurch nicht abgenommen. Die vollständige Einordnung steht im [Audit, Abschnitt 7.5](apple-design-audit.md#75-vollständiger-lokaler-check-und-kontrastmodell--11102026).
 
-**Öffentliche Auslieferung und neue Browserprüfung stehen noch aus.**
+### Tatsächliche Produktionsauslieferung
 
-Die spätere Abnahme soll sich auf konkrete neue Risiken konzentrieren: Stillsetzung aller Effekte, Reduced-Motion-Darstellung, tatsächliche Text-/Fokuslesbarkeit vor den bewegten Flächen und ehrliche Beispielzustände. Die Auslieferung muss ausserdem die richtigen Dateien und die reduzierte aktive Brand-Auswahl belegen. Datum, Commit, URL, tatsächlich verwendeter Browser und Viewport gehören zum Ergebnis. Nicht ausgeführte mobile oder AT-Prüfungen werden daraus nicht abgeleitet. Nachweise werden im [Audit](apple-design-audit.md) und in der [Deployment-Dokumentation](deployment.md) separat ergänzt.
+[PR #6](https://github.com/marcelrapold/mra-design/pull/6) ist gemergt. Im Produktionsprüflauf am **11.10.2026, 10:06–10:07 UTC**, lieferte [design.rapold.io](https://design.rapold.io) **0.6.0** mit dem Anwendungs-Commit [`73498ec4b46cb9f431d7ad5d186e88dd6301162b`](https://github.com/marcelrapold/mra-design/commit/73498ec4b46cb9f431d7ad5d186e88dd6301162b); `builtAt: 2026-10-11T10:05:00.077Z`. [Vercel-Deployment](https://vercel.com/marcelrapold/design/8BQn7pjJCTvMNyqpdd9vHvcDoRfD) und [Main-CI](https://github.com/marcelrapold/mra-design/actions/runs/38130603944) sind erfolgreich. Die Commit-ID kennzeichnet den datierten produktiven Prüfstand, keinen dauerhaft aktuellen Main-Head. Ein späterer reiner Dokumentations-/Nachweis-Commit erhält eine eigene Build-ID; die bestehenden Browserbelege bleiben dem hier geprüften Anwendungsstand zugeordnet.
+
+Die gezielte öffentliche Prüfung vom **11.10.2026, 10:06:08.102–10:07:03.375 UTC**, bestand vollständig: 84 Weltressourcen, das ZIP mit 44 Dateien, die drei aktiven Brands und zehn erwartete 404 für gezielt geprüfte entfernte Goldbach-/Sygnum-Dateien. Beide Präsentationsseiten haben jetzt korrekte Canonical-/Open-Graph-URLs. Die abschliessende Build-Info bestätigte unverändert denselben Commit und denselben Datei-Hash. Die unveränderten [Produktions-](review/production-0.6.0-73498ec4b46c/production-report.json) und [HTTP-Protokolle](review/production-0.6.0-73498ec4b46c/http-observations.json) sind versioniert; Umfang und Hashwerte stehen im [Audit, Abschnitt 7.6](apple-design-audit.md#76-belegter-produktionsrollout-060--11102026).
+
+Die öffentliche [Standalone-Referenz](https://design.rapold.io/brands/rapold/product-worlds) und das [portable ZIP](https://design.rapold.io/brands/rapold/rapold-product-worlds.zip) sind ausgeliefert. Das ZIP hat 326782 Bytes und SHA-256 `53714c02dfac3f867f23d586fbeb038e33d957965f92bb9d62274c6a75e2fce3`.
+
+### Gezielte Produktions-Browserprüfung
+
+Der [Browserbericht](review/production-0.6.0-73498ec4b46c/browser-review.json) vom **11.10.2026, 10:17:17 UTC** dokumentiert **14 bestandene Zustands- und Bedienfälle** am Produktionscommit `73498ec4b46cb9f431d7ad5d186e88dd6301162b`: **Chrome, 1363 × 936 CSS-px, DPR 1**. Die Hauptansicht wurde mit allen vier Produkten, hellen und dunklen Zuständen, Facetten/Spektrum, CSS-Pause/Fortsetzen, über Produktwechsel erhaltener Pause, Hintergrundschaltern und ein-/ausgeblendeter Oberfläche geprüft. Die Tastaturbedienung mit Enter zeigte einen tatsächlichen `focus-visible`-Ring von 3 px; Produkt-Dropdown und Downloadüberschrift waren synchron.
+
+Alle vier Referenzcontainer wurden bei **320 CSS-px hell**, EdgePortal zusätzlich dunkel, geprüft; Learn ausserdem bei **390 CSS-px hell**. In diesen Fällen gab es keine gemessenen horizontalen Textüberläufe. **Der Browser-Viewport selbst blieb unverändert:** Dies sind Referenzbreiten, keine vollständigen mobilen Viewporttests. Der [Learn-Screenshot](review/production-0.6.0-73498ec4b46c/learn-dark-live.jpg) zeigt den tatsächlichen dunklen Produktionszustand mit geladenem Original-Hero und als fiktiv gekennzeichnetem Terminal.
+
+Auch das [HTML-Kit](https://design.rapold.io/brands/rapold/product-worlds) wurde direkt im Browser bedient: Produktfilter, Hell/Dunkel, Spektrum, Pause, Ebenenschalter und SVG-Details. Alle vier Learn-Originalbilder und das passende Signet waren geladen. Der **tatsächliche Browser-ZIP-Download** bestand die Grössen-, SHA-256- und CRC-Prüfung: 326782 Bytes, 44 Einträge, identischer Hash zum Produktionsmanifest. Die erfassten Anwendungslogs von Hauptansicht und Kit enthielten keine Warnungen oder Fehler; 201 Erweiterungseinträge wurden getrennt ausgeschlossen.
+
+**Verbleibende Grenzen:** Keine physische Mobil-/Touch-Prüfung, keine Assistenztechnik, kein 200-%-Zoom und keine Browseremulation von Forced Colors oder Reduced Motion. Keine Pixelkontrastmessung oder vollständige Abnahme aller Animationsphasen. Der manuelle Learn-Glitch wurde geklickt, seine kurzlebigen Frames und SVG-SMIL-Playheads aber nicht unabhängig instrumentiert. Die im Bericht erfassten CSS-Zustände bestätigen keine vollständig instrumentierte Stillsetzung jeder Effektquelle. Die früher offenen, provozierten Netzwerkfehlerfälle bleiben ebenfalls ungeprüft. Einzelheiten stehen im [Audit, Abschnitt 7.6](apple-design-audit.md#76-belegter-produktionsrollout-060--11102026); der UI-Adapter bleibt `draft`.

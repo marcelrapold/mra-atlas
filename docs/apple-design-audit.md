@@ -4,7 +4,7 @@ Stand: **11.10.2026**. Gegenstand: `marcelrapold/mra-design`, Integration der fr
 
 **Status: belegter Code-Audit mit anschliessender Korrekturprüfung.** Dies ist keine WCAG-Zertifizierung und keine Bestätigung vollständiger Atlas-Parität. Die statische Prüfung fand konkrete Probleme bei Dialogfokus, Suchsemantik, Tastaturfokus und schmalen Ansichten. Korrekturen und tatsächlich ausgeführte Prüfungen werden am Ende separat protokolliert. Ein geplanter Fix zählt noch nicht als bestandene Abnahme.
 
-**Lesestand:** Die Abschnitte 1–5 dokumentieren den historischen Vorab- und Integrationsstand. Der gesondert datierte [Produktionsnachtrag in Abschnitt 6](#6-produktions--und-browsernachprüfung--11102026) ergänzt tatsächliche Nachweise für den ersten Rollout. Frühere Angaben wie «Browserprüfung offen» bleiben als damaliger Prüfstand erhalten; der Nachtrag ist keine finale Vollabnahme. Abschnitt 7 beschreibt die danach beauftragte 0.6.0-Ergänzung und ihre Quellenprüfung, ohne neue Laufzeitnachweise vorwegzunehmen.
+**Lesestand:** Die Abschnitte 1–5 dokumentieren den historischen Vorab- und Integrationsstand. Der gesondert datierte [Produktionsnachtrag in Abschnitt 6](#6-produktions--und-browsernachprüfung--11102026) ergänzt tatsächliche Nachweise für den ersten Rollout. Frühere Angaben wie «Browserprüfung offen» bleiben als damaliger Prüfstand erhalten; der Nachtrag ist keine finale Vollabnahme. Abschnitt 7 dokumentiert die danach beauftragte 0.6.0-Ergänzung, ihre lokalen Prüfungen und den gesondert belegten Produktionsrollout. Die gezielte neue Browsernachprüfung ist in Abschnitt 7.6 mit ihren tatsächlichen Abläufen und verbleibenden Grenzen protokolliert.
 
 ## 1. Quellen, Auftrag und Grenzen
 
@@ -303,7 +303,7 @@ Die begleitenden Arbeitsprotokolle liegen im Prüfverzeichnis `production-verifi
 
 Die erweiterte HTTP-Prüfung fand auf [`/praesentation`](https://design.rapold.io/praesentation) und [`/praesentationslogik`](https://design.rapold.io/praesentationslogik) je eine Canonical-URL zur Startseite anstelle der eigenen Route. Auch `og:url` und der Open-Graph-Titel waren dort aus der Startseite geerbt. Die Nachprüfung um **09:13:07 UTC** bestätigte genau diese zwei Routen. Der anfängliche Unterschied zwischen der Startseiten-URL mit und ohne abschliessenden Slash ist semantisch gleichwertig und wird nicht als zusätzlicher Befund gezählt.
 
-Die beiden Seitenquellen wurden anschliessend lokal korrigiert: `generateMetadata` setzt jeweils die eigene Canonical- und Open-Graph-URL sowie einen passenden Titel und erhält die übrigen geerbten Open-Graph-Werte. Diese Quellkorrektur wurde für den Nachtrag gelesen. **Der abschliessende Commit, das zweite Deployment und dessen Produktionsnachprüfung stehen zu diesem Dokumentationsstand noch aus.** Die Quellkorrektur zählt daher noch nicht als behobener Produktionsbefund.
+Die beiden Seitenquellen wurden anschliessend lokal korrigiert: `generateMetadata` setzt jeweils die eigene Canonical- und Open-Graph-URL sowie einen passenden Titel und erhält die übrigen geerbten Open-Graph-Werte. Diese Quellkorrektur wurde für den Nachtrag gelesen. **Der abschliessende Commit, das zweite Deployment und dessen Produktionsnachprüfung stehen zu diesem Dokumentationsstand noch aus.** Die Quellkorrektur zählt daher noch nicht als behobener Produktionsbefund. **Späterer Nachweis vom 11.10.2026, 10:06–10:07 UTC:** Die Auslieferung und korrekten Metadaten beider Routen sind für 0.6.0 in Abschnitt 7.6 bestätigt; die Aussagen dieses Abschnitts bleiben der historische Stand von 0.5.0.
 
 ### 6.4 Verbleibender Umfang
 
@@ -315,13 +315,13 @@ Die Desktop-Nachprüfung schliesst die jeweils genannten Teilabläufe aus Abschn
 - **Weitere Varianten und Interaktionen:** vollständiger Brand-Wechsel durch alle Changelog-/FAQ-Kontexte, gemessene Close-Flächen bei grobem Zeiger sowie die weitergehenden Chart-, Menü- und Lightbox-Prüfungen aus Abschnitt 4.
 - **Visueller Gesamtumfang:** Der erste Rollout enthält die Raumfaltenzeichen, die gemeinsame Palette und Typografie sowie Favicon-, App-Icon- und Bannerressourcen. Eine vollständige Übernahme aller produktspezifischen Hintergründe, Effekte und Motion von AI, Learn und den weiteren Produkten ist damit nicht belegt. Die danach beauftragte gestalterische Ergänzung erhält eine eigene spätere Prüfung.
 
-**Geplanter Folgestand:** Die historischen Beobachtungen oben beziehen sich weiterhin auf 0.5.0 mit der damaligen Registry aus fünf Brands. Anschliessend wurde die Entfernung von Goldbach und Sygnum beauftragt. Für den geplanten Stand **0.6.0** sind nur noch `neutral`, `dominicano-express` und `rapold` sowie die erwähnten gestalterischen Ergänzungen vorgesehen. Für diesen Folgestand liegt hier noch keine Produktions- oder Browserabnahme vor; seine tatsächlichen Ergebnisse werden später getrennt ergänzt.
+**Geplanter Folgestand:** Die historischen Beobachtungen oben beziehen sich weiterhin auf 0.5.0 mit der damaligen Registry aus fünf Brands. Anschliessend wurde die Entfernung von Goldbach und Sygnum beauftragt. Für den geplanten Stand **0.6.0** sind nur noch `neutral`, `dominicano-express` und `rapold` sowie die erwähnten gestalterischen Ergänzungen vorgesehen. Zum damaligen Prüfzeitpunkt lag für diesen Folgestand noch keine Produktions- oder Browserabnahme vor. Die später tatsächlich erfolgten 0.6.0-Produktions- und Browsernachweise stehen getrennt in Abschnitt 7.6.
 
 Dieser Nachtrag belegt den ausgelieferten ersten Stand und konkrete Desktop-Bedienpfade. Er ist keine finale Produkt-, WCAG- oder Atlas-Vollabnahme; auch der UI-Adapter bleibt entsprechend dem Brand-Vertrag als Entwurf gekennzeichnet.
 
 ## 7. Produktwelten für 0.6.0 · Umsetzung und lokale Prüfung vom 11.10.2026
 
-Nach dem ersten Rollout wurde die Übernahme weiterer produktspezifischer Atmosphäre sowie die Entfernung der aktiven Goldbach-/Sygnum-Brands beauftragt. Die lokale aktive Auswahl ist `neutral`, `dominicano-express`, `rapold`. Dieser Abschnitt dokumentiert die umgesetzten Quellen und Anforderungen, den tatsächlichen lokalen Referenzrender in Abschnitt 7.4 und den erfolgreichen vollständigen Framework-Check in Abschnitt 7.5. **Die neue Produktionsbestätigung und UI-Browserabnahme stehen noch aus.** Die 0.5.0-Ergebnisse in Abschnitt 6 bleiben ein eigener historischer Stand.
+Nach dem ersten Rollout wurde die Übernahme weiterer produktspezifischer Atmosphäre sowie die Entfernung der aktiven Goldbach-/Sygnum-Brands beauftragt. Die lokal und produktiv bestätigte aktive Auswahl ist `neutral`, `dominicano-express`, `rapold`. Dieser Abschnitt dokumentiert die umgesetzten Quellen und Anforderungen, den tatsächlichen lokalen Referenzrender in Abschnitt 7.4, den erfolgreichen vollständigen Framework-Check in Abschnitt 7.5 und die Produktionsprüfung in Abschnitt 7.6. **Framework 0.6.0 ist nachweislich live; die gezielte UI-Browsernachprüfung ist innerhalb ihres dokumentierten Umfangs bestanden.** Die 0.5.0-Ergebnisse in Abschnitt 6 bleiben ein eigener historischer Stand.
 
 ### 7.1 Tatsächlich belegte Vorbereitung
 
@@ -333,7 +333,7 @@ Die [Produktwelten-Spezifikation](product-worlds.md) und [world-provenance.json]
 
 ### 7.2 Konkrete Risiken der neuen Spezifikation
 
-| Risiko | Verbindliche Integrationsanforderung; Laufzeitprüfung noch offen |
+| Risiko | Verbindliche Integrationsanforderung; tatsächlicher Prüfumfang in Abschnitt 7.6 |
 |---|---|
 | Eine sichtbare Pause lässt einzelne Effektquellen weiterlaufen | Gemeinsame Stillsetzung für CSS, Partikel/Pulse, Terminaltimer und Parallax; kein unbemerkter Neustart beim Produkt- oder Fokuswechsel. Reduced Motion erhält eine statische Darstellung mit vollständigem Text. |
 | Glas wird nur anhand der Basistokens als lesbar bewertet | Kontrast am tatsächlich zusammengesetzten Hintergrund einschliesslich heller Bewegungsphasen beurteilen. Text, Fokus und echte Aktionen brauchen tragfähige Flächen auch ohne Blur. |
@@ -341,9 +341,9 @@ Die [Produktwelten-Spezifikation](product-worlds.md) und [world-provenance.json]
 
 Die Begründung und die dazugehörigen W3C-Quellen stehen im [Bedienkontrakt der Produktwelten](product-worlds.md#bedienkontrakt-für-die-referenzen). Diese drei Risiken sind Anforderungen an die neue Komposition, keine als beobachtet ausgegebenen Browserfehler. Die Referenzen bleiben begrenzte Container innerhalb der bestehenden Docs-Architektur.
 
-### 7.3 Noch fehlende Evidenz
+### 7.3 Verbleibende Prüfgrenzen
 
-Die Hauptintegration, das Export-Kit und die Bereinigung der aktiven Brands sind lokal umgesetzt und haben den vollständigen Check aus Abschnitt 7.5 bestanden. Die noch ausstehende Browserabnahme soll konkret die drei Risiken oben, die richtigen Quelldateien und die tatsächliche Brand-Auswahl am bereitgestellten Commit prüfen. Der erfolgreiche Build und die Dateiprüfungen belegen für sich keine funktionierende Stillsetzung oder korrekte Zustandsvermittlung im Browser. Die Kontrastmodellprüfung aus Abschnitt 7.5 ersetzt keine Messung der tatsächlich gerenderten Komposition.
+Die Hauptintegration, das Export-Kit und die Bereinigung der aktiven Brands haben den vollständigen lokalen Check aus Abschnitt 7.5 bestanden und sind gemäss der Produktionsprüfung in Abschnitt 7.6 ausgeliefert. Die gezielte Browsernachprüfung in Abschnitt 7.6 belegt zusätzlich konkrete Auswahl-, Pausen-, Ebenen-, Tastatur- und Downloadabläufe sowie schmale Referenzcontainer. Diese Beobachtungen sind von den Integrationsanforderungen oben zu unterscheiden: Reduced-Motion-/Forced-Colors-Emulation, vollständige Bewegungsinstrumentierung und Pixelkontrast wurden im Browser nicht geprüft. Die Kontrastmodellprüfung aus Abschnitt 7.5 ersetzt keine Messung der tatsächlich gerenderten Komposition.
 
 Neue Ergebnisse werden erst mit Datum, URL/Commit, tatsächlichem Browser/Viewport und beobachtetem Ablauf ergänzt. Die historischen Grenzen für mobile Ansichten, 200-%-Text, Touch, Screenreader und provozierte Netzwerkfehler bleiben erhalten, soweit sie nicht tatsächlich nachgeprüft werden. Ein nicht verfügbarer Prüfumfang wird nicht als bestanden bezeichnet.
 
@@ -386,8 +386,57 @@ Der versionierte [Kontrastbericht](review/product-worlds-contrast.json), erzeugt
 | Fabric-Hero, abgeschwächter Fliesstext auf der finalen Deckfläche | **6,06:1** | **8,65:1** | Normaler Text; Mindestwert 4,5:1 |
 | Wortmarke «Facetten» | **3,70:1** | **6,49:1** | Grosse fette Wortmarke, mindestens 20 px / Gewicht 700; Modellgrenze 3:1, keine Freigabe dieser Farben für kleinen Fliesstext |
 | Wortmarke «Spektrum» | **5,57:1** | **5,19:1** | Dieselbe Wortmarkengrösse; Modellgrenze 3:1 |
-| Learn-Terminaltext | **6,18:1** | **6,18:1** | Konservative Hintergrundgrenze mit Schwarz und Weiss; Terminalfläche mit 95 % Deckkraft und Text darüber und Ebene `z-index: 3` |
+| Learn-Terminaltext | **6,18:1** | **6,18:1** | Konservative Hintergrundgrenze mit Schwarz und Weiss; Terminalfläche mit 95 % Deckkraft; Text darüber auf Ebene `z-index: 3` |
 
-Der Bericht enthält auch die vor der Korrektur unzureichenden ungeschützten Hero-Werte; diese sind Vergleichswerte, keine bestandenen Endzustände. **Dies ist eine konservative Modellrechnung, keine Browser-Pixelmessung.** Sie garantiert keine vollständige Prüfung aller Bildpositionen oder Animationsphasen. Learn-Text ausserhalb des geschützten Terminals ist im Bericht nur auf der flachen CSS-Basis bewertet; die fotografische Hero-Komposition braucht die tatsächliche Sicht-/Kontrastnachprüfung. Dekorative Zeichen, Icons, Konturen und Kantenglättung sind keine Textkontrastprüfung.
+Der Bericht enthält auch die vor der Korrektur unzureichenden ungeschützten Hero-Werte; diese sind Vergleichswerte, keine bestandenen Endzustände. **Dies ist eine konservative Modellrechnung, keine Browser-Pixelmessung.** Sie garantiert keine vollständige Prüfung aller Bildpositionen oder Animationsphasen. Learn-Text ausserhalb des geschützten Terminals ist im Bericht nur auf der flachen CSS-Basis bewertet; die tatsächliche Browser-Sichtprüfung in Abschnitt 7.6 ergänzt diesen Nachweis, ohne eine Pixelkontrastmessung der fotografischen Komposition zu liefern. Dekorative Zeichen, Icons, Konturen und Kantenglättung sind keine Textkontrastprüfung.
 
-**Noch ausstehend:** Commit-bezogene Produktionsauslieferung und neue Browserabläufe für die Produktwelten einschliesslich Pause, Reduced Motion und Fokus-/Textlesbarkeit. Aus dem lokalen Check werden keine bestandenen mobilen, 200-%-, Touch-, Screenreader- oder absichtlich provozierten Netzwerkfehlerprüfungen abgeleitet. Der 0.5.0-Produktionsnachweis in Abschnitt 6 bleibt davon getrennt.
+**Zum Abschluss dieses lokalen Checks noch ausstehend:** Commit-bezogene Produktionsauslieferung und neue Browserabläufe für die Produktwelten einschliesslich Pause, Reduced Motion und Fokus-/Textlesbarkeit. Die späteren Produktions- und gezielten Browsernachweise folgen getrennt in Abschnitt 7.6; deren Prüfumfang und Grenzen gelten ausdrücklich. Aus dem lokalen Check werden keine bestandenen mobilen, 200-%-, Touch-, Screenreader- oder absichtlich provozierten Netzwerkfehlerprüfungen abgeleitet. Der 0.5.0-Produktionsnachweis in Abschnitt 6 bleibt davon getrennt.
+
+### 7.6 Belegter Produktionsrollout 0.6.0 · 11.10.2026
+
+Nach dem Merge von [PR #6](https://github.com/marcelrapold/mra-design/pull/6) wurde am **11.10.2026, 10:06–10:07 UTC**, auf **[design.rapold.io](https://design.rapold.io) Framework 0.6.0** mit dem Anwendungs-Commit [`73498ec4b46cb9f431d7ad5d186e88dd6301162b`](https://github.com/marcelrapold/mra-design/commit/73498ec4b46cb9f431d7ad5d186e88dd6301162b) produktiv geprüft. Die tatsächlichen Prüfdateien sind unverändert versioniert: [Produktionsbericht](review/production-0.6.0-73498ec4b46c/production-report.json) und [HTTP-Einzelbeobachtungen](review/production-0.6.0-73498ec4b46c/http-observations.json). Diese Commit-ID bezeichnet den **produktiven Prüfstand**, nicht einen dauerhaft aktuellen `main`-Head. Nachfolgende reine Dokumentations-/Nachweis-Commits erhalten eigene Build-SHAs; die hier protokollierten HTTP- und Browserbeobachtungen behalten ihr ursprüngliches Datum und ihren geprüften Anwendungs-Commit.
+
+| Nachweis | Tatsächliches Ergebnis |
+|---|---|
+| GitHub CI auf `main` | [Run 38130603944](https://github.com/marcelrapold/mra-design/actions/runs/38130603944): `success`, von der Rolloutprüfung bestätigt |
+| Vercel-Produktion | [Deployment 8BQn7pjJCTvMNyqpdd9vHvcDoRfD](https://vercel.com/marcelrapold/design/8BQn7pjJCTvMNyqpdd9vHvcDoRfD): `success` |
+| Öffentliche Build-Info | Version `0.6.0`, Commit oben; `builtAt: 2026-10-11T10:05:00.077Z` |
+| Prüfzeitraum | **10:06:08.102 bis 10:07:03.375 UTC**, `phase: passed`, `passed: true`, keine Fehler |
+| HTTP-Umfang | **112 protokollierte Anfragen**; der bestehende Produktionsprüfer bestätigte Commit, Version und fünf Kernrouten |
+| Weltressourcen | **84 öffentliche Dateien** gegen das ausgelieferte Weltmanifest geprüft; vier Produkte und vier unveränderte Original-Learn-Artworks |
+| Portables Welt-ZIP | **44 Dateien**, **326782 Bytes**, SHA-256 `53714c02dfac3f867f23d586fbeb038e33d957965f92bb9d62274c6a75e2fce3`; die in Abschnitt 7.5 beschriebene einzige HTML-Transportabweichung ist auch im Produktionsmanifest ausgewiesen |
+| Aktive Registry | Genau `neutral`, `dominicano-express`, `rapold`; Brand- und Management-Dateien dieser drei Einträge geprüft |
+| Entfernte Downloads | **Zehn erwartete HTTP 404** für gezielt geprüfte Goldbach-/Sygnum-Pfade: je Brand Vertrag, Management-Datei, altes Logo, Muster-PPTX und Referenz-PDF. Dies ist ein Nachweis dieser zehn Pfade, keine Vollinventur aller jemals veröffentlichten URLs. |
+| Präsentationsmetadaten | `/praesentation` und `/praesentationslogik` liefern jeweils genau die eigene Canonical- und Open-Graph-URL sowie ihren passenden Titel; das gemeinsame OG-Bild ist 1200 × 630. Die beiden Befunde aus Abschnitt 6.3 sind damit am geprüften Produktionscommit behoben. |
+| Abschlusskontrolle | Die Build-Info am Ende enthält unverändert denselben Commit und dieselbe Version; ihre Bytes haben zu Beginn und am Ende SHA-256 `d5e10bfca262125523a4be03c94633d69494c8bc8e4f8845f08316b3602a2f2f` |
+
+Das produktive [Weltmanifest](https://design.rapold.io/brands/rapold/worlds-manifest.json) hatte SHA-256 `82c8c1cf646967313445e3a11333facba1ed356353edc7d38deb34662a879288`. Die Ressourcenprüfung belegt deren tatsächliche HTTP-Auslieferung und Dateiintegrität. Sie ist von der historischen Logo-Vollprüfung für 0.5.0 und vom lokalen Gesamtinventar in Abschnitt 7.5 zu unterscheiden.
+
+#### Tatsächliche Browsernachprüfung · 11.10.2026, 10:17 UTC
+
+Die gezielte Produktionsprüfung ist **innerhalb des dokumentierten Umfangs bestanden**. Der unveränderte [Browserbericht](review/production-0.6.0-73498ec4b46c/browser-review.json), `checkedAt: 2026-10-11T10:17:17.264Z`, hält **14 Zustands- und Bedienfälle** am oben genannten Commit fest. Geprüft wurden die [Rapold-Markenansicht](https://design.rapold.io/brand?brand=rapold#rapold-worlds) und das [HTML-Kit](https://design.rapold.io/brands/rapold/product-worlds) in **Chrome, 1363 × 936 CSS-px, DPR 1**. Der Browser-Viewport wurde nicht verkleinert: Die folgenden 320-/390-px-Prüfungen betreffen die tatsächlich eingestellte Breite des eingebetteten Referenzcontainers.
+
+| Ablauf | Beobachtetes Ergebnis |
+|---|---|
+| Produkte, Darstellung und Wortmarke | Alle vier Produkte wurden aufgerufen. Helle und dunkle Zustände sowie Facetten und Spektrum sind in den aufgeführten Fällen belegt. Produkt-Dropdown und Downloadüberschrift wechselten synchron; der Schlusszustand war `learn` / «Alle Assets für ÆON Learn». Dies ist keine vollständige Matrix aller Produkt-, Farb- und Effektkombinationen. |
+| Schmale Referenzcontainer | **Alle vier Produkte bei 320 CSS-px im hellen Modus**, EdgePortal zusätzlich dunkel; Learn zusätzlich bei **390 CSS-px hell**. In diesen Fällen entsprach `scrollWidth` der Containerbreite, und die Liste überlaufender Texte war leer. Das belegt diese Container, keinen vollständigen mobilen Viewport oder eine ganze mobile Navigationsfolge. |
+| Pause, Fortsetzen und Produktwechsel | Die erfassten CSS-Animationen des Fabric-Netzes und der drei Aurora-Halos standen auf `paused`; der Learn-Cursor zeigte passend `paused` beziehungsweise `running`. Die Pause blieb über Produktwechsel erhalten. Fortsetzen wurde bedient. SVG-SMIL-Playheads und sämtliche Einzelbewegungen wurden nicht unabhängig instrumentiert. |
+| Ebenen und Oberfläche | Aurora aus- und wieder eingeschaltet; Oberfläche verborgen und wieder eingeblendet. Der pausierte Zustand blieb beim Wiederherstellen erhalten. |
+| Tastatur | Enter bediente die Auswahl; «Spektrum» hatte tatsächlich `focus-visible` und eine durchgezogene **3-px-Outline**. Dies belegt den ausgeführten Pfad, keine vollständige Tastatur- oder Screenreader-Abnahme. |
+| Originalbilder und neue Zeichen | Learn lud alle vier Originalebenen mit **1672 × 941** sowie das passende neue Signet; im hellen Modus wurde die helle Signetvariante geladen. Der Screenshot zeigt das Terminal als Demo und fiktives Beispieltranskript. |
+| Tatsächlicher Browserdownload | Das Welt-ZIP wurde über die Live-Oberfläche heruntergeladen und anschliessend geprüft: **326782 Bytes, 44 ZIP-Einträge, CRC-Prüfung erfolgreich**, SHA-256 `53714c02dfac3f867f23d586fbeb038e33d957965f92bb9d62274c6a75e2fce3`, identisch mit dem Produktionsmanifest. |
+| Eigenständiges HTML-Kit | Produktfilter, Hell/Dunkel, Spektrum, Pause, ausgeschaltete Ebene «Kognitive Signale» und geöffnete SVG-Details wurden im Browser bedient. Alle vier Learn-Originalbilder und das jeweils passende Signet waren geladen. Die geprüfte Endadresse war `/brands/rapold/product-worlds`; relative Assetlinks funktionierten unter der öffentlichen Base-URL. |
+| Erfasste Anwendungslogs | Für Hauptansicht und Kit keine Warnungen oder Fehler in den erfassten Anwendungslogs. **201 Einträge von Browsererweiterungen** wurden separat ausgeschlossen; daraus wird keine Aussage über alle möglichen späteren Logereignisse abgeleitet. |
+
+[Learn im dunklen Modus – tatsächlicher Produktionsscreenshot](review/production-0.6.0-73498ec4b46c/learn-dark-live.jpg) zeigt die neue Wortmarke, das Raumfaltenzeichen, den originalen Hero und die als Beispiel gekennzeichnete Terminalfläche. Der Screenshot ist ein Sichtbeleg für diesen Zustand, keine Pixelkontrastmessung.
+
+**Die Grenzen des Browserberichts bleiben unverändert:**
+
+- Keine Prüfung auf physischem Mobil- oder Touch-Gerät.
+- 320/390 px sind eingebettete Referenzcontainer, keine vollständige Browser-Viewportemulation.
+- Kein Lauf mit Assistenztechnik oder Screenreader.
+- Keine reale Browseremulation von Forced Colors oder Reduced Motion und kein 200-%-Zoomlauf; Quell- und lokale Prüfungen sind separat dokumentiert.
+- Keine Pixelkontrastmessung und keine vollständige Abnahme aller Animationsphasen.
+- Der manuelle Learn-Glitch wurde ausgelöst; seine kurzlebigen Frames und die SVG-SMIL-Playheads wurden nicht unabhängig instrumentiert.
+
+Auch die historischen, gezielt provozierten Netzwerkfehlerprüfungen werden durch diesen erfolgreichen Normalablauf nicht ersetzt. Die bestandene gezielte Produktionsprüfung ist keine WCAG-Zertifizierung, vollständige Atlas-Paritätsabnahme oder Änderung des `draft`-Status des Rapold-UI-Adapters.

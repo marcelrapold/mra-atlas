@@ -2,9 +2,9 @@
 
 Ein optional wählbares Rapold-Theme für die vier Produkte AI Fabric, Argus, ÆON Learn und EdgePortal. Es liefert eine gemeinsame Farb- und Typografiebasis für das neutrale Framework. Der Framework-Default bleibt `neutral`.
 
-**Status des UI-Adapters: `draft`, Version 0.1.0.** Marcel Rapold hat am **11.10.2026** die vier Signets der Raumfalten-Familie B freigegeben. Die neue Zuordnung zu vollständigen UI-Rollen und ihre visuelle Abnahme bleiben als separate Integrationsarbeit dokumentiert.
+**Status des UI-Adapters: `draft`, Version 0.2.0.** Marcel Rapold hat am **11.10.2026** die vier Signets der Raumfalten-Familie B freigegeben. Die neue Zuordnung zu vollständigen UI-Rollen und ihre visuelle Abnahme bleiben als separate Integrationsarbeit dokumentiert.
 
-**Produktwelten für Framework 0.6.0: in Umsetzung.** Der erste Produktionsnachweis gilt für Framework 0.5.0. Die neue Ergänzung führt Originalmotive, atmosphärische Flächen und steuerbare Bewegung innerhalb der Rapold-Referenz zusammen. Die vier Original-Learn-Assets sind geprüft; ein erfolgreicher 0.6.0-Build, Rollout oder eine Browserabnahme wird hier noch nicht behauptet.
+**Produktwelten für Framework 0.6.0: produktiv ausgeliefert und gezielt geprüft.** Der produktiv geprüfte Anwendungsstand vom **11.10.2026, 10:06–10:17 UTC**, ist `73498ec4b46cb9f431d7ad5d186e88dd6301162b`; der lokale Check, Vercel-/Main-CI-Lauf, öffentliche Dateiabrufe und 14 Browserfälle sind im [Produktwelten-Prüfstand](../../docs/product-worlds.md#prüfstand-und-dokumentierte-grenzen) belegt. Die Prüfung vom 11.10.2026 umfasst schmale Referenzcontainer, konkrete Bedienpfade und einen verifizierten Browser-ZIP-Download. Vollständige mobile Viewports, Assistenztechnik, Browser-Mediaemulation und Pixelkontrast sind damit nicht abgenommen. Der `draft`-Status des UI-Adapters bleibt bestehen.
 
 ## Markenstruktur
 
@@ -56,7 +56,7 @@ Die Zahlen oben beschreiben die statischen Tokenpaare. Text auf neuen Glasfläch
 
 Die Produktwelten sind begrenzte Referenzcontainer innerhalb des Rapold-Showcases. Sie zeigen, wie sich die gemeinsame Identität in unterschiedlichen Produkten anwenden lässt. Sie übernehmen weder vollständige Source-Apps noch deren Anmeldung, Datenverbindungen oder operative Zustände. Die unveränderten Originalassets und die neu gebauten UI-Beispiele werden in der [Produktwelten-Spezifikation](../../docs/product-worlds.md) getrennt beschrieben.
 
-| Produkt / Motiv | Herkunft und geplanter Umfang |
+| Produkt / Motiv | Herkunft und integrierter Umfang |
 |---|---|
 | AI Fabric | Aus der belegten Originalgestaltung abgeleitete prozedurale Aurora, deterministisches Netz mit Pulsen und Glasflächen. Keine Original-Hintergrundbitmap vorhanden; kein privater App-Quellcode wird als Asset kopiert. Geist und Geist Mono entsprechen bereits der AI-Quelle. |
 | ÆON Learn | Vier bytegleich übernommene Hero-Dateien mit Atmosphäre, Wissensnetz, Reaktorkern und Signalbahnen. Partikel, Terminal und dezente Parallax werden als steuerbare Referenz umgesetzt. Die ursprünglichen Schriften Inter und JetBrains Mono werden bewusst durch Geist und Geist Mono ersetzt. |
@@ -113,7 +113,7 @@ Die Ausgaben liegen ausschliesslich unter `~/.local/share/fonts/framework`. Konv
 
 - Nutzerfreigabe der vier Raumfalten-Signets vom 11.10.2026.
 - Geliefertes `rapold-brand-system`, Version 1.0.0: Tokenkopie und SHA-256-Nachweis im Brand-Paket.
-- [Produktwelten-Spezifikation](../../docs/product-worlds.md) und [World-Provenance](sources/world-provenance.json): Originalquellen, unveränderte Dateien, geplante Anpassungen und noch offene Abnahme der 0.6.0-Ergänzung.
+- [Produktwelten-Spezifikation](../../docs/product-worlds.md) und [World-Provenance](sources/world-provenance.json): Originalquellen, unveränderte Dateien, integrierte Anpassungen sowie tatsächliche Produktions-/Browsernachweise und ihre Grenzen für 0.6.0.
 - [Brand-Vertrag](https://design.rapold.io/contracts/brand-contract.md) für vollständige Rollen, Kontraste und Quellenstatus; Repository-Quelle: `docs/brand-contract.md`.
 - [Atlas-Referenz](https://design.rapold.io/contracts/atlas-reference.md) für die neutrale Systemstruktur; Repository-Quelle: `docs/atlas-reference.md`. Diese Integration verändert keine Seitenarchitektur.
 

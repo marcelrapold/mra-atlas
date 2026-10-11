@@ -4,7 +4,15 @@
 
 Der Benutzer hat die Entfernung von Goldbach und Sygnum beauftragt. Aktiv bleiben `neutral`, `dominicano-express` und `rapold`; entfernte Themes, kanonische Quellen, Logos und aktive UI-Verzweigungen werden nicht weiter ausgeliefert. Die Muster-Generierung umfasst damit 18 PPTX-Dateien, 18 PDFs und 54 Folienbilder. Nicht mehr registrierte Ausgabeverzeichnisse werden beim Generieren entfernt.
 
-Nach der Registry-Änderung müssen die Referenzen mit `npm run deck:reference` neu gerendert und mit `npm run check` geprüft werden. Die Bereinigung des Referenzmanifests ersetzt diesen Nachweis nicht und setzt keinen neuen Quellhash. Aktueller Produktions- und Auditstatus: [Deployment](docs/deployment.md) und [Apple-orientierter Audit](docs/apple-design-audit.md).
+Nach der Registry-Änderung wurden die Referenzen am **11.10.2026 um 09:42 UTC** tatsächlich mit `npm run deck:reference` neu gerendert: 18 PDF und 54 PNG aus 18 PPTX, mit nativem LibreOffice und geprüftem Source-Hash. `npm run check` bestand anschliessend um **09:50–09:51 UTC** mit 47/47 Tests, TypeScript, Production Build und Postbuild. Der Renderer- und Prüfbeleg steht im [Audit, Abschnitt 7](docs/apple-design-audit.md).
+
+## Belegter produktiver Prüfstand 0.6.0 · 11.10.2026
+
+Repository: [marcelrapold/mra-design](https://github.com/marcelrapold/mra-design). Im Produktionsprüflauf vom **11.10.2026, 10:06–10:07 UTC**, lieferte [design.rapold.io](https://design.rapold.io) nach PR #6 den Anwendungs-Commit `73498ec4b46cb9f431d7ad5d186e88dd6301162b`; `builtAt: 2026-10-11T10:05:00.077Z`. Main-CI und Vercel sind erfolgreich. Der Commit bezeichnet diesen produktiven Prüfstand; spätere reine Dokumentations-/Nachweis-Commits haben eine eigene Main- und Build-ID, ohne dass die dokumentierte UI-Prüfung damit als wiederholt gilt. Die Produktionsprüfung um **10:06–10:07 UTC** bestätigt 84 Weltressourcen, das ZIP mit 44 Dateien, die drei aktiven Brands, zehn erwartete 404 für gezielt geprüfte alte Downloads und beide korrigierten Präsentationsmetadaten.
+
+Der [Browserbericht](docs/review/production-0.6.0-73498ec4b46c/browser-review.json) um **10:17 UTC** dokumentiert 14 bestandene Fälle in Chrome bei 1363 × 936 CSS-px / DPR 1: Auswahl, CSS-Pause/Fortsetzen, erhaltene Pause, Ebenen, Tastaturfokus, HTML-Kit und echter ZIP-Download mit passender Grösse, SHA-256 und CRC. 320-/390-px-Prüfungen betreffen eingebettete Referenzcontainer, keine vollständigen mobilen Viewports. Physische Mobil-/Touch-Geräte, AT, 200-%-Zoom, Browseremulation von Reduced Motion/Forced Colors und Pixelkontrast sind ungeprüft; Glitch-Transienten und SVG-SMIL-Playheads wurden nicht unabhängig instrumentiert. Frühere provozierte Netzwerkfehlerfälle bleiben offen. Der Rapold-UI-Adapter bleibt `draft`; die gezielte Prüfung ist keine vollständige Atlas-/WCAG-Abnahme.
+
+Aktueller Nachweisstand: [Deployment](docs/deployment.md), [Produktwelten](docs/product-worlds.md) und [Apple-orientierter Audit](docs/apple-design-audit.md). Die folgenden historischen Übergaben bleiben als damaliger Stand erhalten; sie setzen diesen belegten 0.6.0-Rollout nicht wieder auf «ausstehend».
 
 ## Historischer Handover 0.4.0
 

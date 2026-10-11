@@ -1,0 +1,803 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-11T10:17:17.264Z",
+  "commit": "73498ec4b46cb9f431d7ad5d186e88dd6301162b",
+  "version": "0.6.0",
+  "url": "https://design.rapold.io/brand?brand=rapold#rapold-worlds",
+  "browser": {
+    "name": "Chrome",
+    "viewport": {
+      "width": 1363,
+      "height": 936,
+      "devicePixelRatio": 1
+    },
+    "narrowChecks": "Actual component container widths of 320 and 390 CSS px; the browser viewport itself was not resized."
+  },
+  "cases": [
+    {
+      "test": "initial-fabric-dark",
+      "world": "fabric",
+      "mode": "dark",
+      "width": 1010.96875,
+      "height": 652.921875,
+      "running": "true",
+      "wordmark": "cut",
+      "wordmarkBackground": "linear-gradient(153deg, rgb(0, 157, 255) 0%, rgb(0, 157, 255) 48%, rgb(168, 237, 255) 48.4%, rgb(168, 237, 255) 100%)",
+      "scrollWidth": 1011,
+      "overflowText": [],
+      "images": [
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/fabric.svg",
+          "width": 256
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/fabric.svg",
+          "width": 256
+        }
+      ],
+      "cssAnimations": []
+    },
+    {
+      "test": "fabric-spectrum-pause-aurora-off",
+      "world": "fabric",
+      "mode": "dark",
+      "width": 1010.96875,
+      "height": 652.921875,
+      "running": "false",
+      "interface": "true",
+      "wordmark": "spectrum",
+      "wordmarkBackground": "linear-gradient(110deg, rgb(162, 138, 255) 0%, rgb(89, 125, 255) 34%, rgb(0, 157, 255) 63%, rgb(66, 214, 236) 100%)",
+      "scrollWidth": 1011,
+      "overflowText": [],
+      "images": [
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/fabric.svg",
+          "width": 256
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/fabric.svg",
+          "width": 256
+        }
+      ],
+      "cssAnimations": [
+        {
+          "class": "rw-network",
+          "name": "rw-network-breathe",
+          "state": "paused"
+        }
+      ]
+    },
+    {
+      "test": "learn-dark-resume-loaded",
+      "world": "learn",
+      "mode": "dark",
+      "width": 1010.96875,
+      "height": 648.390625,
+      "running": "true",
+      "interface": "true",
+      "wordmark": "spectrum",
+      "wordmarkBackground": "linear-gradient(110deg, rgb(162, 138, 255) 0%, rgb(89, 125, 255) 34%, rgb(0, 157, 255) 63%, rgb(66, 214, 236) 100%)",
+      "scrollWidth": 1011,
+      "overflowText": [],
+      "images": [
+        {
+          "complete": true,
+          "height": 941,
+          "src": "/brands/rapold/assets/worlds/learn/hero-v2/base-atmosphere.webp",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "height": 941,
+          "src": "/brands/rapold/assets/worlds/learn/hero-v2/knowledge-rig.svg",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "height": 941,
+          "src": "/brands/rapold/assets/worlds/learn/hero-v2/learning-core.webp",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "height": 941,
+          "src": "/brands/rapold/assets/worlds/learn/hero-v2/cognitive-signals.svg",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/learn.svg",
+          "width": 256
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/learn.svg",
+          "width": 256
+        }
+      ],
+      "cssAnimations": [
+        {
+          "class": "rw-cursor",
+          "name": "rw-cursor",
+          "state": "running"
+        }
+      ]
+    },
+    {
+      "test": "learn-light-390-paused",
+      "world": "learn",
+      "mode": "light",
+      "width": 390,
+      "height": 878.890625,
+      "running": "false",
+      "interface": "true",
+      "wordmark": "spectrum",
+      "wordmarkBackground": "linear-gradient(110deg, rgb(104, 68, 184), rgb(34, 86, 191) 45%, rgb(0, 102, 179) 75%, rgb(0, 108, 133))",
+      "scrollWidth": 390,
+      "overflowText": [],
+      "images": [
+        {
+          "complete": true,
+          "height": 941,
+          "src": "/brands/rapold/assets/worlds/learn/hero-v2/base-atmosphere.webp",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "height": 941,
+          "src": "/brands/rapold/assets/worlds/learn/hero-v2/knowledge-rig.svg",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "height": 941,
+          "src": "/brands/rapold/assets/worlds/learn/hero-v2/learning-core.webp",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "height": 941,
+          "src": "/brands/rapold/assets/worlds/learn/hero-v2/cognitive-signals.svg",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/light/learn.svg",
+          "width": 256
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/light/learn.svg",
+          "width": 256
+        }
+      ],
+      "cssAnimations": [
+        {
+          "class": "rw-cursor",
+          "name": "rw-cursor",
+          "state": "paused"
+        }
+      ]
+    },
+    {
+      "test": "learn-light-320-paused",
+      "world": "learn",
+      "mode": "light",
+      "width": 320,
+      "height": 875.671875,
+      "running": "false",
+      "interface": "true",
+      "wordmark": "spectrum",
+      "wordmarkBackground": "linear-gradient(110deg, rgb(104, 68, 184), rgb(34, 86, 191) 45%, rgb(0, 102, 179) 75%, rgb(0, 108, 133))",
+      "scrollWidth": 320,
+      "overflowText": [],
+      "images": [
+        {
+          "complete": true,
+          "height": 941,
+          "src": "/brands/rapold/assets/worlds/learn/hero-v2/base-atmosphere.webp",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "height": 941,
+          "src": "/brands/rapold/assets/worlds/learn/hero-v2/knowledge-rig.svg",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "height": 941,
+          "src": "/brands/rapold/assets/worlds/learn/hero-v2/learning-core.webp",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "height": 941,
+          "src": "/brands/rapold/assets/worlds/learn/hero-v2/cognitive-signals.svg",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/light/learn.svg",
+          "width": 256
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/light/learn.svg",
+          "width": 256
+        }
+      ],
+      "cssAnimations": [
+        {
+          "class": "rw-cursor",
+          "name": "rw-cursor",
+          "state": "paused"
+        }
+      ]
+    },
+    {
+      "test": "fabric-light-320-paused",
+      "world": "fabric",
+      "mode": "light",
+      "width": 320,
+      "height": 1117.3125,
+      "running": "false",
+      "interface": "true",
+      "wordmark": "spectrum",
+      "wordmarkBackground": "linear-gradient(110deg, rgb(104, 68, 184), rgb(34, 86, 191) 45%, rgb(0, 102, 179) 75%, rgb(0, 108, 133))",
+      "scrollWidth": 320,
+      "overflowText": [],
+      "images": [
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/light/fabric.svg",
+          "width": 256
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/light/fabric.svg",
+          "width": 256
+        }
+      ],
+      "cssAnimations": [
+        {
+          "class": "rw-network",
+          "name": "rw-network-breathe",
+          "state": "paused"
+        }
+      ]
+    },
+    {
+      "test": "argus-light-320-paused",
+      "world": "argus",
+      "mode": "light",
+      "width": 320,
+      "height": 784.75,
+      "running": "false",
+      "interface": "true",
+      "wordmark": "spectrum",
+      "wordmarkBackground": "linear-gradient(110deg, rgb(104, 68, 184), rgb(34, 86, 191) 45%, rgb(0, 102, 179) 75%, rgb(0, 108, 133))",
+      "scrollWidth": 320,
+      "overflowText": [],
+      "images": [
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/light/argus.svg",
+          "width": 256
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/light/argus.svg",
+          "width": 256
+        }
+      ],
+      "cssAnimations": []
+    },
+    {
+      "test": "edgeportal-light-320-paused",
+      "world": "edgeportal",
+      "mode": "light",
+      "width": 320,
+      "height": 844.0625,
+      "running": "false",
+      "interface": "true",
+      "wordmark": "spectrum",
+      "wordmarkBackground": "linear-gradient(110deg, rgb(104, 68, 184), rgb(34, 86, 191) 45%, rgb(0, 102, 179) 75%, rgb(0, 108, 133))",
+      "scrollWidth": 320,
+      "overflowText": [],
+      "images": [
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/light/edgeportal.svg",
+          "width": 256
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/light/edgeportal.svg",
+          "width": 256
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/light/edgeportal.svg",
+          "width": 256
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/light/edgeportal.svg",
+          "width": 256
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/light/edgeportal.svg",
+          "width": 256
+        }
+      ],
+      "cssAnimations": []
+    },
+    {
+      "test": "edgeportal-dark-320-paused",
+      "world": "edgeportal",
+      "mode": "dark",
+      "width": 320,
+      "height": 844.0625,
+      "running": "false",
+      "interface": "true",
+      "wordmark": "spectrum",
+      "wordmarkBackground": "linear-gradient(110deg, rgb(162, 138, 255) 0%, rgb(89, 125, 255) 34%, rgb(0, 157, 255) 63%, rgb(66, 214, 236) 100%)",
+      "scrollWidth": 320,
+      "overflowText": [],
+      "images": [
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/edgeportal.svg",
+          "width": 256
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/edgeportal.svg",
+          "width": 256
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/edgeportal.svg",
+          "width": 256
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/edgeportal.svg",
+          "width": 256
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/edgeportal.svg",
+          "width": 256
+        }
+      ],
+      "cssAnimations": []
+    },
+    {
+      "test": "edgeportal-dark-wide-visual",
+      "world": "edgeportal",
+      "mode": "dark",
+      "width": 1010.96875,
+      "height": 727.671875,
+      "running": "false",
+      "interface": "true",
+      "wordmark": "spectrum",
+      "wordmarkBackground": "linear-gradient(110deg, rgb(162, 138, 255) 0%, rgb(89, 125, 255) 34%, rgb(0, 157, 255) 63%, rgb(66, 214, 236) 100%)",
+      "scrollWidth": 1011,
+      "overflowText": [],
+      "images": [
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/edgeportal.svg",
+          "width": 256
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/edgeportal.svg",
+          "width": 256
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/edgeportal.svg",
+          "width": 256
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/edgeportal.svg",
+          "width": 256
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/edgeportal.svg",
+          "width": 256
+        }
+      ],
+      "cssAnimations": []
+    },
+    {
+      "test": "argus-dark-wide-facets",
+      "world": "argus",
+      "mode": "dark",
+      "width": 1010.96875,
+      "height": 715.34375,
+      "running": "false",
+      "interface": "true",
+      "wordmark": "cut",
+      "wordmarkBackground": "linear-gradient(153deg, rgb(0, 157, 255) 0%, rgb(0, 157, 255) 48%, rgb(168, 237, 255) 48.4%, rgb(168, 237, 255) 100%)",
+      "scrollWidth": 1011,
+      "overflowText": [],
+      "images": [
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/argus.svg",
+          "width": 256
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/argus.svg",
+          "width": 256
+        }
+      ],
+      "cssAnimations": []
+    },
+    {
+      "test": "argus-interface-hidden",
+      "world": "argus",
+      "mode": "dark",
+      "width": 1010.96875,
+      "height": 600,
+      "running": "false",
+      "interface": "false",
+      "wordmark": "cut",
+      "scrollWidth": 1011,
+      "overflowText": [],
+      "images": [],
+      "cssAnimations": []
+    },
+    {
+      "test": "fabric-aurora-restored-paused",
+      "world": "fabric",
+      "mode": "dark",
+      "width": 1010.96875,
+      "height": 652.921875,
+      "running": "false",
+      "interface": "true",
+      "wordmark": "cut",
+      "wordmarkBackground": "linear-gradient(153deg, rgb(0, 157, 255) 0%, rgb(0, 157, 255) 48%, rgb(168, 237, 255) 48.4%, rgb(168, 237, 255) 100%)",
+      "scrollWidth": 1011,
+      "overflowText": [],
+      "images": [
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/fabric.svg",
+          "width": 256
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/fabric.svg",
+          "width": 256
+        }
+      ],
+      "cssAnimations": [
+        {
+          "class": "rw-halo rw-halo-a",
+          "name": "rw-aurora-a",
+          "state": "paused"
+        },
+        {
+          "class": "rw-halo rw-halo-b",
+          "name": "rw-aurora-b",
+          "state": "paused"
+        },
+        {
+          "class": "rw-halo rw-halo-c",
+          "name": "rw-aurora-c",
+          "state": "paused"
+        },
+        {
+          "class": "rw-network",
+          "name": "rw-network-breathe",
+          "state": "paused"
+        }
+      ]
+    },
+    {
+      "test": "learn-final-keyboard-resume",
+      "world": "learn",
+      "mode": "dark",
+      "width": 1010.96875,
+      "height": 648.390625,
+      "running": "true",
+      "interface": "true",
+      "wordmark": "spectrum",
+      "wordmarkBackground": "linear-gradient(110deg, rgb(162, 138, 255) 0%, rgb(89, 125, 255) 34%, rgb(0, 157, 255) 63%, rgb(66, 214, 236) 100%)",
+      "scrollWidth": 1011,
+      "overflowText": [],
+      "images": [
+        {
+          "complete": true,
+          "height": 941,
+          "src": "/brands/rapold/assets/worlds/learn/hero-v2/base-atmosphere.webp",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "height": 941,
+          "src": "/brands/rapold/assets/worlds/learn/hero-v2/knowledge-rig.svg",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "height": 941,
+          "src": "/brands/rapold/assets/worlds/learn/hero-v2/learning-core.webp",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "height": 941,
+          "src": "/brands/rapold/assets/worlds/learn/hero-v2/cognitive-signals.svg",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/learn.svg",
+          "width": 256
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "/brands/rapold/assets/logos/learn.svg",
+          "width": 256
+        }
+      ],
+      "cssAnimations": [
+        {
+          "class": "rw-cursor",
+          "name": "rw-cursor",
+          "state": "running"
+        }
+      ]
+    }
+  ],
+  "keyboard": {
+    "activeText": "Spektrum",
+    "focusVisible": true,
+    "outlineStyle": "solid",
+    "outlineWidth": "3px",
+    "wordmark": "spectrum"
+  },
+  "sharedProduct": {
+    "value": "learn",
+    "downloadsHeading": "Alle Assets für ÆON Learn"
+  },
+  "download": {
+    "url": "https://design.rapold.io/brands/rapold/rapold-product-worlds.zip",
+    "bytes": 326782,
+    "sha256": "53714c02dfac3f867f23d586fbeb038e33d957965f92bb9d62274c6a75e2fce3",
+    "zipEntries": 44,
+    "verification": "Actual download triggered through the live browser, then size, SHA-256 and ZIP CRC checked in the execution environment."
+  },
+  "htmlKit": {
+    "url": "https://design.rapold.io/brands/rapold/product-worlds",
+    "observation": {
+      "cards": [
+        {
+          "display": "none",
+          "hidden": true,
+          "id": "world-fabric"
+        },
+        {
+          "display": "block",
+          "hidden": false,
+          "id": "world-learn"
+        },
+        {
+          "display": "none",
+          "hidden": true,
+          "id": "world-argus"
+        },
+        {
+          "display": "none",
+          "hidden": true,
+          "id": "world-edgeportal"
+        }
+      ],
+      "font": "Geist, system-ui, sans-serif",
+      "images": [
+        {
+          "complete": true,
+          "height": 941,
+          "src": "./assets/worlds/learn/hero-v2/base-atmosphere.webp",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "height": 941,
+          "src": "./assets/worlds/learn/hero-v2/knowledge-rig.svg",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "height": 941,
+          "src": "./assets/worlds/learn/hero-v2/learning-core.webp",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "height": 941,
+          "src": "./assets/worlds/learn/hero-v2/cognitive-signals.svg",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "height": 256,
+          "src": "./assets/logos/learn.svg",
+          "width": 256
+        }
+      ],
+      "motion": "true",
+      "selections": [
+        {
+          "id": "rw-kit-product",
+          "value": "learn"
+        },
+        {
+          "id": "rw-kit-mode",
+          "value": "dark"
+        },
+        {
+          "id": "rw-kit-wordmark",
+          "value": "spectrum"
+        }
+      ],
+      "unchecked": [
+        "Kognitive Signale"
+      ],
+      "url": "https://design.rapold.io/brands/rapold/product-worlds",
+      "worlds": [
+        {
+          "mode": "dark",
+          "running": "false",
+          "wordmark": "spectrum",
+          "world": "fabric"
+        },
+        {
+          "mode": "dark",
+          "running": "false",
+          "wordmark": "spectrum",
+          "world": "learn"
+        },
+        {
+          "mode": "dark",
+          "running": "false",
+          "wordmark": "spectrum",
+          "world": "argus"
+        },
+        {
+          "mode": "dark",
+          "running": "false",
+          "wordmark": "spectrum",
+          "world": "edgeportal"
+        }
+      ]
+    },
+    "light": {
+      "detailsOpen": true,
+      "images": [
+        {
+          "complete": true,
+          "src": "./assets/worlds/learn/hero-v2/base-atmosphere.webp",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "./assets/worlds/learn/hero-v2/knowledge-rig.svg",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "./assets/worlds/learn/hero-v2/learning-core.webp",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "./assets/worlds/learn/hero-v2/cognitive-signals.svg",
+          "width": 1672
+        },
+        {
+          "complete": true,
+          "src": "./assets/logos/light/learn.svg",
+          "width": 256
+        }
+      ],
+      "links": [
+        {
+          "href": "https://design.rapold.io/brands/rapold/product-worlds/assets/logos/learn.svg",
+          "text": "Für dunkle Flächen · SVG"
+        },
+        {
+          "href": "https://design.rapold.io/brands/rapold/product-worlds/assets/logos/light/learn.svg",
+          "text": "Für helle Flächen · SVG"
+        },
+        {
+          "href": "https://design.rapold.io/brands/rapold/product-worlds/assets/logos/mono-white/learn.svg",
+          "text": "Weiss · SVG"
+        },
+        {
+          "href": "https://design.rapold.io/brands/rapold/product-worlds/assets/logos/mono-black/learn.svg",
+          "text": "Schwarz · SVG"
+        },
+        {
+          "href": "https://design.rapold.io/brands/rapold/product-worlds/assets/logos/current-color/learn.svg",
+          "text": "currentColor · SVG"
+        },
+        {
+          "href": "https://design.rapold.io/brands/rapold/product-worlds/kit.js",
+          "text": "kit.js"
+        },
+        {
+          "href": "https://design.rapold.io/brands/rapold/product-worlds/README.md",
+          "text": "Anleitung"
+        }
+      ],
+      "mode": "light",
+      "pageScrollWidth": 1348,
+      "pageWidth": 1348
+    }
+  },
+  "console": {
+    "main": [],
+    "kit": [],
+    "excludedExtensionEntries": 201
+  },
+  "screenshot": "learn-dark-live.jpg",
+  "limits": [
+    "No physical mobile or touch-device test.",
+    "320/390 px checks are embedded reference-container checks, not full browser viewport emulation.",
+    "No assistive-technology or screen-reader run.",
+    "No real-browser forced-colors/reduced-motion emulation or 200-percent zoom run; source and local checks are documented separately.",
+    "No browser pixel-level contrast or complete animation-phase certification.",
+    "The manual Learn glitch control was invoked; transient glitch frames and SVG SMIL playheads were not independently instrumented."
+  ],
+  "result": "Targeted production browser review passed within the documented scope."
+}

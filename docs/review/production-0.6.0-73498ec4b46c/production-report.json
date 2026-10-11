@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-11T10:06:08.102Z",
+  "base": "https://design.rapold.io",
+  "expectedCommit": "73498ec4b46cb9f431d7ad5d186e88dd6301162b",
+  "expectedVersion": "0.6.0",
+  "phase": "passed",
+  "failures": [],
+  "existingVerifier": {
+    "commit": "73498ec4b46cb9f431d7ad5d186e88dd6301162b",
+    "version": "0.6.0",
+    "routes": 5
+  },
+  "buildInfo": {
+    "version": "0.6.0",
+    "builtAt": "2026-10-11T10:05:00.077Z",
+    "commit": "73498ec4b46cb9f431d7ad5d186e88dd6301162b",
+    "atlasReference": "1c75c95417cc371040e1e24a0986213314b53c13",
+    "uiModules": 19,
+    "slideTypes": 18,
+    "deckPresets": 5
+  },
+  "worldManifest": {
+    "sha256": "82c8c1cf646967313445e3a11333facba1ed356353edc7d38deb34662a879288",
+    "files": 84,
+    "summary": {
+      "products": 4,
+      "publicFiles": 84,
+      "worldSourceFiles": 11,
+      "sharedSourceFiles": 28,
+      "originalArtworkFiles": 4,
+      "kitFiles": 44,
+      "bundles": 1,
+      "bytes": 1167992
+    },
+    "bundle": {
+      "path": "rapold-product-worlds.zip",
+      "url": "/brands/rapold/rapold-product-worlds.zip",
+      "mime": "application/zip",
+      "bytes": 326782,
+      "sha256": "53714c02dfac3f867f23d586fbeb038e33d957965f92bb9d62274c6a75e2fce3",
+      "category": "bundle",
+      "fileCount": 44,
+      "entrypoint": "index.html"
+    },
+    "transport": {
+      "publicHtml": "product-worlds/index.html",
+      "archiveHtml": "index.html",
+      "publicBaseHref": "/brands/rapold/product-worlds/",
+      "difference": "The served HTML adds exactly one static base element before resource links. Remove that element to obtain the byte-identical offline HTML. All other kit files are byte-identical.",
+      "differingFiles": [
+        "index.html"
+      ]
+    }
+  },
+  "worldsChecker": {
+    "publicFiles": 84,
+    "kitFiles": 44,
+    "originalArtworkFiles": 4,
+    "bundleSha256": "53714c02dfac3f867f23d586fbeb038e33d957965f92bb9d62274c6a75e2fce3"
+  },
+  "registry": {
+    "ids": [
+      "neutral",
+      "dominicano-express",
+      "rapold"
+    ],
+    "sha256": "0bb42776fddf403b90b1156457b0ff3ab7d06882edd30e14950fa9be768d45d7",
+    "contracts": [
+      {
+        "id": "neutral",
+        "brandSha256": "b1a2cd49917aa5abd55e8a44047a3f7c342c7410dee69520263d6162695ff37d",
+        "managementSha256": "416b4e76b9e101d3157d95a7d828cc4ccf4c198d5b93cbbd1e52512fb9bba2e1"
+      },
+      {
+        "id": "dominicano-express",
+        "brandSha256": "8a12d0b3c25da5a857117bb82b55219abf02ea26590b25abafb6ac49a46b9107",
+        "managementSha256": "cd97c592861a88c65588e0cf53bdb2f0dd01eb7ce69334c1c3e014469a188a0b"
+      },
+      {
+        "id": "rapold",
+        "brandSha256": "64752d2053977521f2fd83b0c04811ae028768c535c33dd312032463cee6c8fc",
+        "managementSha256": "ebe3d7536d3ca7ef8e32b0d3e29c5bec164dddda3e1c6fb0f97deea57fe40171"
+      }
+    ]
+  },
+  "retiredPaths": [
+    {
+      "path": "/brands/goldbach/brand.json",
+      "status": 404,
+      "finalUrl": "https://design.rapold.io/brands/goldbach/brand.json"
+    },
+    {
+      "path": "/brands/goldbach/management.md",
+      "status": 404,
+      "finalUrl": "https://design.rapold.io/brands/goldbach/management.md"
+    },
+    {
+      "path": "/brands/goldbach/logo.svg",
+      "status": 404,
+      "finalUrl": "https://design.rapold.io/brands/goldbach/logo.svg"
+    },
+    {
+      "path": "/brands/goldbach/decks/muster-deck.pptx",
+      "status": 404,
+      "finalUrl": "https://design.rapold.io/brands/goldbach/decks/muster-deck.pptx"
+    },
+    {
+      "path": "/brands/goldbach/reference/muster-deck.pdf",
+      "status": 404,
+      "finalUrl": "https://design.rapold.io/brands/goldbach/reference/muster-deck.pdf"
+    },
+    {
+      "path": "/brands/sygnum/brand.json",
+      "status": 404,
+      "finalUrl": "https://design.rapold.io/brands/sygnum/brand.json"
+    },
+    {
+      "path": "/brands/sygnum/management.md",
+      "status": 404,
+      "finalUrl": "https://design.rapold.io/brands/sygnum/management.md"
+    },
+    {
+      "path": "/brands/sygnum/logo.png",
+      "status": 404,
+      "finalUrl": "https://design.rapold.io/brands/sygnum/logo.png"
+    },
+    {
+      "path": "/brands/sygnum/decks/muster-deck.pptx",
+      "status": 404,
+      "finalUrl": "https://design.rapold.io/brands/sygnum/decks/muster-deck.pptx"
+    },
+    {
+      "path": "/brands/sygnum/reference/muster-deck.pdf",
+      "status": 404,
+      "finalUrl": "https://design.rapold.io/brands/sygnum/reference/muster-deck.pdf"
+    }
+  ],
+  "canonicals": [
+    {
+      "route": "/praesentation",
+      "canonical": [
+        "https://design.rapold.io/praesentation"
+      ],
+      "ogUrl": [
+        "https://design.rapold.io/praesentation"
+      ],
+      "ogTitle": [
+        "Präsentation · Design Framework"
+      ],
+      "ogImage": [
+        "https://design.rapold.io/og.png"
+      ],
+      "ogImageWidth": [
+        "1200"
+      ],
+      "ogImageHeight": [
+        "630"
+      ]
+    },
+    {
+      "route": "/praesentationslogik",
+      "canonical": [
+        "https://design.rapold.io/praesentationslogik"
+      ],
+      "ogUrl": [
+        "https://design.rapold.io/praesentationslogik"
+      ],
+      "ogTitle": [
+        "Dramaturgie & Logik · Design Framework"
+      ],
+      "ogImage": [
+        "https://design.rapold.io/og.png"
+      ],
+      "ogImageWidth": [
+        "1200"
+      ],
+      "ogImageHeight": [
+        "630"
+      ]
+    }
+  ],
+  "ogImage": {
+    "width": 1200,
+    "height": 630,
+    "sha256": "5ac5d15b6d4f28561ac37b0dc42a7bc7c10225f72a466d604d18016bc2b81d15"
+  },
+  "passed": true,
+  "httpRequests": 112,
+  "finishedAt": "2026-10-11T10:07:03.375Z"
+}
