@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img">
+  <title>AI Fabric – Signet</title>
+  <desc>Verflochtene Faltbänder mit zwei vertikalen Armen, zwei hellen Seitenflächen und einer offenen Mitte. Transparente Vektorgrafik ohne sichtbare Schrift. Variante: mono-white.</desc>
+  <path data-part="body" fill="#FFFFFF" fill-rule="evenodd" d="M 110.42 30 L 159.046 54.687 L 159.046 92.84 L 214.405 114.534 L 214.405 156.427 L 143.336 193.084 L 143.336 226 L 94.71 201.313 L 94.71 169.145 L 41.595 145.954 L 41.595 104.809 L 110.42 68.901 Z M 110.42 106.305 L 171.763 136.977 L 143.336 151.939 L 82.74 122.251 Z"/>
+  <polygon data-part="facet-1" fill="#FFFFFF" points="41.595,104.809 110.42,68.901 110.42,106.305 41.595,145.954"/>
+  <polygon data-part="facet-2" fill="#FFFFFF" points="143.336,151.939 214.405,114.534 214.405,156.427 143.336,193.084"/>
+</svg>

@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.0 — 2026-10-11
+
+- Gemeinsame Rapold-Brand mit vier originalen Raumfalten-Signets, Geist und Geist Mono, separaten Identitätsfarben und geprüften semantischen Rollen für Hell und Dunkel.
+- Markenreferenz mit Produktwahl, fünf SVG-Varianten, echten Banner-/Icon-Vorschauen, filterbaren Einzeldateien und Produkt-ZIPs. 208 Exporte entstehen reproduzierbar aus versionierten Quellen.
+- Apple-orientierter Web-Audit über alle 19 Core-Module und typische Docs-Abläufe; Befunde, Korrekturen und verbleibende Prüfgrenzen im Auditbericht.
+- Dialogfokus, Suchbenennung, Tabpanel-Fokus, Schliessen-Flächen, mobile Suche, Reflow und dynamische Rückmeldungen korrigiert. System/Hell/Dunkel als Darstellungswahl; Brand bleibt in Navigationslinks erhalten.
+- Brand-Inhalte auf ihre aktiven Themes begrenzt. Atlas-Struktur bleibt Referenz; keine Apple-HIG-Kopien als Paketbestandteil übernommen.
+- Rapold-Präsentationsreferenzen mit lokal vorbereiteten Geist-Faces. Der Referenzcache berücksichtigt mitgelieferte Fontdateien und ihre Vorbereitung.
+
 ## Sygnum-Adapter · 11.09.2026
 
 - Drittes isoliertes Preset mit gemessener PDF-Palette, referenzierten Originalfamilien, Presse-Logo und vollständigem Quellen-/Lückenmanifest.

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img">
+  <title>ÆON Learn – Signet</title>
+  <desc>Aufsteigendes gefaltetes Band mit breitem hellem Fuss, blauer Mittelstufe und einer hellen dreieckigen Rückfalte. Transparente Vektorgrafik ohne sichtbare Schrift. Variante: light.</desc>
+  <path data-part="body" fill="#0066B3" fill-rule="evenodd" d="M 221.895 24 L 221.895 66.947 L 186.526 83.789 L 186.526 123.368 L 148.632 138.526 L 148.632 187.368 L 34.105 232 L 34.105 185.684 L 57.684 175.975 L 57.684 129.263 L 137.684 97.263 L 137.684 61.053 Z"/>
+  <polygon data-part="facet-1" fill="#2B89B5" points="34.105,185.684 148.632,138.526 148.632,187.368 34.105,232"/>
+  <polygon data-part="facet-2" fill="#2B89B5" points="137.684,61.053 186.526,77.895 137.684,97.263"/>
+</svg>

@@ -13,7 +13,7 @@ apps/docs/public/llms.txt
 apps/docs/public/brands/*/brand.json
 apps/docs/public/brands/*/presentation.json
 apps/docs/public/brands/index.json
-apps/docs/public/brands/goldbach/*.md
+apps/docs/public/brands/*/*.md
 apps/docs/public/icons/
 apps/docs/public/praesentation/
 apps/docs/public/brands/*/tokens.*
@@ -26,3 +26,7 @@ apps/docs/public/brands/*/mermaid.*.json
 
 apps/docs/public/brands/*/llms.txt
 apps/docs/public/brands/*/management.md
+
+# Source-driven assets; retain only the real rendered reference cache.
+apps/docs/public/brands/rapold/*
+!apps/docs/public/brands/rapold/reference/

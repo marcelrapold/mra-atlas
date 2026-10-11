@@ -1,0 +1,132 @@
+/* Brand-owned presentation layer. Geometry and export colours come from identity.json. */
+@font-face {
+  font-family: 'Geist';
+  src: url('/brands/rapold/assets/fonts/Geist-Variable.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Geist Mono';
+  src: url('/brands/rapold/assets/fonts/GeistMono-Variable.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+[data-brand='rapold'] {font-synthesis: none;}
+.rapold-showcase {min-width: 0;}
+.rapold-showcase figure {margin: 0;}
+.rapold-showcase a {text-underline-offset: .2em;}
+.rapold-showcase :is(button, a, select) {touch-action: manipulation;}
+.rapold-showcase :is(button, a):focus-visible {outline: 3px solid var(--ring); outline-offset: 4px;}
+.rapold-showcase .doc-section {scroll-margin-top: 110px;}
+.rapold-intro {display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; padding: 32px 0 40px; border-bottom: 1px solid var(--border);}
+.rapold-intro h2 {font-size: clamp(38px, 4.5vw, 64px); letter-spacing: -.065em; line-height: 1.02; margin: 12px 0 24px;}
+.rapold-intro h2 span, .rapold-type-display span {color: var(--primary);}
+.rapold-intro p:last-child {max-width: 470px; margin: 0; color: var(--muted-foreground);}
+.rapold-intro-meta {display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; padding-bottom: 4px; color: var(--muted-foreground); font: 12px/1.6 var(--font-mono);}
+.rapold-intro-meta strong {font-size: 48px; font-weight: 400; line-height: 1.2; letter-spacing: -.08em; margin-bottom: 12px; color: var(--primary);}
+.rapold-family {display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 30px 0 18px;}
+.rapold-product {display: flex; flex-direction: column; align-items: flex-start; min-width: 0; padding: 18px; background: var(--card); border: 1px solid var(--border); border-radius: var(--brand-radius); text-align: left; transition: border-color var(--duration-normal);}
+.rapold-product:hover {border-color: var(--primary);}
+.rapold-product[aria-pressed='true'] {border-color: var(--ring); box-shadow: inset 0 0 0 1px var(--ring);}
+.rapold-product-number {display: flex; justify-content: space-between; width: 100%; min-height: 22px; font: 12px var(--font-mono); color: var(--muted-foreground);}
+.rapold-product-number svg {color: var(--primary);}
+.rapold-product > img {width: min(100%, 128px); height: auto; aspect-ratio: 1; align-self: center; margin: 14px 0 22px;}
+.rapold-wordmark {font-size: clamp(18px, 1.8vw, 25px); line-height: 1.25; font-weight: 650; letter-spacing: -.05em; color: var(--primary); overflow-wrap: anywhere;}
+.rapold-product-domain {font-size: 12px; color: var(--muted-foreground); margin-top: 5px; overflow-wrap: anywhere;}
+.rapold-selection {font-size: 14px; color: var(--muted-foreground); min-height: 24px;}
+.rapold-selection strong {color: var(--foreground);}
+.rapold-section-links {display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 8px;}
+.rapold-section-links a {padding: 10px 14px; min-height: 44px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 13px; text-decoration: none; background: var(--card);}
+.rapold-section-links a:hover {border-color: var(--primary); color: var(--primary);}
+.rapold-variant-grid {display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 24px;}
+.rapold-variant-grid figure {overflow: hidden; border: 1px solid var(--border); border-radius: var(--brand-radius); background: var(--card);}
+.rapold-artwork {display: flex; align-items: center; justify-content: center; min-height: 190px; padding: 20px;}
+.rapold-artwork[data-artwork-mode='dark'] {background: var(--brand-color-navy);}
+.rapold-artwork[data-artwork-mode='light'] {background: var(--brand-color-paper);}
+.rapold-artwork img {max-width: 100%; height: auto;}
+.rapold-variant-grid figcaption {display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; padding: 8px 12px; font-size: 12px; border-top: 1px solid var(--border);}
+.rapold-variant-grid figcaption a {display: inline-flex; gap: 6px; align-items: center; min-height: 36px; padding: 5px 2px; color: var(--primary);}
+.rapold-rules {display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 32px; align-items: center; padding: 26px; margin-top: 20px; background: var(--card); border: 1px solid var(--border); border-radius: var(--brand-radius);}
+.rapold-rules p {font-size: 14px; color: var(--muted-foreground);}
+.rapold-rules a {font-size: 14px; color: var(--primary); display: inline-block; padding: 6px 0;}
+.rapold-clearspace {position: relative; width: min(100%, 192px); aspect-ratio: 1; border: 1px solid var(--input); background: var(--background);}
+.rapold-clearspace::after {content: ''; position: absolute; inset: 9.375%; border: 1px dashed var(--primary); pointer-events: none;}
+.rapold-clearspace img {width: 100%; height: auto;}
+.rapold-section-heading {display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 20px;}
+.rapold-section-heading h2 {margin-bottom: 8px;}
+.rapold-section-heading p {color: var(--muted-foreground); font-size: 14px; margin: 0;}
+.rapold-section-heading label, .rapold-filters label {display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--muted-foreground); min-width: 0;}
+.rapold-section-heading select, .rapold-filters select {color: var(--foreground); min-height: 44px; max-width: 100%;}
+.rapold-banner-preview {border: 1px solid var(--border); border-radius: var(--brand-radius); overflow: hidden; background: var(--card);}
+.rapold-banner-preview > div {display: flex; justify-content: center; align-items: center; background: var(--muted);}
+.rapold-banner-preview img {display: block; width: 100%; height: auto;}
+.rapold-banner-preview > div:is([data-layout='portrait'], [data-layout='portrait-4x5'], [data-layout='social-square']) img {max-height: 540px; width: auto; max-width: 100%; object-fit: contain;}
+.rapold-banner-preview figcaption {display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 14px 20px; border-top: 1px solid var(--border); font-size: 13px;}
+.rapold-banner-preview figcaption > span:last-child {display: flex; gap: 18px; flex-wrap: wrap;}
+.rapold-banner-preview figcaption a {display: inline-block; padding: 6px 0; color: var(--primary);}
+.rapold-icon-strip {display: flex; gap: 32px; align-items: center; justify-content: space-between; flex-wrap: wrap; padding: 26px; margin-top: 18px; border: 1px solid var(--border); border-radius: var(--brand-radius); background: var(--card);}
+.rapold-icon-strip figure {display: flex; flex-direction: column; align-items: center; gap: 12px;}
+.rapold-icon-strip figcaption {font-size: 12px; color: var(--muted-foreground);}
+.rapold-icon-sizes {display: flex; gap: 26px; align-items: flex-end; padding: 18px; border-radius: var(--brand-radius); background: var(--brand-color-paper);}
+.rapold-icon-sizes figcaption {color: var(--brand-color-logo-light-primary);}
+.rapold-icon-strip > figure img {border-radius: 18%;}
+.rapold-palette {display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 24px 0;}
+.rapold-palette button {display: flex; flex-direction: column; gap: 8px; text-align: left; background: var(--card); border: 1px solid var(--border); border-radius: var(--brand-radius); padding: 12px; min-width: 0;}
+.rapold-palette button:hover {border-color: var(--primary);}
+.rapold-palette button > span {display: block; width: 100%; height: 74px; border: 1px solid var(--border); border-radius: var(--radius-sm);}
+.rapold-palette strong {font-size: 13px; overflow-wrap: anywhere;}
+.rapold-palette code {font-size: 12px; color: var(--muted-foreground);}
+.rapold-type {display: grid; grid-template-columns: 1.4fr 1fr; border: 1px solid var(--border); border-radius: var(--brand-radius); background: var(--card); overflow: hidden;}
+.rapold-type > div {padding: clamp(20px, 3vw, 36px); min-width: 0;}
+.rapold-type > div + div {border-left: 1px solid var(--border);}
+.rapold-type p:last-child, .rapold-type span {font-size: 14px; color: var(--muted-foreground);}
+.rapold-type .rapold-type-display {font-size: clamp(30px, 4vw, 54px); letter-spacing: -.06em; line-height: 1.06; font-weight: 650; margin: 26px 0 24px;}
+.rapold-type .rapold-type-display span {font: inherit; color: var(--primary);}
+.rapold-type-mono > p:not(.eyebrow) {font: 400 clamp(18px, 2vw, 26px)/1.55 var(--font-mono); letter-spacing: -.05em; margin: 22px 0; color: var(--primary); overflow-wrap: anywhere;}
+.rapold-filters {display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 24px 0 16px;}
+.rapold-assets-table {overflow-x: auto; border: 1px solid var(--border); border-radius: var(--brand-radius); background: var(--card);}
+.rapold-assets-table:focus-visible {outline: 3px solid var(--ring); outline-offset: 3px;}
+.rapold-assets-table table {min-width: 620px;}
+.rapold-assets-table td {vertical-align: middle; font-size: 13px;}
+.rapold-assets-table td:first-child {max-width: 270px;}
+.rapold-assets-table strong {display: block; font-size: 13px; font-weight: 500;}
+.rapold-assets-table code {display: block; font: 11px/1.6 var(--font-mono); color: var(--muted-foreground); overflow-wrap: anywhere;}
+.rapold-assets-table td a {display: inline-flex; gap: 8px; align-items: center; flex-wrap: wrap; min-height: 44px; color: var(--primary);}
+.rapold-assets-table td a span {font-size: 11px; color: var(--muted-foreground);}
+.rapold-primary-action, .rapold-more, .rapold-copy, .rapold-load-state button {display: inline-flex; gap: 8px; align-items: center; justify-content: center; min-height: 44px; padding: 10px 16px; border-radius: var(--brand-radius); font-size: 13px; line-height: 1.5;}
+.rapold-primary-action {background: var(--primary); color: var(--primary-foreground); border: 1px solid var(--primary); text-decoration: none; flex-shrink: 0;}
+.rapold-primary-action:hover {background: var(--primary-hover); color: var(--primary-hover-foreground);}
+.rapold-more, .rapold-copy, .rapold-load-state button {background: var(--card); color: var(--foreground); border: 1px solid var(--input); margin: 16px 0;}
+.rapold-load-state {padding: 24px; border: 1px solid var(--border); border-radius: var(--brand-radius); color: var(--muted-foreground); background: var(--card);}
+.rapold-load-state p {margin-bottom: 8px;}
+.rapold-showcase .download-row a {display: inline-flex; align-items: center; gap: 6px; min-height: 44px;}
+
+@media (max-width: 1100px) {
+  .rapold-family, .rapold-variant-grid {grid-template-columns: repeat(2, minmax(0, 1fr));}
+}
+@media (max-width: 767px) {
+  .rapold-intro {align-items: flex-start; flex-direction: column; padding-top: 10px; gap: 22px;}
+  .rapold-intro-meta {display: none;}
+  .rapold-intro h2 {font-size: clamp(36px, 10vw, 56px);}
+  .rapold-product {padding: 14px;}
+  .rapold-product > img {margin: 12px 0 16px; width: min(100%, 112px);}
+  .rapold-wordmark {font-size: 20px;}
+  .rapold-product-domain {font-size: 11px;}
+  .rapold-artwork {min-height: 150px; padding: 16px;}
+  .rapold-rules {grid-template-columns: 1fr; padding: 20px; gap: 20px;}
+  .rapold-clearspace {justify-self: center;}
+  .rapold-section-heading {align-items: stretch; flex-direction: column; gap: 16px;}
+  .rapold-palette {grid-template-columns: repeat(2, minmax(0, 1fr));}
+  .rapold-type {grid-template-columns: 1fr;}
+  .rapold-type > div + div {border-left: 0; border-top: 1px solid var(--border);}
+  .rapold-filters {grid-template-columns: 1fr;}
+  .rapold-icon-strip {justify-content: center; gap: 26px; padding: 20px;}
+  .rapold-banner-preview figcaption {padding: 12px 16px;}
+}
+@media (max-width: 359px) {
+  .rapold-family, .rapold-variant-grid {grid-template-columns: 1fr;}
+  .rapold-product {align-items: center;}
+}

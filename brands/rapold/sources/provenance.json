@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "brand": "rapold",
+  "version": "0.1.0",
+  "status": "draft",
+  "recordedOn": "2026-10-11",
+  "approval": {
+    "authority": "Marcel Rapold",
+    "date": "2026-10-11",
+    "evidence": "Nutzerentscheid im zugehörigen Arbeitsauftrag: akzeptierte Raumfalten-Familie B als vier eigenständige SVG-Signets ohne Schrift; Integration als gemeinsame Rapold-Markenbasis.",
+    "signets": {
+      "status": "approved",
+      "scope": [
+        "fabric",
+        "argus",
+        "learn",
+        "edgeportal"
+      ],
+      "family": "Raumfalten B"
+    },
+    "uiAdapter": {
+      "status": "draft",
+      "reason": "Die vollständige Zuordnung zu Framework-Rollen, Kontrastableitungen und die visuelle UI-Abnahme sind eine neue Integration."
+    },
+    "umbrellaSymbol": "none"
+  },
+  "sources": [
+    {
+      "id": "brand-tokens",
+      "path": "brands/rapold/sources/brand-tokens.json",
+      "originalArtifact": "rapold-brand-system/tokens/brand-tokens.json",
+      "version": "1.0.0",
+      "sha256": "69f29fefcd216f389c0690c036aac1e9d57c25ed4a0ad2d62fa8995daa80b49a",
+      "scope": [
+        "identity-palette",
+        "light-and-dark-source-colors",
+        "typography",
+        "geometry",
+        "motion"
+      ],
+      "treatment": "Unveränderte Kopie des im Arbeitsauftrag gelieferten Brand-Pakets."
+    },
+    {
+      "id": "accepted-reference",
+      "fileName": "exec-8192dc73-4499-44b0-92dc-45e0ea17038c.png",
+      "sha256": "cd8562ff7138ddad61ab514f7834df34e8f799bcbc6ed1e3d128a06f4b48572e",
+      "scope": [
+        "four-product-signet-silhouettes"
+      ],
+      "treatment": "Freigegebene visuelle Referenz; die originalen SVG-Master werden separat unter brands/rapold/assets/logos geführt."
+    },
+    {
+      "id": "framework-contract",
+      "path": "docs/brand-contract.md",
+      "scope": [
+        "semantic-roles",
+        "contrast-gates",
+        "status-and-source-contract"
+      ]
+    },
+    {
+      "id": "atlas-reference",
+      "path": "docs/atlas-reference.md",
+      "scope": [
+        "neutral-system-structure"
+      ],
+      "treatment": "Diese Brand-Integration ändert keine Seitenarchitektur und übernimmt keine ZVV-Markenidentität."
+    }
+  ],
+  "directMappings": {
+    "palette": "color.brand plus color.lightLogo; Identitätsfarben bleiben von modes getrennt.",
+    "light": "canvas/background; surface/card und popover; raised/secondary, muted und accent; text/foreground; muted/muted-foreground; accent/primary und ring; accentInk/primary-foreground; line/border.",
+    "dark": "canvas/background; surface/card; raised/popover, secondary, muted und accent; text/foreground; muted/muted-foreground; accent/primary und ring; accentInk/primary-foreground; line/border.",
+    "darkStatus": "color.semantic.success, warning und danger werden unverändert mit color.dark.accentInk kombiniert.",
+    "typography": "Geist; Körpergewicht 400, Überschriftengewicht 650. Geist Mono wird von der konsumierenden App im Rapold-Scope eingebunden.",
+    "geometryAndMotion": "Kontrollradius 8px; Karten-/Panelrollen 16px/24px; Dauer 180ms; Easing aus source.motion.easing."
+  },
+  "refinements": [
+    {
+      "roles": [
+        "light.primary-hover"
+      ],
+      "values": {
+        "primary-hover": "#03599B"
+      },
+      "method": "80% light.accent + 20% light.text, pro sRGB-Kanal auf die nächste ganze Zahl gerundet.",
+      "reason": "Der Quellvertrag enthält keine Hover-Rolle; der Adapter ergänzt einen dunkleren Aktionszustand."
+    },
+    {
+      "roles": [
+        "dark.primary-hover"
+      ],
+      "values": {
+        "primary-hover": "#54C5FF"
+      },
+      "method": "75% dark.accent + 25% brand.ice, pro sRGB-Kanal auf die nächste ganze Zahl gerundet.",
+      "reason": "Der Quellvertrag enthält keine Hover-Rolle; der Adapter ergänzt einen helleren Aktionszustand."
+    },
+    {
+      "roles": [
+        "light.input"
+      ],
+      "values": {
+        "input": "#6F87A0"
+      },
+      "method": "30% light.line + 70% light.muted, pro sRGB-Kanal auf die nächste ganze Zahl gerundet.",
+      "reason": "Die dekorative Linie erfüllt den funktionalen Kontrast von 3:1 nicht."
+    },
+    {
+      "roles": [
+        "dark.input"
+      ],
+      "values": {
+        "input": "#5F7089"
+      },
+      "method": "50% dark.line + 50% dark.muted, pro sRGB-Kanal auf die nächste ganze Zahl gerundet.",
+      "reason": "Die dekorative Linie erfüllt den funktionalen Kontrast von 3:1 nicht."
+    },
+    {
+      "roles": [
+        "light.success",
+        "light.warning",
+        "light.destructive"
+      ],
+      "values": {
+        "success": "#217969",
+        "warning": "#816F31",
+        "destructive": "#814960"
+      },
+      "method": "48% der jeweiligen color.semantic-Farbe + 52% light.text, pro sRGB-Kanal auf die nächste ganze Zahl gerundet; weisser Text.",
+      "reason": "Die hellen Quell-Statusfarben brauchen im hellen Modus eine dunklere semantische Ableitung, auch für Statusschrift auf Karten."
+    }
+  ],
+  "inheritedDefaults": [
+    "Button-Mindesthöhe 44px",
+    "Schatten none",
+    "Nicht überschriebene Foundation-Rollen und Layoutmuster"
+  ],
+  "validation": {
+    "textContrastMinimum": 4.5,
+    "functionalInputAndFocusMinimum": 3,
+    "automatedChecks": "tests/brands.test.mjs und tests/rapold.test.mjs",
+    "visualUiAcceptance": "pending"
+  }
+}

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img">
+  <title>EdgePortal – Signet</title>
+  <desc>Zwei gegeneinander versetzte Faltflächen mit einem freien diagonalen Durchgang; blaue obere Fläche und helle untere Fläche. Transparente Vektorgrafik ohne sichtbare Schrift. Variante: current-color.</desc>
+  <path data-part="body" fill="currentColor" fill-rule="evenodd" d="M 122.72 29 L 216 65.08 L 150 97.64 L 40.88 160.12 L 40 103.8 L 122.72 67.72 Z M 216 85.32 L 216 126.68 L 166.72 154.84 L 166.72 227 L 92.8 190.04 L 92.8 152.2 Z"/>
+  <polygon data-part="facet-1" fill="currentColor" points="216,85.32 216,126.68 166.72,154.84 166.72,227 92.8,190.04 92.8,152.2"/>
+</svg>

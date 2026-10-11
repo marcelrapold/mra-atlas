@@ -4,6 +4,7 @@ import neutralData from './neutral.json' with { type: 'json' };
 import goldbachData from './goldbach.json' with { type: 'json' };
 import sygnumData from './sygnum.json' with { type: 'json' };
 import dominicanoExpressData from './dominicano-express.json' with { type: 'json' };
+import rapoldData from './rapold.json' with { type: 'json' };
 
 export const colorKeys = Object.freeze(Object.keys(neutralData.modes.light));
 const hex = /^#[0-9a-f]{6}$/i;
@@ -69,7 +70,8 @@ export const neutral = defineBrand(neutralData);
 export const goldbach = defineBrand(goldbachData);
 export const sygnum = defineBrand(sygnumData);
 export const dominicanoExpress = defineBrand(dominicanoExpressData);
-export const brands = Object.freeze([neutral, goldbach, sygnum, dominicanoExpress]);
+export const rapold = defineBrand(rapoldData);
+export const brands = Object.freeze([neutral, goldbach, sygnum, dominicanoExpress, rapold]);
 
 export function toCssVariables(brand, requestedMode = 'light') {
   const mode = requestedMode === 'dark' && brand.modes.dark ? 'dark' : 'light';

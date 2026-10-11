@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "version": "1.0.0",
+  "brandId": "rapold",
+  "name": "Rapold",
+  "publicBase": "/brands/rapold/",
+  "model": "Ein Theme mit vier eigenständigen Produktzeichen.",
+  "symbolOnly": true,
+  "viewBox": [
+    0,
+    0,
+    256,
+    256
+  ],
+  "palette": {
+    "azure": "#009DFF",
+    "ice": "#A8EDFF",
+    "navy": "#050B19",
+    "paper": "#F4FAFF",
+    "logo-light-primary": "#0066B3",
+    "logo-light-facet": "#2B89B5"
+  },
+  "paletteLabels": {
+    "azure": "Azure",
+    "ice": "Ice",
+    "navy": "Navy",
+    "paper": "Ice Paper",
+    "logo-light-primary": "Light Logo Primary",
+    "logo-light-facet": "Light Logo Facet"
+  },
+  "variants": {
+    "dark": {
+      "label": "Für dunkle Flächen",
+      "surface": "navy",
+      "colors": [
+        "azure",
+        "ice"
+      ]
+    },
+    "light": {
+      "label": "Für helle Flächen",
+      "surface": "paper",
+      "colors": [
+        "logo-light-primary",
+        "logo-light-facet"
+      ]
+    },
+    "mono-white": {
+      "label": "Monochrom Weiss",
+      "surface": "navy",
+      "colors": [
+        "#FFFFFF"
+      ]
+    },
+    "mono-black": {
+      "label": "Monochrom Schwarz",
+      "surface": "paper",
+      "colors": [
+        "#000000"
+      ]
+    },
+    "current-color": {
+      "label": "CSS currentColor",
+      "surface": null,
+      "colors": [
+        "currentColor"
+      ],
+      "usage": "Inline-SVG übernimmt CSS color. Als img-Quelle ist keine Vererbung vom umgebenden Element möglich."
+    }
+  },
+  "geometry": {
+    "clearSpaceUnits": 24,
+    "minimumUiCanvasPx": 24,
+    "faviconCanvasPx": [
+      16,
+      32,
+      48,
+      64,
+      96
+    ],
+    "maskableTargetInkRadius": 0.375,
+    "maskableMaxInkRadius": 0.38,
+    "maskableSafeRadius": 0.4
+  },
+  "exportTreatment": {
+    "dark": {
+      "background": "#050B19",
+      "cutColors": [
+        "#0B182C",
+        "#10243B"
+      ]
+    },
+    "light": {
+      "background": "#F4FAFF",
+      "cutColors": [
+        "#E8F2FB",
+        "#DCECF8"
+      ]
+    },
+    "note": "Dezente Hintergrundflächen für die freigegebenen Banner; keine zusätzlichen semantischen UI-Rollen."
+  },
+  "fonts": {
+    "stylesheet": "assets/fonts/fonts.css",
+    "families": [
+      {
+        "family": "Geist",
+        "path": "assets/fonts/Geist-Variable.woff2",
+        "format": "woff2",
+        "style": "normal",
+        "weights": [
+          100,
+          900
+        ]
+      },
+      {
+        "family": "Geist Mono",
+        "path": "assets/fonts/GeistMono-Variable.woff2",
+        "format": "woff2",
+        "style": "normal",
+        "weights": [
+          100,
+          900
+        ]
+      }
+    ],
+    "license": "SIL Open Font License 1.1",
+    "licenseFiles": [
+      "assets/fonts/OFL.txt",
+      "assets/fonts/LICENSE.txt",
+      "assets/fonts/AUTHORS.txt"
+    ],
+    "validation": "assets/fonts/validation.json"
+  },
+  "products": [
+    {
+      "id": "fabric",
+      "name": "AI Fabric",
+      "shortName": "Fabric",
+      "domain": "ai.rapold.io",
+      "purpose": "Orchestrierung von KI-Agenten und Workflows.",
+      "variants": {
+        "dark": "assets/logos/fabric.svg",
+        "light": "assets/logos/light/fabric.svg",
+        "mono-white": "assets/logos/mono-white/fabric.svg",
+        "mono-black": "assets/logos/mono-black/fabric.svg",
+        "current-color": "assets/logos/current-color/fabric.svg"
+      },
+      "namingNote": "Arbeitsbezeichnung in dieser CI"
+    },
+    {
+      "id": "argus",
+      "name": "Argus",
+      "shortName": "Argus",
+      "domain": "argus.rapold.io",
+      "purpose": "Beobachtung und operativer Überblick.",
+      "variants": {
+        "dark": "assets/logos/argus.svg",
+        "light": "assets/logos/light/argus.svg",
+        "mono-white": "assets/logos/mono-white/argus.svg",
+        "mono-black": "assets/logos/mono-black/argus.svg",
+        "current-color": "assets/logos/current-color/argus.svg"
+      }
+    },
+    {
+      "id": "learn",
+      "name": "ÆON Learn",
+      "shortName": "ÆON Learn",
+      "domain": "learn.rapold.io",
+      "purpose": "Wissen strukturieren und schrittweises Lernen unterstützen.",
+      "variants": {
+        "dark": "assets/logos/learn.svg",
+        "light": "assets/logos/light/learn.svg",
+        "mono-white": "assets/logos/mono-white/learn.svg",
+        "mono-black": "assets/logos/mono-black/learn.svg",
+        "current-color": "assets/logos/current-color/learn.svg"
+      }
+    },
+    {
+      "id": "edgeportal",
+      "name": "EdgePortal",
+      "shortName": "EdgePortal",
+      "domain": null,
+      "purpose": "Verbundene Screens, Sitzungen und Arbeitsräume orchestrieren.",
+      "variants": {
+        "dark": "assets/logos/edgeportal.svg",
+        "light": "assets/logos/light/edgeportal.svg",
+        "mono-white": "assets/logos/mono-white/edgeportal.svg",
+        "mono-black": "assets/logos/mono-black/edgeportal.svg",
+        "current-color": "assets/logos/current-color/edgeportal.svg"
+      }
+    }
+  ]
+}
