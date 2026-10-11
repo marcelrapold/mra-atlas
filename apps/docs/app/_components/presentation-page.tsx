@@ -13,14 +13,6 @@ const brandFaqs:Record<string,[string,string][]>={
   ['Sind Bilder und Logos dabei?','Das Default-Preset enthält neutrale Vorlagen ohne Firmenlogo. Für fotografische Layouts liefert das Projekt eigene geeignete Motive.'],
   ['Welche Vorgaben gelten?','Die neutralen Framework-Tokens und Atlas-Layouts bilden das Default-Preset. Es setzt keine Firmen-CI voraus.']
  ],
- goldbach:[
-  ['Sind Bilder und Logos dabei?','Das gelieferte Goldbach-Logo ist enthalten. Für fotografische Layouts braucht das Projekt ein eigenes geeignetes Motiv.'],
-  ['Ist die CI freigegeben?','Goldbach bleibt ein dokumentierter CI-Entwurf. Eine technische Prüfung ersetzt die Freigabe durch die Brand-Verantwortlichen nicht.']
- ],
- sygnum:[
-  ['Sind Bilder und Logos dabei?','Das hinterlegte Sygnum-Presse-Logo ist als PNG enthalten. Für fotografische Layouts liefert das Projekt eigene geeignete Motive.'],
-  ['Welche Vorgaben gelten?','Der Sygnum-Adapter verbindet die dokumentierte Markenrekonstruktion mit den Atlas-Layouts. Er ist als Entwurf gekennzeichnet; eine offizielle Sygnum-Freigabe liegt nicht vor.']
- ],
  'dominicano-express':[
   ['Sind Bilder und Logos dabei?','Die Vorlagen verwenden das Dominicano-Express-Theme. Ein Logo ist im Brand-Vertrag nicht hinterlegt. Für fotografische Layouts liefert das Projekt eigene geeignete Motive.'],
   ['Welche Vorgaben gelten?','Der Dominicano-Express-Adapter ist eine dokumentierte Rekonstruktion des Caja-Stils und bleibt ein CI-Entwurf. Der Abgleich mit der Brand-Seite und den Original-Assets steht aus.']

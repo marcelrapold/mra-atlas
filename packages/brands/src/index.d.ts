@@ -31,8 +31,6 @@ export interface Brand {
 export const colorKeys: readonly ColorKey[];
 export function defineBrand(input: unknown): Brand;
 export const neutral: Brand;
-export const goldbach: Brand;
-export const sygnum: Brand;
 export const dominicanoExpress: Brand;
 export const rapold: Brand;
 export const brands: readonly Brand[];

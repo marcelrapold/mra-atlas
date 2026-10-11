@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "rapold",
   "name": "Rapold",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "status": "draft",
   "palette": {
     "azure": "#009DFF",
@@ -112,6 +112,8 @@
     "brands/rapold/README.md",
     "brands/rapold/DESIGN.md",
     "brands/rapold/sources/brand-tokens.json",
-    "brands/rapold/sources/provenance.json"
+    "brands/rapold/sources/provenance.json",
+    "brands/rapold/worlds.json",
+    "brands/rapold/sources/world-provenance.json"
   ]
 }

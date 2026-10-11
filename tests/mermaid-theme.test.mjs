@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {brands,goldbach,contrast} from '../packages/brands/src/index.mjs';
+import {brands,contrast} from '../packages/brands/src/index.mjs';
 import {mermaidTheme,mermaidPalette,mermaidClassDefs} from '../packages/brands/src/mermaid-theme.mjs';
 
 test('Mermaid labels meet AA on nodes, sequence notes and every category in all brand modes',()=>{
@@ -15,14 +15,6 @@ test('Mermaid labels meet AA on nodes, sequence notes and every category in all 
     }
     assert.equal(t.pieOpacity,'1');
   }
-});
-
-test('Goldbach categories use corporate red and greys, with no unsupported dark mode',()=>{
-  const colours=mermaidPalette(goldbach);
-  assert.equal(colours[0],goldbach.modes.light.primary);
-  assert.ok(!colours.includes(goldbach.modes.light.success));
-  assert.equal(mermaidTheme(goldbach,'dark').actorBkg,mermaidTheme(goldbach,'light').actorBkg);
-  assert.match(mermaidClassDefs(goldbach),/classDef delivery fill:#b61f34/);
 });
 
 test('Mermaid accepts a newly registered brand and the measured runtime font',()=>{

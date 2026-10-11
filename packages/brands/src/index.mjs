@@ -1,8 +1,6 @@
 import { foundationVariables, semanticTokens, resolveFoundation } from './foundation.mjs';
 export { foundation, resolveFoundation, semanticTokens, tokenDocument, dtcgTokens } from './foundation.mjs';
 import neutralData from './neutral.json' with { type: 'json' };
-import goldbachData from './goldbach.json' with { type: 'json' };
-import sygnumData from './sygnum.json' with { type: 'json' };
 import dominicanoExpressData from './dominicano-express.json' with { type: 'json' };
 import rapoldData from './rapold.json' with { type: 'json' };
 
@@ -67,11 +65,9 @@ export function defineBrand(input) {
   return freeze(result);
 }
 export const neutral = defineBrand(neutralData);
-export const goldbach = defineBrand(goldbachData);
-export const sygnum = defineBrand(sygnumData);
 export const dominicanoExpress = defineBrand(dominicanoExpressData);
 export const rapold = defineBrand(rapoldData);
-export const brands = Object.freeze([neutral, goldbach, sygnum, dominicanoExpress, rapold]);
+export const brands = Object.freeze([neutral, dominicanoExpress, rapold]);
 
 export function toCssVariables(brand, requestedMode = 'light') {
   const mode = requestedMode === 'dark' && brand.modes.dark ? 'dark' : 'light';

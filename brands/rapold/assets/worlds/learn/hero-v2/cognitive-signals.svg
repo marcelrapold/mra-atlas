@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1672" height="941" viewBox="0 0 1672 941" fill="none">
+  <defs>
+    <linearGradient id="signalV" x1="675" y1="500" x2="1620" y2="350" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6A4BE8" stop-opacity="0"/>
+      <stop offset="0.38" stop-color="#8D72FF" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#C8BEFF" stop-opacity="0.18"/>
+    </linearGradient>
+    <linearGradient id="signalC" x1="820" y1="720" x2="1600" y2="210" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2EE5FA" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#52E9FB" stop-opacity="0.72"/>
+      <stop offset="1" stop-color="#2EE5FA" stop-opacity="0.08"/>
+    </linearGradient>
+    <radialGradient id="node" cx="0" cy="0" r="1" gradientTransform="translate(0 0) rotate(90) scale(1)">
+      <stop stop-color="white"/>
+      <stop offset="0.25" stop-color="#BBAFFF"/>
+      <stop offset="1" stop-color="#7C63F5" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <mask id="quietLeft">
+      <linearGradient id="q" x1="0" x2="1">
+        <stop offset="0" stop-color="black"/>
+        <stop offset="0.34" stop-color="black"/>
+        <stop offset="0.48" stop-color="#555"/>
+        <stop offset="0.62" stop-color="white"/>
+        <stop offset="1" stop-color="white"/>
+      </linearGradient>
+      <rect width="1672" height="941" fill="url(#q)"/>
+    </mask>
+  </defs>
+
+  <g mask="url(#quietLeft)" filter="url(#glow)">
+    <g stroke="url(#signalV)" stroke-linecap="round" fill="none">
+      <path d="M665 668C812 645 893 548 1033 497C1147 455 1270 471 1460 388" stroke-width="3"/>
+      <path d="M710 743C846 704 932 611 1045 557C1188 489 1360 552 1608 455" stroke-width="1.8" opacity="0.72"/>
+      <path d="M725 254C868 282 919 359 1040 400C1175 445 1328 399 1570 291" stroke-width="2.4" opacity="0.76"/>
+      <path d="M830 126C955 176 1008 284 1096 346C1218 431 1390 345 1610 216" stroke-width="1.5" opacity="0.52"/>
+      <path d="M912 856C994 760 1078 676 1208 612C1352 541 1480 565 1635 532" stroke-width="2" opacity="0.58"/>
+    </g>
+
+    <g stroke="url(#signalC)" stroke-linecap="round" fill="none">
+      <path d="M809 690C940 620 989 532 1112 478C1258 414 1413 458 1605 355" stroke-width="2.2"/>
+      <path d="M850 235C960 292 1028 349 1135 389C1260 435 1435 357 1618 272" stroke-width="1.5" opacity="0.66"/>
+      <path d="M1065 798C1115 690 1162 617 1260 555C1370 485 1480 480 1630 436" stroke-width="1.8" opacity="0.68"/>
+    </g>
+
+    <g stroke="#AFA2FF" stroke-width="1" opacity="0.32" stroke-dasharray="2 11">
+      <path d="M764 583H1115"/>
+      <path d="M896 327H1315"/>
+      <path d="M1080 188V766"/>
+      <path d="M1450 152V720"/>
+    </g>
+
+    <g fill="#BBAFFF">
+      <circle cx="823" cy="637" r="3"/>
+      <circle cx="945" cy="573" r="2.5"/>
+      <circle cx="1044" cy="497" r="4"/>
+      <circle cx="1160" cy="468" r="3"/>
+      <circle cx="1312" cy="443" r="4"/>
+      <circle cx="1460" cy="388" r="3"/>
+      <circle cx="987" cy="361" r="3"/>
+      <circle cx="1121" cy="423" r="4"/>
+      <circle cx="1410" cy="365" r="3"/>
+      <circle cx="1548" cy="301" r="4"/>
+    </g>
+
+    <g fill="#5BEAFA">
+      <circle cx="927" cy="621" r="2.5"/>
+      <circle cx="1112" cy="478" r="4"/>
+      <circle cx="1260" cy="430" r="3"/>
+      <circle cx="1498" cy="405" r="4"/>
+      <circle cx="1042" cy="339" r="2.5"/>
+      <circle cx="1278" cy="421" r="3.5"/>
+    </g>
+
+    <g opacity="0.64">
+      <circle cx="1182" cy="420" r="36" fill="url(#node)"/>
+      <circle cx="1411" cy="365" r="24" fill="url(#node)"/>
+      <circle cx="1044" cy="497" r="20" fill="url(#node)"/>
+      <circle cx="1498" cy="405" r="18" fill="url(#node)"/>
+    </g>
+
+    <g stroke="#AFA2FF" opacity="0.30">
+      <path d="M1088 152V228"/>
+      <path d="M1126 122V244"/>
+      <path d="M1164 164V260"/>
+      <path d="M1210 108V246"/>
+      <path d="M1250 150V278"/>
+    </g>
+  </g>
+</svg>

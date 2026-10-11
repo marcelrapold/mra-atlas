@@ -1,6 +1,15 @@
+import type {Metadata, ResolvingMetadata} from 'next';
 import {readFile} from 'node:fs/promises';
 import path from 'node:path';
-export const metadata={title:'Dramaturgie & Logik · Design Framework'};
+export async function generateMetadata(_props: unknown, parent: ResolvingMetadata): Promise<Metadata> {
+ const title='Dramaturgie & Logik · Design Framework';
+ const inherited=await parent;
+ return {
+  title,
+  alternates:{canonical:'/praesentationslogik'},
+  openGraph:{...inherited.openGraph,title,url:'/praesentationslogik'},
+ };
+}
 export default async function Page(){
  const raw=await readFile(path.resolve(process.cwd(),'../../docs/presentation-logic.md'),'utf8');
  const blocks=raw.split('\n\n');

@@ -34,22 +34,5 @@ export function guidanceFor(section:string, brandId:string) {
   {title:'Freigabe und Prüfung',body:'Die Zeichenwahl ist dokumentiert. Der neue Adapter trägt bis zur Abnahme der integrierten Oberfläche den Status draft. Der Apple-orientierte Web-Audit dokumentiert Befunde, Korrekturen und verbleibende Prüfgrenzen.'}
  ]};
  if(brandId==='dominicano-express'&&section==='brand')return {intro:'Dominicano Express als eigenständiger Brand-Adapter.',sections:[{title:'Aktive Identität',body:'Der Brand-Vertrag enthält die Palette, semantische Rollen für Hell und Dunkel sowie Typografie und Formregeln. Die Freigabe steht mit Status draft noch aus.'},{title:'Markenbeispiele',body:'Die Caja-Infografik erscheint ausschliesslich in dieser Brand. Andere Themes verwenden das neutrale Inhaltsmuster.'}]};
- if(brandId==='sygnum'){
-  const specific:Record<string,typeof base>={
-   brand:{intro:'Sygnum: quellenbasierte Rekonstruktion aus öffentlichem Auftritt und Research-PDF, keine offizielle CI-Freigabe.',sections:[{title:'Beobachtung und Umsetzung trennen',body:'Farben und eingebettete Schriftnamen stammen aus dem Crypto Market Outlook 2025. UI-Zustände, Kontrastkorrekturen und 16:9-Raster sind dokumentierte Framework-Ableitungen.'},{title:'Freigabe und Herkunft',body:'Status draft. Originalschriften werden nicht mitgeliefert. Das Presse-Logo bleibt unverändert. Offizielles CI-Manual, SVG-Master und Original-PowerPoint-Master sind noch offen.'}]},
-   content:{intro:'Präzise, ruhig und institutionell. Chancen und Risiken stehen gemeinsam im Bild.',sections:[{title:'Tonalität',body:'Konkreter Nutzen, klar benannte Verantwortung und nachvollziehbare Quellen. Keine Renditegarantien, Superlative ohne Beleg oder suggerierte regulatorische Produktfreigaben.'},{title:'Zwei Bildwelten',body:'Banking und Management bleiben ruhig und strukturiert. Research-Cover dürfen bildstark und farbintensiv sein. Die expressive Titelbildsprache wird nicht zur Dekoration jedes Bedienelements.'}]},
-   agenten:{...base,sections:base.sections.map((s,i)=>i? s:{...s,body:'Der Sygnum-Kurzauftrag lädt den vollständigen Management-Vertrag mit DESIGN.md, IMAGERY.md, Quellenmanifest und Original-Presse-Logo. Acht Folien, Deutsch (Schweiz), PPTX, PDF und Quellen sind voreingestellt.'})}
-  };
-  return specific[section]??base;
- }
- if(brandId!=='goldbach')return base;
- const overrides:Record<string,Record<string,{body:string;items?:string[]}>>={
-  brand:{
-   'Quellen haben Vorrang':{body:'Goldbach verwendet die gelieferten DESIGN.md und IMAGERY.md vom 08.07.2026. Die Originalquellen bestimmen die Identität.',items:['Passion Red, Inter Light 300 und Inter Bold 700.','4 px Radius und flache Flächen.','Original-Logo und dokumentierte Bildrichtlinien.']},
-   'Freigabe und Herkunft':{body:'Goldbach-Verfeinerungen bleiben ein CI-Entwurf (draft), bis die CI-Verantwortlichen sie bestätigen.'}
-  },
-  content:{'Bildwelt':{body:'Die Goldbach-Bildwelt folgt IMAGERY.md. Originale Logos unverändert einsetzen, Bildrechte dokumentieren und Alternativtexte formulieren. Fotoslots verlangen geeignete eigene Motive.'}},
-  agenten:{'1. Vertrag laden':{body:'Der Goldbach-Kurzauftrag verlinkt den vollständigen Ablauf mit DESIGN.md, IMAGERY.md, Original-Logo und Adapter-Regeln. Acht Folien, Deutsch (Schweiz), PowerPoint, PDF und Quellen sind voreingestellt; eigene Angaben haben Vorrang.'}}
- };
- return {...base,sections:base.sections.map(item=>({...item,...overrides[section]?.[item.title]}))};
+ return base;
 }

@@ -9,7 +9,13 @@ let css='';
 async function collect(dir) {for(const e of await readdir(dir,{withFileTypes:true})) {const p=new URL(e.name+(e.isDirectory()?'/':''),dir); if(e.isDirectory()) await collect(p); else if(e.name.endsWith('.css')) css+=await readFile(p,'utf8');}}
 await collect(new URL('_next/static/',out));
 for (const selector of ['.bg-primary','.text-primary-foreground','.bg-card','.border-input',String.raw`.hover\:bg-primary-hover`]) assert.ok(css.includes(selector),`Core utility missing in production CSS: ${selector}`);
-for(const path of ['index.html','llms.txt','contracts/repo-to-management.md','brands/goldbach/brand.json','brands/goldbach/presentation.json','brands/goldbach/logo.svg','brands/goldbach/logo-white.svg','brands/goldbach/logo-black.svg','contracts/mermaid.md','brands/goldbach/mermaid.light.json','brands/neutral/mermaid.light.json','brands/neutral/mermaid.dark.json']) assert.ok((await readFile(new URL(path,out))).length,`Missing export: ${path}`);
+for(const path of ['index.html','llms.txt','contracts/repo-to-management.md','contracts/mermaid.md']) assert.ok((await readFile(new URL(path,out))).length,`Missing export: ${path}`);
+const activeBrandIds=brands.map(brand=>brand.id).sort();
+const publishedBrandIds=(await readdir(new URL('brands/',out),{withFileTypes:true})).filter(entry=>entry.isDirectory()||entry.isSymbolicLink()).map(entry=>entry.name).sort();
+assert.deepEqual(publishedBrandIds,activeBrandIds,'The deployable output must contain only active brand trees');
+const brandIndex=JSON.parse(await readFile(new URL('brands/index.json',out),'utf8'));
+assert.deepEqual(brandIndex.brands.map(brand=>brand.id).sort(),activeBrandIds,'Published brand registry');
+for(const brand of brands)for(const file of ['brand.json','presentation.json',...Object.keys(brand.modes).map(mode=>`mermaid.${mode}.json`)])assert.ok((await readFile(new URL(`brands/${brand.id}/${file}`,out))).length,`Missing brand contract: ${brand.id}/${file}`);
 for(const page of ['praesentation','praesentationslogik','coverage','mermaid','charts','tables','organigramm','prompt-compiler','login-pattern','mail-templates'])assert.ok((await readFile(new URL(`${page}.html`,out))).length,`Missing reference page: ${page}`);
 const validator=await import(new URL('praesentation/deck-validation.mjs',out));
 assert.equal(validator.validateDeck({sections:[],slides:[]}).valid,false,'Served standalone validator must run and reject an empty deck');
@@ -61,7 +67,7 @@ console.log('Pinned ECharts bundle, attribution and engineering contract verifie
 for (const file of (await readdir(out)).filter(name=>name.endsWith('.html'))) {
  const html=await readFile(new URL(file,out),'utf8');
  const main=html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1]??'';
- assert.doesNotMatch(main.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g,''),/goldbach|sygnum/i,`Corporate content in Default page: ${file}`);
+ assert.doesNotMatch(main.replace(/<script\b[^>]*>[\s\S]*?<\/script>/g,''),/goldbach|sygnum/i,`Retired brand content in a published page: ${file}`);
 }
 for(const brand of brands){
  const guide=await readFile(new URL(`brands/${brand.id}/llms.txt`,out),'utf8');
@@ -106,3 +112,6 @@ for(const brand of brands){
  for(const source of brand.sources)assert.ok((await readFile(new URL(`brands/${brand.id}/${source.split('/').at(-1)}`,out))).length);
  if(brand.assets?.logo)assert.ok((await readFile(new URL(brand.assets.logo.path,out))).length);
 }
+
+const {checkProductWorlds}=await import('./check-product-worlds.mjs');
+await checkProductWorlds({directory:new URL('brands/rapold/',out)});

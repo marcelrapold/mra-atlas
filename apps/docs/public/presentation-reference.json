@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "sourceHash": "ceb98ca539a89b6aff283c816c742bec781943dd185f8dfb8c0761233b9e613b",
+  "sourceHash": "c7fe04b27d9cd631d6c692ddf6319e538caee9df89f7a14710809f80cfa3b582",
   "renderer": "LibreOfficeDev 26.8.0.0.alpha0 2c87e51eeaa2b413ff4ae097b2705eea1995d8e5",
-  "renderedAt": "2026-10-11T08:08:35.105Z",
+  "renderedAt": "2026-10-11T09:42:53.829Z",
   "files": [
     {
       "path": "brands/neutral/reference/agenda.png",
@@ -26,7 +26,7 @@
     },
     {
       "path": "brands/neutral/reference/entscheidungsvorlage.pdf",
-      "sha256": "19a6f3165681d71caca3cb207f00465623cd6cc6a89f6e735816f4a47181c901",
+      "sha256": "f70aa0f30e110418db424234a800a1bc76bbf4957ebec293f16e1e90341dce97",
       "bytes": 100607
     },
     {
@@ -36,7 +36,7 @@
     },
     {
       "path": "brands/neutral/reference/gremien-review.pdf",
-      "sha256": "a2ea8313f0f65b583eb26383019a42c004f3ef206381681316967fbee0fceead",
+      "sha256": "728aab7e6deee7894e7225eb6766e3fa7d67873940a09d5d83ed6655994e0ded",
       "bytes": 165106
     },
     {
@@ -71,7 +71,7 @@
     },
     {
       "path": "brands/neutral/reference/muster-deck.pdf",
-      "sha256": "bd4bd2c495ab403e3164e5f75949112bf97ab1eff9648cc45f4568cf45dc8557",
+      "sha256": "850439325c56703b8dda5782b0c83a0a634de43e3c5df5264de21fa233edf94f",
       "bytes": 270304
     },
     {
@@ -81,7 +81,7 @@
     },
     {
       "path": "brands/neutral/reference/projekt-kickoff.pdf",
-      "sha256": "4abfde449136c0b798c5a2e67f3aaa42b4cc3b3100d9bb8d14598e390e1a3326",
+      "sha256": "f6d7f85fbf427c8ce77887e2db8c0aeea19534776476d67356e7e8ef0d8db3e8",
       "bytes": 114652
     },
     {
@@ -91,7 +91,7 @@
     },
     {
       "path": "brands/neutral/reference/roadmap-ausblick.pdf",
-      "sha256": "0886a9abd8eb0d5f88eccdeba528fec6c4038b15a1ea1330af55c85fd8181dfb",
+      "sha256": "e63e3788256ee164879beb573d8a0178f83e037d3b2ed7890d2df90728a4f756",
       "bytes": 109052
     },
     {
@@ -116,253 +116,13 @@
     },
     {
       "path": "brands/neutral/reference/zahlenbericht.pdf",
-      "sha256": "23c6d352ccbe7574b013bea8298f5c9100693039887c7a73bb3c0bca3a0bd13a",
+      "sha256": "12e2ef1a6be68319b12d2b0712dc1d701b5aeb2a89f448f2e115b3c7b3b53781",
       "bytes": 132384
     },
     {
       "path": "brands/neutral/reference/zwei-grosskarten.png",
       "sha256": "b4502b289e13b08ebaf587b227141d31ee0166b029e57cd9113f5e0ef0d44596",
       "bytes": 77259
-    },
-    {
-      "path": "brands/goldbach/reference/agenda.png",
-      "sha256": "328f2006a6deee73745faa6ea51e5af7b247b9c0baa5c07bab1eec5d2cff7a43",
-      "bytes": 40614
-    },
-    {
-      "path": "brands/goldbach/reference/cover-foto.png",
-      "sha256": "842c42c4798a3a6b2573e58b1c5bd3cb548936198f91360682a80476387b3bef",
-      "bytes": 26099
-    },
-    {
-      "path": "brands/goldbach/reference/drei-schritt-beweis.png",
-      "sha256": "0862920196af8e488ad0af5af245f4d6ecad943e67ca716173cf24e292bd3e08",
-      "bytes": 69501
-    },
-    {
-      "path": "brands/goldbach/reference/entscheid-register.png",
-      "sha256": "93911a6e3dd21c779d26cef1f3763e91509696eb2f8bf8d1372b725e83faba85",
-      "bytes": 59206
-    },
-    {
-      "path": "brands/goldbach/reference/entscheidungsvorlage.pdf",
-      "sha256": "327c88411e20dfc0d562ed79a2d1550ad7734da6c5750192c7f71469a0377385",
-      "bytes": 110521
-    },
-    {
-      "path": "brands/goldbach/reference/foto-schluss.png",
-      "sha256": "d7db3b86b400fcfb9b09481fce878f3799d7cf876e573c6095b100322048afef",
-      "bytes": 26554
-    },
-    {
-      "path": "brands/goldbach/reference/gremien-review.pdf",
-      "sha256": "e8e2e6a34c6706821d363cef5a72f0623b2f657be5d3d84e58b460e6dbed26d2",
-      "bytes": 183255
-    },
-    {
-      "path": "brands/goldbach/reference/kapitel-trenner.png",
-      "sha256": "8064fe7f9af428636c410b9c5efd7a4d76f8b292074fa759cbc19fc211ad91b4",
-      "bytes": 14681
-    },
-    {
-      "path": "brands/goldbach/reference/karten-steckbrief.png",
-      "sha256": "eeb7234b6a0611c3d89d5c8e74c3e331d480cc439e216447176176bd05c11838",
-      "bytes": 67304
-    },
-    {
-      "path": "brands/goldbach/reference/kpi-board.png",
-      "sha256": "f90cd7c5962d58c39938703bda551e9d077c23de15a2a3da4868a403983ea223",
-      "bytes": 64327
-    },
-    {
-      "path": "brands/goldbach/reference/kpi-timeline.png",
-      "sha256": "9c133ef03a01930915a5c34e1e9b2567823bf7b4af70953ccae3ac70b7d77c5b",
-      "bytes": 37324
-    },
-    {
-      "path": "brands/goldbach/reference/management-summary.png",
-      "sha256": "efa6f8718c35fa9b0a62ab9deb3b2db466b3b2da7abca21fcac4429b6030138e",
-      "bytes": 77681
-    },
-    {
-      "path": "brands/goldbach/reference/modul-karten-mit-chart.png",
-      "sha256": "11c8d499ed9c731640749264a762041e45d81d11d8b4ab54367cb9828eecf973",
-      "bytes": 53011
-    },
-    {
-      "path": "brands/goldbach/reference/muster-deck.pdf",
-      "sha256": "6053939388fa67bb89460626fd1208b16c13e86c4fa198244c74a7e4ae730359",
-      "bytes": 302438
-    },
-    {
-      "path": "brands/goldbach/reference/phasen-karten-gate.png",
-      "sha256": "fedf66db2f1bfe6d9f9ae2146eaeb606770981e10e3176f66e092a765e1ea777",
-      "bytes": 65986
-    },
-    {
-      "path": "brands/goldbach/reference/projekt-kickoff.pdf",
-      "sha256": "5bb7797a9bc1fcc47ff2e9006a0cfaa0cce658af5831a19246db1c57afb8f918",
-      "bytes": 126340
-    },
-    {
-      "path": "brands/goldbach/reference/quellen-grid.png",
-      "sha256": "6a4490892ec337946f35759b76223ca1f1bf7d28d7017c75cbc413461d3b9375",
-      "bytes": 85637
-    },
-    {
-      "path": "brands/goldbach/reference/roadmap-ausblick.pdf",
-      "sha256": "b2a22db9a5b1ac83f97b4ec57343a89bdd8a14810fa0e7c73f8fd6889899b935",
-      "bytes": 120654
-    },
-    {
-      "path": "brands/goldbach/reference/shape-balkendiagramm.png",
-      "sha256": "20fb170470b3ee47e2d79c6e9dc61d51b6bf1a96d4cc277a4d6f4d920f14fece",
-      "bytes": 36935
-    },
-    {
-      "path": "brands/goldbach/reference/split-tabelle.png",
-      "sha256": "5f10556ae9683a41d1d37016d230b81aab72b5293d95cc7fa5aaa5bd8058fcc7",
-      "bytes": 70849
-    },
-    {
-      "path": "brands/goldbach/reference/textbox-tabelle.png",
-      "sha256": "dbb927abe39e8e42295cc4fea8e2bc5452db1284824e74413e0d176ebdd9a41d",
-      "bytes": 60135
-    },
-    {
-      "path": "brands/goldbach/reference/vollbild-grafik.png",
-      "sha256": "998fca810d7c0472cf6d1b10986460380d40f7a8553f2ea68969f0ecb759feb6",
-      "bytes": 35198
-    },
-    {
-      "path": "brands/goldbach/reference/zahlenbericht.pdf",
-      "sha256": "f902ca65a35d066f17204c3aa278129a8f8659b745569faea2f6b26c802695b6",
-      "bytes": 147271
-    },
-    {
-      "path": "brands/goldbach/reference/zwei-grosskarten.png",
-      "sha256": "dd7fca595cd029917c5880254c2f4db448e55e21fd462985595d0a42ef83822d",
-      "bytes": 72569
-    },
-    {
-      "path": "brands/sygnum/reference/agenda.png",
-      "sha256": "2b8487486e918a08a2cb30af10c9f4210ca475a07f9671a98d75d982efaa00f7",
-      "bytes": 42033
-    },
-    {
-      "path": "brands/sygnum/reference/cover-foto.png",
-      "sha256": "3392ec2f174d24ccaa78c346876d2306ad26d7d3211a935f6676234d35d8d028",
-      "bytes": 25299
-    },
-    {
-      "path": "brands/sygnum/reference/drei-schritt-beweis.png",
-      "sha256": "a87c03ee5a5a16113e1dbaf733961fe8646709833206af22b468477493c94117",
-      "bytes": 72079
-    },
-    {
-      "path": "brands/sygnum/reference/entscheid-register.png",
-      "sha256": "84fb06330dfcc400bd4a3837250491390861d6f396ed2c42d52fe77cbac720c5",
-      "bytes": 62741
-    },
-    {
-      "path": "brands/sygnum/reference/entscheidungsvorlage.pdf",
-      "sha256": "fe3e09dc7962ab58e3520fc0685d667f7b7ad7150c2e0f9a5a9f0383527c8085",
-      "bytes": 127286
-    },
-    {
-      "path": "brands/sygnum/reference/foto-schluss.png",
-      "sha256": "3651668fc5b3977a2b1a7787857ce4ad28b20483399b6e38f9812fd70d4e66cc",
-      "bytes": 26670
-    },
-    {
-      "path": "brands/sygnum/reference/gremien-review.pdf",
-      "sha256": "ac180e6a14e9a4efc11363be59ef764b2b895f9d0703f68aead0e5c8fed80543",
-      "bytes": 210974
-    },
-    {
-      "path": "brands/sygnum/reference/kapitel-trenner.png",
-      "sha256": "77794687fc176aeb8d231707ce90ae2ff693f9a3a4fcff8cba7d07003825ff4e",
-      "bytes": 17074
-    },
-    {
-      "path": "brands/sygnum/reference/karten-steckbrief.png",
-      "sha256": "c5b9a5d26569c24fbddac39d3daf182a6f184e412351ee78e0f3e2a24250ac69",
-      "bytes": 69304
-    },
-    {
-      "path": "brands/sygnum/reference/kpi-board.png",
-      "sha256": "a2f88bb5d1383826864106ff06aae97121a0103d8e6dc5782eed5b7fe74f5df3",
-      "bytes": 66712
-    },
-    {
-      "path": "brands/sygnum/reference/kpi-timeline.png",
-      "sha256": "d77a4452eb57e2b2b490d734c98813a2405632c451342ab81d4143fe05f5db6b",
-      "bytes": 41877
-    },
-    {
-      "path": "brands/sygnum/reference/management-summary.png",
-      "sha256": "74e729fd0d882b75fd940a9d6b57d7f01561114081ce0d287279d1b0ac890af3",
-      "bytes": 82547
-    },
-    {
-      "path": "brands/sygnum/reference/modul-karten-mit-chart.png",
-      "sha256": "1d267ea0a039f984e77176f0e1315434030aea79cdcb0d51e55f8ce8202c036a",
-      "bytes": 56370
-    },
-    {
-      "path": "brands/sygnum/reference/muster-deck.pdf",
-      "sha256": "08d39512739e88dcf3058199be433b77b768e40fe4651fb6c5c148fb0249879e",
-      "bytes": 306283
-    },
-    {
-      "path": "brands/sygnum/reference/phasen-karten-gate.png",
-      "sha256": "5c865fab0c1f8650333c2591f701473c29ff71ec9ff1036767063ac58fec2a2b",
-      "bytes": 70493
-    },
-    {
-      "path": "brands/sygnum/reference/projekt-kickoff.pdf",
-      "sha256": "9689e5f2553b4c0d98b2e4464c0fd590641886c06f295195f2f2df439faa0a81",
-      "bytes": 144289
-    },
-    {
-      "path": "brands/sygnum/reference/quellen-grid.png",
-      "sha256": "6016d7afa7dc61e5fac4fa3a9afac805c4021ce2c1b1eb7c8080a1804074f6ee",
-      "bytes": 88135
-    },
-    {
-      "path": "brands/sygnum/reference/roadmap-ausblick.pdf",
-      "sha256": "9a8fa1479273a18b196b1c324cbda58e7747e9511f0867d501beabe1dc65760c",
-      "bytes": 147996
-    },
-    {
-      "path": "brands/sygnum/reference/shape-balkendiagramm.png",
-      "sha256": "1780a3e9b95ca92f2e5c851679ad42991a8d779776379681dbd9b6d71f3647cc",
-      "bytes": 41255
-    },
-    {
-      "path": "brands/sygnum/reference/split-tabelle.png",
-      "sha256": "8c6e4e8a4718851441433b6519c2309d1fe9e70d82d802981527bcac6531c294",
-      "bytes": 74396
-    },
-    {
-      "path": "brands/sygnum/reference/textbox-tabelle.png",
-      "sha256": "e6e3a5f83e81dee3b57fe05412d2f87cf938cb14a02079168d3c393b72f47ce0",
-      "bytes": 62618
-    },
-    {
-      "path": "brands/sygnum/reference/vollbild-grafik.png",
-      "sha256": "4dea36b9afed8de75be3aa0238ebbae18b5b25c078ecdff5071bf9f76a7978f4",
-      "bytes": 40088
-    },
-    {
-      "path": "brands/sygnum/reference/zahlenbericht.pdf",
-      "sha256": "f80e2550693a682f47966d4fa5a5853d61b725d0f8e7c95debbdabc95c799eff",
-      "bytes": 176596
-    },
-    {
-      "path": "brands/sygnum/reference/zwei-grosskarten.png",
-      "sha256": "92a81dee529e60cc50d08ae7536b8c1f11c06de4391f1949ffe2e9c8529d96bd",
-      "bytes": 74981
     },
     {
       "path": "brands/dominicano-express/reference/agenda.png",
@@ -386,7 +146,7 @@
     },
     {
       "path": "brands/dominicano-express/reference/entscheidungsvorlage.pdf",
-      "sha256": "104e1050c3f2636fa0a2ce95f783cd8aa4202f8d62ab33dbabfb5fd3d3e9f2a3",
+      "sha256": "8d9b7d117f8aed656470f4fd977ac382cd6da637eee2b382221f97f98214c4dc",
       "bytes": 100710
     },
     {
@@ -396,7 +156,7 @@
     },
     {
       "path": "brands/dominicano-express/reference/gremien-review.pdf",
-      "sha256": "9ef595ff4493665333152077aeba5060df6508a4dc4bbc432c23643f4571f266",
+      "sha256": "289dd69569026bae5063653f5245770b7ccd6eb2c1f13cf0ec5b579661979be5",
       "bytes": 165553
     },
     {
@@ -431,7 +191,7 @@
     },
     {
       "path": "brands/dominicano-express/reference/muster-deck.pdf",
-      "sha256": "5c4794bd4dc7bd5029edbb00442b7a638ae302ea9c7c0a2b086e29388e29d261",
+      "sha256": "aad5805da2bc3feb4413b745c96efb2744f793096968ab061b799520ae30821f",
       "bytes": 270709
     },
     {
@@ -441,7 +201,7 @@
     },
     {
       "path": "brands/dominicano-express/reference/projekt-kickoff.pdf",
-      "sha256": "b4ebb28843167cb2a1471e1d8aa0c6281b1d2ccdf1a60742ab8089376f7c8032",
+      "sha256": "45104514205fb91db5d5f5858b3347b263688ed764271e33d1c3089c79ad4238",
       "bytes": 114783
     },
     {
@@ -451,7 +211,7 @@
     },
     {
       "path": "brands/dominicano-express/reference/roadmap-ausblick.pdf",
-      "sha256": "7586c568c70ea590306585e1ba1eb273b71ab41492875630ec8f3e6d9c46094e",
+      "sha256": "68d9f94b17ab641fd9445971ddc0a90a042a8ab42aec1095f0f686a35adeef9c",
       "bytes": 109423
     },
     {
@@ -476,7 +236,7 @@
     },
     {
       "path": "brands/dominicano-express/reference/zahlenbericht.pdf",
-      "sha256": "54bf8dc90d5139904bf22e1b9792a7ea1c5dbd6fa8c6692050f8ebf2bfb06d81",
+      "sha256": "d58138c49b222b6066cc20ab9a589d8d7731b5881db6aa1e62cbb85173ca5f8d",
       "bytes": 132713
     },
     {
@@ -506,7 +266,7 @@
     },
     {
       "path": "brands/rapold/reference/entscheidungsvorlage.pdf",
-      "sha256": "fd0475dd90f554948887ba51db7e1d442612f2c23bee8124d9ef4ca566fda3a2",
+      "sha256": "f76f62b46a62902b3da2bfdb7d6fc6d1d14efee9dd2635fafa9ff9976c376899",
       "bytes": 95617
     },
     {
@@ -516,7 +276,7 @@
     },
     {
       "path": "brands/rapold/reference/gremien-review.pdf",
-      "sha256": "a7a891d56f4eb60e3d9ca570766c4ce75f6e23a8dc9fc98ccac424a2f38def00",
+      "sha256": "e0163824112cf64b0293a02194c953f0e707c4e17c5bbd7164d1095b9ff08c7c",
       "bytes": 157410
     },
     {
@@ -551,7 +311,7 @@
     },
     {
       "path": "brands/rapold/reference/muster-deck.pdf",
-      "sha256": "ce87de56e8a5665a15e24caa870e1e066e885d4fcf7e2baa8b4dd179be87270e",
+      "sha256": "9f9aaf6274dd50b99589d0511e1b41a6b2bf39c796dac1af20d26f0c5d619dbc",
       "bytes": 261078
     },
     {
@@ -561,7 +321,7 @@
     },
     {
       "path": "brands/rapold/reference/projekt-kickoff.pdf",
-      "sha256": "7a3f0171502a2cbfe41881fa94797cf46a706063ccb3ac4864697d600643f37e",
+      "sha256": "c10e9943581aff9e7fa8296a1af28e3effb9f30b0615dcf8c9381ece0c0f3f88",
       "bytes": 109428
     },
     {
@@ -571,7 +331,7 @@
     },
     {
       "path": "brands/rapold/reference/roadmap-ausblick.pdf",
-      "sha256": "6d633ee88273a446450d312ae003843be3535c30f664cec564ba3c5a716762d6",
+      "sha256": "d954f3f13bcb5b48459633aff3d3ad8c9103a8edaad298daaae4f3690772db13",
       "bytes": 104604
     },
     {
@@ -596,7 +356,7 @@
     },
     {
       "path": "brands/rapold/reference/zahlenbericht.pdf",
-      "sha256": "5700956543fb79363e677c740d2b9337acba6b2a0e45ea683e19b82f83eaac9f",
+      "sha256": "338b87148d316490a23004aa731739bccc6d3757e88eadd07460e9151fbcfd7f",
       "bytes": 126572
     },
     {

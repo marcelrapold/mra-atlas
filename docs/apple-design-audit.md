@@ -4,6 +4,8 @@ Stand: **11.10.2026**. Gegenstand: `marcelrapold/mra-design`, Integration der fr
 
 **Status: belegter Code-Audit mit anschliessender Korrekturprüfung.** Dies ist keine WCAG-Zertifizierung und keine Bestätigung vollständiger Atlas-Parität. Die statische Prüfung fand konkrete Probleme bei Dialogfokus, Suchsemantik, Tastaturfokus und schmalen Ansichten. Korrekturen und tatsächlich ausgeführte Prüfungen werden am Ende separat protokolliert. Ein geplanter Fix zählt noch nicht als bestandene Abnahme.
 
+**Lesestand:** Die Abschnitte 1–5 dokumentieren den historischen Vorab- und Integrationsstand. Der gesondert datierte [Produktionsnachtrag in Abschnitt 6](#6-produktions--und-browsernachprüfung--11102026) ergänzt tatsächliche Nachweise für den ersten Rollout. Frühere Angaben wie «Browserprüfung offen» bleiben als damaliger Prüfstand erhalten; der Nachtrag ist keine finale Vollabnahme. Abschnitt 7 beschreibt die danach beauftragte 0.6.0-Ergänzung und ihre Quellenprüfung, ohne neue Laufzeitnachweise vorwegzunehmen.
+
 ## 1. Quellen, Auftrag und Grenzen
 
 Die lokalen Arbeitsverträge `AGENTS.md`, `apps/docs/AGENTS.md`, `README.md`, `docs/atlas-reference.md` und `docs/atlas-coverage.md` wurden gelesen. Atlas bleibt die verbindliche Referenz für Seitenarchitektur, Navigation, Komponentenverhalten und Präsentationsmuster. Apple HIG liefert ergänzende Kriterien für Bedienbarkeit und Gestaltung. Die freigegebene Rapold-Identität wird dadurch nicht ersetzt.
@@ -253,3 +255,139 @@ Die folgende Liste beschreibt die verbleibenden Prüfungen am tatsächlich berei
 | Reale Assistenztechnik | Mit VoiceOver/Safari oder NVDA/Firefox die Suche, Dialoge, Statusmeldungen, Filter und Downloadtabelle bedienen. Namen, Rollen und Zustände sind verständlich; Fokus bleibt im offenen Modal und kehrt danach nachvollziehbar zurück. Ansagen werden weder verschluckt noch störend doppelt ausgegeben. |
 
 Forced Colors, tatsächliche Touch-Bedienung sowie weitergehende Chart-, Menü- und Lightbox-Interaktionen aus Abschnitt 4 bleiben als zusätzliche Prüfgrenzen dokumentiert. Aus dem vorliegenden Quell-, Build- und Rendernachweis folgt keine vollständige WCAG- oder Atlas-Abnahme.
+
+## 6. Produktions- und Browsernachprüfung · 11.10.2026
+
+Dieser Nachtrag betrifft den **ersten produktiven Rollout von Framework 0.5.0** nach dem Merge von [PR #5](https://github.com/marcelrapold/mra-design/pull/5). Er ergänzt die historische Prüfung um tatsächlich ausgeführte HTTP- und Desktop-Browserprüfungen. Die nachfolgenden Beobachtungen gelten für den angegebenen Commit und Prüfzeitpunkt, nicht automatisch für spätere Deployments. Die Browserergebnisse wurden von der Hauptprüfung übermittelt; die unten genannten HTTP- und Downloadprotokolle wurden für diesen Nachtrag gelesen.
+
+### 6.1 Produktionsstand und technische Auslieferung
+
+| Nachweis | Beobachteter Stand |
+|---|---|
+| Produktionsdomain | [design.rapold.io](https://design.rapold.io) |
+| Ausgelieferter Commit | [`ee5bfc2ef4bd2b034fc2045b5a576d101159c217`](https://github.com/marcelrapold/mra-design/commit/ee5bfc2ef4bd2b034fc2045b5a576d101159c217), `main`, Framework **0.5.0** |
+| Build-Info | [build-info.json](https://design.rapold.io/build-info.json?commit=ee5bfc2ef4bd2b034fc2045b5a576d101159c217): `builtAt: 2026-10-11T09:08:37.687Z`; Commit und Version stimmten bei der ersten HTTP-Beobachtung am **11.10.2026 um 09:09:20.833 UTC** überein |
+| Vercel | [Deployment 3Z67rf5o5Fek1Dtfs9t1EsjNixU4](https://vercel.com/marcelrapold/design/3Z67rf5o5Fek1Dtfs9t1EsjNixU4), Status `success`; bestehendes Projekt `design` im Scope `marcelrapold` |
+| GitHub CI auf `main` | [Run 38127246567](https://github.com/marcelrapold/mra-design/actions/runs/38127246567), `completed` / `success` |
+| Bestehender Produktionsprüfer | `scripts/verify-deployment.mjs` endete am 11.10.2026 um **09:10:23.923 UTC** mit Exit 0: erwarteter Commit und Version, fünf Kernrouten und Engineering-Vertrag bestätigt |
+| Erweiterte HTTP-Prüfung | Abschluss **09:11:07.532 UTC**: alle **36 Routen** erreichbar und mit Framework-HTML; zusätzlich zwei Canonical-Befunde, siehe Abschnitt 6.3 |
+| Auslieferbare Rapold-Dateien | **208 Exporte plus 27 Ressourcen**, zusammen **235 HTTP-200-Antworten**; Dateigrösse, SHA-256 und MIME-Typ gegen das produktive Manifest geprüft |
+
+Das geprüfte [Rapold-Manifest](https://design.rapold.io/brands/rapold/assets-manifest.json) wurde um `2026-10-11T09:08:25.513Z` erzeugt und hatte SHA-256 `1e6ac2355da93fd7ea7a488b60fd20d59ca81e2fdda9cd0af0487e395995614c`. Die Datei- und Formatprüfung umfasst **136 PNG mit geprüften Abmessungen, 76 schriftfreie SVG, vier ICO, zwei WOFF2 und vier Produkt-ZIP mit jeweils 52 enthaltenen Dateien** sowie die übrigen Manifest-, Lizenz-, CSS- und JSON-Ressourcen. Die **231 deterministischen Dateien** waren bytegleich mit dem lokalen Build. Die vier ZIP-Dateien enthalten variable Archivzeitstempel; ihre ausgelieferten Bytes wurden gegen das jeweilige Produktionsmanifest geprüft, ohne Bytegleichheit mit einem separat gebauten ZIP zu behaupten.
+
+Die begleitenden Arbeitsprotokolle liegen im Prüfverzeichnis `production-verification-ee5bfc2`: `build-observations.ndjson`, `existing-script-result.json`, `production-assets-report.json`, `live-assets-manifest.json`, `canonical-route-findings.json` und `browser-downloads-report.json`. Die Angaben oben stammen aus diesen Messungen und den gemeldeten CI-/Deployment-Ergebnissen. Ein grüner HTTP- oder CI-Nachweis ersetzt die folgenden Interaktionsprüfungen nicht.
+
+### 6.2 Tatsächlich ausgeführte Desktop-Browserprüfung
+
+**Umgebung für alle nachstehenden Abläufe:** produktives `https://design.rapold.io`, Commit `ee5bfc2ef4bd2b034fc2045b5a576d101159c217`, 11.10.2026, **Chrome mit 1363 × 936 CSS-px**. Die Einträge dokumentieren die jeweils beobachteten Teilabläufe. Es wurde keine reale Assistenztechnik eingesetzt.
+
+| Ablauf / Befundbezug | Beobachtetes Ergebnis |
+|---|---|
+| Rapold-Produktfamilie und Banner | Alle vier Produkte auswählbar; sechs Bannerformate sichtbar. Open-Graph- und Landscape-Vorschauen in Hell und Dunkel geprüft; der Hinweis für ausschliesslich dunkle Varianten war sichtbar. Das bestätigt diese Auswahl- und Vorschaupfade, keine vollständige Sichtabnahme aller Exportdateien. |
+| Rapold-Filter | Die Kombination Learn / Banner / SVG zeigte acht Dateien. Eine Filterkombination ohne Treffer zeigte den vorgesehenen Kein-Treffer-Zustand. |
+| Weitere Rapold-Dateien | Die Liste wurde von 12 über 24, 36 und 48 auf 52 Einträge erweitert. Der letzte Auslöser blieb mit Fokus an derselben Stelle erhalten und trug danach `aria-disabled="true"`. |
+| HTML-Kopierstatus | Das Kopieren bestätigte den Vorgang; ein Produktwechsel entfernte diese Bestätigung wieder. |
+| Tatsächlicher ZIP-Download | Das Argus-Produkt-ZIP wurde über die Oberfläche heruntergeladen. Die Browserdatei hatte **371538 Bytes** und SHA-256 `3e62a2224c228d0e4b8250e2212b42b9538e10042ba1962c9033752f484f8701`, exakt wie im produktiven Manifest. |
+| SVG-Download | Das Downloadereignis für `assets/logos/light/argus.svg` wurde ausgelöst. Die Browserkopie wurde nicht zur Dateiprüfung synchronisiert; deshalb besteht für diesen Browserdownload **kein Byte- oder Hashnachweis**. Die unabhängige HTTP-Prüfung der Serverdatei ist davon getrennt. |
+| A01 · Suchdialog | Suche geöffnet und mit Escape geschlossen: Fokus kehrte auf den ursprünglichen Button «Suchen» zurück. |
+| A01 · Icon- und Foliengalerie | Das Icon «Accessibility» geöffnet und mit Escape geschlossen: Fokus exakt am Auslöser. Folienablauf Cover → zweimal «Nächste» → Escape: Rückkehr zum Cover-Auslöser. Zusätzlich Roadmap-Preset-Filmstreifen → Cover → Escape: Rückkehr zum ursprünglichen Filmstreifen-Auslöser. |
+| A02 · Suchsemantik und Ergebnisnavigation | Bei geschlossener Suche kein Suchdialog und kein verbliebener Suchdialog-`h2`. Geöffnet waren Dialog und Combobox «Framework durchsuchen» sowie Listbox «Referenzseiten» benannt. Über Ctrl/Cmd-K → «Iconografie» → Enter blieb `brand=rapold` in der Zielroute erhalten; Fokus erreichte `main`. |
+| A03 · Tabs | Im dunklen Rapold-Theme führte Tab tatsächlich in das Panel. Sichtbar und gemessen: **3-px-Azure-Outline mit 3-px-Offset**. ArrowRight wechselte zum Tab «Verwendung». |
+| A06 · Popover | «Kontext zur Aktion» war der zugängliche Dialogname und ein echtes `h2`. Escape führte zum Auslöser «Hinweise» zurück. |
+| A08 · Beide Tabellenresetwege | Sowohl das Löschen im Suchfeld als auch der Reset im Kein-Treffer-Zustand führten zum leeren Suchfeld mit Fokus zurück. Danach wieder 250 Treffer und Seite 1. |
+| A09 · Icon-Suchstatus | Suchen mit null und einem Treffer zeigten den entsprechenden Status. Damit sind die beobachteten UI-Zustände belegt; die tatsächliche Screenreader-Ansage wurde nicht geprüft. |
+| A10 · Prompt-Kopierstatus | Nach Repository-, Anlass- und Brandwechsel wurde die frühere Kopierbestätigung jeweils zurückgesetzt. Die Prüfung erfolgte nach Abschluss der React-Aktualisierung. |
+| A13 · Desktop-Schliessen | Das Schliessen des Suchdialogs hatte ein gemessenes Elementrechteck von **32 × 32 CSS-px**. Keine Ableitung einer gemessenen Touch-Trefferfläche daraus. |
+
+### 6.3 Neue Produktionsbefunde und noch nicht ausgelieferte Korrektur
+
+Die erweiterte HTTP-Prüfung fand auf [`/praesentation`](https://design.rapold.io/praesentation) und [`/praesentationslogik`](https://design.rapold.io/praesentationslogik) je eine Canonical-URL zur Startseite anstelle der eigenen Route. Auch `og:url` und der Open-Graph-Titel waren dort aus der Startseite geerbt. Die Nachprüfung um **09:13:07 UTC** bestätigte genau diese zwei Routen. Der anfängliche Unterschied zwischen der Startseiten-URL mit und ohne abschliessenden Slash ist semantisch gleichwertig und wird nicht als zusätzlicher Befund gezählt.
+
+Die beiden Seitenquellen wurden anschliessend lokal korrigiert: `generateMetadata` setzt jeweils die eigene Canonical- und Open-Graph-URL sowie einen passenden Titel und erhält die übrigen geerbten Open-Graph-Werte. Diese Quellkorrektur wurde für den Nachtrag gelesen. **Der abschliessende Commit, das zweite Deployment und dessen Produktionsnachprüfung stehen zu diesem Dokumentationsstand noch aus.** Die Quellkorrektur zählt daher noch nicht als behobener Produktionsbefund.
+
+### 6.4 Verbleibender Umfang
+
+Die Desktop-Nachprüfung schliesst die jeweils genannten Teilabläufe aus Abschnitt 5.3. Folgende Anforderungen bleiben ohne tatsächlichen Laufzeitnachweis:
+
+- **Mobile und Reflow:** 320/390 CSS-px, mobile Navigation → Suche, geringe Viewporthöhe, 200-%-Text sowie physische Touch-Bedienung. Die verfügbare Browseroberfläche bot keine Viewportemulation; der versuchte Zoomshortcut änderte den Viewport nicht. Daraus wird kein bestandener Zoom- oder Reflow-Test abgeleitet.
+- **Assistenztechnik:** VoiceOver/NVDA oder gleichwertige reale Screenreader-Bedienung, tatsächliche Statusansagen und Forced Colors. AT war nicht verfügbar.
+- **Gezielt ausgelöste Fehler:** ECharts-Netzwerk-/Initialisierungsfehler sowie Manifest-Ladefehler mit erneutem Laden und Fokusführung. Erfolgreiche normale Ladepfade decken diese Fälle nicht ab.
+- **Weitere Varianten und Interaktionen:** vollständiger Brand-Wechsel durch alle Changelog-/FAQ-Kontexte, gemessene Close-Flächen bei grobem Zeiger sowie die weitergehenden Chart-, Menü- und Lightbox-Prüfungen aus Abschnitt 4.
+- **Visueller Gesamtumfang:** Der erste Rollout enthält die Raumfaltenzeichen, die gemeinsame Palette und Typografie sowie Favicon-, App-Icon- und Bannerressourcen. Eine vollständige Übernahme aller produktspezifischen Hintergründe, Effekte und Motion von AI, Learn und den weiteren Produkten ist damit nicht belegt. Die danach beauftragte gestalterische Ergänzung erhält eine eigene spätere Prüfung.
+
+**Geplanter Folgestand:** Die historischen Beobachtungen oben beziehen sich weiterhin auf 0.5.0 mit der damaligen Registry aus fünf Brands. Anschliessend wurde die Entfernung von Goldbach und Sygnum beauftragt. Für den geplanten Stand **0.6.0** sind nur noch `neutral`, `dominicano-express` und `rapold` sowie die erwähnten gestalterischen Ergänzungen vorgesehen. Für diesen Folgestand liegt hier noch keine Produktions- oder Browserabnahme vor; seine tatsächlichen Ergebnisse werden später getrennt ergänzt.
+
+Dieser Nachtrag belegt den ausgelieferten ersten Stand und konkrete Desktop-Bedienpfade. Er ist keine finale Produkt-, WCAG- oder Atlas-Vollabnahme; auch der UI-Adapter bleibt entsprechend dem Brand-Vertrag als Entwurf gekennzeichnet.
+
+## 7. Produktwelten für 0.6.0 · Umsetzung und lokale Prüfung vom 11.10.2026
+
+Nach dem ersten Rollout wurde die Übernahme weiterer produktspezifischer Atmosphäre sowie die Entfernung der aktiven Goldbach-/Sygnum-Brands beauftragt. Die lokale aktive Auswahl ist `neutral`, `dominicano-express`, `rapold`. Dieser Abschnitt dokumentiert die umgesetzten Quellen und Anforderungen, den tatsächlichen lokalen Referenzrender in Abschnitt 7.4 und den erfolgreichen vollständigen Framework-Check in Abschnitt 7.5. **Die neue Produktionsbestätigung und UI-Browserabnahme stehen noch aus.** Die 0.5.0-Ergebnisse in Abschnitt 6 bleiben ein eigener historischer Stand.
+
+### 7.1 Tatsächlich belegte Vorbereitung
+
+Die [Produktwelten-Spezifikation](product-worlds.md) und [world-provenance.json](../brands/rapold/sources/world-provenance.json) trennen Originaldateien, Gestaltungsableitungen und neue CI-Beispiele:
+
+- **Learn:** Vier tatsächlich referenzierte Hero-Dateien aus `aeon-protocol` am Commit `bf362a37e2bacd13c502e8ad8a291d4e5bc1aabd` wurden unverändert von der öffentlichen Seite übernommen. HTTP 200, MIME, 1672 × 941, zusammen 123145 Bytes, SHA-256 und gepinnte Git-Blobs sind geprüft. Beide Raster sowie temporär gerenderte SVGs wurden betrachtet. Die originale Apache-2.0-LICENSE und ein als neu verfasst gekennzeichneter Herkunftshinweis sind vorhanden. Dies bestätigt die Quelldateien, nicht ihre spätere Browserkomposition.
+- **AI:** Autorisiert geprüfte Designquellen am Commit `db588fa7e6e4a31ba1ee1a2e91059534695494af` belegen prozedurale Aurora, Netz und Glas sowie Geist/Geist Mono. Keine Hintergrundbitmap und kein privater App-Quellcode werden in das Originalasset-Paket kopiert. Für das private Repository ist keine offene Lizenz belegt; die beauftragte Gestaltungsableitung bleibt davon getrennt beschrieben.
+- **Gemeinsame Identität:** Neue Raumfaltenzeichen und Geist/Geist Mono gelten durchgängig. Learn weicht damit bewusst von Inter/JetBrains Mono ab. Facetten und Spektrum sind neue CI-Dekore. Argus und EdgePortal sind ehrliche Anwendungsbeispiele ohne Original-App-Paritätsnachweis.
+
+### 7.2 Konkrete Risiken der neuen Spezifikation
+
+| Risiko | Verbindliche Integrationsanforderung; Laufzeitprüfung noch offen |
+|---|---|
+| Eine sichtbare Pause lässt einzelne Effektquellen weiterlaufen | Gemeinsame Stillsetzung für CSS, Partikel/Pulse, Terminaltimer und Parallax; kein unbemerkter Neustart beim Produkt- oder Fokuswechsel. Reduced Motion erhält eine statische Darstellung mit vollständigem Text. |
+| Glas wird nur anhand der Basistokens als lesbar bewertet | Kontrast am tatsächlich zusammengesetzten Hintergrund einschliesslich heller Bewegungsphasen beurteilen. Text, Fokus und echte Aktionen brauchen tragfähige Flächen auch ohne Blur. |
+| Beispielstatus wirkt wie ein echtes verbundenes Produkt | Terminal und Karten direkt als Demo/Muster bezeichnen. Keine behauptete Kameraaktivität, Verbindung oder Verarbeitung; dekorative Tippsequenzen nicht als Live-Region ausgeben. |
+
+Die Begründung und die dazugehörigen W3C-Quellen stehen im [Bedienkontrakt der Produktwelten](product-worlds.md#bedienkontrakt-für-die-referenzen). Diese drei Risiken sind Anforderungen an die neue Komposition, keine als beobachtet ausgegebenen Browserfehler. Die Referenzen bleiben begrenzte Container innerhalb der bestehenden Docs-Architektur.
+
+### 7.3 Noch fehlende Evidenz
+
+Die Hauptintegration, das Export-Kit und die Bereinigung der aktiven Brands sind lokal umgesetzt und haben den vollständigen Check aus Abschnitt 7.5 bestanden. Die noch ausstehende Browserabnahme soll konkret die drei Risiken oben, die richtigen Quelldateien und die tatsächliche Brand-Auswahl am bereitgestellten Commit prüfen. Der erfolgreiche Build und die Dateiprüfungen belegen für sich keine funktionierende Stillsetzung oder korrekte Zustandsvermittlung im Browser. Die Kontrastmodellprüfung aus Abschnitt 7.5 ersetzt keine Messung der tatsächlich gerenderten Komposition.
+
+Neue Ergebnisse werden erst mit Datum, URL/Commit, tatsächlichem Browser/Viewport und beobachtetem Ablauf ergänzt. Die historischen Grenzen für mobile Ansichten, 200-%-Text, Touch, Screenreader und provozierte Netzwerkfehler bleiben erhalten, soweit sie nicht tatsächlich nachgeprüft werden. Ein nicht verfügbarer Prüfumfang wird nicht als bestanden bezeichnet.
+
+### 7.4 Tatsächlich ausgeführter Referenzrender · 11.10.2026
+
+Der lokale Stand mit Paketversion **0.6.0** und drei aktiven Brands wurde mit **`npm run deck:reference`** gerendert. Der Befehl erzeugte die PowerPoints aus den vorhandenen Rendererquellen, konvertierte alle 18 Decks mit dem nativen LibreOffice und rasterte die Musterfolien mit `pdftoppm`. Es wurden keine Referenzdateien durch Platzhalter ersetzt und kein Source-Hash manuell angepasst. `npm run check` und der vollständige Websitebuild wurden in diesem Schritt nicht ausgeführt.
+
+| Nachweis | Tatsächliches Ergebnis |
+|---|---|
+| Laufzeit | Start **09:42:39.279 UTC**, Ende **09:42:53.852 UTC**, Dauer **14,573 Sekunden**, Exit **0** |
+| Renderer | `LibreOfficeDev 26.8.0.0.alpha0 2c87e51eeaa2b413ff4ae097b2705eea1995d8e5` |
+| Referenzmanifest | [presentation-reference.json](../apps/docs/public/presentation-reference.json), `renderedAt: 2026-10-11T09:42:53.829Z` |
+| Source-Hash | `c7fe04b27d9cd631d6c692ddf6319e538caee9df89f7a14710809f80cfa3b582`; nach dem Render mit `referenceDigest()` neu berechnet und identisch |
+| Umfang | **18 PDF und 54 PNG**, zusammen **72 Dateien**, sowohl im Manifest als auch im lokalen Referenzbestand |
+| Brands | `neutral`, `dominicano-express`, `rapold`; jeweils sechs PDF und 18 PNG |
+| Dateiprüfung | Alle 72 SHA-256-Werte und Dateigrössen stimmen mit dem Manifest überein; PNG- und PDF-Dateikennungen geprüft |
+| Entfernte Brands | Keine Goldbach-/Sygnum-Pfade im Referenzmanifest und keine entsprechenden lokalen `brands/*/reference`-Verzeichnisse |
+| Rapold-PDF-Schriften | `pdffonts` am [Rapold-Muster-PDF](../apps/docs/public/brands/rapold/reference/muster-deck.pdf) weist **Geist-Regular und Geist-Bold** als eingebettete TrueType-Subsets mit Unicode-Zuordnung aus |
+
+**Visuelle Stichprobe aus dem echten Render:** Die Rapold-PNGs [Cover](../apps/docs/public/brands/rapold/reference/cover-foto.png), [Management Summary](../apps/docs/public/brands/rapold/reference/management-summary.png) und [Split-Tabelle](../apps/docs/public/brands/rapold/reference/split-tabelle.png) wurden einzeln betrachtet. In diesen drei Folien waren keine sichtbaren Textüberläufe, abgeschnittenen Beschriftungen oder unbeabsichtigten Überdeckungen erkennbar. Das Cover behält den im Muster-PPTX vorgesehenen Bildslottext; ein neues Foto oder Produktweltenmotiv wurde bei diesem Render nicht ergänzt.
+
+Diese Stichprobe ist keine Sichtabnahme aller 54 PNG oder aller Preset-Folien. Der erfolgreiche Referenzrender belegt weder die neuen Produktwelten im Browser noch deren Bewegungssteuerung, Kontraste, Zugänglichkeit oder öffentliche Auslieferung. Nach den genannten Prüfungen wurden in diesem Schritt keine weiteren optionalen Tests ausgeführt.
+
+### 7.5 Vollständiger lokaler Check und Kontrastmodell · 11.10.2026
+
+**Framework 0.6.0 ist lokal umgesetzt und geprüft.** Die Hauptprüfung meldete für `npm run check` am **11.10.2026, 09:50–09:51 UTC**, Exit **0**: **47 Tests bestanden, 0 fehlgeschlagen**; TypeScript-Prüfung, **Next.js 16.3.5 Production Build** und Postbuild erfolgreich. Dieser Nachtrag dokumentiert den gemeldeten tatsächlichen Lauf; ein weiterer Build wurde dafür nicht gestartet.
+
+| Prüfgegenstand | Lokales Ergebnis |
+|---|---|
+| Framework-Inventar | **36 indexierte Frameworkrouten**, drei aktive Brands: `neutral`, `dominicano-express`, `rapold` |
+| Präsentationen | **18 PPTX, 54 PNG und 18 PDF**; der tatsächliche LibreOffice-Lauf und seine Stichprobengrenzen stehen in Abschnitt 7.4 |
+| Logoressourcen | **208 Logoexporte und 27 kanonische Ressourcen** |
+| Produktwelten-Manifest | **84 öffentliche Ressourcen** im neuen Manifest; dieser Bestand umfasst auch Kopien und das ZIP und wird getrennt vom Logo-Inventar gezählt |
+| Produktwelten-ZIP | **44 Dateien**: 43 bytegleich mit ihren bereitgestellten Gegenstücken; genau die öffentliche `index.html` enthält zusätzlich eine statische Base-URL für Vercel `cleanUrls`. Nach Entfernen genau dieses Tags ist auch ihr Inhalt bytegleich. Die ZIP-HTML bleibt relativ und offline verwendbar. |
+
+Der versionierte [Kontrastbericht](review/product-worlds-contrast.json), erzeugt um **09:51:08 UTC**, prüft die CSS-Farben mit ungerundeter sRGB-Komposition und WCAG-Luminanz. Für die Aurora wurden konservativ **625 Alpha-Kombinationen** aus drei Halos und der Fokusfläche ausgewertet. Verläufe wurden zusätzlich in sRGB und Oklab abgetastet. Die Minima nach der Korrektur betragen:
+
+| Modellierte Fläche / Inhalt | Hell | Dunkel | Bewerteter Umfang |
+|---|---:|---:|---|
+| Fabric-Hero, abgeschwächter Fliesstext auf der finalen Deckfläche | **6,06:1** | **8,65:1** | Normaler Text; Mindestwert 4,5:1 |
+| Wortmarke «Facetten» | **3,70:1** | **6,49:1** | Grosse fette Wortmarke, mindestens 20 px / Gewicht 700; Modellgrenze 3:1, keine Freigabe dieser Farben für kleinen Fliesstext |
+| Wortmarke «Spektrum» | **5,57:1** | **5,19:1** | Dieselbe Wortmarkengrösse; Modellgrenze 3:1 |
+| Learn-Terminaltext | **6,18:1** | **6,18:1** | Konservative Hintergrundgrenze mit Schwarz und Weiss; Terminalfläche mit 95 % Deckkraft und Text darüber und Ebene `z-index: 3` |
+
+Der Bericht enthält auch die vor der Korrektur unzureichenden ungeschützten Hero-Werte; diese sind Vergleichswerte, keine bestandenen Endzustände. **Dies ist eine konservative Modellrechnung, keine Browser-Pixelmessung.** Sie garantiert keine vollständige Prüfung aller Bildpositionen oder Animationsphasen. Learn-Text ausserhalb des geschützten Terminals ist im Bericht nur auf der flachen CSS-Basis bewertet; die fotografische Hero-Komposition braucht die tatsächliche Sicht-/Kontrastnachprüfung. Dekorative Zeichen, Icons, Konturen und Kantenglättung sind keine Textkontrastprüfung.
+
+**Noch ausstehend:** Commit-bezogene Produktionsauslieferung und neue Browserabläufe für die Produktwelten einschliesslich Pause, Reduced Motion und Fokus-/Textlesbarkeit. Aus dem lokalen Check werden keine bestandenen mobilen, 200-%-, Touch-, Screenreader- oder absichtlich provozierten Netzwerkfehlerprüfungen abgeleitet. Der 0.5.0-Produktionsnachweis in Abschnitt 6 bleibt davon getrennt.

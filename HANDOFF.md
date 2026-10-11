@@ -1,4 +1,14 @@
-# Handover 0.4.0
+# Handover
+
+## Aktuelle Brand-Registry
+
+Der Benutzer hat die Entfernung von Goldbach und Sygnum beauftragt. Aktiv bleiben `neutral`, `dominicano-express` und `rapold`; entfernte Themes, kanonische Quellen, Logos und aktive UI-Verzweigungen werden nicht weiter ausgeliefert. Die Muster-Generierung umfasst damit 18 PPTX-Dateien, 18 PDFs und 54 Folienbilder. Nicht mehr registrierte Ausgabeverzeichnisse werden beim Generieren entfernt.
+
+Nach der Registry-Änderung müssen die Referenzen mit `npm run deck:reference` neu gerendert und mit `npm run check` geprüft werden. Die Bereinigung des Referenzmanifests ersetzt diesen Nachweis nicht und setzt keinen neuen Quellhash. Aktueller Produktions- und Auditstatus: [Deployment](docs/deployment.md) und [Apple-orientierter Audit](docs/apple-design-audit.md).
+
+## Historischer Handover 0.4.0
+
+Die folgenden Abschnitte bewahren den damaligen Liefer- und Prüfstand. Frühere Brand-Aufträge und Deployment-Hindernisse sind historische Fakten; für die weitere Arbeit gilt die aktuelle Registry oben.
 
 ## Ziel und Referenz
 

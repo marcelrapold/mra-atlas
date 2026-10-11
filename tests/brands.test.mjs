@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
-import { brands, neutral, goldbach, defineBrand, contrast, toCssVariables, colorKeys, requiredBrandKeys, optionalBrandKeys } from '../packages/brands/src/index.mjs';
+import { brands, neutral, dominicanoExpress, defineBrand, contrast, toCssVariables, colorKeys, requiredBrandKeys, optionalBrandKeys } from '../packages/brands/src/index.mjs';
 import brandSchema from '../packages/brands/src/brand.schema.json' with { type: 'json' };
 import { presentationTheme } from '../packages/brands/src/presentation.mjs';
 
@@ -21,7 +21,8 @@ test('brand schema rejects missing colors, unknown roles and CSS injection', () 
 test('new brands require no core changes and unsupported dark mode falls back', () => {
   const custom = defineBrand({...structuredClone(neutral),id:'next-company',name:'Next Company'});
   assert.equal(toCssVariables(custom)['--primary'],neutral.modes.light.primary);
-  assert.equal(toCssVariables(goldbach,'dark')['--background'],goldbach.modes.light.background);
+  const lightOnly=defineBrand({...structuredClone(custom),modes:{light:structuredClone(custom.modes.light)}});
+  assert.equal(toCssVariables(lightOnly,'dark')['--background'],lightOnly.modes.light.background);
   assert.equal(Object.isFrozen(custom.modes.light),true);
 });
 test('presentation and UI derive their identity from the same source', () => {
@@ -37,9 +38,17 @@ test('core contains no organisation bindings, fonts or application infrastructur
   const walk = async dir => { for (const entry of await readdir(dir,{withFileTypes:true})) { const path=new URL(entry.name+(entry.isDirectory()?'/':''),dir); if(entry.isDirectory()) await walk(path); else { const text=await readFile(path,'utf8'); assert.doesNotMatch(text,/zvv|goldbach|sygnum|Brown Narrow|x-atlas-pin|supabase|next\/|framer-motion/i,entry.name); } } };
   await walk(root);
 });
-test('source-defined Goldbach pink hover requires a documented refinement', () => {
-  assert.ok(contrast('#ef1957','#ffffff') < 4.5);
-  assert.equal(goldbach.modes.light['primary-hover'],'#8d1926');
+test('Dominicano Express remains an isolated draft brand with both modes', () => {
+  assert.ok(brands.includes(dominicanoExpress));
+  assert.equal(dominicanoExpress.status,'draft');
+  assert.deepEqual(Object.keys(dominicanoExpress.modes),['light','dark']);
+  assert.equal(toCssVariables(dominicanoExpress)['--brand-color-navy'],dominicanoExpress.palette.navy);
+});
+test('brand palettes cannot inject CSS or override semantic variables', () => {
+  for(const palette of [{x:'url(https://example.com)'},{'x; color:red':'#FFFFFF'},[],{}, {x:'#FFF'}])assert.throws(()=>defineBrand({...structuredClone(neutral),palette}));
+  const custom=defineBrand({...structuredClone(neutral),palette:{primary:'#123456'}});
+  assert.equal(toCssVariables(custom)['--primary'],neutral.modes.light.primary);
+  assert.equal(toCssVariables(custom)['--brand-color-primary'],'#123456');
 });
 test('the published brand schema cannot drift from the validator it documents', () => {
   assert.deepEqual(brandSchema.required,[...requiredBrandKeys],'schema required keys');
@@ -51,7 +60,6 @@ test('the published brand schema cannot drift from the validator it documents', 
     for (const key of requiredBrandKeys) assert.ok(key in brand,`${brand.id}: ${key} missing from the brand`);
     for (const colors of Object.values(brand.modes)) assert.deepEqual(Object.keys(colors).sort(),[...colorKeys].sort(),`${brand.id}: colour roles`);
   }
-  // A key the validator accepts but the schema omits is exactly the failure that
-  // shipped with the Sygnum 0.2 adapter: valid at runtime, undocumented publicly.
+  // Runtime acceptance and the published schema must describe the same contract.
   assert.throws(()=>defineBrand({...structuredClone(neutral),unknownBlock:{}}),/invalid keys/);
 });
