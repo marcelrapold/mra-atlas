@@ -4,7 +4,7 @@
   "brandId": "rapold",
   "name": "Rapold",
   "publicBase": "/brands/rapold/",
-  "model": "Ein Theme mit eigenständigen Produktzeichen: vier freigegebene Signets und fünf Vorschläge.",
+  "model": "Ein Theme mit eigenständigen Produktzeichen: vier freigegebene Signets und sechs Vorschläge.",
   "symbolOnly": true,
   "viewBox": [
     0,
@@ -286,6 +286,25 @@
         "mono-white": "assets/logos/mono-white/pocketforge.svg",
         "mono-black": "assets/logos/mono-black/pocketforge.svg",
         "current-color": "assets/logos/current-color/pocketforge.svg"
+      }
+    },
+    {
+      "id": "atlas",
+      "name": "Atlas",
+      "shortName": "Atlas",
+      "domain": "atlas.rapold.io",
+      "purpose": "Das Rapold-Designsystem: Tokens, Komponenten, Signets und Präsentationsvorlagen.",
+      "status": "proposal",
+      "origin": {
+        "repository": "marcelrapold/mra-atlas",
+        "previousMark": "Ebenen-Symbol (Lucide «Layers») in der Navigation der Referenz-App"
+      },
+      "variants": {
+        "dark": "assets/logos/atlas.svg",
+        "light": "assets/logos/light/atlas.svg",
+        "mono-white": "assets/logos/mono-white/atlas.svg",
+        "mono-black": "assets/logos/mono-black/atlas.svg",
+        "current-color": "assets/logos/current-color/atlas.svg"
       }
     }
   ],

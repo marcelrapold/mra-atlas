@@ -58,7 +58,7 @@ Bei Änderungen an der Brand-Registry entfernt die Generierung nicht mehr regist
 ## Ausprägungen
 
 - Neutral: vollständige helle und dunkle Basis.
-- Rapold: gemeinsame Brand für Fabric, Argus, ÆON Learn und EdgePortal (freigegeben) sowie Lotse, Cockpit, Auditor, Rapold Auth und PocketForge (Vorschläge). 45 SVG-Master, lokale Geist-Fonts und 468 reproduzierbare Exporte. Status `draft` für den neuen UI-Adapter. Markenansicht: `/brand?brand=rapold`. [Quellen und Anwendung](brands/rapold/README.md).
+- Rapold: gemeinsame Brand für Fabric, Argus, ÆON Learn und EdgePortal (freigegeben) sowie Lotse, Cockpit, Auditor, Rapold Auth, PocketForge und Atlas (Vorschläge). 50 SVG-Master, lokale Geist-Fonts und 520 reproduzierbare Exporte. Status `draft` für den neuen UI-Adapter. Markenansicht: `/brand?brand=rapold`. [Quellen und Anwendung](brands/rapold/README.md).
 - Dominicano Express: eigenständiges helles und dunkles Preset mit seinem Caja-Inhaltsbeispiel.
 
 Firmenlogos, interne Vorgaben und lizenzierte Assets sind getrennt vom neutralen Core. Eine künftige freie Code-Lizenz erteilt keine Marken- oder Fontrechte.

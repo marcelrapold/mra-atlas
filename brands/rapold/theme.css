@@ -28,7 +28,7 @@
 .rapold-intro-meta {display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; padding-bottom: 4px; color: var(--muted-foreground); font: 12px/1.6 var(--font-mono);}
 .rapold-intro-meta strong {font-size: 48px; font-weight: 400; line-height: 1.2; letter-spacing: -.08em; margin-bottom: 12px; color: var(--primary);}
 .rapold-family {display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 14px 0 18px;}
-.rapold-family[data-status='proposal'] {grid-template-columns: repeat(5, minmax(0, 1fr));}
+.rapold-family[data-status='proposal'] {grid-template-columns: repeat(3, minmax(0, 1fr));}
 .rapold-family-heading {display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 30px 0 0; font-size: 16px; font-weight: 650; letter-spacing: -.01em;}
 .rapold-family-heading span {font-size: 13px; font-weight: 400; color: var(--muted-foreground);}
 .rapold-product-status {margin: 0 8px 0 auto; padding: 0 8px; border: 1px dashed var(--muted-foreground); border-radius: 999px; font-size: 11px; line-height: 20px;}

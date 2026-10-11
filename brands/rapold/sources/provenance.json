@@ -26,17 +26,19 @@
         "cockpit",
         "auditor",
         "auth",
-        "pocketforge"
+        "pocketforge",
+        "atlas"
       ],
       "family": "Raumfalten B",
-      "evidence": "Auftrag von Marcel Rapold: die Repos Lotse, Cockpit, Auditor, mra-auth und PocketForge in der Rapold-CI abbilden, bestehende Zeichen aufgreifen und optimieren; nur das Repository mra-design ändern.",
+      "evidence": "Auftrag von Marcel Rapold: die Repos Lotse, Cockpit, Auditor, mra-auth und PocketForge in der Rapold-CI abbilden, bestehende Zeichen aufgreifen und optimieren; nur das Repository mra-design ändern. Ergänzt: Atlas als eigenes Designsystem (Repo mra-atlas, Domain atlas.rapold.io).",
       "construction": "scripts/build-signet-proposals.mjs",
       "basis": {
         "lotse": "marcelrapold/lotse og.svg – isometrische Etagen mit Route; übernommen als Wegband mit Aufstieg und Pfeilspitze.",
         "cockpit": "marcelrapold/cockpit public/favicon.svg – Tacho mit Nadel; übernommen als dreiteilige Faltskala mit Rautennadel.",
         "auditor": "marcelrapold/auditor web/app/icon.svg – Schild mit Prüfhaken; erweitert zur Lupe: das gefaltete Schild bildet den Lupenrahmen, der Prüfhaken sitzt im Glas, ein längs gefalteter Griff ergänzt das Prüfen.",
         "auth": "marcelrapold/mra-auth atlas/mark.svg – Pulslinie; bewusst durch ein isometrisches Schloss ersetzt, weil der Dienst Zugang und nicht Überwachung darstellt.",
-        "pocketforge": "marcelrapold/pocketforge site/app/icon.svg – 4:3-Bildschirm mit einem Pixel; übernommen als isometrischer Bildschirm."
+        "pocketforge": "marcelrapold/pocketforge site/app/icon.svg – 4:3-Bildschirm mit einem Pixel; erweitert zum isometrischen Handheld mit Bildschirm, Pixel, Steuerkreuz und zwei Tasten, damit das Gaming erkennbar ist.",
+        "atlas": "Kein eigenes Zeichen vorhanden (bisher Lucide «Layers» in der Navigation); neu als gefaltete Karte (Leporello) mit freigestellter Ortsmarke."
       },
       "note": "Vorschläge sind keine Freigabe. Die Produkt-Repos verwenden weiterhin ihre bisherigen Zeichen, bis eine Freigabe dokumentiert ist."
     },

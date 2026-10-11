@@ -1,6 +1,6 @@
 # Rapold
 
-Ein optional wählbares Rapold-Theme für die Produkte AI Fabric, Argus, ÆON Learn und EdgePortal (freigegebene Signets) sowie Lotse, Cockpit, Auditor, Rapold Auth und PocketForge (Signet-Vorschläge). Es liefert eine gemeinsame Farb- und Typografiebasis für das neutrale Framework. Der Framework-Default bleibt `neutral`.
+Ein optional wählbares Rapold-Theme für die Produkte AI Fabric, Argus, ÆON Learn und EdgePortal (freigegebene Signets) sowie Lotse, Cockpit, Auditor, Rapold Auth, PocketForge und das Designsystem Atlas (Signet-Vorschläge). Es liefert eine gemeinsame Farb- und Typografiebasis für das neutrale Framework. Der Framework-Default bleibt `neutral`.
 
 **Status des UI-Adapters: `draft`, Version 0.2.0.** Marcel Rapold hat am **11.10.2026** die vier Signets der Raumfalten-Familie B freigegeben. Die neue Zuordnung zu vollständigen UI-Rollen und ihre visuelle Abnahme bleiben als separate Integrationsarbeit dokumentiert.
 
@@ -11,7 +11,7 @@ Ein optional wählbares Rapold-Theme für die Produkte AI Fabric, Argus, ÆON Le
 | Ebene | Inhalt | Kanonische Quelle |
 |---|---|---|
 | Gemeinsames Theme | `rapold`: Farben, Geist, helle und dunkle semantische Rollen | `packages/brands/src/rapold.json` |
-| Produktidentität | Vier freigegebene und fünf vorgeschlagene eigenständige Zeichen, jeweils mit `status` | [identity.json](identity.json) |
+| Produktidentität | Vier freigegebene und sechs vorgeschlagene eigenständige Zeichen, jeweils mit `status` | [identity.json](identity.json) |
 | Produktassets | Transparente SVG-Master und Farbvarianten | `brands/rapold/assets/logos/` |
 | Belegte Ausgangswerte | Unveränderte Tokenkopie des gelieferten Brand-Pakets | `brands/rapold/sources/brand-tokens.json` |
 | Herkunft und Ableitungen | Nutzerfreigabe, Prüfsumme, Quellen und UI-Verfeinerungen | `brands/rapold/sources/provenance.json` |
@@ -39,7 +39,8 @@ Die folgenden Signets sind **Vorschläge** (`status: "proposal"`), keine Freigab
 | `cockpit` | Cockpit · cockpit.rapold.io | Tacho mit Nadel | Dreiteilige Faltskala mit Rautenachse und heller Nadel | [cockpit.svg](assets/logos/cockpit.svg) |
 | `auditor` | Auditor · auditor.rapold.io | Schild mit Prüfhaken | Schild als Lupenrahmen: senkrecht gefaltet, Prüfhaken im Glas, gefalteter Griff | [auditor.svg](assets/logos/auditor.svg) |
 | `auth` | Rapold Auth · auth.rapold.io | Pulslinie | Isometrisches Schloss; die Pulslinie wurde bewusst ersetzt, weil der Dienst Zugang darstellt | [auth.svg](assets/logos/auth.svg) |
-| `pocketforge` | PocketForge · game.rapold.io | 4:3-Bildschirm mit einem Pixel | Isometrischer 4:3-Bildschirm mit leuchtendem Pixel | [pocketforge.svg](assets/logos/pocketforge.svg) |
+| `pocketforge` | PocketForge · game.rapold.io | 4:3-Bildschirm mit einem Pixel | Isometrischer Handheld mit Bildschirm, leuchtendem Pixel, Steuerkreuz und Tasten | [pocketforge.svg](assets/logos/pocketforge.svg) |
+| `atlas` | Atlas · atlas.rapold.io | Kein eigenes Zeichen (Ebenen-Symbol) | Gefaltete Karte (Leporello) mit freigestellter Ortsmarke | [atlas.svg](assets/logos/atlas.svg) |
 
 Die Geometrie wird in [`scripts/build-signet-proposals.mjs`](../../scripts/build-signet-proposals.mjs) konstruiert und als SVG-Master geschrieben; der normale Build liest nur die Master. Für die Vorschläge gibt es noch keine eigenen Produktwelten; die Referenz zeigt dort einen Hinweis.
 

@@ -51,11 +51,25 @@ export const signets={
   return {name:'Auth',desc:'Isometrisches Schloss: gefalteter Bügel und blaue Front mit freigestelltem Schlüsselloch, helle Seitenfläche.',
    bodyPath:d([front,key])+' '+d([shackle]),
    facets:[face(P,[[W,0,0],[W,0,D],[W,H,D],[W,H,0]])]};})(),
- pocketforge:(()=>{const W=136,H=102,D=30,P=isoP(26,150),i=16,px=34;
-  const front=face(P,[[0,0,0],[W,0,0],[W,H,0],[0,H,0]]),hole=face(P,[[i,i,0],[W-i,i,0],[W-i,H-i,0],[i,H-i,0]]);
-  const cx=W/2,cy=H/2,pixel=face(P,[[cx-px/2,cy-px/2,0],[cx+px/2,cy-px/2,0],[cx+px/2,cy+px/2,0],[cx-px/2,cy+px/2,0]]);
-  return {name:'PocketForge',desc:'Isometrischer 4:3-Bildschirm mit blauem Rahmen, heller Ober- und Seitenfläche und einem einzelnen leuchtenden Pixel in der Mitte.',
-   bodyPath:d([front,hole]),facets:[face(P,[[0,H,0],[W,H,0],[W,H,D],[0,H,D]]),face(P,[[W,0,0],[W,0,D],[W,H,D],[W,H,0]]),pixel]};})(),
+ pocketforge:(()=>{
+  // Landscape handheld in the family's isometric projection: screen with one lit pixel,
+  // a D-pad cut out on the left and two diamond buttons on the right.
+  const W=164,H=92,D=22,P=isoP(14,170);
+  const front=face(P,[[0,0,0],[W,0,0],[W,H,0],[0,H,0]]);
+  const sx0=46,sx1=118,sy0=18,sy1=74,screen=face(P,[[sx0,sy0,0],[sx1,sy0,0],[sx1,sy1,0],[sx0,sy1,0]]);
+  const cx=(sx0+sx1)/2,cy=(sy0+sy1)/2,px=16,pixel=face(P,[[cx-px/2,cy-px/2,0],[cx+px/2,cy-px/2,0],[cx+px/2,cy+px/2,0],[cx-px/2,cy+px/2,0]]);
+  const dx=24,dy=46,a=6,b=17;
+  const dpad=face(P,[[dx-a,dy+b,0],[dx+a,dy+b,0],[dx+a,dy+a,0],[dx+b,dy+a,0],[dx+b,dy-a,0],[dx+a,dy-a,0],[dx+a,dy-b,0],[dx-a,dy-b,0],[dx-a,dy-a,0],[dx-b,dy-a,0],[dx-b,dy+a,0],[dx-a,dy+a,0]]);
+  const btn=(x,y,r)=>face(P,[[x,y+r,0],[x+r,y,0],[x,y-r,0],[x-r,y,0]]);
+  return {name:'PocketForge',desc:'Isometrischer Handheld: blaue Front mit Bildschirm und leuchtendem Pixel, freigestelltes Steuerkreuz links, zwei rautenförmige Tasten rechts und helle Ober- und Seitenfläche.',
+   bodyPath:d([front,screen,dpad,btn(136,54,10),btn(152,36,10)]),
+   facets:[face(P,[[0,H,0],[W,H,0],[W,H,D],[0,H,D]]),face(P,[[W,0,0],[W,0,D],[W,H,D],[W,H,0]]),pixel]};})(),
+ atlas:(()=>{
+  // Folded map (leporello): four panels, rising panels blue, falling panels light.
+  const xs=[34,81,128,175,222],hi=58,lo=84,h=118,top=xs.map((x,k)=>[x,k%2?hi:lo]);
+  const panel=k=>[top[k],top[k+1],[top[k+1][0],top[k+1][1]+h],[top[k][0],top[k][1]+h]];
+  return {name:'Atlas',desc:'Gefaltete Karte als Leporello aus vier Feldern: steigende Felder blau, fallende Felder hell, mit einer freigestellten rautenförmigen Ortsmarke. Das Designsystem, das die Faltungen der Familie festlegt.',
+   body:[panel(0),panel(2),[[151.5,108],[165,128],[151.5,148],[138,128]]],facets:[panel(1),panel(3)]};})(),
 };
 function svg(id,{body='#009DFF',facet='#A8EDFF',variant='default'}={}){const s=signets[id];const bp=s.bodyPath??d(s.body);
  return `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img">\n  <title>${s.name} – Signet</title>\n  <desc>${s.desc} Transparente Vektorgrafik ohne sichtbare Schrift. Variante: ${variant}.</desc>\n  <path data-part="body" fill="${body}" fill-rule="evenodd" d="${bp}"/>\n${s.facets.map((f,i)=>`  <polygon data-part="facet-${i+1}" fill="${facet}" points="${pts(f)}"/>`).join('\n')}\n</svg>\n`;}
