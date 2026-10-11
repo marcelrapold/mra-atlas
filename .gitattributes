@@ -1,0 +1,11 @@
+# Byte-exact sources: checksums, source digests and reference hashes must match on every OS.
+* text=auto eol=lf
+*.png binary
+*.ico binary
+*.zip binary
+*.pptx binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
