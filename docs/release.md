@@ -19,7 +19,7 @@ Lizenz: «Alle Rechte vorbehalten», Marcel Rapold (`LICENSE`). Drittlizenzen we
 
 ## Webbetrieb
 
-`npm run build` erzeugt einen statischen Export in `apps/docs/out`. Diese Dateien benötigen keinen Auth-, Datenbank- oder API-Server. Ziel: `atlas.rapold.io`. Kein automatischer DNS-Wechsel, kein Deployment-Token und keine ZVV-Umgebungsvariable werden übernommen. Upload und Produktionsdeployment sind vom Benutzer beauftragt. Der Lizenzstatus bleibt davon getrennt dokumentiert.
+`npm run build` erzeugt einen statischen Export in `apps/docs/out`. Diese Dateien benötigen keinen Auth-, Datenbank- oder API-Server. Ziel: `atlas.rapold.io`. Kein automatischer DNS-Wechsel, kein Deployment-Token und keine fremden Umgebungsvariablen werden übernommen.
 
 Für einen späteren Generator werden Repo-Leserechte und ein Präsentationsrenderer benötigt. Der aktuell implementierte Einstieg `/llms.txt` liefert den Auftrag an den Agenten, kein Backend und keine angebliche PPTX-API.
 
