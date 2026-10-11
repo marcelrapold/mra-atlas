@@ -182,7 +182,7 @@
       "id": "edgeportal",
       "name": "EdgePortal",
       "shortName": "EdgePortal",
-      "domain": null,
+      "domain": "edgeportal.rapold.io",
       "purpose": "Verbundene Screens, Sitzungen und Arbeitsräume orchestrieren.",
       "status": "approved",
       "variants": {

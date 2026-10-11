@@ -1,13 +1,7 @@
-/** Adapted from zvvch/zvv-atlas at 1c75c954, assets/organigramm/orgchart.mjs.
- * Source license: repository LICENSE. White-label changes: no corporate font,
- * no organisation data, safe attribute escaping, bounded rows, configurable line/text.
- */
 /**
  * Atlas Organigramm + Zuständigkeiten-Diagramm — pure Render-Logik (kein fs, kein DOM).
- *
- * Kanonische Quelle: assets/organigramm/orgchart.mjs. Die Kopie in
- * example/lib/atlas/orgchart.mjs wird via sync-atlas-assets.mjs gespiegelt —
- * dort nie direkt editieren.
+ * White-Label: keine Hausschrift, keine Organisationsdaten, sicheres Attribut-Escaping,
+ * begrenzte Zeilen, konfigurierbare Linien und Texte.
  *
  * Konsumenten: assets/organigramm/generate.mjs (CLI) und die Showcase-Route
  * /organigramm (Live-Editor). Recipe: patterns/organigramm.md
@@ -32,16 +26,15 @@ const DEFAULT_FONT = 'Arial, sans-serif'
  * Akzentfarben der Abteilungen — eine **chart-lokale** Palette, keine Brand-
  * Tokens (und nicht mit den VBZ-Linienfarben zu verwechseln, docs/01-identity.md).
  *
- * Alle Töne liegen auf der Luminanz des ZVV-Blaus: ~4.9:1 Kontrast gegen Weiss,
+ * Alle Töne liegen auf der Luminanz der Primärfarbe: ~4.9:1 Kontrast gegen Weiss,
  * also WCAG AA für den weissen Header-Text und untereinander gleiches optisches
  * Gewicht. Sie unterscheiden sich im Farbton, nicht in der Helligkeit — dadurch
  * bleibt das Blatt eine Familie statt eines Flickenteppichs.
  *
  * Die Reihenfolge alterniert warm/kalt, damit benachbarte Boxen maximal
  * differieren. Die erste Abteilung bekommt kein Palettenglied, sondern
- * `opts.primary` (siehe accentFor) — das ZVV-Blau bleibt gesetzt, und mit ihm
- * die Tints `#ebf4fb`/`#a6ceee`, die das Mermaid-Theme aus dem generierten
- * `zvv-organigramm.svg` zitiert (patterns/mermaid-diagram.md).
+ * `opts.primary` (siehe accentFor) — die Primärfarbe bleibt gesetzt, und mit ihr
+ * die Tints `#ebf4fb`/`#a6ceee`, die auch das Mermaid-Theme verwendet.
  */
 export const DEPT_ACCENTS = [
   '#be4f17', // Rost
@@ -156,8 +149,8 @@ export function toJsonLd(data) {
 
 // ----------------------------- PUBLIC-VARIANTE -----------------------------
 /**
- * Reduziert die Daten auf den öffentlich publizierbaren Stand: wie das
- * offizielle zvv.ch-Organigramm-PDF nur Abteilungen + Aufgaben, keine
+ * Reduziert die Daten auf den öffentlich publizierbaren Stand: wie ein
+ * öffentliches Organigramm nur Abteilungen + Aufgaben, keine
  * Personennamen (Pattern §7). Für Embeds auf öffentlichen Seiten.
  */
 export function toPublicData(data) {
@@ -174,7 +167,7 @@ export function toPublicData(data) {
  * width/height-Attribute des SVG-Root. Non-responsive multipliziert
  * `opts.scale` die natural size (Default 1) — die viewBox bleibt unverändert,
  * beim Vektorformat ist die Reserve verlustfrei und gratis. Nötig für
- * Lightbox-Overlays (lightGallery auf zvv.ch): ein `<img>` wird nie grösser
+ * Lightbox-Overlays (z. B. lightGallery): ein `<img>` wird nie grösser
  * dargestellt als seine natural size, 1× viewBox wäre dort der Deckel.
  * Details: patterns/lightbox.md §7.
  */
@@ -193,8 +186,8 @@ function svgSizeAttrs(width, height, opts) {
  *                                    color-tokens.css gelesen, im Web aus der CSS-Var.
  *                                    Trägt die Direktion und die erste Abteilung;
  *                                    die übrigen kommen aus DEPT_ACCENTS.
- * @param {boolean} [opts.monochrome] true = alle Abteilungen in `primary`, wie das
- *                                    offizielle zvv.ch-PDF (CLI: `--monochrome`)
+ * @param {boolean} [opts.monochrome] true = alle Abteilungen in `primary`, wie ein
+ *                                    einfarbiges Druck-PDF (CLI: `--monochrome`)
  * @param {string} [opts.font]        font-family-Kette (Default: Arial + Fallbacks)
  * @param {string} [opts.fontFaceCss] fertiges font-face-CSS (data-URIs) → style-Block im SVG
  * @param {boolean} [opts.responsive] true = kein width/height-Attribut, skaliert auf
@@ -226,7 +219,7 @@ export function renderOrgchart(data, opts = {}) {
   if (!departments.length || departments.length > 8) throw new Error('renderOrgchart: eine bis acht Abteilungen nötig')
   const accents = departments.map((d, i) => accentFor(d, i, primary, opts.monochrome === true))
   const direction = norm(data.direction ?? {})
-  // Fallback = offizielle Benennung auf zvv.ch → Organisation (Juli 2026)
+  // Fallback-Titel, wenn die Daten keinen eigenen setzen.
   const title = data.title ?? 'Organisation und Mitarbeitende'
   const legend = data.legend ?? '* Geschäftsleitung'
 
@@ -366,14 +359,12 @@ export function renderOrgchart(data, opts = {}) {
 }
 
 // ----------------------------- ZUSTÄNDIGKEITEN -----------------------------
-// Nachbau der offiziellen Grafik «Zuständigkeiten und Arbeitsteilung zwischen
-// Kanton, ZVV und den Transportunternehmen» (zvv.ch → Organisation):
-// zwei externe Boxen (Kanton, Gemeinden) oben, darunter der hellblaue
-// Verbund-Bereich mit ZVV → MVU → weitere Verkehrsunternehmen.
+// Zuständigkeitsgrafik: zwei externe Boxen (z. B. Auftraggeber) oben, darunter
+// ein hellblauer Verbund-Bereich mit drei gestapelten Ebenen.
 
 const Z_W = 1000            // Canvas-Breite
 const Z_TOP_W = 340         // externe Boxen (Kanton, Gemeinden)
-const Z_TOP_CX = [320, 680] // deren Mittelachsen — landen auf der ZVV-Box
+const Z_TOP_CX = [320, 680] // deren Mittelachsen — landen auf der obersten Verbund-Box
 const Z_VB_W = 640          // Verbund-Boxen
 const Z_PANEL_PAD = 50      // Panel-Überstand um die Verbund-Boxen
 const Z_PAD = 22            // Innen-Padding Verbund-Boxen

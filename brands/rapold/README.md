@@ -27,7 +27,7 @@ Es gibt genau einen Rapold-Eintrag in der Brand-Registry. Die Produktkennungen w
 | `fabric` | AI Fabric | [fabric.svg](assets/logos/fabric.svg) |
 | `argus` | Argus | [argus.svg](assets/logos/argus.svg) |
 | `learn` | ÆON Learn | [learn.svg](assets/logos/learn.svg) |
-| `edgeportal` | EdgePortal | [edgeportal.svg](assets/logos/edgeportal.svg) |
+| `edgeportal` | EdgePortal · edgeportal.rapold.io | [edgeportal.svg](assets/logos/edgeportal.svg) |
 
 ### Vorschläge seit 0.7.0
 

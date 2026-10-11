@@ -15,7 +15,7 @@ Dieses Repository ist **Atlas**, das Designsystem von Rapold, adressiert unter h
 - Repository-Umbenennung nach `marcelrapold/mra-atlas` separat ausführen und Repository-Links nachziehen.
 - Rapold-UI-Adapter bleibt `draft`. Physische Mobil-/Touch-Geräte, Assistenztechnik, 200-%-Zoom, Forced Colors und Pixelkontrast sind ungeprüft.
 - Corporate-Master-Import, gehostetes Organigramm-Widget, Font-Einbettung, spezialisierte Visualisierungen und anbieterspezifische Integrationsbeispiele bleiben offen.
-- Original-LICENSE bleibt erhalten; öffentliche Quellablage und freie Neulizenzierung sind verschiedene Entscheidungen. Keine ZVV-Assets oder internen Dienste übernehmen.
+- Lizenz seit 0.7.0: «Alle Rechte vorbehalten», Marcel Rapold. Drittlizenzen (Geist, Lucide, ECharts, Learn-Ebenen) bleiben beigelegt.
 
 Release-Prüfung: `npm run check`. Produktion erst mit passendem `build-info.json` auf der Zieldomain als ausgeliefert bezeichnen.
 

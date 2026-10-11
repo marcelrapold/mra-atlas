@@ -13,7 +13,6 @@ Die lokalen Arbeitsverträge `AGENTS.md`, `apps/docs/AGENTS.md`, `README.md`, di
 | Referenz | Geprüfter Stand und Bedeutung |
 |---|---|
 | mra-design | [Baseline 03555e3](https://github.com/marcelrapold/mra-design/tree/03555e3c86364e500da9b5a8a97b132e741cdfd8), Framework 0.4.3 |
-| Code-Herkunft | `1c75c95417cc371040e1e24a0986213314b53c13`, in `docs/extraction.md` dokumentiert |
 | Damaliger Quellvergleich mit dem Ausgangsrepository | Commit `98cd4fd1051d2c0419cde87755ce409e475e2fd6`. Die Hauptprüfung las Brand-Seite und Bausteine sowie App-Shell, Mobile-Navigation und Command-Palette. |
 | Apple-Design-Skill | [SKILL.md am Commit 904b0ee](https://github.com/dickwu/apple-design-skill/blob/904b0eedc7cc778152f545506075d5bb5219ce77/SKILL.md), vollständige SHA `904b0eedc7cc778152f545506075d5bb5219ce77`, Commit vom 02.10.2026 |
 | Web-Anforderungen | Primärquellen des W3C: WCAG 2.2 Understanding und ARIA Authoring Practices. Diese konkretisieren die Web-Semantik; die Understanding-Texte sind Erläuterungen zu den Erfolgskriterien. |
