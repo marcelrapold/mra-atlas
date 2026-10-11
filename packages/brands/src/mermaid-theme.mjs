@@ -1,6 +1,6 @@
 import { contrast } from './index.mjs';
 
-// Theme coverage and geometry follow Atlas 1c75c95, mermaid-theme.ts.
+// Theme coverage and geometry: every Mermaid colour group is set from semantic brand roles.
 // Corporate colours are resolved here, outside the neutral component package.
 export const MERMAID_WRAPPING_WIDTH = 260;
 export const MERMAID_NODE_PADDING = 10;

@@ -99,6 +99,6 @@ Die reguläre Bewegung übernimmt 180 ms und `cubic-bezier(.2,.7,.2,1)` aus dem 
 
 ## 7. Integrationsgrenzen und Prüfung
 
-Das Brand-Paket liefert Farb- und Typografieentscheidungen. Seitenaufbau, Komponentenverhalten, Navigation und Präsentationsmuster bleiben beim neutralen Atlas-Vertrag. Die Integration fügt keine an Rapold gebundene Logik in Core-Komponenten ein.
+Das Brand-Paket liefert Farb- und Typografieentscheidungen. Seitenaufbau, Komponentenverhalten, Navigation und Präsentationsmuster bleiben beim neutralen Systemvertrag von Atlas. Die Integration fügt keine an Rapold gebundene Logik in Core-Komponenten ein.
 
 `tests/brands.test.mjs` prüft den gemeinsamen Brand-Vertrag einschliesslich der Kontraste beider Modi. `tests/rapold.test.mjs` ergänzt die Grenzen zwischen Dachtheme und Produktzeichen, die unveränderte Identitätspalette, die Exporttrennung, zusätzliche Textpaare und den Quellen-/Freigabestatus. `npm run check` bleibt das gemeinsame Integrationsgate. Die visuelle Prüfung von Komponenten, Formzuständen, Portals und Tastaturfokus ist separat abzuschliessen.

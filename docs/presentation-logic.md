@@ -1,6 +1,6 @@
 # Präsentationslogik
 
-Verbindliche Ableitung aus Atlas `patterns/praesentation.md`, Abschnitte 1–7, Commit `1c75c95417cc371040e1e24a0986213314b53c13`. Die Brand ersetzt Identität und ausdrückliche CI-Vorgaben. Struktur, Evidenzlogik und Konstruktion bleiben erhalten.
+Verbindlicher Inhaltsvertrag von Atlas für Management-Präsentationen. Die Brand bestimmt Identität und ausdrückliche CI-Vorgaben. Struktur, Evidenzlogik und Konstruktion bleiben erhalten.
 
 ## Dramaturgie vor Gestaltung
 

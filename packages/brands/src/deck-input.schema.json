@@ -1,6 +1,6 @@
 {
  "$schema":"https://json-schema.org/draft/2020-12/schema",
- "$id":"https://design.rapold.io/praesentation/deck-input.schema.json",
+ "$id":"https://atlas.rapold.io/praesentation/deck-input.schema.json",
  "title":"Management deck content contract",
  "type":"object",
  "required":["decisionQuestion","sections","slides"],

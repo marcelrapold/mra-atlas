@@ -16,7 +16,7 @@ assert.deepEqual(publishedBrandIds,activeBrandIds,'The deployable output must co
 const brandIndex=JSON.parse(await readFile(new URL('brands/index.json',out),'utf8'));
 assert.deepEqual(brandIndex.brands.map(brand=>brand.id).sort(),activeBrandIds,'Published brand registry');
 for(const brand of brands)for(const file of ['brand.json','presentation.json',...Object.keys(brand.modes).map(mode=>`mermaid.${mode}.json`)])assert.ok((await readFile(new URL(`brands/${brand.id}/${file}`,out))).length,`Missing brand contract: ${brand.id}/${file}`);
-for(const page of ['praesentation','praesentationslogik','coverage','mermaid','charts','tables','organigramm','prompt-compiler','login-pattern','mail-templates'])assert.ok((await readFile(new URL(`${page}.html`,out))).length,`Missing reference page: ${page}`);
+for(const page of ['praesentation','praesentationslogik','mermaid','charts','tables','organigramm','prompt-compiler','login-pattern','mail-templates'])assert.ok((await readFile(new URL(`${page}.html`,out))).length,`Missing reference page: ${page}`);
 const validator=await import(new URL('praesentation/deck-validation.mjs',out));
 assert.equal(validator.validateDeck({sections:[],slides:[]}).valid,false,'Served standalone validator must run and reject an empty deck');
 assert.equal(JSON.parse(await readFile(new URL('praesentation/deck-input.schema.json',out),'utf8')).type,'object');
@@ -76,14 +76,14 @@ for(const brand of brands){
  for(const other of brands.filter(b=>b.id!==brand.id))assert.ok(!guide.includes(`/brands/${other.id}/`),`Foreign brand contract in ${brand.id} guide`);
  if(brand.assets?.logo)assert.ok(guide.includes(brand.assets.logo.path));
  const prompt=compilePrompt({idea:'Analysiere owner/repo.',format:'Präsentation',brand});
- const entry=prompt.match(/https:\/\/design\.rapold\.io\/(brands\/[^\s]+\/management\.md)/)?.[1];
+ const entry=prompt.match(/https:\/\/atlas.rapold.io\/(brands\/[^\s]+\/management\.md)/)?.[1];
  assert.ok(entry,'Short presentation task must resolve to a published management contract');
  const management=await readFile(new URL(entry,out),'utf8');
- assert.ok(guide.includes(`https://design.rapold.io/${entry}`),'General agent entry must discover the short-task contract');
+ assert.ok(guide.includes(`https://atlas.rapold.io/${entry}`),'General agent entry must discover the short-task contract');
  assert.ok(management.includes(`Aktive Brand: ${brand.id}`));
  assert.ok(management.includes(`"brand": "${brand.id}"`),'Source manifest example must use the selected brand');
  for(const other of brands.filter(b=>b.id!==brand.id))assert.ok(!management.includes(`/brands/${other.id}/`),`Foreign brand in ${brand.id} management contract`);
- for(const match of management.matchAll(/https:\/\/design\.rapold\.io\/([\w./-]+)/g)){
+ for(const match of management.matchAll(/https:\/\/atlas.rapold.io\/([\w./-]+)/g)){
   const path=match[1].replace(/[.,]+$/,'');
   assert.ok((await readFile(new URL(path,out))).length,`Broken management contract dependency: ${path}`);
  }
@@ -94,7 +94,7 @@ console.log('Default pages and theme-specific agent contracts are isolated.');
 // Discovery surface: a public contract nobody can find is half a contract.
 const sitemap=await readFile(new URL('sitemap.xml',out),'utf8');
 const robots=await readFile(new URL('robots.txt',out),'utf8');
-assert.match(robots,/Sitemap: https:\/\/design\.rapold\.io\/sitemap\.xml/,'robots.txt must advertise the sitemap');
+assert.match(robots,/Sitemap: https:\/\/atlas.rapold.io\/sitemap\.xml/,'robots.txt must advertise the sitemap');
 assert.ok((await readFile(new URL('og.png',out))).length,'Missing social card');
 const indexed=[...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>m[1]);
 assert.ok(indexed.length>=30,`sitemap lists only ${indexed.length} routes`);
@@ -105,7 +105,7 @@ for(const loc of indexed){
 }
 const home=await readFile(new URL('index.html',out),'utf8');
 for(const tag of [/rel="icon"/,/property="og:title"/,/property="og:image"/,/name="twitter:card"/,/rel="canonical"/])assert.match(home,tag,`Missing discovery tag: ${tag}`);
-assert.match(await readFile(new URL('tokens.html',out),'utf8'),/rel="canonical" href="https:\/\/design\.rapold\.io\/tokens"/,'Each page needs its own canonical URL');
+assert.match(await readFile(new URL('tokens.html',out),'utf8'),/rel="canonical" href="https:\/\/atlas.rapold.io\/tokens"/,'Each page needs its own canonical URL');
 console.log(`Discovery verified: ${indexed.length} indexed routes, robots, social card and per-page canonicals.`);
 
 

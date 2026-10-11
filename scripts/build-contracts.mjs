@@ -15,7 +15,6 @@ const managementContract = await readFile(new URL('../docs/repo-to-management.md
 await mkdir(new URL('contracts/',root),{recursive:true});
 await copyFile(new URL('../docs/repo-to-management.md',import.meta.url),new URL('contracts/repo-to-management.md',root));
 await copyFile(new URL('../docs/brand-contract.md',import.meta.url),new URL('contracts/brand-contract.md',root));
-await copyFile(new URL('../docs/atlas-reference.md',import.meta.url),new URL('contracts/atlas-reference.md',root));
 await copyFile(new URL('../packages/brands/src/brand.schema.json',import.meta.url),new URL('contracts/brand.schema.json',root));
 await copyFile(new URL('../llms.txt',import.meta.url),new URL('llms.txt',root));
 await mkdir(new URL('brands/',root),{recursive:true});
@@ -40,7 +39,7 @@ for (const brand of brands) {
   const activeGuide=`# ${brand.id==='neutral'?'Default-Preset':brand.name+'-Theme'}\n\nAktive Brand: ${brand.id} · Status: ${brand.status}\nNur die folgenden Theme-Vorgaben und die gemeinsamen Framework-Regeln verwenden.\n\n${sharedAgentGuide.replaceAll('{brand}',brand.id)}\n${brandSources?'## Quellen dieses Themes\n'+brandSources+'\n- /brands/'+brand.id+'/rules.md\n':''}${brand.assets?.logo?'\nOriginal-Logo: /'+brand.assets.logo.path+'\n':''}`;
   await writeFile(new URL('llms.txt',directory),activeGuide);
   const managementGuide=`# Management-Präsentation · ${brand.id==='neutral'?'Default':brand.name}\n\nAktive Brand: ${brand.id} · Status: ${brand.status} · Framework: ${version}\nDieser verlinkte Einstieg ist die Theme-Wahl des Auftrags. Nur die aktiven Brand-Quellen und Original-Assets verwenden. Explizite abweichende Nutzerangaben haben Vorrang.\n\n${managementContract.replaceAll('{brand}',brand.id)}\n${brandSources?'## Pflichtquellen der aktiven Brand\n'+brandSources+'\n- /brands/'+brand.id+'/rules.md\n':''}${brand.assets?.logo?'\nOriginal-Logo: /'+brand.assets.logo.path+'\n':''}`;
-  await writeFile(new URL('management.md',directory),managementGuide.replace(/(^|[\s(`])\/(brands|contracts|praesentation)\//gm,'$1https://design.rapold.io/$2/'));
+  await writeFile(new URL('management.md',directory),managementGuide.replace(/(^|[\s(`])\/(brands|contracts|praesentation)\//gm,'$1https://atlas.rapold.io/$2/'));
   await writeFile(new URL('brand.json',directory),JSON.stringify(brand,null,2)+'\n');
   await writeFile(new URL('presentation.json',directory),JSON.stringify(presentationTheme(brand),null,2)+'\n');
 }
@@ -65,7 +64,7 @@ await import('./build-icons.mjs');
 await import('./build-decks.mjs');
 await copyFile(new URL('../packages/brands/src/deck-input.schema.json',import.meta.url),new URL('praesentation/deck-input.schema.json',root));
 const uiModules=(await readdir(new URL('../packages/core/src/ui/',import.meta.url))).filter(name=>name.endsWith('.tsx')).length;
-await writeFile(new URL('build-info.json',root),JSON.stringify({version,builtAt:new Date().toISOString(),commit:process.env.VERCEL_GIT_COMMIT_SHA??process.env.GITHUB_SHA??'local-build',atlasReference:'1c75c95417cc371040e1e24a0986213314b53c13',uiModules,slideTypes:slides.length,deckPresets:presets.length},null,2)+'\n');
+await writeFile(new URL('build-info.json',root),JSON.stringify({version,builtAt:new Date().toISOString(),commit:process.env.VERCEL_GIT_COMMIT_SHA??process.env.GITHUB_SHA??'local-build',uiModules,slideTypes:slides.length,deckPresets:presets.length},null,2)+'\n');
 await copyFile(new URL('../packages/presentation/src/project-input.schema.json',import.meta.url),new URL('praesentation/project-input.schema.json',root));
 await copyFile(new URL('../examples/framework-review.json',import.meta.url),new URL('praesentation/framework-review.json',root));
 const projectValidator=await readFile(new URL('../packages/presentation/src/validate-project.mjs',import.meta.url),'utf8');

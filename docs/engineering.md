@@ -1,6 +1,6 @@
 # Engineering-Vertrag
 
-White-Label-Ableitung aus Atlas docs/08-engineering.md, Referenz-Commit 1c75c95417cc371040e1e24a0986213314b53c13. Diese Regeln beschreiben die Anwendung des Frameworks. Bestehende projektspezifische Arbeitsregeln und ausdrücklich autorisierte Release-Abläufe haben Vorrang.
+Diese Regeln beschreiben die Arbeit an und mit Atlas. Bestehende projektspezifische Arbeitsregeln und ausdrücklich autorisierte Release-Abläufe haben Vorrang.
 
 ## Branches und Umgebungen
 
@@ -16,9 +16,9 @@ Conventional Commits mit fachlichem Scope: feat(presentation), fix(navigation), 
 
 ## Version und Herkunft
 
-MAJOR kennzeichnet inkompatible Vertragsänderungen. MINOR ergänzt kompatible Funktionen. PATCH korrigiert Verhalten oder Dokumentation. Die Version in package.json ist die Quelle für Website und build-info.json; Versionen werden nicht separat in Komponenten eingetragen. CHANGELOG.md beschreibt jedes Release. Die Atlas-Herkunft wird mit einem konkreten Commit dokumentiert.
+MAJOR kennzeichnet inkompatible Vertragsänderungen. MINOR ergänzt kompatible Funktionen. PATCH korrigiert Verhalten oder Dokumentation. Die Version in package.json ist die Quelle für Website und build-info.json; Versionen werden nicht separat in Komponenten eingetragen. CHANGELOG.md beschreibt jedes Release. Die Herkunft übernommenen Codes wird mit einem konkreten Commit dokumentiert (docs/extraction.md).
 
-Version, Commit, Build-Zeit und Referenz-Commit bleiben maschinenlesbar. Der Produktionsnachweis vergleicht build-info.json der Zieldomain mit dem ausgelieferten Git-Commit. Eine erreichbare Domain oder ein erfolgreicher GitHub-Push allein bestätigt keinen neuen Produktionsstand.
+Version, Commit und Build-Zeit bleiben maschinenlesbar. Der Produktionsnachweis vergleicht build-info.json der Zieldomain mit dem ausgelieferten Git-Commit. Eine erreichbare Domain oder ein erfolgreicher GitHub-Push allein bestätigt keinen neuen Produktionsstand.
 
 ## Reproduzierbare Prüfung
 
@@ -49,4 +49,4 @@ Logs enthalten technische Ereignisse und korrelierbare Request-IDs. Personenbezo
 
 ## Abweichungen dokumentieren
 
-Jede bewusste Abweichung nennt Atlas-Quelle, Entscheidung, Grund und Prüfnachweis. Dokumentierte Muster, implementierte Funktionen, getestete Interaktionen und freigegebene Corporate-Assets bleiben getrennte Aussagen. docs/atlas-coverage.md führt die offenen Punkte.
+Jede bewusste Abweichung vom Vertrag nennt betroffenes Muster, Entscheidung, Grund und Prüfnachweis. Dokumentierte Muster, implementierte Funktionen, getestete Interaktionen und freigegebene Corporate-Assets bleiben getrennte Aussagen. HANDOFF.md führt die offenen Punkte.

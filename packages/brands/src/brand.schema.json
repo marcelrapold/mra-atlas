@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://design.rapold.io/contracts/brand.schema.json",
+  "$id": "https://atlas.rapold.io/contracts/brand.schema.json",
   "title": "Brand adapter",
   "description": "Machine-readable form of the contract enforced by defineBrand in packages/brands/src/index.mjs. The implementation stays authoritative; tests/brands.test.mjs holds the two in sync.",
   "type": "object",

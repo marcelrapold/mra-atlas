@@ -2,23 +2,23 @@
 
 Stand: **11.10.2026**. Gegenstand: `marcelrapold/mra-design`, Integration der freigegebenen Rapold-Raumfaltenfamilie. Geprüfte Baseline: **`03555e3c86364e500da9b5a8a97b132e741cdfd8`**. Die unten genannten Zeilen beziehen sich auf diese Baseline, sofern ausdrücklich kein Integrationsstand genannt ist.
 
-**Status: belegter Code-Audit mit anschliessender Korrekturprüfung.** Dies ist keine WCAG-Zertifizierung und keine Bestätigung vollständiger Atlas-Parität. Die statische Prüfung fand konkrete Probleme bei Dialogfokus, Suchsemantik, Tastaturfokus und schmalen Ansichten. Korrekturen und tatsächlich ausgeführte Prüfungen werden am Ende separat protokolliert. Ein geplanter Fix zählt noch nicht als bestandene Abnahme.
+**Status: belegter Code-Audit mit anschliessender Korrekturprüfung.** Dies ist keine WCAG-Zertifizierung und keine Bestätigung vollständiger Parität mit dem Ausgangssystem. Die statische Prüfung fand konkrete Probleme bei Dialogfokus, Suchsemantik, Tastaturfokus und schmalen Ansichten. Korrekturen und tatsächlich ausgeführte Prüfungen werden am Ende separat protokolliert. Ein geplanter Fix zählt noch nicht als bestandene Abnahme.
 
 **Lesestand:** Die Abschnitte 1–5 dokumentieren den historischen Vorab- und Integrationsstand. Der gesondert datierte [Produktionsnachtrag in Abschnitt 6](#6-produktions--und-browsernachprüfung--11102026) ergänzt tatsächliche Nachweise für den ersten Rollout. Frühere Angaben wie «Browserprüfung offen» bleiben als damaliger Prüfstand erhalten; der Nachtrag ist keine finale Vollabnahme. Abschnitt 7 dokumentiert die danach beauftragte 0.6.0-Ergänzung, ihre lokalen Prüfungen und den gesondert belegten Produktionsrollout. Die gezielte neue Browsernachprüfung ist in Abschnitt 7.6 mit ihren tatsächlichen Abläufen und verbleibenden Grenzen protokolliert.
 
 ## 1. Quellen, Auftrag und Grenzen
 
-Die lokalen Arbeitsverträge `AGENTS.md`, `apps/docs/AGENTS.md`, `README.md`, `docs/atlas-reference.md` und `docs/atlas-coverage.md` wurden gelesen. Atlas bleibt die verbindliche Referenz für Seitenarchitektur, Navigation, Komponentenverhalten und Präsentationsmuster. Apple HIG liefert ergänzende Kriterien für Bedienbarkeit und Gestaltung. Die freigegebene Rapold-Identität wird dadurch nicht ersetzt.
+Die lokalen Arbeitsverträge `AGENTS.md`, `apps/docs/AGENTS.md`, `README.md`, die damaligen Referenz- und Abdeckungsdokumente wurden gelesen. Zum Prüfzeitpunkt galt das Ausgangssystem als Referenz für Seitenarchitektur, Navigation, Komponentenverhalten und Präsentationsmuster. Apple HIG liefert ergänzende Kriterien für Bedienbarkeit und Gestaltung. Die freigegebene Rapold-Identität wird dadurch nicht ersetzt.
 
 | Referenz | Geprüfter Stand und Bedeutung |
 |---|---|
 | mra-design | [Baseline 03555e3](https://github.com/marcelrapold/mra-design/tree/03555e3c86364e500da9b5a8a97b132e741cdfd8), Framework 0.4.3 |
-| Atlas-Extraktion | `1c75c95417cc371040e1e24a0986213314b53c13`, in `docs/atlas-reference.md` dokumentiert |
-| Aktueller Atlas-Quellvergleich | [98cd4fd](https://github.com/zvvch/zvv-atlas/tree/98cd4fd1051d2c0419cde87755ce409e475e2fd6). Die Hauptprüfung las Brand-Seite und Bausteine sowie App-Shell, Mobile-Navigation und Command-Palette. |
+| Code-Herkunft | `1c75c95417cc371040e1e24a0986213314b53c13`, in `docs/extraction.md` dokumentiert |
+| Damaliger Quellvergleich mit dem Ausgangsrepository | Commit `98cd4fd1051d2c0419cde87755ce409e475e2fd6`. Die Hauptprüfung las Brand-Seite und Bausteine sowie App-Shell, Mobile-Navigation und Command-Palette. |
 | Apple-Design-Skill | [SKILL.md am Commit 904b0ee](https://github.com/dickwu/apple-design-skill/blob/904b0eedc7cc778152f545506075d5bb5219ce77/SKILL.md), vollständige SHA `904b0eedc7cc778152f545506075d5bb5219ce77`, Commit vom 02.10.2026 |
 | Web-Anforderungen | Primärquellen des W3C: WCAG 2.2 Understanding und ARIA Authoring Practices. Diese konkretisieren die Web-Semantik; die Understanding-Texte sind Erläuterungen zu den Erfolgskriterien. |
 
-`https://atlas.zvv.dev/brand` zeigte eine geschützte Anmeldung. Eine sichere Anmeldung war durch den Browser-Anmeldeblock nicht möglich; Zugangsdaten wurden nicht übertragen. Der Quellvergleich ist belegt, der direkte visuelle Atlas-Vergleich bleibt offen. Die Hauptprüfung inspizierte separat den bestehenden Live-Stand auf `design.rapold.io`; diese Beobachtung ist kein Test des noch lokalen Integrationsstands.
+Die Showcase-Seite des Ausgangssystems zeigte eine geschützte Anmeldung. Eine sichere Anmeldung war durch den Browser-Anmeldeblock nicht möglich; Zugangsdaten wurden nicht übertragen. Der Quellvergleich ist belegt, der direkte visuelle Vergleich bleibt offen. Die Hauptprüfung inspizierte separat den bestehenden Live-Stand auf der damaligen Produktionsadresse; diese Beobachtung ist kein Test des noch lokalen Integrationsstands.
 
 ### Auswertung des Skills
 
@@ -162,7 +162,7 @@ Der Scriptfehler setzt `error`, aber nicht `ready`. Alle vier Panels zeigen weit
 
 Die Infografik zeigt Dominicano-Firmendaten auch im neutralen oder Rapold-Theme und ergänzt lediglich einen Hinweis. Der Brand-Showcase und Präsentations-FAQ behandeln teilweise alle nicht gesondert behandelten Brands als neutral. Dadurch können ein Firmenname und «Default ohne Firmenlogo» im selben aktiven Brand-Kontext widersprechen. Die neue Rapold-Auswahl macht diese bestehende Verzweigungsannahme zusätzlich sichtbar.
 
-**Korrektur und Abnahme:** Corporate-Inhalte nur im zugehörigen Brand, sonst tatsächlich neutrale Inhalte; Texte an vorhandene Assets und aktive Brand binden. Alle Brands einmal durch Brand-Seite, Infografik und Präsentations-FAQ wechseln. Kein Produktsignet wird als erfundenes Rapold-Dachlogo benutzt. Quellen: lokale `AGENTS.md`, `docs/atlas-reference.md`; HIG `branding.md › Best practices`.
+**Korrektur und Abnahme:** Corporate-Inhalte nur im zugehörigen Brand, sonst tatsächlich neutrale Inhalte; Texte an vorhandene Assets und aktive Brand binden. Alle Brands einmal durch Brand-Seite, Infografik und Präsentations-FAQ wechseln. Kein Produktsignet wird als erfundenes Rapold-Dachlogo benutzt. Quellen: lokale `AGENTS.md`, die damalige Referenzdokumentation; HIG `branding.md › Best practices`.
 
 ### A13 · P2 · Close-Zeichen haben nur 16-px-Trefferflächen
 
@@ -230,14 +230,14 @@ Die Hauptprüfung hat den Integrationsstand mit `npm run check` geprüft und die
 | Rapold-PDF-Schriften | `pdffonts` an einem Rapold-Muster bestätigt laut Hauptprüfung tatsächlich eingebettete Geist-Regular und Geist-Bold |
 | Visuelle Rapold-Referenzprüfung | Hauptprüfung betrachtete Cover, Management Summary und Split-Tabelle als gerenderte PNG; kein Befund zu Text oder Clipping in diesen drei Mustern. Keine pauschale Sichtabnahme sämtlicher Folien |
 | Auslieferbare Brand-Dateien | Hauptprüfung bestätigt im deploybaren `apps/docs/out` 208 Assets und 27 zusätzliche Ressourcen, jeweils mit SHA-256 gegen den Vertrag geprüft |
-| Atlas-Quellenabgleich | Erledigt durch Hauptprüfung am oben genannten Commit |
-| Direkter visueller Atlas-Vergleich | Offen: Browser-Anmeldeblock |
+| Quellenabgleich mit dem Ausgangssystem | Erledigt durch Hauptprüfung am oben genannten Commit |
+| Direkter visueller Vergleich mit dem Ausgangssystem | Offen: Browser-Anmeldeblock |
 | Aktuelle UI, 320/390 px, Hell/Dunkel | Offen: Für den neuen Integrationsstand liegt keine Browser-Evidenz vor |
 | Suche, Dialoge, Sheet, Galerien, Tabellenreset per Tastatur | Offen: Quellkorrekturen sind belegt, tatsächliche Bedienung noch nicht |
 | 200-%-Text und geringe Viewporthöhe | Offen bis tatsächliche Prüfung dokumentiert |
 | VoiceOver/NVDA oder gleichwertige reale AT-Bedienung | Offen |
 
-`vercel.json` erlaubt Git-Deployments ausdrücklich nur für `main` und deaktiviert andere Branches. Diese Konfiguration wurde für den Audit nicht verändert. Ein reviewbarer Branch beziehungsweise PR liefert deshalb noch keine neue Browser-Preview. Die zuvor betrachtete Live-Seite ist kein Nachweis für diesen Integrationsstand. Der direkte visuelle Atlas-Vergleich bleibt zusätzlich durch den beschriebenen Anmeldeblock offen.
+`vercel.json` erlaubt Git-Deployments ausdrücklich nur für `main` und deaktiviert andere Branches. Diese Konfiguration wurde für den Audit nicht verändert. Ein reviewbarer Branch beziehungsweise PR liefert deshalb noch keine neue Browser-Preview. Die zuvor betrachtete Live-Seite ist kein Nachweis für diesen Integrationsstand. Der direkte visuelle Vergleich mit dem Ausgangssystem bleibt zusätzlich durch den beschriebenen Anmeldeblock offen.
 
 ### 5.3 Konkrete offene Browser- und AT-Abnahme
 
@@ -254,7 +254,7 @@ Die folgende Liste beschreibt die verbleibenden Prüfungen am tatsächlich berei
 | Brand-Wechsel und Inhalt | Alle Brand-Seiten, die Infografik und Präsentations-FAQ verwenden passende Markeninhalte. Explizit Dunkel → Brand ohne Dark-Modus zeigt sichtbar Hell. Corporate-Daten erscheinen ausschliesslich im passenden Brand-Kontext. |
 | Reale Assistenztechnik | Mit VoiceOver/Safari oder NVDA/Firefox die Suche, Dialoge, Statusmeldungen, Filter und Downloadtabelle bedienen. Namen, Rollen und Zustände sind verständlich; Fokus bleibt im offenen Modal und kehrt danach nachvollziehbar zurück. Ansagen werden weder verschluckt noch störend doppelt ausgegeben. |
 
-Forced Colors, tatsächliche Touch-Bedienung sowie weitergehende Chart-, Menü- und Lightbox-Interaktionen aus Abschnitt 4 bleiben als zusätzliche Prüfgrenzen dokumentiert. Aus dem vorliegenden Quell-, Build- und Rendernachweis folgt keine vollständige WCAG- oder Atlas-Abnahme.
+Forced Colors, tatsächliche Touch-Bedienung sowie weitergehende Chart-, Menü- und Lightbox-Interaktionen aus Abschnitt 4 bleiben als zusätzliche Prüfgrenzen dokumentiert. Aus dem vorliegenden Quell-, Build- und Rendernachweis folgt keine vollständige WCAG- oder Paritätsabnahme.
 
 ## 6. Produktions- und Browsernachprüfung · 11.10.2026
 
@@ -264,22 +264,22 @@ Dieser Nachtrag betrifft den **ersten produktiven Rollout von Framework 0.5.0** 
 
 | Nachweis | Beobachteter Stand |
 |---|---|
-| Produktionsdomain | [design.rapold.io](https://design.rapold.io) |
+| Produktionsdomain | damalige Produktionsadresse (heute [atlas.rapold.io](https://atlas.rapold.io)) |
 | Ausgelieferter Commit | [`ee5bfc2ef4bd2b034fc2045b5a576d101159c217`](https://github.com/marcelrapold/mra-design/commit/ee5bfc2ef4bd2b034fc2045b5a576d101159c217), `main`, Framework **0.5.0** |
-| Build-Info | [build-info.json](https://design.rapold.io/build-info.json?commit=ee5bfc2ef4bd2b034fc2045b5a576d101159c217): `builtAt: 2026-10-11T09:08:37.687Z`; Commit und Version stimmten bei der ersten HTTP-Beobachtung am **11.10.2026 um 09:09:20.833 UTC** überein |
+| Build-Info | [build-info.json](https://atlas.rapold.io/build-info.json?commit=ee5bfc2ef4bd2b034fc2045b5a576d101159c217): `builtAt: 2026-10-11T09:08:37.687Z`; Commit und Version stimmten bei der ersten HTTP-Beobachtung am **11.10.2026 um 09:09:20.833 UTC** überein |
 | Vercel | [Deployment 3Z67rf5o5Fek1Dtfs9t1EsjNixU4](https://vercel.com/marcelrapold/design/3Z67rf5o5Fek1Dtfs9t1EsjNixU4), Status `success`; bestehendes Projekt `design` im Scope `marcelrapold` |
 | GitHub CI auf `main` | [Run 38127246567](https://github.com/marcelrapold/mra-design/actions/runs/38127246567), `completed` / `success` |
 | Bestehender Produktionsprüfer | `scripts/verify-deployment.mjs` endete am 11.10.2026 um **09:10:23.923 UTC** mit Exit 0: erwarteter Commit und Version, fünf Kernrouten und Engineering-Vertrag bestätigt |
 | Erweiterte HTTP-Prüfung | Abschluss **09:11:07.532 UTC**: alle **36 Routen** erreichbar und mit Framework-HTML; zusätzlich zwei Canonical-Befunde, siehe Abschnitt 6.3 |
 | Auslieferbare Rapold-Dateien | **208 Exporte plus 27 Ressourcen**, zusammen **235 HTTP-200-Antworten**; Dateigrösse, SHA-256 und MIME-Typ gegen das produktive Manifest geprüft |
 
-Das geprüfte [Rapold-Manifest](https://design.rapold.io/brands/rapold/assets-manifest.json) wurde um `2026-10-11T09:08:25.513Z` erzeugt und hatte SHA-256 `1e6ac2355da93fd7ea7a488b60fd20d59ca81e2fdda9cd0af0487e395995614c`. Die Datei- und Formatprüfung umfasst **136 PNG mit geprüften Abmessungen, 76 schriftfreie SVG, vier ICO, zwei WOFF2 und vier Produkt-ZIP mit jeweils 52 enthaltenen Dateien** sowie die übrigen Manifest-, Lizenz-, CSS- und JSON-Ressourcen. Die **231 deterministischen Dateien** waren bytegleich mit dem lokalen Build. Die vier ZIP-Dateien enthalten variable Archivzeitstempel; ihre ausgelieferten Bytes wurden gegen das jeweilige Produktionsmanifest geprüft, ohne Bytegleichheit mit einem separat gebauten ZIP zu behaupten.
+Das geprüfte [Rapold-Manifest](https://atlas.rapold.io/brands/rapold/assets-manifest.json) wurde um `2026-10-11T09:08:25.513Z` erzeugt und hatte SHA-256 `1e6ac2355da93fd7ea7a488b60fd20d59ca81e2fdda9cd0af0487e395995614c`. Die Datei- und Formatprüfung umfasst **136 PNG mit geprüften Abmessungen, 76 schriftfreie SVG, vier ICO, zwei WOFF2 und vier Produkt-ZIP mit jeweils 52 enthaltenen Dateien** sowie die übrigen Manifest-, Lizenz-, CSS- und JSON-Ressourcen. Die **231 deterministischen Dateien** waren bytegleich mit dem lokalen Build. Die vier ZIP-Dateien enthalten variable Archivzeitstempel; ihre ausgelieferten Bytes wurden gegen das jeweilige Produktionsmanifest geprüft, ohne Bytegleichheit mit einem separat gebauten ZIP zu behaupten.
 
 Die begleitenden Arbeitsprotokolle liegen im Prüfverzeichnis `production-verification-ee5bfc2`: `build-observations.ndjson`, `existing-script-result.json`, `production-assets-report.json`, `live-assets-manifest.json`, `canonical-route-findings.json` und `browser-downloads-report.json`. Die Angaben oben stammen aus diesen Messungen und den gemeldeten CI-/Deployment-Ergebnissen. Ein grüner HTTP- oder CI-Nachweis ersetzt die folgenden Interaktionsprüfungen nicht.
 
 ### 6.2 Tatsächlich ausgeführte Desktop-Browserprüfung
 
-**Umgebung für alle nachstehenden Abläufe:** produktives `https://design.rapold.io`, Commit `ee5bfc2ef4bd2b034fc2045b5a576d101159c217`, 11.10.2026, **Chrome mit 1363 × 936 CSS-px**. Die Einträge dokumentieren die jeweils beobachteten Teilabläufe. Es wurde keine reale Assistenztechnik eingesetzt.
+**Umgebung für alle nachstehenden Abläufe:** die damalige Produktionsadresse (heute `https://atlas.rapold.io`), Commit `ee5bfc2ef4bd2b034fc2045b5a576d101159c217`, 11.10.2026, **Chrome mit 1363 × 936 CSS-px**. Die Einträge dokumentieren die jeweils beobachteten Teilabläufe. Es wurde keine reale Assistenztechnik eingesetzt.
 
 | Ablauf / Befundbezug | Beobachtetes Ergebnis |
 |---|---|
@@ -301,7 +301,7 @@ Die begleitenden Arbeitsprotokolle liegen im Prüfverzeichnis `production-verifi
 
 ### 6.3 Neue Produktionsbefunde und noch nicht ausgelieferte Korrektur
 
-Die erweiterte HTTP-Prüfung fand auf [`/praesentation`](https://design.rapold.io/praesentation) und [`/praesentationslogik`](https://design.rapold.io/praesentationslogik) je eine Canonical-URL zur Startseite anstelle der eigenen Route. Auch `og:url` und der Open-Graph-Titel waren dort aus der Startseite geerbt. Die Nachprüfung um **09:13:07 UTC** bestätigte genau diese zwei Routen. Der anfängliche Unterschied zwischen der Startseiten-URL mit und ohne abschliessenden Slash ist semantisch gleichwertig und wird nicht als zusätzlicher Befund gezählt.
+Die erweiterte HTTP-Prüfung fand auf [`/praesentation`](https://atlas.rapold.io/praesentation) und [`/praesentationslogik`](https://atlas.rapold.io/praesentationslogik) je eine Canonical-URL zur Startseite anstelle der eigenen Route. Auch `og:url` und der Open-Graph-Titel waren dort aus der Startseite geerbt. Die Nachprüfung um **09:13:07 UTC** bestätigte genau diese zwei Routen. Der anfängliche Unterschied zwischen der Startseiten-URL mit und ohne abschliessenden Slash ist semantisch gleichwertig und wird nicht als zusätzlicher Befund gezählt.
 
 Die beiden Seitenquellen wurden anschliessend lokal korrigiert: `generateMetadata` setzt jeweils die eigene Canonical- und Open-Graph-URL sowie einen passenden Titel und erhält die übrigen geerbten Open-Graph-Werte. Diese Quellkorrektur wurde für den Nachtrag gelesen. **Der abschliessende Commit, das zweite Deployment und dessen Produktionsnachprüfung stehen zu diesem Dokumentationsstand noch aus.** Die Quellkorrektur zählt daher noch nicht als behobener Produktionsbefund. **Späterer Nachweis vom 11.10.2026, 10:06–10:07 UTC:** Die Auslieferung und korrekten Metadaten beider Routen sind für 0.6.0 in Abschnitt 7.6 bestätigt; die Aussagen dieses Abschnitts bleiben der historische Stand von 0.5.0.
 
@@ -317,7 +317,7 @@ Die Desktop-Nachprüfung schliesst die jeweils genannten Teilabläufe aus Abschn
 
 **Geplanter Folgestand:** Die historischen Beobachtungen oben beziehen sich weiterhin auf 0.5.0 mit der damaligen Registry aus fünf Brands. Anschliessend wurde die Entfernung von Goldbach und Sygnum beauftragt. Für den geplanten Stand **0.6.0** sind nur noch `neutral`, `dominicano-express` und `rapold` sowie die erwähnten gestalterischen Ergänzungen vorgesehen. Zum damaligen Prüfzeitpunkt lag für diesen Folgestand noch keine Produktions- oder Browserabnahme vor. Die später tatsächlich erfolgten 0.6.0-Produktions- und Browsernachweise stehen getrennt in Abschnitt 7.6.
 
-Dieser Nachtrag belegt den ausgelieferten ersten Stand und konkrete Desktop-Bedienpfade. Er ist keine finale Produkt-, WCAG- oder Atlas-Vollabnahme; auch der UI-Adapter bleibt entsprechend dem Brand-Vertrag als Entwurf gekennzeichnet.
+Dieser Nachtrag belegt den ausgelieferten ersten Stand und konkrete Desktop-Bedienpfade. Er ist keine finale Produkt-, WCAG- oder Paritäts-Vollabnahme; auch der UI-Adapter bleibt entsprechend dem Brand-Vertrag als Entwurf gekennzeichnet.
 
 ## 7. Produktwelten für 0.6.0 · Umsetzung und lokale Prüfung vom 11.10.2026
 
@@ -394,7 +394,7 @@ Der Bericht enthält auch die vor der Korrektur unzureichenden ungeschützten He
 
 ### 7.6 Belegter Produktionsrollout 0.6.0 · 11.10.2026
 
-Nach dem Merge von [PR #6](https://github.com/marcelrapold/mra-design/pull/6) wurde am **11.10.2026, 10:06–10:07 UTC**, auf **[design.rapold.io](https://design.rapold.io) Framework 0.6.0** mit dem Anwendungs-Commit [`73498ec4b46cb9f431d7ad5d186e88dd6301162b`](https://github.com/marcelrapold/mra-design/commit/73498ec4b46cb9f431d7ad5d186e88dd6301162b) produktiv geprüft. Die tatsächlichen Prüfdateien sind unverändert versioniert: [Produktionsbericht](review/production-0.6.0-73498ec4b46c/production-report.json) und [HTTP-Einzelbeobachtungen](review/production-0.6.0-73498ec4b46c/http-observations.json). Diese Commit-ID bezeichnet den **produktiven Prüfstand**, nicht einen dauerhaft aktuellen `main`-Head. Nachfolgende reine Dokumentations-/Nachweis-Commits erhalten eigene Build-SHAs; die hier protokollierten HTTP- und Browserbeobachtungen behalten ihr ursprüngliches Datum und ihren geprüften Anwendungs-Commit.
+Nach dem Merge von [PR #6](https://github.com/marcelrapold/mra-design/pull/6) wurde am **11.10.2026, 10:06–10:07 UTC**, auf der damaligen Produktionsadresse (heute [atlas.rapold.io](https://atlas.rapold.io)) **Framework 0.6.0** mit dem Anwendungs-Commit [`73498ec4b46cb9f431d7ad5d186e88dd6301162b`](https://github.com/marcelrapold/mra-design/commit/73498ec4b46cb9f431d7ad5d186e88dd6301162b) produktiv geprüft. Die tatsächlichen Prüfdateien sind unverändert versioniert: [Produktionsbericht](review/production-0.6.0-73498ec4b46c/production-report.json) und [HTTP-Einzelbeobachtungen](review/production-0.6.0-73498ec4b46c/http-observations.json). Diese Commit-ID bezeichnet den **produktiven Prüfstand**, nicht einen dauerhaft aktuellen `main`-Head. Nachfolgende reine Dokumentations-/Nachweis-Commits erhalten eigene Build-SHAs; die hier protokollierten HTTP- und Browserbeobachtungen behalten ihr ursprüngliches Datum und ihren geprüften Anwendungs-Commit.
 
 | Nachweis | Tatsächliches Ergebnis |
 |---|---|
@@ -410,11 +410,11 @@ Nach dem Merge von [PR #6](https://github.com/marcelrapold/mra-design/pull/6) wu
 | Präsentationsmetadaten | `/praesentation` und `/praesentationslogik` liefern jeweils genau die eigene Canonical- und Open-Graph-URL sowie ihren passenden Titel; das gemeinsame OG-Bild ist 1200 × 630. Die beiden Befunde aus Abschnitt 6.3 sind damit am geprüften Produktionscommit behoben. |
 | Abschlusskontrolle | Die Build-Info am Ende enthält unverändert denselben Commit und dieselbe Version; ihre Bytes haben zu Beginn und am Ende SHA-256 `d5e10bfca262125523a4be03c94633d69494c8bc8e4f8845f08316b3602a2f2f` |
 
-Das produktive [Weltmanifest](https://design.rapold.io/brands/rapold/worlds-manifest.json) hatte SHA-256 `82c8c1cf646967313445e3a11333facba1ed356353edc7d38deb34662a879288`. Die Ressourcenprüfung belegt deren tatsächliche HTTP-Auslieferung und Dateiintegrität. Sie ist von der historischen Logo-Vollprüfung für 0.5.0 und vom lokalen Gesamtinventar in Abschnitt 7.5 zu unterscheiden.
+Das produktive [Weltmanifest](https://atlas.rapold.io/brands/rapold/worlds-manifest.json) hatte SHA-256 `82c8c1cf646967313445e3a11333facba1ed356353edc7d38deb34662a879288`. Die Ressourcenprüfung belegt deren tatsächliche HTTP-Auslieferung und Dateiintegrität. Sie ist von der historischen Logo-Vollprüfung für 0.5.0 und vom lokalen Gesamtinventar in Abschnitt 7.5 zu unterscheiden.
 
 #### Tatsächliche Browsernachprüfung · 11.10.2026, 10:17 UTC
 
-Die gezielte Produktionsprüfung ist **innerhalb des dokumentierten Umfangs bestanden**. Der unveränderte [Browserbericht](review/production-0.6.0-73498ec4b46c/browser-review.json), `checkedAt: 2026-10-11T10:17:17.264Z`, hält **14 Zustands- und Bedienfälle** am oben genannten Commit fest. Geprüft wurden die [Rapold-Markenansicht](https://design.rapold.io/brand?brand=rapold#rapold-worlds) und das [HTML-Kit](https://design.rapold.io/brands/rapold/product-worlds) in **Chrome, 1363 × 936 CSS-px, DPR 1**. Der Browser-Viewport wurde nicht verkleinert: Die folgenden 320-/390-px-Prüfungen betreffen die tatsächlich eingestellte Breite des eingebetteten Referenzcontainers.
+Die gezielte Produktionsprüfung ist **innerhalb des dokumentierten Umfangs bestanden**. Der unveränderte [Browserbericht](review/production-0.6.0-73498ec4b46c/browser-review.json), `checkedAt: 2026-10-11T10:17:17.264Z`, hält **14 Zustands- und Bedienfälle** am oben genannten Commit fest. Geprüft wurden die [Rapold-Markenansicht](https://atlas.rapold.io/brand?brand=rapold#rapold-worlds) und das [HTML-Kit](https://atlas.rapold.io/brands/rapold/product-worlds) in **Chrome, 1363 × 936 CSS-px, DPR 1**. Der Browser-Viewport wurde nicht verkleinert: Die folgenden 320-/390-px-Prüfungen betreffen die tatsächlich eingestellte Breite des eingebetteten Referenzcontainers.
 
 | Ablauf | Beobachtetes Ergebnis |
 |---|---|
@@ -439,4 +439,4 @@ Die gezielte Produktionsprüfung ist **innerhalb des dokumentierten Umfangs best
 - Keine Pixelkontrastmessung und keine vollständige Abnahme aller Animationsphasen.
 - Der manuelle Learn-Glitch wurde ausgelöst; seine kurzlebigen Frames und die SVG-SMIL-Playheads wurden nicht unabhängig instrumentiert.
 
-Auch die historischen, gezielt provozierten Netzwerkfehlerprüfungen werden durch diesen erfolgreichen Normalablauf nicht ersetzt. Die bestandene gezielte Produktionsprüfung ist keine WCAG-Zertifizierung, vollständige Atlas-Paritätsabnahme oder Änderung des `draft`-Status des Rapold-UI-Adapters.
+Auch die historischen, gezielt provozierten Netzwerkfehlerprüfungen werden durch diesen erfolgreichen Normalablauf nicht ersetzt. Die bestandene gezielte Produktionsprüfung ist keine WCAG-Zertifizierung, vollständige Paritätsabnahme oder Änderung des `draft`-Status des Rapold-UI-Adapters.

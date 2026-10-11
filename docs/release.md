@@ -11,7 +11,7 @@ npm ci
 npm run check
 ```
 
-Die vorhandene Initial-Historie des Zielrepositorys bleibt erhalten. Der lokale Atlas-Auszug wird als zusammenhängender Import übernommen.
+Die vorhandene Initial-Historie des Zielrepositorys bleibt erhalten. Der lokale Code-Auszug (Herkunft: docs/extraction.md) wird als zusammenhängender Import übernommen.
 
 ## Open-Source-Release
 
@@ -19,7 +19,7 @@ Die Original-LICENSE beschränkt Verteilung ausserhalb ZVV/Mandatsträger und ve
 
 ## Webbetrieb
 
-`npm run build` erzeugt einen statischen Export in `apps/docs/out`. Diese Dateien benötigen keinen Auth-, Datenbank- oder API-Server. Ziel: `design.rapold.io`, optionaler Redirect von `framework.rapold.io`. Kein automatischer DNS-Wechsel, kein Deployment-Token und keine ZVV-Umgebungsvariable werden übernommen. Upload und Produktionsdeployment sind vom Benutzer beauftragt. Der Lizenzstatus bleibt davon getrennt dokumentiert.
+`npm run build` erzeugt einen statischen Export in `apps/docs/out`. Diese Dateien benötigen keinen Auth-, Datenbank- oder API-Server. Ziel: `atlas.rapold.io`. Kein automatischer DNS-Wechsel, kein Deployment-Token und keine ZVV-Umgebungsvariable werden übernommen. Upload und Produktionsdeployment sind vom Benutzer beauftragt. Der Lizenzstatus bleibt davon getrennt dokumentiert.
 
 Für einen späteren Generator werden Repo-Leserechte und ein Präsentationsrenderer benötigt. Der aktuell implementierte Einstieg `/llms.txt` liefert den Auftrag an den Agenten, kein Backend und keine angebliche PPTX-API.
 

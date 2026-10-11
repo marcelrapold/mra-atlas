@@ -1,4 +1,6 @@
-# Atlas-Auszug
+# Herkunft des Codes
+
+Atlas ist das Designsystem von Rapold. Ein Teil des Codes wurde ursprünglich aus einem fremden Repository übernommen; dieses Dokument hält die Herkunft fest. Der Quellstand ist keine Referenz für Gestaltung oder Struktur von Atlas.
 
 Quelle: `zvvch/zvv-atlas`, Commit `1c75c95417cc371040e1e24a0986213314b53c13`, Default-Branch `main`.
 
@@ -22,6 +24,6 @@ Validierter Brand-Vertrag mit CSS-Variablenadapter, neutralen Defaults, scoped B
 
 ZVV-Logos, Brown-Narrow-Fonts, Linienfarben, Organigrammdaten, Content-Library, Präsentationsassets, Bilder, Lottie-Dateien, PIN-Gate, Mailer-/SSO-/Datenbank-Anbindungen, Analytics, Zeitzonen-Automatik, interne Endpunkte, alte Workflows, NPM-Registry-Zugang und Commit-Historie. Keine Änderung am ursprünglichen ZVV-Repository.
 
-## Browserbefund
+## Browserbefund zum Übernahmezeitpunkt
 
 `atlas.zvv.de` lieferte in dieser Sitzung 502. Die im Repository dokumentierte Domain `atlas.zvv.dev` zeigte das PIN-Gate. Der geschützte Showcase wurde nicht im Browser geprüft. Die Extraktion stützt sich auf den ausführbaren Repository-Code und seine Dokumentation.

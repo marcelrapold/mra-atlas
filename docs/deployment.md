@@ -24,18 +24,20 @@ Grundlage: [Vercel für GitHub](https://vercel.com/docs/git/vercel-for-github) u
 | Build Command | `npm run check` |
 | Output Directory | `apps/docs/out` |
 | Clean URLs | `true` |
-| Produktionsdomain | `design.rapold.io` |
+| Produktionsdomain | `atlas.rapold.io` |
+
+**Domainwechsel:** Seit 0.7.0 heisst das System Atlas und ist unter `atlas.rapold.io` adressiert (`vercel.json`, Metadaten, Verträge). Die bisherige Adresse `design.rapold.io` soll per Redirect auf `atlas.rapold.io` zeigen, sobald die neue Domain im Vercel-Projekt eingerichtet ist. Bis dahin gelten die datierten Nachweise unten für die damalige Adresse.
 
 Build- und Routingwerte stehen in `vercel.json`. Die erfolgreiche Veröffentlichung des gemergten `main`-Commits auf der Produktionsdomain ist im Nachtrag unten belegt. Die vollständigen Projekteinstellungen wurden über den eingeschränkten Connector nicht unabhängig ausgelesen; der beobachtete Rollout ersetzt diese Einsicht nicht.
 
 ## Auslieferung prüfen
 
-Den Vercel-Status am gepushten GitHub-Commit beziehungsweise das zugehörige Deployment abwarten. Nach einem erfolgreichen Rollout muss [`build-info.json`](https://design.rapold.io/build-info.json) die **Version aus `package.json` des bereitgestellten Commits** und dessen vollständige Commit-ID enthalten. Den Prüfer aus genau diesem Checkout ausführen; er liest die erwartete Version selbst aus `package.json`.
+Den Vercel-Status am gepushten GitHub-Commit beziehungsweise das zugehörige Deployment abwarten. Nach einem erfolgreichen Rollout muss [`build-info.json`](https://atlas.rapold.io/build-info.json) die **Version aus `package.json` des bereitgestellten Commits** und dessen vollständige Commit-ID enthalten. Den Prüfer aus genau diesem Checkout ausführen; er liest die erwartete Version selbst aus `package.json`.
 
 Die öffentliche Prüfung ist auch ohne Vercel-Token ausführbar:
 
 ```bash
-node scripts/verify-deployment.mjs https://design.rapold.io <vollständige-commit-id>
+node scripts/verify-deployment.mjs https://atlas.rapold.io <vollständige-commit-id>
 ```
 
 Der Prüfer kontrolliert Version und Commit, die Kernrouten `/`, `/praesentation`, `/organigramm`, `/charts`, `/prompt-compiler` sowie den Engineering-Vertrag. Ein grüner GitHub-Check allein bestätigt noch keinen Produktionsrollout. Die technische Prüfung ersetzt keine visuelle Browser-Abnahme.
@@ -54,7 +56,7 @@ Dieser Nachtrag dokumentiert den ersten Rollout nach [PR #5](https://github.com/
 | Format- und Bestandsprüfung | 136 PNG-Abmessungen, 76 schriftfreie SVG, vier ICO, zwei WOFF2 und vier Produkt-ZIP mit je 52 Dateien geprüft. 231 deterministische Dateien bytegleich zum lokalen Build; ZIP-Zeitstempel variieren, daher Vergleich der ZIP-Bytes mit dem jeweiligen Produktionsmanifest. |
 | Desktop-Browser | Tatsächliche Produkt-/Filter-/Download-, Fokus-, Such- und Zustandsprüfungen in Chrome bei 1363 × 936 CSS-px; Umfang und Grenzen im [Apple-Design-Audit, Abschnitt 6](apple-design-audit.md#6-produktions--und-browsernachprüfung--11102026) |
 
-Die Arbeitsprotokolle dieses Rollouts sind unter `production-verification-ee5bfc2` benannt: `build-observations.ndjson`, `existing-script-result.json`, `production-assets-report.json`, `canonical-route-findings.json` und `browser-downloads-report.json`. Das [produktive Rapold-Manifest](https://design.rapold.io/brands/rapold/assets-manifest.json) hatte bei der Prüfung SHA-256 `1e6ac2355da93fd7ea7a488b60fd20d59ca81e2fdda9cd0af0487e395995614c`.
+Die Arbeitsprotokolle dieses Rollouts sind unter `production-verification-ee5bfc2` benannt: `build-observations.ndjson`, `existing-script-result.json`, `production-assets-report.json`, `canonical-route-findings.json` und `browser-downloads-report.json`. Das [produktive Rapold-Manifest](https://atlas.rapold.io/brands/rapold/assets-manifest.json) hatte bei der Prüfung SHA-256 `1e6ac2355da93fd7ea7a488b60fd20d59ca81e2fdda9cd0af0487e395995614c`.
 
 **Nachbefund:** `/praesentation` und `/praesentationslogik` lieferten im genannten Commit Canonical- und Open-Graph-URLs der Startseite. Die beiden Seitenquellen wurden anschliessend lokal auf ihre eigenen Routen und passende Open-Graph-Titel korrigiert. Zum damaligen Prüfstand waren Commit, Folge-Deployment und öffentliche Nachprüfung noch pendent. Der weiter unten dokumentierte 0.6.0-Rollout bestätigt inzwischen beide Korrekturen produktiv. Die erfolgreichen Routen- und Assetprüfungen werden deshalb nicht als Nachweis fehlerfreier Seitenmetadaten oder als finale Gesamtfreigabe gewertet.
 
@@ -62,7 +64,7 @@ Die Arbeitsprotokolle dieses Rollouts sind unter `production-verification-ee5bfc
 
 ## Belegter Produktionsrollout 0.6.0 · 11.10.2026
 
-Nach [PR #6](https://github.com/marcelrapold/mra-design/pull/6) wurde Framework **0.6.0** am **11.10.2026, 10:06–10:07 UTC**, auf [design.rapold.io](https://design.rapold.io) produktiv bestätigt. Die [Produktwelten](product-worlds.md) ergänzen AI-Aurora, Netz und Glas, vier unveränderte Learn-Hero-Dateien mit Partikeln, Terminal und Parallax sowie gemeinsame Geist-Typografie, neue Raumfaltenzeichen und Facetten/Spektrum. Argus und EdgePortal bleiben CI-Anwendungsbeispiele ohne Original-App-Paritätsclaim. Die aktive Brand-Auswahl enthält genau `neutral`, `dominicano-express` und `rapold`. Der folgende Commitbeleg gilt für diesen datierten Anwendungsstand. Ein anschliessender reiner Dokumentations-/Nachweis-Commit hat eine neue Main- und Build-ID; dadurch werden die hier abgeschlossenen UI-Abläufe nicht als erneut geprüft ausgegeben.
+Nach [PR #6](https://github.com/marcelrapold/mra-design/pull/6) wurde Framework **0.6.0** am **11.10.2026, 10:06–10:07 UTC**, auf der damaligen Produktionsadresse produktiv bestätigt. Die [Produktwelten](product-worlds.md) ergänzen AI-Aurora, Netz und Glas, vier unveränderte Learn-Hero-Dateien mit Partikeln, Terminal und Parallax sowie gemeinsame Geist-Typografie, neue Raumfaltenzeichen und Facetten/Spektrum. Argus und EdgePortal bleiben CI-Anwendungsbeispiele ohne Original-App-Paritätsclaim. Die aktive Brand-Auswahl enthält genau `neutral`, `dominicano-express` und `rapold`. Der folgende Commitbeleg gilt für diesen datierten Anwendungsstand. Ein anschliessender reiner Dokumentations-/Nachweis-Commit hat eine neue Main- und Build-ID; dadurch werden die hier abgeschlossenen UI-Abläufe nicht als erneut geprüft ausgegeben.
 
 | Nachweis | Tatsächliches Ergebnis |
 |---|---|
@@ -77,7 +79,7 @@ Nach [PR #6](https://github.com/marcelrapold/mra-design/pull/6) wurde Framework 
 | Seitenmetadaten | Canonical und Open-Graph-URL auf `/praesentation` und `/praesentationslogik` jeweils korrekt zur eigenen Route, passende Titel; OG-Bild 1200 × 630 |
 | Abschlusskontrolle | Build-Info unverändert auf demselben Commit; SHA-256 zu Beginn und am Ende `d5e10bfca262125523a4be03c94633d69494c8bc8e4f8845f08316b3602a2f2f` |
 
-Die tatsächlichen [Produktionsberichte](review/production-0.6.0-73498ec4b46c/production-report.json) und [HTTP-Einzelbeobachtungen](review/production-0.6.0-73498ec4b46c/http-observations.json) sind unverändert im Repository abgelegt. Das [Weltmanifest](https://design.rapold.io/brands/rapold/worlds-manifest.json) hatte SHA-256 `82c8c1cf646967313445e3a11333facba1ed356353edc7d38deb34662a879288`. Die öffentliche [Standalone-Referenz](https://design.rapold.io/brands/rapold/product-worlds) und das [ZIP](https://design.rapold.io/brands/rapold/rapold-product-worlds.zip) sind verfügbar. Die Web-HTML enthält genau eine zusätzliche statische Base-URL für Vercel `cleanUrls`; nach Entfernen dieses Tags ist sie bytegleich zur relativen Offline-HTML. Alle anderen 43 Kit-Dateien sind bytegleich.
+Die tatsächlichen [Produktionsberichte](review/production-0.6.0-73498ec4b46c/production-report.json) und [HTTP-Einzelbeobachtungen](review/production-0.6.0-73498ec4b46c/http-observations.json) sind unverändert im Repository abgelegt. Das [Weltmanifest](https://atlas.rapold.io/brands/rapold/worlds-manifest.json) hatte SHA-256 `82c8c1cf646967313445e3a11333facba1ed356353edc7d38deb34662a879288`. Die öffentliche [Standalone-Referenz](https://atlas.rapold.io/brands/rapold/product-worlds) und das [ZIP](https://atlas.rapold.io/brands/rapold/rapold-product-worlds.zip) sind verfügbar. Die Web-HTML enthält genau eine zusätzliche statische Base-URL für Vercel `cleanUrls`; nach Entfernen dieses Tags ist sie bytegleich zur relativen Offline-HTML. Alle anderen 43 Kit-Dateien sind bytegleich.
 
 **Gezielte Browsernachprüfung abgeschlossen:** Der [Browserbericht](review/production-0.6.0-73498ec4b46c/browser-review.json) vom **11.10.2026, 10:17:17 UTC** dokumentiert 14 bestandene Zustands- und Bedienfälle auf dem Produktionscommit in **Chrome, 1363 × 936 CSS-px, DPR 1**. Belegt sind Produkt-/Modus-/Wortmarkenwechsel, CSS-Pause und Fortsetzen, über Produktwechsel erhaltene Pause, Hintergrund- und Oberflächenschalter, Enter-Bedienung mit 3-px-Fokusmarkierung und synchrone Produkt-/Downloadauswahl. Alle vier Produkte wurden in 320-px-Referenzcontainern ohne horizontale Textüberläufe geprüft, Learn zusätzlich bei 390 px. **Es wurde der Referenzcontainer geändert, nicht der Browser-Viewport.**
 

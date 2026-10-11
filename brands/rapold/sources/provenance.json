@@ -81,14 +81,6 @@
         "contrast-gates",
         "status-and-source-contract"
       ]
-    },
-    {
-      "id": "atlas-reference",
-      "path": "docs/atlas-reference.md",
-      "scope": [
-        "neutral-system-structure"
-      ],
-      "treatment": "Diese Brand-Integration ändert keine Seitenarchitektur und übernimmt keine ZVV-Markenidentität."
     }
   ],
   "directMappings": {

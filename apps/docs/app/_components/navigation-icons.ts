@@ -1,14 +1,14 @@
 import {
   Activity, BadgeInfo, BarChart3, Bell, Bot, Boxes, ClipboardCheck,
   ClipboardCopy, Database, Fingerprint, HeartPulse, Images, Inbox,
-  KeyRound, Layers, Layout, LayoutDashboard, ListChecks, Mail, Maximize2,
+  KeyRound, Layers, Layout, LayoutDashboard, Mail, Maximize2,
   Network, Palette, Presentation, ScrollText, ShieldCheck, Skull, Sparkles,
   Type, Wand2, Waypoints, Workflow, Accessibility, Ruler, type LucideIcon,
 } from 'lucide-react';
 
-// Reusable mappings from Atlas nav-config.ts at 1c75c954; additional pages use Lucide.
+// One semantic Lucide icon per page and navigation group.
 export const pageIcons: Record<string, LucideIcon> = {
-  overview: BadgeInfo, coverage: ListChecks, brand: Fingerprint, tokens: Palette,
+  overview: BadgeInfo, brand: Fingerprint, tokens: Palette,
   typography: Type, layout: Ruler, icons: Sparkles, content: Images,
   organigramm: Network, techstack: ScrollText, praesentation: Presentation,
   praesentationslogik: Workflow, 'prompt-compiler': Wand2,

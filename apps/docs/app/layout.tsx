@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import FrameworkShell from './_components/framework-shell';
-const title='Design Framework';
-const description='Ein Designstandard. Austauschbare Brands. Für Interfaces und Management-Präsentationen.';
+const title='Atlas';
+const description='Atlas, das Designsystem von Rapold: ein Designstandard mit austauschbaren Brands für Interfaces und Management-Präsentationen.';
 export const metadata: Metadata = {
-  metadataBase: new URL('https://design.rapold.io'),
+  metadataBase: new URL('https://atlas.rapold.io'),
   title,
   description,
   alternates: {canonical: '/'},

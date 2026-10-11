@@ -1,7 +1,7 @@
 import type {Metadata, ResolvingMetadata} from 'next';
 import PresentationPage from '../_components/presentation-page';
 export async function generateMetadata(_props: unknown, parent: ResolvingMetadata): Promise<Metadata> {
- const title='Präsentation · Design Framework';
+ const title='Präsentation · Atlas';
  const inherited=await parent;
  return {
   title,

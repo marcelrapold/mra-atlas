@@ -1,13 +1,8 @@
 # Mermaid-Diagramme
 
-Referenz: Atlas `1c75c95417cc371040e1e24a0986213314b53c13`,
-`example/app/(showcase)/mermaid/`,
-`example/components/showcase/mermaid-diagram.tsx` und
-`packages/atlas/src/lib/mermaid-theme.ts`.
-
-Die Referenzseite zeigt dieselben fünf Muster: Flussdiagramm, Sequenzdiagramm,
+Die Referenzseite zeigt fünf Muster: Flussdiagramm, Sequenzdiagramm,
 Zeitstrahl, Torte und lange Beschriftungen. Beispiele sind illustrative Daten.
-Alle Diagramme rendern automatisch und öffnen im vorhandenen Atlas-Lightbox-Modul.
+Alle Diagramme rendern automatisch und öffnen im vorhandenen Lightbox-Modul.
 Der zusätzliche Editor bietet Quelltext, SVG- und MMD-Download und Copy-Rückmeldung.
 
 ## Brand und Darstellung
@@ -22,7 +17,7 @@ Torten sind vollständig deckend und haben abgegrenzte Segmente.
 120-Prozent-Aufhellung der Ereignisflächen. Die Korrektur wird ins SVG exportiert;
 so bleiben Brand-Farben und Textkontraste auch im Download erhalten.
 
-Bewusste Abweichung von Atlas: Die Kategorien verwenden ausschliesslich die
+Die Kategorien verwenden ausschliesslich die
 Identitätsfarben der aktiven Brand. Andere Firmenpaletten werden nicht übernommen. Flowchart-Klassen `source`, `delivery` und `consumer`
 benennen Rollen statt Unternehmensfarben. Explizite `classDef`-Farben im eigenen
 Quelltext haben Vorrang vor dem Theme; ein kopiertes Beispiel enthält die Farben
@@ -52,7 +47,3 @@ Flowchart, Sequence, Timeline und Pie haben sichtbare Beispiele. Journey und
 GitGraph besitzen vorbereitete Paletten, aber noch keine eigene Abnahme. Weitere
 Mermaid-Typen sind nicht vollständig auf die Brand geprüft. SVG enthält Schrift-
 referenzen; für dieselbe Darstellung ausserhalb der Website muss Inter verfügbar sein.
-
-Der Quellenabgleich ersetzt keine vollständige visuelle Gegenprüfung mit dem
-geschützten Atlas-Showcase. Der direkte Atlas-Browserzugriff war bei diesem Update
-nicht erfolgreich; der Vergleich erfolgte anhand des oben genannten Quellstands.
