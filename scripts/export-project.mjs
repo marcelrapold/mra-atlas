@@ -1,6 +1,7 @@
 import {readFile,writeFile,mkdir,rename,rm,mkdtemp} from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
+import {fileURLToPath} from 'node:url';
 import {execFileSync} from 'node:child_process';
 import {createProjectDeck,validateProject} from '../packages/presentation/src/index.mjs';
 const args=process.argv.slice(2),file=args[0];
@@ -16,7 +17,7 @@ if(repoDir){
   if(source.excerpt&&!body.includes(source.excerpt))throw new Error(`Source excerpt mismatch: ${source.id}`);
  }
 }
-const result=await createProjectDeck(input,{assetRoot:new URL('../apps/docs/public/',import.meta.url).pathname,imageRoot:path.dirname(path.resolve(file))});
+const result=await createProjectDeck(input,{assetRoot:fileURLToPath(new URL('../apps/docs/public/',import.meta.url)),imageRoot:path.dirname(path.resolve(file))});
 const temp=await mkdtemp(path.join(os.tmpdir(),'framework-deck-'));
 try{
  await writeFile(path.join(temp,'presentation.pptx'),result.pptx);

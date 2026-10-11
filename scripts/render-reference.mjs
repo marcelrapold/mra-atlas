@@ -2,6 +2,7 @@ import {execFileSync} from 'node:child_process';
 import {mkdtemp,rm,mkdir,readFile,writeFile,readdir,copyFile} from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
+import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {brands} from '../packages/brands/src/index.mjs';
 import {slides,presets} from '../packages/brands/src/presentation.mjs';
@@ -12,7 +13,7 @@ try{
  for(const brand of brands){
   const dir=new URL(`brands/${brand.id}/reference/`,root);await mkdir(dir,{recursive:true});
   for(const set of ['muster-deck',...presets.map(p=>p.id)]){
-   const input=new URL(`brands/${brand.id}/decks/${set}.pptx`,root).pathname,work=path.join(temporary,brand.id,set);await mkdir(work,{recursive:true});
+   const input=fileURLToPath(new URL(`brands/${brand.id}/decks/${set}.pptx`,root)),work=path.join(temporary,brand.id,set);await mkdir(work,{recursive:true});
    execFileSync('soffice',[`-env:UserInstallation=file://${path.join(temporary,'profile')}`,'--headless','--convert-to','pdf','--outdir',work,input],{stdio:'pipe',timeout:60000});
    const pdf=path.join(work,`${set}.pdf`);await copyFile(pdf,new URL(`${set}.pdf`,dir));
    if(set==='muster-deck'){
