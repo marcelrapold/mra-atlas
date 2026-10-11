@@ -1,6 +1,6 @@
 # Rapold
 
-Ein optional wählbares Rapold-Theme für die Produkte AI Fabric, Argus, ÆON Learn und EdgePortal (freigegebene Signets) sowie Lotse, Cockpit, Auditor, Rapold Auth, PocketForge und das Designsystem Atlas (Signet-Vorschläge). Es liefert eine gemeinsame Farb- und Typografiebasis für das neutrale Atlas-System. Der Atlas-Default bleibt `neutral`.
+Ein optional wählbares Rapold-Theme für die Produkte AI Fabric, Argus, ÆON Learn und EdgePortal sowie Lotse, Cockpit, Auditor, Rapold Auth, PocketForge und das Designsystem Atlas; alle zehn Signets sind freigegeben. Es liefert eine gemeinsame Farb- und Typografiebasis für das neutrale Atlas-System. Der Atlas-Default bleibt `neutral`.
 
 **Status des UI-Adapters: `draft`, Version 0.2.0.** Marcel Rapold hat am **11.10.2026** die vier Signets der Raumfalten-Familie B freigegeben. Die neue Zuordnung zu vollständigen UI-Rollen und ihre visuelle Abnahme bleiben als separate Integrationsarbeit dokumentiert.
 
@@ -11,7 +11,7 @@ Ein optional wählbares Rapold-Theme für die Produkte AI Fabric, Argus, ÆON Le
 | Ebene | Inhalt | Kanonische Quelle |
 |---|---|---|
 | Gemeinsames Theme | `rapold`: Farben, Geist, helle und dunkle semantische Rollen | `packages/brands/src/rapold.json` |
-| Produktidentität | Vier freigegebene und sechs vorgeschlagene eigenständige Zeichen, jeweils mit `status` | [identity.json](identity.json) |
+| Produktidentität | Zehn freigegebene eigenständige Zeichen, jeweils mit `status` | [identity.json](identity.json) |
 | Produktassets | Transparente SVG-Master und Farbvarianten | `brands/rapold/assets/logos/` |
 | Belegte Ausgangswerte | Unveränderte Tokenkopie des gelieferten Brand-Pakets | `brands/rapold/sources/brand-tokens.json` |
 | Herkunft und Ableitungen | Nutzerfreigabe, Prüfsumme, Quellen und UI-Verfeinerungen | `brands/rapold/sources/provenance.json` |
@@ -29,11 +29,11 @@ Es gibt genau einen Rapold-Eintrag in der Brand-Registry. Die Produktkennungen w
 | `learn` | ÆON Learn | [learn.svg](assets/logos/learn.svg) |
 | `edgeportal` | EdgePortal · edgeportal.rapold.io | [edgeportal.svg](assets/logos/edgeportal.svg) |
 
-### Vorschläge seit 0.7.0
+### Ergänzt mit 0.7.0, freigegeben am 12.10.2026
 
-Die folgenden Signets sind **Vorschläge** (`status: "proposal"`), keine Freigabe. Sie greifen das bisherige Zeichen des jeweiligen Repositorys auf und übertragen es in die Raumfalten-Grammatik: polygonale Faltflächen, Azure-Körper, Ice-Facetten, isometrische Steigung 1 : 0,5, keine Schrift. Die Produkt-Repos verwenden ihre bisherigen Zeichen, bis eine Freigabe in [provenance.json](sources/provenance.json) dokumentiert ist.
+Die folgenden Signets entstanden mit 0.7.0 und sind seit **12.10.2026 freigegeben** (`status: "approved"`, Nachweis in [provenance.json](sources/provenance.json)). Sie greifen das bisherige Zeichen des jeweiligen Repositorys auf und übertragen es in die Raumfalten-Grammatik: polygonale Faltflächen, Azure-Körper, Ice-Facetten, isometrische Steigung 1 : 0,5, keine Schrift. Die Produkt-Repos übernehmen die Zeichen separat.
 
-| Kennung | Produkt | Bisheriges Zeichen | Vorschlag | SVG-Master |
+| Kennung | Produkt | Bisheriges Zeichen | Signet | SVG-Master |
 |---|---|---|---|---|
 | `lotse` | Lotse · lotse.rapold.io | Isometrische Etagen mit Route | Wegband, das um die Ecke aufsteigt und in einer Pfeilspitze endet | [lotse.svg](assets/logos/lotse.svg) |
 | `cockpit` | Cockpit · cockpit.rapold.io | Tacho mit Nadel | Dreiteilige Faltskala mit Rautenachse und heller Nadel | [cockpit.svg](assets/logos/cockpit.svg) |
@@ -42,7 +42,7 @@ Die folgenden Signets sind **Vorschläge** (`status: "proposal"`), keine Freigab
 | `pocketforge` | PocketForge · game.rapold.io | 4:3-Bildschirm mit einem Pixel | Isometrischer Handheld mit Bildschirm, leuchtendem Pixel, Steuerkreuz und Tasten | [pocketforge.svg](assets/logos/pocketforge.svg) |
 | `atlas` | Atlas · atlas.rapold.io | Kein eigenes Zeichen (Ebenen-Symbol) | Gefaltete Karte (Leporello) mit freigestellter Ortsmarke | [atlas.svg](assets/logos/atlas.svg) |
 
-Die Geometrie wird in [`scripts/build-signet-proposals.mjs`](../../scripts/build-signet-proposals.mjs) konstruiert und als SVG-Master geschrieben; der normale Build liest nur die Master. Für die Vorschläge gibt es noch keine eigenen Produktwelten; die Referenz zeigt dort einen Hinweis.
+Die Geometrie wird in [`scripts/build-signet-proposals.mjs`](../../scripts/build-signet-proposals.mjs) konstruiert und als SVG-Master geschrieben; der normale Build liest nur die Master. Für diese sechs Produkte gibt es noch keine eigenen Produktwelten; die Referenz zeigt dort einen Hinweis.
 
 Die Zeichen enthalten keine sichtbare Schrift. Sie verwenden eine transparente `256 × 256`-Fläche und einen Schutzraum von mindestens 24 Einheiten um die sichtbare Kontur. Proportionen und Öffnungen bleiben erhalten. Die Faltkanten stammen aus der akzeptierten Referenz; es gibt keine allgemeine 45-Grad-Vorgabe.
 

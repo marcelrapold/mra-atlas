@@ -27,7 +27,22 @@
 .rapold-intro p:last-child {max-width: 470px; margin: 0; color: var(--muted-foreground);}
 .rapold-intro-meta {display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; padding-bottom: 4px; color: var(--muted-foreground); font: 12px/1.6 var(--font-mono);}
 .rapold-intro-meta strong {font-size: 48px; font-weight: 400; line-height: 1.2; letter-spacing: -.08em; margin-bottom: 12px; color: var(--primary);}
-.rapold-family {display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 14px 0 18px;}
+.rapold-family {display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin: 14px 0 18px;}
+.rapold-signet-matrix {overflow-x: auto; margin-top: 18px; border: 1px solid var(--border); border-radius: var(--brand-radius); background: var(--card);}
+.rapold-signet-matrix table {min-width: 560px;}
+.rapold-signet-matrix th, .rapold-signet-matrix td {padding: 10px 12px; vertical-align: middle;}
+.rapold-signet-matrix thead th {font-size: 12px; font-weight: 600; text-align: center; color: var(--foreground); background: transparent; border-bottom: 1px solid var(--border);}
+.rapold-signet-matrix tbody th {background: transparent;}
+.rapold-signet-matrix thead th:first-child {text-align: left;}
+.rapold-signet-matrix tbody tr[aria-current='true'] {background: var(--surface-info);}
+.rapold-matrix-product {display: grid; gap: 2px; padding: 0; border: 0; background: none; text-align: left; min-height: 44px;}
+.rapold-matrix-product .rapold-wordmark {font-size: 18px;}
+.rapold-matrix-product small {font-size: 11px; color: var(--muted-foreground);}
+.rapold-matrix-cell {display: flex; align-items: center; justify-content: center; width: 84px; height: 84px; margin: auto; border: 1px solid var(--border); border-radius: 12px;}
+.rapold-matrix-cell[data-artwork-mode='dark'] {background: #050B19;}
+.rapold-matrix-cell[data-artwork-mode='light'] {background: #F4FAFF;}
+.rapold-matrix-cell:hover {border-color: var(--primary);}
+.rapold-matrix-cell img {width: 60px; height: 60px;}
 .rapold-family[data-status='proposal'] {grid-template-columns: repeat(3, minmax(0, 1fr));}
 .rapold-family-heading {display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 30px 0 0; font-size: 16px; font-weight: 650; letter-spacing: -.01em;}
 .rapold-family-heading span {font-size: 13px; font-weight: 400; color: var(--muted-foreground);}
@@ -110,6 +125,7 @@
 
 @media (max-width: 1100px) {
   .rapold-family, .rapold-variant-grid {grid-template-columns: repeat(2, minmax(0, 1fr));}
+  .rapold-family[data-status='approved'] {grid-template-columns: repeat(3, minmax(0, 1fr));}
   .rapold-family[data-status='proposal'] {grid-template-columns: repeat(3, minmax(0, 1fr));}
 }
 @media (max-width: 767px) {
@@ -117,6 +133,9 @@
   .rapold-intro-meta {display: none;}
   .rapold-intro h2 {font-size: clamp(36px, 10vw, 56px);}
   .rapold-product {padding: 14px;}
+  .rapold-family[data-status='approved'] {grid-template-columns: repeat(2, minmax(0, 1fr));}
+  .rapold-matrix-cell {width: 64px; height: 64px;}
+  .rapold-matrix-cell img {width: 46px; height: 46px;}
   .rapold-family[data-status='proposal'] {grid-template-columns: repeat(2, minmax(0, 1fr));}
   .rapold-product > img {margin: 12px 0 16px; width: min(100%, 112px);}
   .rapold-wordmark {font-size: 20px;}
@@ -133,6 +152,6 @@
   .rapold-banner-preview figcaption {padding: 12px 16px;}
 }
 @media (max-width: 359px) {
-  .rapold-family, .rapold-variant-grid, .rapold-family[data-status='proposal'] {grid-template-columns: 1fr;}
+  .rapold-family, .rapold-variant-grid, .rapold-family[data-status='proposal'], .rapold-family[data-status='approved'] {grid-template-columns: 1fr;}
   .rapold-product {align-items: center;}
 }

@@ -19,7 +19,7 @@
       "family": "Raumfalten B"
     },
     "signetProposals": {
-      "status": "proposal",
+      "status": "approved",
       "recordedOn": "2026-10-11",
       "scope": [
         "lotse",
@@ -40,7 +40,9 @@
         "pocketforge": "marcelrapold/pocketforge site/app/icon.svg – 4:3-Bildschirm mit einem Pixel; erweitert zum isometrischen Handheld mit Bildschirm, Pixel, Steuerkreuz und zwei Tasten, damit das Gaming erkennbar ist.",
         "atlas": "Kein eigenes Zeichen vorhanden (bisher Lucide «Layers» in der Navigation); neu als gefaltete Karte (Leporello) mit freigestellter Ortsmarke."
       },
-      "note": "Vorschläge sind keine Freigabe. Die Produkt-Repos verwenden weiterhin ihre bisherigen Zeichen, bis eine Freigabe dokumentiert ist."
+      "note": "Freigegeben. Die Produkt-Repos übernehmen die Zeichen separat.",
+      "approvedOn": "2026-10-12",
+      "approvalEvidence": "Chat-Anweisung von Marcel Rapold am 12.10.2026: «Fix it» (zweimal), nachdem die offene Signet-Freigabe als letzter Punkt benannt war. Freigabe gilt für die Zeichen in der Fassung von Atlas 0.7.0."
     },
     "uiAdapter": {
       "status": "draft",

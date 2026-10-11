@@ -16,9 +16,10 @@ const categories: Record<string, string> = {'all': 'Alle Dateien', 'logo': 'Logo
 const variantLabels: Record<string, string> = {'dark': 'Dunkle Fläche', 'light': 'Helle Fläche', 'mono-white': 'Weiss', 'mono-black': 'Schwarz', 'current-color': 'currentColor', 'adaptive': 'Automatisch', 'maskable': 'Maskable', 'app': 'App', 'web': 'Web', 'usage': 'Anleitung', 'complete': 'Komplett'};
 const layouts = [{id: 'og', name: 'Link-Vorschau', size: '1200 × 630'}, {id: 'landscape', name: 'Querformat', size: '1920 × 1080'}, {id: 'portrait', name: 'Hochformat', size: '1080 × 1920'}, {id: 'social-square', name: 'Quadrat', size: '1080 × 1080'}, {id: 'portrait-4x5', name: 'Social 4:5', size: '1080 × 1350'}, {id: 'wide', name: 'Breites Banner', size: '1584 × 396'}];
 const familyGroups = [
-  {status: 'approved', title: 'Freigegebene Signets', note: 'Am 11.10.2026 freigegeben.', products: identity.products.filter(item => item.status === 'approved')},
+  {status: 'approved', title: 'Freigegebene Signets', note: 'Raumfalten-Familie, freigegeben am 11. und 12.10.2026.', products: identity.products.filter(item => item.status === 'approved')},
   {status: 'proposal', title: 'Vorschläge', note: 'Aus den bestehenden Produktzeichen abgeleitet, noch nicht freigegeben.', products: identity.products.filter(item => item.status === 'proposal')},
 ];
+const matrixVariants: Variant[] = ['dark', 'light', 'mono-white', 'mono-black'];
 const fileSize = (bytes: number) => new Intl.NumberFormat('de-CH', {maximumFractionDigits: 1}).format(bytes / 1024) + ' KB';
 
 function readManifest(value: unknown): AssetManifest {
@@ -78,7 +79,7 @@ export default function RapoldShowcase() {
       <div className="rapold-intro-meta"><strong>01—{String(identity.products.length).padStart(2, '0')}</strong><span>Signets als reine Vektoren</span><span>Geist + Geist Mono</span><span>Hell / Dunkel / Monochrom</span></div>
     </section>
 
-    {familyGroups.map(group => <div className="rapold-family-group" key={group.status}>
+    {familyGroups.filter(group => group.products.length).map(group => <div className="rapold-family-group" key={group.status}>
       <h3 className="rapold-family-heading" id={`rapold-family-${group.status}`}>{group.title}<span>{group.note}</span></h3>
       <div className="rapold-family" data-status={group.status} role="group" aria-labelledby={`rapold-family-${group.status}`}>
         {group.products.map(item => <button type="button" className="rapold-product" key={item.id} aria-pressed={item.id === product.id} onClick={() => selectProduct(item.id)}>
@@ -93,7 +94,19 @@ export default function RapoldShowcase() {
     {product.status === 'proposal' && 'origin' in product && product.origin && <p className="muted">Vorschlag auf Basis des bisherigen Zeichens in {product.origin.repository} ({product.origin.previousMark}). Das Produkt verwendet sein bisheriges Zeichen, bis die Freigabe dokumentiert ist.</p>}
     {'namingNote' in product && <p className="muted">{product.name}: {product.namingNote}.</p>}
 
-    <nav className="rapold-section-links" aria-label="Markenreferenz"><a href="#rapold-worlds">Produktwelten</a><a href="#rapold-signets">Signets</a><a href="#rapold-formats">Formate</a><a href="#rapold-colours">Farbe & Schrift</a><a href="#rapold-downloads">Downloads</a><a href="#rapold-usage">Einbindung</a></nav>
+    <nav className="rapold-section-links" aria-label="Markenreferenz"><a href="#rapold-all-signets">Alle Zeichen</a><a href="#rapold-worlds">Produktwelten</a><a href="#rapold-signets">Signets</a><a href="#rapold-formats">Formate</a><a href="#rapold-colours">Farbe & Schrift</a><a href="#rapold-downloads">Downloads</a><a href="#rapold-usage">Einbindung</a></nav>
+
+    <section className="doc-section" id="rapold-all-signets" aria-labelledby="rapold-all-signets-title">
+      <h2 id="rapold-all-signets-title">Alle Zeichen auf einen Blick</h2><p>{identity.products.length} Signets in allen Varianten. Ein Klick lädt das jeweilige SVG; Produktpakete stehen weiter unten bei den Downloads.</p>
+      <div className="rapold-signet-matrix" tabIndex={0} role="region" aria-label="Alle Signets, horizontal scrollbar"><table>
+        <caption className="sr-only">Alle Rapold-Signets nach Variante</caption>
+        <thead><tr><th scope="col">Produkt</th>{matrixVariants.map(variant => <th scope="col" key={variant}>{variantLabels[variant]}</th>)}</tr></thead>
+        <tbody>{identity.products.map(item => <tr key={item.id} aria-current={item.id === product.id ? 'true' : undefined}>
+          <th scope="row"><button type="button" className="rapold-matrix-product" onClick={() => selectProduct(item.id)}><span className="rapold-wordmark">{item.shortName}</span><small>{item.domain ?? 'Produktzeichen'}</small></button></th>
+          {matrixVariants.map(variant => <td key={variant}><a className="rapold-matrix-cell" data-artwork-mode={variant === 'dark' || variant === 'mono-white' ? 'dark' : 'light'} href={base + item.variants[variant]} download aria-label={`${item.name}, ${variantLabels[variant]}, SVG herunterladen`}><img src={base + item.variants[variant]} width={64} height={64} alt=""/></a></td>)}
+        </tr>)}</tbody>
+      </table></div>
+    </section>
 
     <RapoldWorlds productId={product.id} onProductChange={selectProduct} wordmarkTreatment={wordmarkTreatment} onWordmarkChange={setWordmarkTreatment}/>
 
