@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.7.0 — 2026-10-11
+
+- Fünf Signet-Vorschläge in der Rapold-Familie: Lotse, Cockpit, Auditor, Rapold Auth und PocketForge. Jeder Vorschlag greift das bisherige Zeichen des Produkt-Repositorys auf und überträgt es in die Raumfalten-Grammatik (Herkunft je Zeichen in `provenance.json`).
+- Produktkatalog mit `status` je Produkt (`approved` / `proposal`). Die Freigabe der vier ursprünglichen Signets bleibt unverändert und wird durch Vorschläge nicht erweitert.
+- Vollständige Exportpalette auch für die Vorschläge: 468 Exporte und 52 kanonische Ressourcen für neun Produkte. Zählungen in Tests und Build-Prüfung leiten sich aus dem Katalog ab.
+- Markenseite gliedert die Familie in «Freigegebene Signets» und «Vorschläge»; Produkte ohne eigene Produktwelt zeigen einen Hinweis statt stillschweigend die AI-Fabric-Welt.
+
 ## 0.6.0 — 2026-10-11
 
 - Produktwelten in der Rapold-Markenreferenz: originale AI-Fabric-Aurora mit Signalnetz und Glasflächen sowie vier unveränderte ÆON-Learn-Hero-Layer mit Partikelfeld, Terminal und begrenzter Parallax.

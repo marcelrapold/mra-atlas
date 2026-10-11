@@ -44,15 +44,16 @@ const {createHash}=await import('node:crypto');
 // Check the actual deployable asset tree, not just its source manifest.
 const rapoldAssets=JSON.parse(await readFile(new URL('brands/rapold/assets-manifest.json',out),'utf8'));
 assert.equal(rapoldAssets.brandId,'rapold');
-assert.equal(rapoldAssets.assets.length,208);
-assert.equal(rapoldAssets.resources.length,27);
+assert.equal(rapoldAssets.products.length,9,'Four approved signets plus five proposals');
+assert.equal(rapoldAssets.assets.length,52*rapoldAssets.products.length);
+assert.equal(rapoldAssets.resources.length,5*rapoldAssets.products.length+7);
 for(const entry of [...rapoldAssets.assets,...rapoldAssets.resources]){
  assert.ok(entry.url.startsWith('/brands/rapold/'),'Unexpected asset URL');
  const data=await readFile(new URL(entry.url.slice(1),out));
  assert.equal(data.length,entry.bytes,`Published asset size: ${entry.path}`);
  assert.equal(createHash('sha256').update(data).digest('hex'),entry.sha256,`Published asset hash: ${entry.path}`);
 }
-console.log('Rapold exports: 208 deliverables and 27 canonical resources verified in the deployable output.');
+console.log(`Rapold exports: ${rapoldAssets.assets.length} deliverables and ${rapoldAssets.resources.length} canonical resources verified in the deployable output.`);
 const echarts=await readFile(new URL('vendor/echarts-6.0.0.min.js',out));
 assert.equal(createHash('sha1').update(Buffer.concat([Buffer.from(`blob ${echarts.length}\0`),echarts])).digest('hex'),'22b33ffe0548465757267dc03ca8656d7cfef643','ECharts must match the Apache upstream bundle');
 for(const file of ['vendor/echarts-LICENSE.txt','vendor/echarts-NOTICE.txt','contracts/engineering.md'])assert.ok((await readFile(new URL(file,out))).length);

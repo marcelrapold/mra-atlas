@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img">
+  <title>Auditor – Signet</title>
+  <desc>Senkrecht gefaltetes Schild mit blauer linker und heller rechter Hälfte; ein freigestellter Prüfhaken schneidet durch beide Flächen. Transparente Vektorgrafik ohne sichtbare Schrift. Variante: mono-black.</desc>
+  <path data-part="body" fill="#000000" fill-rule="evenodd" d="M 128 26 L 128 230 L 42 124 L 42 58 Z M 74 128 L 92 110 L 116 134 L 128 122 L 128 158 L 116 170 Z"/>
+  <polygon data-part="facet-1" fill="#000000" points="128,26 197.966,52.034 128,122"/>
+  <polygon data-part="facet-2" fill="#000000" points="214,72 214,124 128,230 128,158"/>
+</svg>

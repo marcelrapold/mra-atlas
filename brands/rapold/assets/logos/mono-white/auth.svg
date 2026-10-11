@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img">
+  <title>Auth – Signet</title>
+  <desc>Isometrisches Schloss: gefalteter Bügel und blaue Front mit freigestelltem Schlüsselloch, helle Seitenfläche. Transparente Vektorgrafik ohne sichtbare Schrift. Variante: mono-white.</desc>
+  <path data-part="body" fill="#FFFFFF" fill-rule="evenodd" d="M 36 196 L 148 252 L 148 160 L 36 104 Z M 92 157.48 L 106 178.48 L 98 182.48 L 98 207.48 L 86 201.48 L 86 176.48 L 78 164.48 Z M 52 112 L 52 64 L 74 53 L 110 71 L 132 104 L 132 152 L 114 143 L 114 103 L 102 85 L 82 75 L 70 81 L 70 121 Z"/>
+  <polygon data-part="facet-1" fill="#FFFFFF" points="148,252 192,230 192,138 148,160"/>
+</svg>
