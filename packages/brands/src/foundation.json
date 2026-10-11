@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "provenance": "Atlas semantic roles and shell geometry; expanded framework spacing, motion and typography scales are neutral defaults, overridable by brands.",
+  "provenance": "Atlas semantic roles and shell geometry; spacing, motion and typography scales are neutral defaults, overridable by brands.",
   "spacing": {
     "0": "0px",
     "1": "4px",

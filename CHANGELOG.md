@@ -6,6 +6,11 @@
 - Produktkatalog mit `status` je Produkt (`approved` / `proposal`). Die Freigabe der vier ursprünglichen Signets bleibt unverändert und wird durch Vorschläge nicht erweitert.
 - Vollständige Exportpalette auch für die Vorschläge: 520 Exporte und 57 kanonische Ressourcen für zehn Produkte. Zählungen in Tests und Build-Prüfung leiten sich aus dem Katalog ab.
 - Markenseite gliedert die Familie in «Freigegebene Signets» und «Vorschläge»; Produkte ohne eigene Produktwelt zeigen einen Hinweis statt stillschweigend die AI-Fabric-Welt.
+- Das Designsystem heisst jetzt **Atlas** und ist unter `atlas.rapold.io` adressiert (Metadaten, Sitemap, robots, Schemas, Agenten-Einstieg und Verträge). Die Seitenleiste zeigt das Atlas-Signet. Die npm-Paketnamen `@rapold/framework-*` bleiben unverändert.
+- Das externe Ausgangssystem ist nicht mehr Referenz, Benchmark oder Namensgeber: Footer-Link, Referenz- und Abdeckungsdokumente, der Vertrag `/contracts/atlas-reference.md` und der Referenz-Commit in `build-info.json` sind entfernt; Website, Arbeitsvertrag und Prompts beschreiben Atlas als eigene Referenz.
+- Die Seite «Atlas-Abgleich» ist entfernt; die Referenz umfasst 35 indexierte Seiten.
+- Lizenz neu: «Alle Rechte vorbehalten», Marcel Rapold. Drittkomponenten (Geist OFL, Lucide ISC, ECharts und Learn-Ebenen Apache-2.0) behalten ihre Lizenzen. `docs/extraction.md` entfernt.
+- EdgePortal-Domain `edgeportal.rapold.io` im Produktkatalog nachgetragen.
 
 ## 0.6.0 — 2026-10-11
 

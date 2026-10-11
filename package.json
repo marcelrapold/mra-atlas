@@ -2,7 +2,7 @@
   "name": "rapold-framework",
   "version": "0.7.0",
   "private": true,
-  "description": "White-label design system extracted from Atlas",
+  "description": "Rapold Atlas: white-label design system with brand adapters",
   "license": "UNLICENSED",
   "workspaces": [
     "packages/*",

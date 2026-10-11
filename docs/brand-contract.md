@@ -5,10 +5,10 @@ Der Core kennt keine Firma. Seine Komponenten konsumieren ausschliesslich semant
 ## Vorrang
 
 1. Expliziter Auftrag und freigegebene Firmenvorlage.
-2. Atlas unter `https://atlas.zvv.dev` für Systemstruktur, Website, Navigation und Komponentenverhalten; siehe `atlas-reference.md`.
-3. Belegte Brand-Quellen mit Version und Herkunft für die markenspezifische Gestaltung. Sie ersetzen die ZVV-Markenidentität.
+2. Atlas, dieses Designsystem, für Systemstruktur, Website, Navigation und Komponentenverhalten.
+3. Belegte Brand-Quellen mit Version und Herkunft für die markenspezifische Gestaltung. Sie bestimmen die Markenidentität der jeweiligen Brand.
 4. Dokumentierte, noch nicht freigegebene Verfeinerungen.
-5. Framework-Defaults für Eigenschaften, die weder Atlas noch die Brand-Vorlage definieren.
+5. Neutrale Atlas-Defaults für Eigenschaften, die weder der Systemvertrag noch die Brand-Vorlage definieren.
 
 Konflikte werden festgehalten. Ein Adapter setzt `status: draft`, solange Abweichungen offen sind. Technische Validierung ist keine CI-Freigabe.
 

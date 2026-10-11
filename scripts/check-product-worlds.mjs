@@ -180,7 +180,7 @@ export async function checkProductWorlds({directory=join(repositoryRoot,'apps/do
   for(const match of html.matchAll(/<(?:link|script|img)\b[^>]*>/g))for(const ref of match[0].matchAll(/\b(?:src|href)="([^"]+)"/g)) {
     const dependency=localDependency('index.html',ref[1]);
     assert.ok(kitBytes.has(dependency),`Missing offline HTML dependency: ${dependency}`);
-    const servedUrl=new URL(ref[1],'https://design.rapold.io'+manifest.transport.publicBaseHref);
+    const servedUrl=new URL(ref[1],'https://atlas.rapold.io'+manifest.transport.publicBaseHref);
     assert.ok(files.has(servedUrl.pathname.slice(manifest.basePath.length)),`Missing hosted HTML dependency after clean-URL redirect: ${servedUrl.pathname}`);
   }
   for(const match of html.matchAll(/\bdata-(?:light|dark)-src="([^"]+)"/g))assert.ok(kitBytes.has(localDependency('index.html',match[1])),`Missing mode logo: ${match[1]}`);

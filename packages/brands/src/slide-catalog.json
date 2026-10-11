@@ -327,7 +327,7 @@
       },
       {
         "zone": "Fussnote",
-        "inhalt": "«Gerendert mit <skript> aus <daten> · Designtokens design.rapold.io/tokens · Icons lucide, stroke 1.5» — die Provenienz der Grafik selbst."
+        "inhalt": "«Gerendert mit <skript> aus <daten> · Designtokens atlas.rapold.io/tokens · Icons lucide, stroke 1.5» — die Provenienz der Grafik selbst."
       }
     ],
     "dataviz": "Renderer-Palette aus deck-tokens.json → rendererPalette; Endlabels in Serienfarbe statt Legende.",

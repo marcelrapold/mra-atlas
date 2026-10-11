@@ -1,23 +1,21 @@
-# Design Framework
+# Atlas
 
-Ein White-Label-Designstandard für Web-Interfaces und Management-Präsentationen.
-Hauptadresse: https://design.rapold.io
-Optionaler Alias: https://framework.rapold.io
+Atlas ist das Designsystem von Rapold: ein White-Label-Designstandard für Web-Interfaces und Management-Präsentationen.
+Hauptadresse: https://atlas.rapold.io
 Repository: https://github.com/marcelrapold/design
 Den tatsächlich ausgelieferten Stand über /build-info.json prüfen.
-Verbindliche Referenz für Designsystem und Website: https://atlas.zvv.dev.
-Die aktive Brand ersetzt die Markenidentität, Atlas bestimmt die gemeinsame Struktur.
+Atlas ist seine eigene Referenz: Struktur, Muster und Verträge stehen in diesem Repository.
+Die aktive Brand bestimmt die Markenidentität, Atlas die gemeinsame Struktur.
 
 ## Einstieg für ausführende Agenten
 
 Bei «Repo analysieren und Management-Präsentation erstellen» direkt den vollständigen Ablauf
-unter https://design.rapold.io/brands/{brand}/management.md laden und ausführen.
+unter https://atlas.rapold.io/brands/{brand}/management.md laden und ausführen.
 Die ausdrücklich genannte Brand beziehungsweise der verlinkte Theme-Einstieg bestimmt `{brand}`;
 ohne Theme-Wahl `neutral` verwenden. Namen über /brands/index.json auflösen.
 Der Vertrag enthält Defaults, Quellenprüfung, Gestaltung, Export und Abnahme.
 Der Nutzer muss diese Regeln nicht in den Auftrag kopieren.
 
-- /contracts/atlas-reference.md: verbindliche Atlas-Referenz, Quellenprüfung und Abweichungen
 - /contracts/repo-to-management.md: vollständiger Auftrag vom Repository zur Management-Präsentation
 - /contracts/brand-contract.md: Tokenmodell, Erweiterung und Abnahme
 - /brands/index.json: verfügbare Brands mit Version, Status und Asset-Pfaden
@@ -35,7 +33,7 @@ Der Standard liefert Regeln und Daten. Repository-Analyse, PPTX-Erzeugung und PD
 führt der konsumierende Agent mit seinen verfügbaren Werkzeugen aus.
 
 ## Präsentationslogik (verbindlich)
-https://design.rapold.io/contracts/presentation-logic.md
+https://atlas.rapold.io/contracts/presentation-logic.md
 
 ## Vollständige Token-Exporte
 /brands/{brand}/tokens.light.json

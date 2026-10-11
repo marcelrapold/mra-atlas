@@ -14,6 +14,16 @@ type Appearance = Mode | 'system';
 const BrandContext = createContext<{brand: Brand; mode: Mode; setBrand: (id: string) => void}>({brand: neutral, mode: 'light', setBrand: () => {}});
 export const useActiveBrand = () => useContext(BrandContext);
 
+// Atlas signet (brands/rapold/assets/logos/current-color/atlas.svg): the system's own mark,
+// drawn in currentColor so it follows every brand and mode. Decorative: the name sits beside it.
+function AtlasMark({size}: {size: number}) {
+  return <svg width={size} height={size} viewBox="30 32 196 196" aria-hidden="true" focusable="false">
+    <path fill="currentColor" fillRule="evenodd" d="M 34 84 L 81 58 L 81 176 L 34 202 Z M 128 84 L 175 58 L 175 176 L 128 202 Z M 151.5 108 L 165 128 L 151.5 148 L 138 128 Z"/>
+    <polygon fill="currentColor" fillOpacity={0.55} points="81,58 128,84 128,202 81,176"/>
+    <polygon fill="currentColor" fillOpacity={0.55} points="175,58 222,84 222,202 175,176"/>
+  </svg>;
+}
+
 export default function FrameworkShell({children}: {children: ReactNode}) {
   const path = usePathname();
   const router = useRouter();
@@ -118,7 +128,7 @@ export default function FrameworkShell({children}: {children: ReactNode}) {
       <div className={`framework-app ${collapsed ? 'rail' : ''}`}>
         <aside className="sidebar">
           <Link href={themedHref('overview')} className={`identity ${brand.assets?.logo && !collapsed ? 'identity-brand' : ''}`} aria-label={`${brand.name} · Startseite`}>
-            {brand.assets?.logo && !collapsed ? <img src={`/${brand.assets.logo.path}`} width={142} height={24} alt={`${brand.name}-Logo`}/> : <><Layers size={23} aria-hidden="true"/>{!collapsed && <span>Framework <small>{version}</small></span>}</>}
+            {brand.assets?.logo && !collapsed ? <img src={`/${brand.assets.logo.path}`} width={142} height={24} alt={`${brand.name}-Logo`}/> : <><AtlasMark size={23}/>{!collapsed && <span>Atlas <small>{version}</small></span>}</>}
           </Link>
           <button className="search-trigger" type="button" onClick={event => openSearch(event.currentTarget)} aria-label="Seiten durchsuchen" aria-haspopup="dialog"><Search size={16} aria-hidden="true"/>{!collapsed && <><span>Suchen</span><kbd aria-hidden="true">⌘ / Ctrl K</kbd></>}</button>
           <nav aria-label="Hauptnavigation">{nav(collapsed)}</nav>
@@ -140,7 +150,7 @@ export default function FrameworkShell({children}: {children: ReactNode}) {
             </div>
           </header>
           <main id="main" tabIndex={-1}>{children}</main>
-          <footer><span>Design Framework · {brand.name}</span><a href={`/brands/${brand.id}/llms.txt`}>Agenten-Einstieg</a><a href="https://atlas.zvv.dev">Referenz: Atlas</a></footer>
+          <footer><span>Atlas · {brand.name}</span><a href={`/brands/${brand.id}/llms.txt`}>Agenten-Einstieg</a></footer>
         </div>
       </div>
       <SheetContent side="left" className="mobile-nav" closeLabel="Navigation schliessen" onCloseAutoFocus={event => {if (mobileSearchRequested.current) {event.preventDefault(); mobileSearchRequested.current = false; openSearch(document.querySelector<HTMLButtonElement>('.mobile-toggle'));} else if (mobileNavigating.current) {event.preventDefault(); document.getElementById('main')?.focus();}}}>
@@ -149,7 +159,7 @@ export default function FrameworkShell({children}: {children: ReactNode}) {
         <nav aria-label="Mobile Navigation">{nav(false, true)}</nav>
       </SheetContent>
     </Sheet>
-    <CommandDialog open={search} onOpenChange={setSearch} title="Framework durchsuchen" description="Eine Referenzseite öffnen" closeLabel="Suche schliessen" contentProps={{onCloseAutoFocus: event => {
+    <CommandDialog open={search} onOpenChange={setSearch} title="Atlas durchsuchen" description="Eine Referenzseite öffnen" closeLabel="Suche schliessen" contentProps={{onCloseAutoFocus: event => {
       event.preventDefault();
       const origin = searchOrigin.current;
       if (!searchNavigating.current && origin?.isConnected) origin.focus();

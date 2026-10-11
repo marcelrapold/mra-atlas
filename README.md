@@ -1,18 +1,18 @@
-# Design Framework
+# Atlas
 
-White-Label-Framework auf Basis von Atlas. Ein neutraler Designstandard mit austauschbaren Brand-Vorgaben für Interfaces und Management-Präsentationen.
+Atlas ist das Designsystem von Rapold: ein neutraler White-Label-Designstandard mit austauschbaren Brand-Vorgaben für Interfaces und Management-Präsentationen.
 
-**Stand:** 0.7.0 (Quellstand; der datierte Produktionsnachweis unten betrifft 0.6.0), Quellstand für `marcelrapold/mra-design`. Das Repository ist öffentlich. Die Herkunftslizenz bleibt unter `LICENSE` erhalten; eine freie Neulizenzierung ist damit nicht verbunden. Produktionsadresse: https://design.rapold.io. Die native Vercel-Git-Verbindung übernimmt Builds bei Pushes auf main. Am **11.10.2026, 10:06–10:17 UTC**, wurden der produktive Anwendungsstand `73498ec4b46cb9f431d7ad5d186e88dd6301162b`, die ausgelieferten Ressourcen und 14 gezielte Browserfälle bestätigt. Dieser datierte Prüfstand ist keine Aussage über den Main-Head späterer Dokumentations-Commits. Die dokumentierten Container-, Bewegungs- und Assistenztechnik-Grenzen bleiben ausdrücklich bestehen. Nachweise: [Deployment](docs/deployment.md) und [Browserbericht](docs/review/production-0.6.0-73498ec4b46c/browser-review.json).
+**Stand:** 0.7.0 (Quellstand; der datierte Produktionsnachweis unten betrifft 0.6.0), Quellstand für `marcelrapold/mra-design`. Das Repository ist öffentlich. Lizenz: «Alle Rechte vorbehalten», Marcel Rapold; Drittkomponenten behalten ihre Lizenzen (siehe `LICENSE`). Produktionsadresse: https://atlas.rapold.io (die Domain wird in Vercel separat eingerichtet; siehe [Deployment](docs/deployment.md)). Die native Vercel-Git-Verbindung übernimmt Builds bei Pushes auf main. Am **11.10.2026, 10:06–10:17 UTC**, wurden der produktive Anwendungsstand `73498ec4b46cb9f431d7ad5d186e88dd6301162b`, die ausgelieferten Ressourcen und 14 gezielte Browserfälle bestätigt. Dieser datierte Prüfstand ist keine Aussage über den Main-Head späterer Dokumentations-Commits. Die dokumentierten Container-, Bewegungs- und Assistenztechnik-Grenzen bleiben ausdrücklich bestehen. Nachweise: [Deployment](docs/deployment.md) und [Browserbericht](docs/review/production-0.6.0-73498ec4b46c/browser-review.json).
 
-## Verbindliche Referenz
+## Referenz
 
-[atlas.zvv.dev](https://atlas.zvv.dev) ist die ultimative Referenz für das Designsystem und den Aufbau der Website. Struktur und Verhalten folgen Atlas; die jeweilige Brand liefert ihre CI. Die Referenz umfasst Tokens, Icons, Komponenten, Navigation und Präsentationsmuster. Vollständige Atlas-Parität ist noch nicht abgenommen; siehe docs/atlas-coverage.md. Details: [Atlas-Referenz](docs/atlas-reference.md).
+Atlas ist seine eigene Referenz. Website, Tokens, Icons, Komponenten, Navigation und Präsentationsmuster sind in diesem Repository definiert und unter https://atlas.rapold.io dokumentiert; die jeweilige Brand liefert ihre CI. Die Herkunft übernommener Code-Bestandteile steht in [docs/extraction.md](docs/extraction.md).
 
 ## Zielauftrag
 
-> Analysiere owner/repo und erstelle eine Management-Präsentation. Lies und befolge https://design.rapold.io/brands/neutral/management.md.
+> Analysiere owner/repo und erstelle eine Management-Präsentation. Lies und befolge https://atlas.rapold.io/brands/neutral/management.md.
 
-Für Rapold denselben Auftrag mit https://design.rapold.io/brands/rapold/management.md verwenden; für Dominicano Express mit https://design.rapold.io/brands/dominicano-express/management.md. Der Einstieg enthält den vollständigen Ablauf: standardmässig acht Folien, Deutsch (Schweiz), 16:9, editierbare PPTX, PDF, Quellenmanifest und deck.json. Explizite Wünsche überschreiben diese Defaults. Auf der [Präsentationsseite](https://design.rapold.io/praesentation) und im Prompt-Compiler wird der Kurzauftrag für das aktive Theme erzeugt.
+Für Rapold denselben Auftrag mit https://atlas.rapold.io/brands/rapold/management.md verwenden; für Dominicano Express mit https://atlas.rapold.io/brands/dominicano-express/management.md. Der Einstieg enthält den vollständigen Ablauf: standardmässig acht Folien, Deutsch (Schweiz), 16:9, editierbare PPTX, PDF, Quellenmanifest und deck.json. Explizite Wünsche überschreiben diese Defaults. Auf der [Präsentationsseite](https://atlas.rapold.io/praesentation) und im Prompt-Compiler wird der Kurzauftrag für das aktive Theme erzeugt.
 
 Der Standard liefert Brand-Daten, Präsentationsrollen und einen vollständigen Agenten-Vertrag. Der ausführende Agent braucht Repo-Zugang und einen Renderer. Ein gehosteter Generator ist nicht Teil dieses ersten Schnitts.
 
@@ -37,17 +37,15 @@ Bei Änderungen an der Brand-Registry entfernt die Generierung nicht mehr regist
 
 | Pfad | Zweck |
 |---|---|
-| `packages/core/src` | Alle 19 Atlas-UI-Module und BrandProvider |
+| `packages/core/src` | Alle 19 UI-Module und BrandProvider |
 | `packages/brands/src` | Validierter Brand-Vertrag, Registry für Neutral, Dominicano Express und Rapold sowie Präsentationsadapter |
 | `packages/presentation/src` | Datenadapter, Inhaltsprüfung und editierbarer PPTX-Export |
-| `apps/docs` | Next.js-Referenz mit 36 Seiten, statisch exportierbar |
+| `apps/docs` | Next.js-Referenz mit 35 Seiten, statisch exportierbar |
 | `brands/rapold` | Original-Signets, lokale Geist-Fonts, Produktkatalog und dokumentierte UI-Ableitungen |
 | `docs/apple-design-audit.md` | Apple-orientierter Web-Audit mit Befunden und Abnahmegrenzen |
 | `brands/dominicano-express` | Vorgaben und Inhaltsbeispiel für das Dominicano-Preset |
-| `docs/atlas-reference.md` | Verbindliche Atlas-Referenz für System und Website |
 | `docs/brand-contract.md` | Integration und Erweiterung |
 | `docs/repo-to-management.md` | Vollständiger Agenten-Auftrag für Management-Decks |
-| `docs/extraction.md` | Übernommene und entfernte Bestandteile, Herkunft |
 | `docs/release.md` | Repository-Übernahme und spätere Veröffentlichung |
 | `scripts/build-contracts.mjs` | Erzeugt JSON- und Markdown-Endpunkte |
 | `tests` | Vertrag, Kontrast und Core-Isolation |
@@ -58,7 +56,7 @@ Bei Änderungen an der Brand-Registry entfernt die Generierung nicht mehr regist
 ## Ausprägungen
 
 - Neutral: vollständige helle und dunkle Basis.
-- Rapold: gemeinsame Brand für Fabric, Argus, ÆON Learn und EdgePortal (freigegeben) sowie Lotse, Cockpit, Auditor, Rapold Auth, PocketForge und Atlas (Vorschläge). 50 SVG-Master, lokale Geist-Fonts und 520 reproduzierbare Exporte. Status `draft` für den neuen UI-Adapter. Markenansicht: `/brand?brand=rapold`. [Quellen und Anwendung](brands/rapold/README.md).
+- Rapold: gemeinsame Brand für Fabric, Argus, ÆON Learn und EdgePortal (freigegeben) sowie Lotse, Cockpit, Auditor, Rapold Auth, PocketForge und Atlas selbst (Vorschläge). 50 SVG-Master, lokale Geist-Fonts und 520 reproduzierbare Exporte. Status `draft` für den neuen UI-Adapter. Markenansicht: `/brand?brand=rapold`. [Quellen und Anwendung](brands/rapold/README.md).
 - Dominicano Express: eigenständiges helles und dunkles Preset mit seinem Caja-Inhaltsbeispiel.
 
 Firmenlogos, interne Vorgaben und lizenzierte Assets sind getrennt vom neutralen Core. Eine künftige freie Code-Lizenz erteilt keine Marken- oder Fontrechte.
@@ -66,10 +64,9 @@ Firmenlogos, interne Vorgaben und lizenzierte Assets sind getrennt vom neutralen
 ## Zieladressen
 
 Repository: [marcelrapold/mra-design](https://github.com/marcelrapold/mra-design).
-Hauptadresse: `design.rapold.io` (jüngster Beispielauftrag).
-Optionaler Alias: `framework.rapold.io` (ursprüngliche Zieladresse).
+Hauptadresse: `atlas.rapold.io`.
 
-Die Domain-Auswahl steht in der Metadaten-Konfiguration und im Agenten-Einstieg. Es wurden keine DNS-Änderungen vorgenommen.
+Die Domain steht in der Metadaten-Konfiguration, in `vercel.json` und im Agenten-Einstieg. DNS und Vercel-Domain werden separat eingerichtet. Die npm-Paketnamen `@rapold/framework-*` bleiben vorerst unverändert.
 
 ## Erweiterter Stand
 
@@ -80,8 +77,8 @@ Die Domain-Auswahl steht in der Metadaten-Konfiguration und im Agenten-Einstieg.
 - Editierbare Muster-Decks pro Brand. Die Vorschauen werden aus den exportierten PowerPoints über PDF nach PNG gerendert. Ein Build-Gate prüft ihre Aktualität.
 - Inhaltslogik: docs/presentation-logic.md und scripts/validate-deck.mjs.
 
-Bekannte Lücken und Abnahmestatus: docs/atlas-coverage.md.
+Bekannte Lücken und Abnahmestatus: [HANDOFF.md](HANDOFF.md).
 
 Der Muster-Renderer erzeugt 18 editierbare PPTX-Dateien (drei Brands × sechs Decks). Zusätzlich verarbeitet `@rapold/framework-presentation` echte Projektinhalte mit allen 18 Rezepten. `npm run deck:export -- deck.json --out ./ergebnis --repo-dir ./projekt --pdf` erzeugt PPTX, PDF und Quellenmanifest. Vollständiger Ablauf und Eingabeschema: [Projektdecks](docs/project-decks.md).
 
-Version 0.4 ergänzt den Atlas-Organigramm-Renderer mit Editor und Exporten, vier lokale ECharts-Beispiele, vollständige Navigationsicons, formatabhängige Prompts und den [Engineering-Vertrag](docs/engineering.md).
+Version 0.4 ergänzt den Organigramm-Renderer mit Editor und Exporten, vier lokale ECharts-Beispiele, vollständige Navigationsicons, formatabhängige Prompts und den [Engineering-Vertrag](docs/engineering.md).

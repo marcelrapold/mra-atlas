@@ -11,15 +11,15 @@ npm ci
 npm run check
 ```
 
-Die vorhandene Initial-Historie des Zielrepositorys bleibt erhalten. Der lokale Atlas-Auszug wird als zusammenhängender Import übernommen.
+Die vorhandene Initial-Historie des Zielrepositorys bleibt erhalten.
 
 ## Open-Source-Release
 
-Die Original-LICENSE beschränkt Verteilung ausserhalb ZVV/Mandatsträger und verlangt schriftliche Zustimmung der ZVV ICT. Das Core-White-Labeling allein ersetzt diese Freigabe nicht. Vor einer freien Lizenz muss der erlaubte Umfang der extrahierten Dateien dokumentiert werden. Brand-Quellen und Assets behalten ihren separaten Rechte- und Freigabestatus. Ihr beauftragter Upload erteilt keine allgemeine Nutzungslizenz. Danach können Code-Lizenz, Package-Publish-Konfiguration und Sichtbarkeit gezielt gesetzt werden.
+Lizenz: «Alle Rechte vorbehalten», Marcel Rapold (`LICENSE`). Drittlizenzen werden mit ausgeliefert.
 
 ## Webbetrieb
 
-`npm run build` erzeugt einen statischen Export in `apps/docs/out`. Diese Dateien benötigen keinen Auth-, Datenbank- oder API-Server. Ziel: `design.rapold.io`, optionaler Redirect von `framework.rapold.io`. Kein automatischer DNS-Wechsel, kein Deployment-Token und keine ZVV-Umgebungsvariable werden übernommen. Upload und Produktionsdeployment sind vom Benutzer beauftragt. Der Lizenzstatus bleibt davon getrennt dokumentiert.
+`npm run build` erzeugt einen statischen Export in `apps/docs/out`. Diese Dateien benötigen keinen Auth-, Datenbank- oder API-Server. Ziel: `atlas.rapold.io`. Kein automatischer DNS-Wechsel, kein Deployment-Token und keine ZVV-Umgebungsvariable werden übernommen. Upload und Produktionsdeployment sind vom Benutzer beauftragt. Der Lizenzstatus bleibt davon getrennt dokumentiert.
 
 Für einen späteren Generator werden Repo-Leserechte und ein Präsentationsrenderer benötigt. Der aktuell implementierte Einstieg `/llms.txt` liefert den Auftrag an den Agenten, kein Backend und keine angebliche PPTX-API.
 

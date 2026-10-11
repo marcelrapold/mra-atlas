@@ -52,7 +52,7 @@ test('Rapold is one product family with four approved signs, six marked proposal
   assert.deepEqual(identity.viewBox,[0,0,256,256]);
   assert.deepEqual(identity.products.map(product=>product.id),productIds);
   assert.deepEqual(identity.products.map(product=>product.name),['AI Fabric','Argus','ÆON Learn','EdgePortal','Lotse','Cockpit','Auditor','Rapold Auth','PocketForge','Atlas']);
-  assert.deepEqual(identity.products.map(product=>product.domain),['ai.rapold.io','argus.rapold.io','learn.rapold.io',null,'lotse.rapold.io','cockpit.rapold.io','auditor.rapold.io','auth.rapold.io','game.rapold.io','atlas.rapold.io']);
+  assert.deepEqual(identity.products.map(product=>product.domain),['ai.rapold.io','argus.rapold.io','learn.rapold.io','edgeportal.rapold.io','lotse.rapold.io','cockpit.rapold.io','auditor.rapold.io','auth.rapold.io','game.rapold.io','atlas.rapold.io']);
   assert.deepEqual(identity.products.filter(product=>product.status==='approved').map(product=>product.id),approvedIds,'Proposals must not widen the approved signet scope');
   assert.deepEqual(identity.products.filter(product=>product.status==='proposal').map(product=>product.id),proposalIds);
   for(const product of identity.products.filter(product=>product.status==='proposal'))assert.match(product.origin.repository,/^marcelrapold\/[a-z0-9-]+$/,product.id);

@@ -13,7 +13,7 @@ test('interface and written brief requests cannot inherit the presentation deliv
   assert.doesNotMatch(ui,/PPTX|validateProject|jede Folie/i);
   assert.match(brief,/Schriftliches Management-Briefing/);
   assert.doesNotMatch(brief,/PPTX|validateProject/);
-  assert.match(slides,/https:\/\/design\.rapold\.io\/brands\/dominicano-express\/management\.md/);
+  assert.match(slides,/https:\/\/atlas.rapold.io\/brands\/dominicano-express\/management\.md/);
   assert.ok(slides.length < 300,'The presentation entry should remain a short task, not an inline contract');
   for(const output of [ui,brief])assert.match(output,/brands\/dominicano-express\/brand\.json/);
   assert.throws(()=>compilePrompt({...input,format:'Unbekannt'}),/Unbekanntes/);

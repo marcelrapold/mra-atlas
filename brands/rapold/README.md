@@ -1,6 +1,6 @@
 # Rapold
 
-Ein optional wählbares Rapold-Theme für die Produkte AI Fabric, Argus, ÆON Learn und EdgePortal (freigegebene Signets) sowie Lotse, Cockpit, Auditor, Rapold Auth, PocketForge und das Designsystem Atlas (Signet-Vorschläge). Es liefert eine gemeinsame Farb- und Typografiebasis für das neutrale Framework. Der Framework-Default bleibt `neutral`.
+Ein optional wählbares Rapold-Theme für die Produkte AI Fabric, Argus, ÆON Learn und EdgePortal (freigegebene Signets) sowie Lotse, Cockpit, Auditor, Rapold Auth, PocketForge und das Designsystem Atlas (Signet-Vorschläge). Es liefert eine gemeinsame Farb- und Typografiebasis für das neutrale Atlas-System. Der Atlas-Default bleibt `neutral`.
 
 **Status des UI-Adapters: `draft`, Version 0.2.0.** Marcel Rapold hat am **11.10.2026** die vier Signets der Raumfalten-Familie B freigegeben. Die neue Zuordnung zu vollständigen UI-Rollen und ihre visuelle Abnahme bleiben als separate Integrationsarbeit dokumentiert.
 
@@ -27,7 +27,7 @@ Es gibt genau einen Rapold-Eintrag in der Brand-Registry. Die Produktkennungen w
 | `fabric` | AI Fabric | [fabric.svg](assets/logos/fabric.svg) |
 | `argus` | Argus | [argus.svg](assets/logos/argus.svg) |
 | `learn` | ÆON Learn | [learn.svg](assets/logos/learn.svg) |
-| `edgeportal` | EdgePortal | [edgeportal.svg](assets/logos/edgeportal.svg) |
+| `edgeportal` | EdgePortal · edgeportal.rapold.io | [edgeportal.svg](assets/logos/edgeportal.svg) |
 
 ### Vorschläge seit 0.7.0
 
@@ -129,7 +129,7 @@ Die Ausgaben liegen ausschliesslich unter `~/.local/share/fonts/framework`. Konv
 - Nutzerfreigabe der vier Raumfalten-Signets vom 11.10.2026.
 - Geliefertes `rapold-brand-system`, Version 1.0.0: Tokenkopie und SHA-256-Nachweis im Brand-Paket.
 - [Produktwelten-Spezifikation](../../docs/product-worlds.md) und [World-Provenance](sources/world-provenance.json): Originalquellen, unveränderte Dateien, integrierte Anpassungen sowie tatsächliche Produktions-/Browsernachweise und ihre Grenzen für 0.6.0.
-- [Brand-Vertrag](https://design.rapold.io/contracts/brand-contract.md) für vollständige Rollen, Kontraste und Quellenstatus; Repository-Quelle: `docs/brand-contract.md`.
-- [Atlas-Referenz](https://design.rapold.io/contracts/atlas-reference.md) für die neutrale Systemstruktur; Repository-Quelle: `docs/atlas-reference.md`. Diese Integration verändert keine Seitenarchitektur.
+- [Brand-Vertrag](https://atlas.rapold.io/contracts/brand-contract.md) für vollständige Rollen, Kontraste und Quellenstatus; Repository-Quelle: `docs/brand-contract.md`.
+- [Atlas](https://atlas.rapold.io) für die neutrale Systemstruktur. Diese Integration verändert keine Seitenarchitektur.
 
 Prüfung: `node --test tests/brands.test.mjs tests/rapold.test.mjs`. Das gemeinsame Integrationsgate bleibt `npm run check`; Browser- und Tastaturprüfung erfolgen mit dem aktiven Rapold-Theme. Logo- und Fontrechte werden durch die Framework-Lizenz nicht neu vergeben.

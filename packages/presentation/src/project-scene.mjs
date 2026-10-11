@@ -1,4 +1,4 @@
-// Data-driven Atlas recipes. This module contains no example project facts and no I/O.
+// Data-driven slide recipes. This module contains no example project facts and no I/O.
 export function chNumber(value){
  if(typeof value!=='number')return String(value);
  const [integer,decimal]=String(value).split('.');
