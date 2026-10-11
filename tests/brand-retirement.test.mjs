@@ -4,6 +4,7 @@ import {access,mkdtemp,mkdir,readFile,rm,symlink,writeFile} from 'node:fs/promis
 import {join} from 'node:path';
 import {tmpdir} from 'node:os';
 import * as registry from '../packages/brands/src/index.mjs';
+import {canSymlink} from './symlink-support.mjs';
 import {pruneBrandOutputs} from '../scripts/prune-brand-outputs.mjs';
 
 const activeIds=['neutral','dominicano-express','rapold'];
@@ -50,7 +51,7 @@ test('generator cleanup removes retired exports and references while preserving 
   }finally{await rm(directory,{recursive:true,force:true});}
 });
 
-test('cleanup cannot follow retired symlinks or operate with an invalid empty registry',async()=>{
+test('cleanup cannot follow retired symlinks or operate with an invalid empty registry',{skip:!canSymlink&&'symlinks unavailable on this system'},async()=>{
   const directory=await mkdtemp(join(tmpdir(),'framework-brand-prune-boundary-'));
   try{
     const output=join(directory,'public'),outside=join(directory,'canonical-source');

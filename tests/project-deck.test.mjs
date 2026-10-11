@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import {readFile,mkdtemp,symlink,rm,writeFile} from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {canSymlink} from './symlink-support.mjs';
 import JSZip from 'jszip';
 import {validateProject,createProjectDeck,projectScene} from '../packages/presentation/src/index.mjs';
 import {assetPath} from '../packages/presentation/src/render.mjs';
@@ -35,13 +37,13 @@ test('all 18 project recipes construct finite bounded scenes without importing d
   for(const n of scene.nodes){for(const k of ['x','y','w','h'])assert.ok(Number.isFinite(n[k])&&n[k]>=0,`${recipe.id}/${k}`);assert.ok(n.x+n.w<=scene.width+.01,recipe.id);assert.ok(n.y+n.h<=scene.height+.01,recipe.id);}
  }
 });
-test('brand assets remain configurable and local image resolution cannot escape via traversal or symlinks',async()=>{
+test('brand assets remain configurable and local image resolution cannot escape via traversal or symlinks',{skip:!canSymlink&&'symlinks unavailable on this system'},async()=>{
  const custom=defineBrand({...structuredClone(neutral),id:'test-brand',name:'Test Brand',assets:{logo:{path:'brands/test/logo.svg',aspectRatio:3,background:'#ffffff',padding:.1}}});assert.equal(custom.assets.logo.path,'brands/test/logo.svg');
  const directory=await mkdtemp(path.join(os.tmpdir(),'framework-asset-test-'));try{await writeFile(path.join(directory,'outside.svg'),'test');await import('node:fs/promises').then(m=>m.mkdir(path.join(directory,'inside')));await symlink(path.join(directory,'outside.svg'),path.join(directory,'inside','escape.svg'));await assert.rejects(()=>assetPath(path.join(directory,'inside'),'../outside.svg'));await assert.rejects(()=>assetPath(path.join(directory,'inside'),'escape.svg'));}finally{await rm(directory,{recursive:true,force:true});}
 });
 test('photographic recipes embed a supplied local image using proportional sizing',async()=>{
  const {renderScenes}=await import('../packages/presentation/src/render.mjs');
- const root=new URL('../apps/docs/public/',import.meta.url).pathname;
+ const root=fileURLToPath(new URL('../apps/docs/public/',import.meta.url));
  const pptx=await renderScenes(neutral,[{nodes:[{kind:'image',x:0,y:0,w:33.867,h:17.524,path:'brands/neutral/reference/cover-foto.png',fit:'cover',alt:'Test asset'}]}],{assetRoot:root});
  const zip=await JSZip.loadAsync(pptx);assert.ok((await zip.file('ppt/slides/slide1.xml').async('string')).includes('<p:pic>'));
 });
