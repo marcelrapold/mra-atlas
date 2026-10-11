@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img">
+  <title>Lotse – Signet</title>
+  <desc>Isometrisches Wegband, das um eine Ecke nach oben abbiegt und in einer Pfeilspitze endet; helle Seitenfläche am Aufstieg. Transparente Vektorgrafik ohne sichtbare Schrift. Variante: mono-white.</desc>
+  <path data-part="body" fill="#FFFFFF" fill-rule="evenodd" d="M 28 186 L 132 134 L 132 174 L 28 226 Z M 132 134 L 132 98 L 110 98 L 160 30 L 210 98 L 188 98 L 188 146 L 160 160 L 160 148 Z"/>
+  <polygon data-part="facet-1" fill="#FFFFFF" points="132,174 132,134 160,148 160,188"/>
+</svg>

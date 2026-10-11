@@ -4,7 +4,7 @@
   "brandId": "rapold",
   "name": "Rapold",
   "publicBase": "/brands/rapold/",
-  "model": "Ein Theme mit vier eigenständigen Produktzeichen.",
+  "model": "Ein Theme mit eigenständigen Produktzeichen: vier freigegebene Signets und sechs Vorschläge.",
   "symbolOnly": true,
   "viewBox": [
     0,
@@ -138,14 +138,15 @@
       "shortName": "Fabric",
       "domain": "ai.rapold.io",
       "purpose": "Orchestrierung von KI-Agenten und Workflows.",
+      "namingNote": "Arbeitsbezeichnung in dieser CI",
+      "status": "approved",
       "variants": {
         "dark": "assets/logos/fabric.svg",
         "light": "assets/logos/light/fabric.svg",
         "mono-white": "assets/logos/mono-white/fabric.svg",
         "mono-black": "assets/logos/mono-black/fabric.svg",
         "current-color": "assets/logos/current-color/fabric.svg"
-      },
-      "namingNote": "Arbeitsbezeichnung in dieser CI"
+      }
     },
     {
       "id": "argus",
@@ -153,6 +154,7 @@
       "shortName": "Argus",
       "domain": "argus.rapold.io",
       "purpose": "Beobachtung und operativer Überblick.",
+      "status": "approved",
       "variants": {
         "dark": "assets/logos/argus.svg",
         "light": "assets/logos/light/argus.svg",
@@ -167,6 +169,7 @@
       "shortName": "ÆON Learn",
       "domain": "learn.rapold.io",
       "purpose": "Wissen strukturieren und schrittweises Lernen unterstützen.",
+      "status": "approved",
       "variants": {
         "dark": "assets/logos/learn.svg",
         "light": "assets/logos/light/learn.svg",
@@ -181,6 +184,7 @@
       "shortName": "EdgePortal",
       "domain": null,
       "purpose": "Verbundene Screens, Sitzungen und Arbeitsräume orchestrieren.",
+      "status": "approved",
       "variants": {
         "dark": "assets/logos/edgeportal.svg",
         "light": "assets/logos/light/edgeportal.svg",
@@ -188,6 +192,124 @@
         "mono-black": "assets/logos/mono-black/edgeportal.svg",
         "current-color": "assets/logos/current-color/edgeportal.svg"
       }
+    },
+    {
+      "id": "lotse",
+      "name": "Lotse",
+      "shortName": "Lotse",
+      "domain": "lotse.rapold.io",
+      "purpose": "Besucherführung und Indoor-Wegleitung vom Parkplatz bis zur Tür.",
+      "status": "proposal",
+      "origin": {
+        "repository": "marcelrapold/lotse",
+        "previousMark": "og.svg: Isometrische Etagen mit Route zum Ziel"
+      },
+      "variants": {
+        "dark": "assets/logos/lotse.svg",
+        "light": "assets/logos/light/lotse.svg",
+        "mono-white": "assets/logos/mono-white/lotse.svg",
+        "mono-black": "assets/logos/mono-black/lotse.svg",
+        "current-color": "assets/logos/current-color/lotse.svg"
+      }
+    },
+    {
+      "id": "cockpit",
+      "name": "Cockpit",
+      "shortName": "Cockpit",
+      "domain": "cockpit.rapold.io",
+      "purpose": "Engineering-Kennzahlen aus GitHub, Vercel und Supabase auf einen Blick.",
+      "status": "proposal",
+      "origin": {
+        "repository": "marcelrapold/cockpit",
+        "previousMark": "public/favicon.svg: Tacho mit Skalenstrichen und Nadel"
+      },
+      "variants": {
+        "dark": "assets/logos/cockpit.svg",
+        "light": "assets/logos/light/cockpit.svg",
+        "mono-white": "assets/logos/mono-white/cockpit.svg",
+        "mono-black": "assets/logos/mono-black/cockpit.svg",
+        "current-color": "assets/logos/current-color/cockpit.svg"
+      }
+    },
+    {
+      "id": "auditor",
+      "name": "Auditor",
+      "shortName": "Auditor",
+      "domain": "auditor.rapold.io",
+      "purpose": "Evidenzgebundene Multi-Agent-Audits für Code, Sicherheit und Dokumentation.",
+      "status": "proposal",
+      "origin": {
+        "repository": "marcelrapold/auditor",
+        "previousMark": "web/app/icon.svg: Schild mit Prüfhaken"
+      },
+      "variants": {
+        "dark": "assets/logos/auditor.svg",
+        "light": "assets/logos/light/auditor.svg",
+        "mono-white": "assets/logos/mono-white/auditor.svg",
+        "mono-black": "assets/logos/mono-black/auditor.svg",
+        "current-color": "assets/logos/current-color/auditor.svg"
+      }
+    },
+    {
+      "id": "auth",
+      "name": "Rapold Auth",
+      "shortName": "Auth",
+      "domain": "auth.rapold.io",
+      "purpose": "Zentrale Anmeldung mit OIDC und Zwei-Faktor-Schutz für alle rapold.io-Dienste.",
+      "status": "proposal",
+      "origin": {
+        "repository": "marcelrapold/mra-auth",
+        "previousMark": "atlas/mark.svg: Pulslinie im abgerundeten Quadrat"
+      },
+      "variants": {
+        "dark": "assets/logos/auth.svg",
+        "light": "assets/logos/light/auth.svg",
+        "mono-white": "assets/logos/mono-white/auth.svg",
+        "mono-black": "assets/logos/mono-black/auth.svg",
+        "current-color": "assets/logos/current-color/auth.svg"
+      }
+    },
+    {
+      "id": "pocketforge",
+      "name": "PocketForge",
+      "shortName": "PocketForge",
+      "domain": "game.rapold.io",
+      "purpose": "Spiele für Handhelds ohne GPU, direkt im Browser spielbar.",
+      "status": "proposal",
+      "origin": {
+        "repository": "marcelrapold/pocketforge",
+        "previousMark": "site/app/icon.svg: 4:3-Bildschirm mit einem leuchtenden Pixel"
+      },
+      "variants": {
+        "dark": "assets/logos/pocketforge.svg",
+        "light": "assets/logos/light/pocketforge.svg",
+        "mono-white": "assets/logos/mono-white/pocketforge.svg",
+        "mono-black": "assets/logos/mono-black/pocketforge.svg",
+        "current-color": "assets/logos/current-color/pocketforge.svg"
+      }
+    },
+    {
+      "id": "atlas",
+      "name": "Atlas",
+      "shortName": "Atlas",
+      "domain": "atlas.rapold.io",
+      "purpose": "Das Rapold-Designsystem: Tokens, Komponenten, Signets und Präsentationsvorlagen.",
+      "status": "proposal",
+      "origin": {
+        "repository": "marcelrapold/mra-atlas",
+        "previousMark": "Ebenen-Symbol (Lucide «Layers») in der Navigation der Referenz-App"
+      },
+      "variants": {
+        "dark": "assets/logos/atlas.svg",
+        "light": "assets/logos/light/atlas.svg",
+        "mono-white": "assets/logos/mono-white/atlas.svg",
+        "mono-black": "assets/logos/mono-black/atlas.svg",
+        "current-color": "assets/logos/current-color/atlas.svg"
+      }
     }
-  ]
+  ],
+  "statusLabels": {
+    "approved": "Freigegeben",
+    "proposal": "Vorschlag"
+  }
 }

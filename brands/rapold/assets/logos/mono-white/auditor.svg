@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img">
+  <title>Auditor – Signet</title>
+  <desc>Schild als Lupenrahmen: senkrecht gefaltet mit blauer linker und heller rechter Hälfte, ein Prüfhaken im Glas und ein längs gefalteter Griff unten rechts. Transparente Vektorgrafik ohne sichtbare Schrift. Variante: mono-white.</desc>
+  <path data-part="body" fill="#FFFFFF" fill-rule="evenodd" d="M 112 26 L 42 52 L 42 114 L 112 198 L 112 154 L 72 104 L 72 73 L 112 58 Z M 84 107 L 96 95 L 107 106 L 128 85 L 140 97 L 107 130 Z M 156.68 138.048 L 219.82 190.364 L 207.06 205.764 L 143.92 153.448 Z"/>
+  <polygon data-part="facet-1" fill="#FFFFFF" points="112,26 182,52 182,114 112,198 112,154 152,104 152,73 112,58"/>
+  <polygon data-part="facet-2" fill="#FFFFFF" points="143.92,153.448 207.06,205.764 194.3,221.164 131.16,168.848"/>
+</svg>

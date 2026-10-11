@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img">
+  <title>PocketForge – Signet</title>
+  <desc>Isometrischer Handheld: blaue Front mit Bildschirm und leuchtendem Pixel, freigestelltes Steuerkreuz links, zwei rautenförmige Tasten rechts und helle Ober- und Seitenfläche. Transparente Vektorgrafik ohne sichtbare Schrift. Variante: default.</desc>
+  <path data-part="body" fill="#009DFF" fill-rule="evenodd" d="M 14 170 L 178 252 L 178 160 L 14 78 Z M 60 175 L 132 211 L 132 155 L 60 119 Z M 32 116 L 44 122 L 44 133 L 55 138.5 L 55 150.5 L 44 145 L 44 156 L 32 150 L 32 139 L 21 133.5 L 21 121.5 L 32 127 Z M 150 174 L 160 189 L 150 194 L 140 179 Z M 166 200 L 176 215 L 166 220 L 156 205 Z"/>
+  <polygon data-part="facet-1" fill="#A8EDFF" points="14,78 178,160 200,149 36,67"/>
+  <polygon data-part="facet-2" fill="#A8EDFF" points="178,252 200,241 200,149 178,160"/>
+  <polygon data-part="facet-3" fill="#A8EDFF" points="88,169 104,177 104,161 88,153"/>
+</svg>

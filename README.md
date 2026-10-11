@@ -2,7 +2,7 @@
 
 White-Label-Framework auf Basis von Atlas. Ein neutraler Designstandard mit austauschbaren Brand-Vorgaben für Interfaces und Management-Präsentationen.
 
-**Stand:** 0.6.0, Quellstand für `marcelrapold/mra-design`. Das Repository ist öffentlich. Die Herkunftslizenz bleibt unter `LICENSE` erhalten; eine freie Neulizenzierung ist damit nicht verbunden. Produktionsadresse: https://design.rapold.io. Die native Vercel-Git-Verbindung übernimmt Builds bei Pushes auf main. Am **11.10.2026, 10:06–10:17 UTC**, wurden der produktive Anwendungsstand `73498ec4b46cb9f431d7ad5d186e88dd6301162b`, die ausgelieferten Ressourcen und 14 gezielte Browserfälle bestätigt. Dieser datierte Prüfstand ist keine Aussage über den Main-Head späterer Dokumentations-Commits. Die dokumentierten Container-, Bewegungs- und Assistenztechnik-Grenzen bleiben ausdrücklich bestehen. Nachweise: [Deployment](docs/deployment.md) und [Browserbericht](docs/review/production-0.6.0-73498ec4b46c/browser-review.json).
+**Stand:** 0.7.0 (Quellstand; der datierte Produktionsnachweis unten betrifft 0.6.0), Quellstand für `marcelrapold/mra-design`. Das Repository ist öffentlich. Die Herkunftslizenz bleibt unter `LICENSE` erhalten; eine freie Neulizenzierung ist damit nicht verbunden. Produktionsadresse: https://design.rapold.io. Die native Vercel-Git-Verbindung übernimmt Builds bei Pushes auf main. Am **11.10.2026, 10:06–10:17 UTC**, wurden der produktive Anwendungsstand `73498ec4b46cb9f431d7ad5d186e88dd6301162b`, die ausgelieferten Ressourcen und 14 gezielte Browserfälle bestätigt. Dieser datierte Prüfstand ist keine Aussage über den Main-Head späterer Dokumentations-Commits. Die dokumentierten Container-, Bewegungs- und Assistenztechnik-Grenzen bleiben ausdrücklich bestehen. Nachweise: [Deployment](docs/deployment.md) und [Browserbericht](docs/review/production-0.6.0-73498ec4b46c/browser-review.json).
 
 ## Verbindliche Referenz
 
@@ -58,7 +58,7 @@ Bei Änderungen an der Brand-Registry entfernt die Generierung nicht mehr regist
 ## Ausprägungen
 
 - Neutral: vollständige helle und dunkle Basis.
-- Rapold: gemeinsame Brand für Fabric, Argus, ÆON Learn und EdgePortal. 20 SVG-Master, lokale Geist-Fonts und 208 reproduzierbare Exporte. Status `draft` für den neuen UI-Adapter. Markenansicht: `/brand?brand=rapold`. [Quellen und Anwendung](brands/rapold/README.md).
+- Rapold: gemeinsame Brand für Fabric, Argus, ÆON Learn und EdgePortal (freigegeben) sowie Lotse, Cockpit, Auditor, Rapold Auth, PocketForge und Atlas (Vorschläge). 50 SVG-Master, lokale Geist-Fonts und 520 reproduzierbare Exporte. Status `draft` für den neuen UI-Adapter. Markenansicht: `/brand?brand=rapold`. [Quellen und Anwendung](brands/rapold/README.md).
 - Dominicano Express: eigenständiges helles und dunkles Preset mit seinem Caja-Inhaltsbeispiel.
 
 Firmenlogos, interne Vorgaben und lizenzierte Assets sind getrennt vom neutralen Core. Eine künftige freie Code-Lizenz erteilt keine Marken- oder Fontrechte.

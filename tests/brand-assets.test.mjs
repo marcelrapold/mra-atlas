@@ -11,7 +11,9 @@ import {buildBrandAssets} from '../scripts/build-brand-assets.mjs';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const canonical=join(root,'brands/rapold');
 const published=join(root,'apps/docs/public/brands/rapold');
-const productIds=['fabric','argus','learn','edgeportal'];
+const approvedIds=['fabric','argus','learn','edgeportal'];
+const proposalIds=['lotse','cockpit','auditor','auth','pocketforge','atlas'];
+const productIds=[...approvedIds,...proposalIds];
 const variantIds=['dark','light','mono-white','mono-black','current-color'];
 const pngSignature=Buffer.from([137,80,78,71,13,10,26,10]);
 const digest=buffer=>createHash('sha256').update(buffer).digest('hex');
@@ -43,14 +45,17 @@ function dimensions(buffer,label) {
   return [buffer.readUInt32BE(16),buffer.readUInt32BE(20)];
 }
 
-test('Rapold is one product family with four catalogued signs and only established domains',async()=>{
+test('Rapold is one product family with four approved signs, six marked proposals and only established domains',async()=>{
   assert.equal(identity.brandId,'rapold');
   assert.equal(identity.publicBase,'/brands/rapold/');
   assert.equal(identity.symbolOnly,true);
   assert.deepEqual(identity.viewBox,[0,0,256,256]);
   assert.deepEqual(identity.products.map(product=>product.id),productIds);
-  assert.deepEqual(identity.products.map(product=>product.name),['AI Fabric','Argus','ÆON Learn','EdgePortal']);
-  assert.deepEqual(identity.products.map(product=>product.domain),['ai.rapold.io','argus.rapold.io','learn.rapold.io',null]);
+  assert.deepEqual(identity.products.map(product=>product.name),['AI Fabric','Argus','ÆON Learn','EdgePortal','Lotse','Cockpit','Auditor','Rapold Auth','PocketForge','Atlas']);
+  assert.deepEqual(identity.products.map(product=>product.domain),['ai.rapold.io','argus.rapold.io','learn.rapold.io',null,'lotse.rapold.io','cockpit.rapold.io','auditor.rapold.io','auth.rapold.io','game.rapold.io','atlas.rapold.io']);
+  assert.deepEqual(identity.products.filter(product=>product.status==='approved').map(product=>product.id),approvedIds,'Proposals must not widen the approved signet scope');
+  assert.deepEqual(identity.products.filter(product=>product.status==='proposal').map(product=>product.id),proposalIds);
+  for(const product of identity.products.filter(product=>product.status==='proposal'))assert.match(product.origin.repository,/^marcelrapold\/[a-z0-9-]+$/,product.id);
   assert.ok(!Object.hasOwn(identity,'logo'),'No invented umbrella logo');
   assert.match(identity.products[0].namingNote,/Arbeitsbezeichnung/);
   assert.equal(identity.palette.azure,'#009DFF');
@@ -72,8 +77,8 @@ test('Rapold is one product family with four catalogued signs and only establish
 test('the real export manifest resolves every public download, MIME, byte length and checksum',async()=>{
   assert.equal(manifest.brandId,'rapold');
   assert.equal(manifest.basePath,'/brands/rapold/');
-  assert.equal(manifest.assets.length,208,'Complete previous product export palette');
-  assert.equal(manifest.resources.length,27,'20 original SVGs and 7 original font resources');
+  assert.equal(manifest.assets.length,52*productIds.length,'Complete product export palette for every catalogued signet');
+  assert.equal(manifest.resources.length,5*productIds.length+7,'Five SVG masters per signet and 7 original font resources');
   const all=[...manifest.assets,...manifest.resources];
   assert.equal(new Set(all.map(asset=>asset.id)).size,all.length);
   assert.equal(new Set(all.map(asset=>asset.path)).size,all.length);
@@ -95,7 +100,7 @@ test('the real export manifest resolves every public download, MIME, byte length
 
 test('all source and exported SVGs contain safe vector geometry without visible text or raster resources',async()=>{
   const svgs=[...manifest.assets,...manifest.resources].filter(asset=>asset.format==='svg');
-  assert.equal(svgs.length,76);
+  assert.equal(svgs.length,19*productIds.length);
   for(const asset of svgs) {
     const svg=(await get(asset.path)).toString('utf8');
     assert.match(svg,/<svg\b/);
@@ -113,7 +118,7 @@ test('all source and exported SVGs contain safe vector geometry without visible 
 
 test('all real PNGs have their specified pixel dimensions and correct transparent or opaque surfaces',async()=>{
   const pngs=manifest.assets.filter(asset=>asset.format==='png');
-  assert.equal(pngs.length,136);
+  assert.equal(pngs.length,34*productIds.length);
   for(const asset of pngs) {
     const buffer=await get(asset.path);
     assert.deepEqual(dimensions(buffer,asset.path),[asset.width,asset.height],asset.path);

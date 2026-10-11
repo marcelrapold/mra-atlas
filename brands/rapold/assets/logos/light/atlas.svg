@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img">
+  <title>Atlas – Signet</title>
+  <desc>Gefaltete Karte als Leporello aus vier Feldern: steigende Felder blau, fallende Felder hell, mit einer freigestellten rautenförmigen Ortsmarke. Das Designsystem, das die Faltungen der Familie festlegt. Transparente Vektorgrafik ohne sichtbare Schrift. Variante: light.</desc>
+  <path data-part="body" fill="#0066B3" fill-rule="evenodd" d="M 34 84 L 81 58 L 81 176 L 34 202 Z M 128 84 L 175 58 L 175 176 L 128 202 Z M 151.5 108 L 165 128 L 151.5 148 L 138 128 Z"/>
+  <polygon data-part="facet-1" fill="#2B89B5" points="81,58 128,84 128,202 81,176"/>
+  <polygon data-part="facet-2" fill="#2B89B5" points="175,58 222,84 222,202 175,176"/>
+</svg>

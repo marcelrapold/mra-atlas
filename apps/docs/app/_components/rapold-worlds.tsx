@@ -204,7 +204,9 @@ function WorldInterface({world, mode, glitch}: {world: World; mode: 'light' | 'd
 
 export default function RapoldWorlds({productId, onProductChange, wordmarkTreatment, onWordmarkChange}: Props) {
   const {mode} = useActiveBrand();
-  const world = worlds.products.find(item => item.id === productId) ?? worlds.products[0];
+  const ownWorld = worlds.products.find(item => item.id === productId);
+  const world = ownWorld ?? worlds.products[0];
+  const selectedName = identity.products.find(item => item.id === productId)?.name;
   const stage = useRef<HTMLDivElement>(null);
   const [paused, setPaused] = useState(false);
   const [interfaceVisible, setInterfaceVisible] = useState(true);
@@ -248,7 +250,8 @@ export default function RapoldWorlds({productId, onProductChange, wordmarkTreatm
 
   return <section className="doc-section rapold-worlds" id="rapold-worlds" aria-labelledby="rapold-worlds-title">
     <div className="rw-section-heading"><div><p className="eyebrow">Identität trifft Atmosphäre</p><h2 id="rapold-worlds-title">Die Welt um das Zeichen.</h2><p>Die Hintergründe und Oberflächen machen jedes Produkt eigenständig. Die Zeichen und die Typografie halten die Familie zusammen.</p></div><a className="rapold-primary-action" href={base + 'rapold-product-worlds.zip'} download><Download size={18} aria-hidden="true"/>Produktwelten · ZIP</a></div>
-    <div className="rw-product-switch" role="group" aria-label="Produktwelt auswählen">{worlds.products.map(item => <button type="button" key={item.id} aria-pressed={item.id === world.id} onClick={() => onProductChange(item.id)}>{item.label}<ChevronRight size={15} aria-hidden="true"/></button>)}</div>
+    {!ownWorld && selectedName && <p className="notice rw-no-world">Für {selectedName} gibt es noch keine eigene Produktwelt. Die Vorschau zeigt die Welt von {world.label}; Signet, Formate und Downloads weiter unten gehören zu {selectedName}.</p>}
+    <div className="rw-product-switch" role="group" aria-label="Produktwelt auswählen">{worlds.products.map(item => <button type="button" key={item.id} aria-pressed={item.id === ownWorld?.id} onClick={() => onProductChange(item.id)}>{item.label}<ChevronRight size={15} aria-hidden="true"/></button>)}</div>
     <div className="rw-toolbar"><div className="rw-treatment" role="group" aria-label="Wortmarke in der Produktwelt"><button type="button" aria-pressed={wordmarkTreatment === 'cut'} onClick={() => onWordmarkChange('cut')}>Facetten</button><button type="button" aria-pressed={wordmarkTreatment === 'spectrum'} onClick={() => onWordmarkChange('spectrum')}>Spektrum</button></div><label className="rw-width-label">Vorschaubreite<select value={width} onChange={event => setWidth(event.target.value)}><option value="wide">Verfügbarer Raum</option><option value="390">390 px</option><option value="320">320 px</option></select></label><button type="button" className="rw-motion-control" aria-pressed={paused} aria-disabled={motionUnavailable} onClick={() => {if (!motionUnavailable) setPaused(value => !value);}}>{paused || motionUnavailable ? <Play size={16} aria-hidden="true"/> : <Pause size={16} aria-hidden="true"/>}{forcedColors ? 'Kontrastmodus: statisch' : reduced ? 'Bewegung reduziert' : paused ? 'Bewegung fortsetzen' : 'Bewegung pausieren'}</button></div>
     <div className="rw-preview-well"><div className="rapold-world-viewport" data-preview-width={width}><div ref={stage} className="rapold-world-stage" data-world={world.id} data-world-mode={mode} data-running={active} data-entering={enteringProduct === world.id} data-wordmark={wordmarkTreatment} data-interface={interfaceVisible} role="region" aria-label={`${world.label} · ${mode === 'dark' ? 'dunkle' : 'helle'} Produktwelt`}>
       <WorldArtwork world={world} hidden={hidden} active={active} stage={stage}/>

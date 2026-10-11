@@ -15,6 +15,10 @@ const base = identity.publicBase;
 const categories: Record<string, string> = {'all': 'Alle Dateien', 'logo': 'Logos', 'favicon': 'Favicons', 'app-icon': 'App-Icons', 'banner': 'Banner', 'web-manifest': 'Web-Manifest', 'documentation': 'Anwendungshinweise', 'bundle': 'Komplettpaket'};
 const variantLabels: Record<string, string> = {'dark': 'Dunkle Fläche', 'light': 'Helle Fläche', 'mono-white': 'Weiss', 'mono-black': 'Schwarz', 'current-color': 'currentColor', 'adaptive': 'Automatisch', 'maskable': 'Maskable', 'app': 'App', 'web': 'Web', 'usage': 'Anleitung', 'complete': 'Komplett'};
 const layouts = [{id: 'og', name: 'Link-Vorschau', size: '1200 × 630'}, {id: 'landscape', name: 'Querformat', size: '1920 × 1080'}, {id: 'portrait', name: 'Hochformat', size: '1080 × 1920'}, {id: 'social-square', name: 'Quadrat', size: '1080 × 1080'}, {id: 'portrait-4x5', name: 'Social 4:5', size: '1080 × 1350'}, {id: 'wide', name: 'Breites Banner', size: '1584 × 396'}];
+const familyGroups = [
+  {status: 'approved', title: 'Freigegebene Signets', note: 'Am 11.10.2026 freigegeben.', products: identity.products.filter(item => item.status === 'approved')},
+  {status: 'proposal', title: 'Vorschläge', note: 'Aus den bestehenden Produktzeichen abgeleitet, noch nicht freigegeben.', products: identity.products.filter(item => item.status === 'proposal')},
+];
 const fileSize = (bytes: number) => new Intl.NumberFormat('de-CH', {maximumFractionDigits: 1}).format(bytes / 1024) + ' KB';
 
 function readManifest(value: unknown): AssetManifest {
@@ -70,19 +74,23 @@ export default function RapoldShowcase() {
 
   return <div className="rapold-showcase" data-wordmark={wordmarkTreatment}>
     <section className="rapold-intro" aria-labelledby="rapold-family-title">
-      <div><p className="eyebrow">Rapold / Raumfalten</p><h2 id="rapold-family-title">Eine Familie.<br/><span>Vier Perspektiven.</span></h2><p>Gemeinsame Farbe, Typografie und Geometrie. Jedes Produkt trägt ein eigenes Zeichen.</p></div>
-      <div className="rapold-intro-meta"><strong>01—04</strong><span>Signets als reine Vektoren</span><span>Geist + Geist Mono</span><span>Hell / Dunkel / Monochrom</span></div>
+      <div><p className="eyebrow">Rapold / Raumfalten</p><h2 id="rapold-family-title">Eine Familie.<br/><span>Viele Perspektiven.</span></h2><p>Gemeinsame Farbe, Typografie und Geometrie. Jedes Produkt trägt ein eigenes Zeichen.</p></div>
+      <div className="rapold-intro-meta"><strong>01—{String(identity.products.length).padStart(2, '0')}</strong><span>Signets als reine Vektoren</span><span>Geist + Geist Mono</span><span>Hell / Dunkel / Monochrom</span></div>
     </section>
 
-    <div className="rapold-family" role="group" aria-label="Produkt für Vorschau und Downloads auswählen">
-      {identity.products.map((item, index) => <button type="button" className="rapold-product" key={item.id} aria-pressed={item.id === product.id} onClick={() => selectProduct(item.id)}>
-        <span className="rapold-product-number">0{index + 1}{item.id === product.id && <Check size={18} aria-label="Ausgewählt"/>}</span>
-        <img src={base + item.variants[mode]} width={128} height={128} alt=""/>
-        <span className="rapold-wordmark">{item.shortName}</span>
-        <span className="rapold-product-domain">{item.domain ?? 'Produktzeichen'}</span>
-      </button>)}
-    </div>
-    <p className="rapold-selection" role="status">Ausgewählt: <strong>{product.name}</strong>. {product.purpose}</p>
+    {familyGroups.map(group => <div className="rapold-family-group" key={group.status}>
+      <h3 className="rapold-family-heading" id={`rapold-family-${group.status}`}>{group.title}<span>{group.note}</span></h3>
+      <div className="rapold-family" data-status={group.status} role="group" aria-labelledby={`rapold-family-${group.status}`}>
+        {group.products.map(item => <button type="button" className="rapold-product" key={item.id} aria-pressed={item.id === product.id} onClick={() => selectProduct(item.id)}>
+          <span className="rapold-product-number">{String(identity.products.indexOf(item) + 1).padStart(2, '0')}{item.status === 'proposal' && <span className="rapold-product-status">{identity.statusLabels.proposal}</span>}{item.id === product.id && <Check size={18} aria-label="Ausgewählt"/>}</span>
+          <img src={base + item.variants[mode]} width={128} height={128} alt=""/>
+          <span className="rapold-wordmark">{item.shortName}</span>
+          <span className="rapold-product-domain">{item.domain ?? 'Produktzeichen'}</span>
+        </button>)}
+      </div>
+    </div>)}
+    <p className="rapold-selection" role="status">Ausgewählt: <strong>{product.name}</strong> · {identity.statusLabels[product.status as keyof typeof identity.statusLabels]}. {product.purpose}</p>
+    {product.status === 'proposal' && 'origin' in product && product.origin && <p className="muted">Vorschlag auf Basis des bisherigen Zeichens in {product.origin.repository} ({product.origin.previousMark}). Das Produkt verwendet sein bisheriges Zeichen, bis die Freigabe dokumentiert ist.</p>}
     {'namingNote' in product && <p className="muted">{product.name}: {product.namingNote}.</p>}
 
     <nav className="rapold-section-links" aria-label="Markenreferenz"><a href="#rapold-worlds">Produktwelten</a><a href="#rapold-signets">Signets</a><a href="#rapold-formats">Formate</a><a href="#rapold-colours">Farbe & Schrift</a><a href="#rapold-downloads">Downloads</a><a href="#rapold-usage">Einbindung</a></nav>
