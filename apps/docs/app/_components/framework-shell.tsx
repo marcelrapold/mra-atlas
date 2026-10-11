@@ -146,7 +146,7 @@ export default function FrameworkShell({children}: {children: ReactNode}) {
               <select id="appearance-choice" value={appearance === 'dark' && !brand.modes.dark ? 'light' : appearance} onChange={event => setAppearance(event.target.value as Appearance)} title={brand.modes.dark ? 'System, Hell oder Dunkel' : 'Für diese Brand ist nur Hell definiert'}>
                 <option value="system">System</option><option value="light">Hell</option><option value="dark" disabled={!brand.modes.dark}>Dunkel</option>
               </select>
-              <a className="icon-button" href="https://github.com/marcelrapold/mra-design" aria-label="GitHub-Repository"><ExternalLink size={17} aria-hidden="true"/></a>
+              <a className="icon-button" href="https://github.com/marcelrapold/mra-atlas" aria-label="GitHub-Repository"><ExternalLink size={17} aria-hidden="true"/></a>
             </div>
           </header>
           <main id="main" tabIndex={-1}>{children}</main>

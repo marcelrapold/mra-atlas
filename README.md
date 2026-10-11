@@ -2,7 +2,7 @@
 
 Atlas ist das Designsystem von Rapold: ein neutraler White-Label-Designstandard mit austauschbaren Brand-Vorgaben für Interfaces und Management-Präsentationen.
 
-**Stand:** 0.7.0 (Quellstand; der datierte Produktionsnachweis unten betrifft 0.6.0), Quellstand für `marcelrapold/mra-design`. Das Repository ist öffentlich. Lizenz: «Alle Rechte vorbehalten», Marcel Rapold; Drittkomponenten behalten ihre Lizenzen (siehe `LICENSE`). Produktionsadresse: https://atlas.rapold.io (die Domain wird in Vercel separat eingerichtet; siehe [Deployment](docs/deployment.md)). Die native Vercel-Git-Verbindung übernimmt Builds bei Pushes auf main. Am **11.10.2026, 10:06–10:17 UTC**, wurden der produktive Anwendungsstand `73498ec4b46cb9f431d7ad5d186e88dd6301162b`, die ausgelieferten Ressourcen und 14 gezielte Browserfälle bestätigt. Dieser datierte Prüfstand ist keine Aussage über den Main-Head späterer Dokumentations-Commits. Die dokumentierten Container-, Bewegungs- und Assistenztechnik-Grenzen bleiben ausdrücklich bestehen. Nachweise: [Deployment](docs/deployment.md) und [Browserbericht](docs/review/production-0.6.0-73498ec4b46c/browser-review.json).
+**Stand:** 0.7.0 (Quellstand; der datierte Produktionsnachweis unten betrifft 0.6.0), Quellstand für `marcelrapold/mra-atlas`. Das Repository ist öffentlich. Lizenz: «Alle Rechte vorbehalten», Marcel Rapold; Drittkomponenten behalten ihre Lizenzen (siehe `LICENSE`). Produktionsadresse: https://atlas.rapold.io (die Domain wird in Vercel separat eingerichtet; siehe [Deployment](docs/deployment.md)). Die native Vercel-Git-Verbindung übernimmt Builds bei Pushes auf main. Am **11.10.2026, 10:06–10:17 UTC**, wurden der produktive Anwendungsstand `73498ec4b46cb9f431d7ad5d186e88dd6301162b`, die ausgelieferten Ressourcen und 14 gezielte Browserfälle bestätigt. Dieser datierte Prüfstand ist keine Aussage über den Main-Head späterer Dokumentations-Commits. Die dokumentierten Container-, Bewegungs- und Assistenztechnik-Grenzen bleiben ausdrücklich bestehen. Nachweise: [Deployment](docs/deployment.md) und [Browserbericht](docs/review/production-0.6.0-73498ec4b46c/browser-review.json).
 
 ## Referenz
 
@@ -63,7 +63,7 @@ Firmenlogos, interne Vorgaben und lizenzierte Assets sind getrennt vom neutralen
 
 ## Zieladressen
 
-Repository: [marcelrapold/mra-design](https://github.com/marcelrapold/mra-design).
+Repository: [marcelrapold/mra-atlas](https://github.com/marcelrapold/mra-atlas).
 Hauptadresse: `atlas.rapold.io`.
 
 Die Domain steht in der Metadaten-Konfiguration, in `vercel.json` und im Agenten-Einstieg. DNS und Vercel-Domain werden separat eingerichtet. Die npm-Paketnamen `@rapold/framework-*` bleiben vorerst unverändert.

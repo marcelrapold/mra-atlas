@@ -1,9 +1,8 @@
 {
   "schemaVersion": 1,
   "source": {
-    "repository": "zvvch/zvv-atlas",
-    "commit": "1c75c95417cc371040e1e24a0986213314b53c13",
-    "path": "assets/praesentation/deck-tokens.json"
+    "repository": "marcelrapold/mra-atlas",
+    "path": "packages/brands/src/deck-foundation.json"
   },
   "canvas": {
     "breiteCm": 33.867,
@@ -14,7 +13,7 @@
   },
   "zones": {
     "randLR": 0.93,
-    "nutzbreite": 32.0,
+    "nutzbreite": 32,
     "titel": {
       "x": 0.93,
       "y": 0.525,
@@ -190,7 +189,7 @@
       1.345
     ],
     "pngSlot": {
-      "breite": 32.0,
+      "breite": 32,
       "x": 0.93,
       "y": 3.76,
       "aufloesung": "mind. 2x (~400 dpi)"
