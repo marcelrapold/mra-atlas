@@ -8,6 +8,8 @@ Atlas ist das Designsystem von Rapold: ein neutraler White-Label-Designstandard 
 
 Atlas ist seine eigene Referenz. Website, Tokens, Icons, Komponenten, Navigation und Präsentationsmuster sind in diesem Repository definiert und unter https://atlas.rapold.io dokumentiert; die jeweilige Brand liefert ihre CI. Die Herkunft übernommener Code-Bestandteile steht in [docs/extraction.md](docs/extraction.md).
 
+Rapold-Produkte übernehmen Signet, Favicon, Manifest, Tokens, Geist-Fonts und den Login über auth.rapold.io gemäss [Atlas in Produkten einbinden](docs/produkte-einbinden.md).
+
 ## Zielauftrag
 
 > Analysiere owner/repo und erstelle eine Management-Präsentation. Lies und befolge https://atlas.rapold.io/brands/neutral/management.md.
@@ -45,6 +47,7 @@ Bei Änderungen an der Brand-Registry entfernt die Generierung nicht mehr regist
 | `docs/apple-design-audit.md` | Apple-orientierter Web-Audit mit Befunden und Abnahmegrenzen |
 | `brands/dominicano-express` | Vorgaben und Inhaltsbeispiel für das Dominicano-Preset |
 | `docs/brand-contract.md` | Integration und Erweiterung |
+| `docs/produkte-einbinden.md` | Atlas in Produkten einbinden: Signet, Favicon, Manifest, Tokens, Geist und Login über auth.rapold.io (live: https://atlas.rapold.io/contracts/produkte-einbinden.md) |
 | `docs/repo-to-management.md` | Vollständiger Agenten-Auftrag für Management-Decks |
 | `docs/release.md` | Repository-Übernahme und spätere Veröffentlichung |
 | `scripts/build-contracts.mjs` | Erzeugt JSON- und Markdown-Endpunkte |

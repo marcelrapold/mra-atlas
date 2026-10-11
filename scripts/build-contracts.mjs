@@ -73,3 +73,4 @@ await copyFile(new URL('../docs/project-decks.md',import.meta.url),new URL('cont
 
 await copyFile(new URL('../docs/mermaid.md',import.meta.url),new URL('contracts/mermaid.md',root));
 await copyFile(new URL('../docs/engineering.md',import.meta.url),new URL('contracts/engineering.md',root));
+await copyFile(new URL('../docs/produkte-einbinden.md',import.meta.url),new URL('contracts/produkte-einbinden.md',root));

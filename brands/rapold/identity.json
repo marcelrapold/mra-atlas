@@ -201,7 +201,7 @@
       "purpose": "Besucherführung und Indoor-Wegleitung vom Parkplatz bis zur Tür.",
       "status": "approved",
       "origin": {
-        "repository": "marcelrapold/lotse",
+        "repository": "marcelrapold/mra-lotse",
         "previousMark": "og.svg: Isometrische Etagen mit Route zum Ziel"
       },
       "variants": {
@@ -220,7 +220,7 @@
       "purpose": "Engineering-Kennzahlen aus GitHub, Vercel und Supabase auf einen Blick.",
       "status": "approved",
       "origin": {
-        "repository": "marcelrapold/cockpit",
+        "repository": "marcelrapold/mra-cockpit",
         "previousMark": "public/favicon.svg: Tacho mit Skalenstrichen und Nadel"
       },
       "variants": {
@@ -239,7 +239,7 @@
       "purpose": "Evidenzgebundene Multi-Agent-Audits für Code, Sicherheit und Dokumentation.",
       "status": "approved",
       "origin": {
-        "repository": "marcelrapold/auditor",
+        "repository": "marcelrapold/mra-auditor",
         "previousMark": "web/app/icon.svg: Schild mit Prüfhaken"
       },
       "variants": {
@@ -277,7 +277,7 @@
       "purpose": "Spiele für Handhelds ohne GPU, direkt im Browser spielbar.",
       "status": "approved",
       "origin": {
-        "repository": "marcelrapold/pocketforge",
+        "repository": "marcelrapold/mra-pocketforge",
         "previousMark": "site/app/icon.svg: 4:3-Bildschirm mit einem leuchtenden Pixel"
       },
       "variants": {
