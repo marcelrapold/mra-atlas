@@ -31,12 +31,18 @@ export const signets={
   const tip=polar(cx,cy,70,a),s1=polar(cx,cy,28,a+20),s2=polar(cx,cy,28,a-20);
   return {name:'Cockpit',desc:'Gefaltete Skala aus drei kräftigen Segmenten, eine rautenförmige Achse und eine helle Nadel, die nach rechts oben ausschlägt. Messinstrument ohne Ziffern.',
    body:[seg(180,120),seg(120,60),seg(60,0),hub],facets:[[polar(cx,cy,14,a+90),s1,tip,s2,polar(cx,cy,14,a-90)]]};})(),
- auditor:(()=>{const shield=[[128,26],[214,58],[214,124],[128,230],[42,124],[42,58]];
-  const L=clip(shield,1,0,128),R=clip(shield,-1,0,-128);
-  const check=[[74,128],[92,110],[116,134],[168,82],[186,100],[116,170]];
-  const Rup=clip(R,1,1,250),Rlo=clip(R,-1,-1,-286),checkL=clip(check,1,0,128);
-  return {name:'Auditor',desc:'Senkrecht gefaltetes Schild mit blauer linker und heller rechter Hälfte; ein freigestellter Prüfhaken schneidet durch beide Flächen.',
-   bodyPath:d([L,checkL]),facets:[Rup,Rlo]};})(),
+ auditor:(()=>{
+  // Shield-shaped magnifier: the shield is the lens frame (folded: blue left, light right),
+  // a check sits in the glass and a lengthwise-folded handle leaves the lower-right edge.
+  const outerL=[[112,26],[42,52],[42,114],[112,198]],outerR=[[112,26],[182,52],[182,114],[112,198]];
+  const innerL=[[112,58],[72,73],[72,104],[112,154]],innerR=[[112,58],[152,73],[152,104],[112,154]];
+  const ringL=[...outerL,...[...innerL].reverse()],ringR=[...outerR,...[...innerR].reverse()];
+  const check=[[84,107],[96,95],[107,106],[128,85],[140,97],[107,130]];
+  const M=[147,156],u=[.77,.638],n=[-u[1],u[0]],at=(t,o)=>[M[0]+u[0]*t+n[0]*o,M[1]+u[1]*t+n[1]*o];
+  const t0=-4,t1=78,w=20;
+  return {name:'Auditor',desc:'Schild als Lupenrahmen: senkrecht gefaltet mit blauer linker und heller rechter Hälfte, ein Prüfhaken im Glas und ein längs gefalteter Griff unten rechts.',
+   bodyPath:d([ringL,check,[at(t0,-w),at(t1,-w),at(t1,0),at(t0,0)]]),
+   facets:[ringR,[at(t0,0),at(t1,0),at(t1,w),at(t0,w)]]};})(),
  auth:(()=>{const W=112,H=92,D=44,P=isoP(36,196);
   const front=face(P,[[0,0,0],[W,0,0],[W,H,0],[0,H,0]]);
   const kx=W/2,ky=H*0.56;const key=face(P,[[kx,ky+15,0],[kx+14,ky+1,0],[kx+6,ky-7,0],[kx+6,ky-32,0],[kx-6,ky-32,0],[kx-6,ky-7,0],[kx-14,ky+1,0]]);

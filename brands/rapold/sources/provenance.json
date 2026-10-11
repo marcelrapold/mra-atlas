@@ -34,7 +34,7 @@
       "basis": {
         "lotse": "marcelrapold/lotse og.svg – isometrische Etagen mit Route; übernommen als Wegband mit Aufstieg und Pfeilspitze.",
         "cockpit": "marcelrapold/cockpit public/favicon.svg – Tacho mit Nadel; übernommen als dreiteilige Faltskala mit Rautennadel.",
-        "auditor": "marcelrapold/auditor web/app/icon.svg – Schild mit Prüfhaken; übernommen als gefaltetes Schild mit freigestelltem Haken.",
+        "auditor": "marcelrapold/auditor web/app/icon.svg – Schild mit Prüfhaken; erweitert zur Lupe: das gefaltete Schild bildet den Lupenrahmen, der Prüfhaken sitzt im Glas, ein längs gefalteter Griff ergänzt das Prüfen.",
         "auth": "marcelrapold/mra-auth atlas/mark.svg – Pulslinie; bewusst durch ein isometrisches Schloss ersetzt, weil der Dienst Zugang und nicht Überwachung darstellt.",
         "pocketforge": "marcelrapold/pocketforge site/app/icon.svg – 4:3-Bildschirm mit einem Pixel; übernommen als isometrischer Bildschirm."
       },

@@ -37,7 +37,7 @@ Die folgenden Signets sind **Vorschläge** (`status: "proposal"`), keine Freigab
 |---|---|---|---|---|
 | `lotse` | Lotse · lotse.rapold.io | Isometrische Etagen mit Route | Wegband, das um die Ecke aufsteigt und in einer Pfeilspitze endet | [lotse.svg](assets/logos/lotse.svg) |
 | `cockpit` | Cockpit · cockpit.rapold.io | Tacho mit Nadel | Dreiteilige Faltskala mit Rautenachse und heller Nadel | [cockpit.svg](assets/logos/cockpit.svg) |
-| `auditor` | Auditor · auditor.rapold.io | Schild mit Prüfhaken | Senkrecht gefaltetes Schild mit freigestelltem Haken | [auditor.svg](assets/logos/auditor.svg) |
+| `auditor` | Auditor · auditor.rapold.io | Schild mit Prüfhaken | Schild als Lupenrahmen: senkrecht gefaltet, Prüfhaken im Glas, gefalteter Griff | [auditor.svg](assets/logos/auditor.svg) |
 | `auth` | Rapold Auth · auth.rapold.io | Pulslinie | Isometrisches Schloss; die Pulslinie wurde bewusst ersetzt, weil der Dienst Zugang darstellt | [auth.svg](assets/logos/auth.svg) |
 | `pocketforge` | PocketForge · game.rapold.io | 4:3-Bildschirm mit einem Pixel | Isometrischer 4:3-Bildschirm mit leuchtendem Pixel | [pocketforge.svg](assets/logos/pocketforge.svg) |
 
