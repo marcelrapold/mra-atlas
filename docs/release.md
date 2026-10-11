@@ -13,7 +13,7 @@ npm run check
 
 Die vorhandene Initial-Historie des Zielrepositorys bleibt erhalten.
 
-## Open-Source-Release
+## Lizenz
 
 Lizenz: «Alle Rechte vorbehalten», Marcel Rapold (`LICENSE`). Drittlizenzen werden mit ausgeliefert.
 
