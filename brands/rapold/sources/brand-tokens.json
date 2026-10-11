@@ -1,0 +1,160 @@
+{
+  "name": "rapold.io Brand System",
+  "version": "1.0.0",
+  "color": {
+    "brand": {
+      "azure": "#009DFF",
+      "ice": "#A8EDFF",
+      "violet": "#7C5CFF",
+      "navy": "#050B19",
+      "paper": "#F4FAFF"
+    },
+    "lightLogo": {
+      "primary": "#0066B3",
+      "facet": "#2B89B5"
+    },
+    "dark": {
+      "canvas": "#050B19",
+      "surface": "#0B1528",
+      "raised": "#142741",
+      "line": "#23334A",
+      "text": "#EDF5FF",
+      "muted": "#9AADC7",
+      "accent": "#38B8FF",
+      "accentInk": "#04101D"
+    },
+    "light": {
+      "canvas": "#F4FAFF",
+      "surface": "#FFFFFF",
+      "raised": "#DFEBF6",
+      "line": "#CDDEEE",
+      "text": "#10253D",
+      "muted": "#46617E",
+      "accent": "#0066B3",
+      "accentInk": "#FFFFFF"
+    },
+    "semantic": {
+      "success": "#34D399",
+      "warning": "#FBBF24",
+      "danger": "#FB7185",
+      "note": "Statusfarben benötigen zusätzlich Text oder ein Symbol."
+    }
+  },
+  "typography": {
+    "sans": {
+      "family": "Geist",
+      "file": "assets/fonts/Geist-Variable.woff2",
+      "weightRange": [
+        100,
+        900
+      ]
+    },
+    "mono": {
+      "family": "Geist Mono",
+      "file": "assets/fonts/GeistMono-Variable.woff2",
+      "weightRange": [
+        100,
+        900
+      ]
+    },
+    "wordmark": {
+      "weight": 700,
+      "letterSpacing": "-0.052em",
+      "lineHeight": 1.04,
+      "cutAngle": "153deg",
+      "cutStop": "48%",
+      "spectrumAngle": "110deg"
+    },
+    "scale": {
+      "display": {
+        "px": 56,
+        "lineHeight": 1.05,
+        "weight": 650
+      },
+      "heading": {
+        "px": 36,
+        "lineHeight": 1.12,
+        "weight": 650
+      },
+      "subheading": {
+        "px": 24,
+        "lineHeight": 1.25,
+        "weight": 600
+      },
+      "body": {
+        "px": 16,
+        "lineHeight": 1.6,
+        "weight": 400
+      },
+      "data": {
+        "px": 12,
+        "lineHeight": 1.6,
+        "weight": 400
+      }
+    }
+  },
+  "geometry": {
+    "viewBox": [
+      0,
+      0,
+      256,
+      256
+    ],
+    "clearSpaceUnits": 24,
+    "clearSpaceRelativeToCanvas": 0.09375,
+    "minimumUiCanvasPx": 24,
+    "faviconCanvasPx": [
+      16,
+      32,
+      48,
+      64,
+      96
+    ],
+    "maskableMaxInkRadius": 0.38,
+    "maskableSafeRadius": 0.4
+  },
+  "spacingPx": [
+    4,
+    8,
+    12,
+    16,
+    24,
+    32,
+    48,
+    64,
+    96
+  ],
+  "radiusPx": {
+    "control": 8,
+    "card": 16,
+    "panel": 24
+  },
+  "motion": {
+    "durationMs": 180,
+    "easing": "cubic-bezier(.2,.7,.2,1)",
+    "reducedMotion": "Suppress nonessential motion."
+  },
+  "products": [
+    {
+      "id": "fabric",
+      "name": "AI Fabric",
+      "domain": "ai.rapold.io",
+      "namingStatus": "Arbeitsbezeichnung in dieser CI"
+    },
+    {
+      "id": "argus",
+      "name": "Argus",
+      "domain": "argus.rapold.io"
+    },
+    {
+      "id": "learn",
+      "name": "ÆON Learn",
+      "domain": "learn.rapold.io"
+    },
+    {
+      "id": "edgeportal",
+      "name": "EdgePortal",
+      "domain": null
+    }
+  ]
+}

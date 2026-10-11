@@ -1,5 +1,5 @@
 'use client';
-import {useState} from 'react';
+import {useRef,useState} from 'react';
 import {ArrowDown,ArrowUp,ArrowUpDown,ChevronLeft,ChevronRight,Search,X} from 'lucide-react';
 import {useReactTable,getCoreRowModel,getFilteredRowModel,getSortedRowModel,getPaginationRowModel,flexRender,type ColumnDef,type SortingState} from '@tanstack/react-table';
 import {Badge,Button,Input} from '@rapold/framework-core';
@@ -34,13 +34,14 @@ const pattern=`const table = useReactTable({
 });`;
 
 export default function TableShowcase(){
+  const searchInput=useRef<HTMLInputElement>(null);
   const [search,setSearch]=useState(''),[sorting,setSorting]=useState<SortingState>([]);
   const table=useReactTable({data,columns,state:{globalFilter:search,sorting},onGlobalFilterChange:setSearch,onSortingChange:setSorting,getCoreRowModel:getCoreRowModel(),getFilteredRowModel:getFilteredRowModel(),getSortedRowModel:getSortedRowModel(),getPaginationRowModel:getPaginationRowModel(),initialState:{pagination:{pageSize:12}}});
   const filtered=table.getFilteredRowModel().rows.length;
   const pageIndex=table.getState().pagination.pageIndex;
-  const resetSearch=()=>{setSearch('');table.setPageIndex(0);};
+  const resetSearch=()=>{setSearch('');table.setPageIndex(0);searchInput.current?.focus();};
   return <>
-    <div className="table-toolbar"><div className="table-search"><Search size={16} aria-hidden="true"/><Input type="search" aria-label="Bausteine suchen" placeholder="Suchen – z. B. Design, Tabellen, DS-042 …" value={search} onChange={e=>{setSearch(e.target.value);table.setPageIndex(0);}}/>{search&&<button className="icon-button" aria-label="Suche zurücksetzen" onClick={resetSearch}><X size={14}/></button>}</div><p role="status">{filtered} von {data.length} Bausteinen</p></div>
+    <div className="table-toolbar"><div className="table-search"><Search size={16} aria-hidden="true"/><Input ref={searchInput} type="search" aria-label="Bausteine suchen" placeholder="Suchen – z. B. Design, Tabellen, DS-042 …" value={search} onChange={e=>{setSearch(e.target.value);table.setPageIndex(0);}}/>{search&&<button className="icon-button" aria-label="Suche zurücksetzen" onClick={resetSearch}><X size={14}/></button>}</div><p role="status">{filtered} von {data.length} Bausteinen</p></div>
     <div className="refined-table" role="region" aria-label="Bausteine – horizontal scrollbar" tabIndex={0}><table>
       <caption className="sr-only">250 illustrative Framework-Bausteine. Referenz, Name, Datum und Abdeckung sind sortierbar.</caption>
       <thead>{table.getHeaderGroups().map(group=><tr key={group.id}>{group.headers.map(header=>{const sorted=header.column.getIsSorted();const Icon=sorted==='asc'?ArrowUp:sorted==='desc'?ArrowDown:ArrowUpDown;return <th scope="col" key={header.id} className={header.id==='coverage'?'table-align-number':undefined} aria-sort={header.column.getCanSort()?(sorted==='asc'?'ascending':sorted==='desc'?'descending':'none'):undefined}>

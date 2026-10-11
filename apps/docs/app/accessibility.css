@@ -1,0 +1,27 @@
+/* Web adaptations from the Apple-oriented audit. All values stay brand-neutral. */
+.framework-scope .toolbar {height: auto; min-height: var(--layout-header); padding-block: 4px;}
+.framework-scope .breadcrumb {min-width: 0; white-space: normal; overflow-wrap: anywhere;}
+.framework-scope .toolbar-controls {flex-shrink: 0;}
+.framework-scope .icon-button {min-width: 32px; min-height: 32px; flex-shrink: 0;}
+.framework-scope .toolbar select {min-height: 36px; padding-inline: 6px;}
+.framework-scope .mobile-nav {width: min(90vw, 360px);}
+.framework-scope .mobile-nav .search-trigger {margin: 12px 0 0; min-height: 44px;}
+.framework-scope .page-meta {flex-wrap: wrap;}
+.framework-scope [data-slot='command-list'] {min-height: 0; max-height: min(300px, calc(100dvh - 9rem));}
+.framework-scope [data-slot='command-input'] {min-width: 0;}
+.framework-scope :is(.rapold-copy, .rapold-more, .rapold-load-state button, [data-slot='tabs-content']):focus-visible {outline: 3px solid var(--ring); outline-offset: 3px;}
+.framework-scope .changelog-header {padding: clamp(20px, 4vw, 44px);}
+.framework-scope .changelog-card-title {min-width: 0; overflow-wrap: anywhere;}
+.framework-scope .changelog-footer-grid {display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 120px), 1fr)); gap: 10px;}
+@media (pointer: coarse) {
+  .framework-scope .icon-button, .framework-scope .toolbar select {min-width: 44px; min-height: 44px;}
+  .framework-scope :is(.nav-link, .nav-group-label) {min-height: 44px;}
+}
+@media (max-width: 767px) {
+  .framework-scope .toolbar {flex-wrap: wrap; column-gap: 6px; row-gap: 3px; padding-block: 6px;}
+  .framework-scope .toolbar-controls {gap: 3px; min-width: 0;}
+  .framework-scope .toolbar select {max-width: 90px; font-size: 12px;}
+  .framework-scope .breadcrumb {order: 2; flex-basis: 100%; padding: 2px 2px 4px;}
+  .framework-scope .page-anchors {position: static;}
+  .framework-scope .mobile-nav .nav-link {min-height: 44px;}
+}

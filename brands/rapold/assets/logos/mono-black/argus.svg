@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img">
+  <title>Argus – Signet</title>
+  <desc>Kantiges Auge aus zwei getrennten Faltbändern und einer frei stehenden rautenförmigen Pupille. Transparente Vektorgrafik ohne sichtbare Schrift. Variante: mono-black.</desc>
+  <path data-part="body" fill="#000000" fill-rule="evenodd" d="M 24 103.147 L 124.941 48.853 L 163.941 69.5 L 232 107.735 L 196.824 125.324 L 127.235 87.853 L 24 139.088 Z M 232 119.206 L 232 155.147 L 134.118 207.147 L 97.412 187.265 L 27.824 149.029 L 66.059 129.912 L 134.118 168.147 Z M 129.147 102.382 L 153.235 126.471 L 129.147 150.559 L 105.059 126.471 Z"/>
+  <polygon data-part="facet-1" fill="#000000" points="163.941,69.5 232,107.735 196.824,125.324 127.235,87.853"/>
+  <polygon data-part="facet-2" fill="#000000" points="27.824,149.029 66.059,129.912 134.118,168.147 97.412,187.265"/>
+</svg>

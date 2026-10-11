@@ -5,7 +5,8 @@ import {brands,sygnum,neutral,goldbach,dominicanoExpress,defineBrand,toCssVariab
 import {compilePrompt} from '../packages/brands/src/prompt-compiler.mjs';
 
 test('Sygnum has an isolated, explicitly draft, light-only identity',()=>{
- assert.deepEqual(brands.map(b=>b.id),['neutral','goldbach','sygnum','dominicano-express']);
+ assert.ok(brands.includes(sygnum));
+ assert.equal(new Set(brands.map(b=>b.id)).size,brands.length);
  assert.equal(sygnum.status,'draft');assert.deepEqual(Object.keys(sygnum.modes),['light']);
  assert.equal(toCssVariables(sygnum,'dark')['--background'],sygnum.modes.light.background);
  for(const b of [neutral,goldbach])assert.equal(b.palette,undefined);

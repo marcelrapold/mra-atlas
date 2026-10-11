@@ -31,3 +31,11 @@ Diese Referenzentscheidung gilt für alle weiteren Arbeiten in `marcelrapold/des
 ## Bewusste Abweichung: Kurzaufträge
 
 Auf Benutzerauftrag vom 11.09.2026 verweist der kopierte Präsentationsprompt auf einen vollständigen Theme-spezifischen Management-Vertrag. Analyse, Defaults, Export und Abnahme liegen dort statt wiederholt im Eingabeprompt. Die Atlas-Seitenstruktur, Layouts, Rezepte und Inhaltslogik bleiben die Referenz. Diese Änderung betrifft die Übergabe an den ausführenden Agenten.
+
+## Rapold-Integration und Web-Audit · 11.10.2026
+
+Für diese Änderung wurde zusätzlich der aktuelle Atlas-Stand `98cd4fd1051d2c0419cde87755ce409e475e2fd6` geprüft: Marken-/Präsenzseite mit echten Exportvorschauen und App-Familie, App-Shell, mobile Navigation und Command-Palette. Die ursprüngliche Extraktionsreferenz bleibt unverändert.
+
+Die bestehende Seitenarchitektur bleibt erhalten. Die Rapold-Markenansicht zeigt produktbezogene Originaldateien, Schutzraum, Favicons, Banner und Downloads innerhalb der vorhandenen Brand-Route. Eine gemeinsame Brand ersetzt vier duplizierte Themes. Der zusätzliche Apple-orientierte Audit beurteilt Web-Usability und Zugänglichkeit; er ersetzt die Atlas-Referenz nicht.
+
+Die Live-Markenansicht von Atlas führt auf eine PIN-Anmeldung. Die sichere Anmeldung wurde durch die Browser-Freigabeprüfung vor einer Übertragung blockiert. Deshalb ist der Atlas-Vergleich für diesen Stand quellenbasiert; eine visuelle Atlas-Parität wird nicht behauptet. Der aktuelle Prüfstatus steht in `docs/apple-design-audit.md`.

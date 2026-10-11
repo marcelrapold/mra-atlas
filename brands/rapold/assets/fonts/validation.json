@@ -1,0 +1,62 @@
+[
+  {
+    "file": "Geist-Variable.woff2",
+    "family": [
+      "Geist"
+    ],
+    "full_name": [
+      "Geist Regular"
+    ],
+    "version": [
+      "Version 1.800"
+    ],
+    "license": [
+      "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org"
+    ],
+    "copyright": [
+      "Copyright 2024 The Geist Project Authors (https://github.com/vercel/geist-font)"
+    ],
+    "axes": [
+      {
+        "tag": "wght",
+        "min": 100.0,
+        "default": 400.0,
+        "max": 900.0
+      }
+    ],
+    "glyph_count": 728,
+    "required_test_string": "äöüÄÖÜÆæßẞŒœéèêàáâíïóôúûçñ€CHF0123456789‹›«»→×",
+    "required_missing": [],
+    "sha256": "2ffebe993e969069a9789d15164b7715d42491b5835516c5e3b935d5f81b05f1"
+  },
+  {
+    "file": "GeistMono-Variable.woff2",
+    "family": [
+      "Geist Mono"
+    ],
+    "full_name": [
+      "Geist Mono Regular"
+    ],
+    "version": [
+      "Version 1.700"
+    ],
+    "license": [
+      "This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is available with a FAQ at: https://openfontlicense.org"
+    ],
+    "copyright": [
+      "Copyright 2024 The Geist Project Authors (https://github.com/vercel/geist-font.git)"
+    ],
+    "axes": [
+      {
+        "tag": "wght",
+        "min": 100.0,
+        "default": 400.0,
+        "max": 900.0
+      }
+    ],
+    "glyph_count": 889,
+    "required_test_string": "äöüÄÖÜÆæßẞŒœéèêàáâíïóôúûçñ€CHF0123456789‹›«»→×",
+    "required_missing": [],
+    "sha256": "afaacc4c5fbba89d2ebf7a02dc4070208540874592a5504d57175782fe893101"
+  }
+]

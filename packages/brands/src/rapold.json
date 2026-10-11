@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "id": "rapold",
+  "name": "Rapold",
+  "version": "0.1.0",
+  "status": "draft",
+  "palette": {
+    "azure": "#009DFF",
+    "ice": "#A8EDFF",
+    "violet": "#7C5CFF",
+    "navy": "#050B19",
+    "paper": "#F4FAFF",
+    "logo-light-primary": "#0066B3",
+    "logo-light-facet": "#2B89B5"
+  },
+  "modes": {
+    "light": {
+      "background": "#F4FAFF",
+      "foreground": "#10253D",
+      "card": "#FFFFFF",
+      "card-foreground": "#10253D",
+      "popover": "#FFFFFF",
+      "popover-foreground": "#10253D",
+      "primary": "#0066B3",
+      "primary-foreground": "#FFFFFF",
+      "primary-hover": "#03599B",
+      "primary-hover-foreground": "#FFFFFF",
+      "secondary": "#DFEBF6",
+      "secondary-foreground": "#10253D",
+      "muted": "#DFEBF6",
+      "muted-foreground": "#46617E",
+      "accent": "#DFEBF6",
+      "accent-foreground": "#10253D",
+      "destructive": "#814960",
+      "destructive-foreground": "#FFFFFF",
+      "success": "#217969",
+      "success-foreground": "#FFFFFF",
+      "warning": "#816F31",
+      "warning-foreground": "#FFFFFF",
+      "border": "#CDDEEE",
+      "input": "#6F87A0",
+      "ring": "#0066B3"
+    },
+    "dark": {
+      "background": "#050B19",
+      "foreground": "#EDF5FF",
+      "card": "#0B1528",
+      "card-foreground": "#EDF5FF",
+      "popover": "#142741",
+      "popover-foreground": "#EDF5FF",
+      "primary": "#38B8FF",
+      "primary-foreground": "#04101D",
+      "primary-hover": "#54C5FF",
+      "primary-hover-foreground": "#04101D",
+      "secondary": "#142741",
+      "secondary-foreground": "#EDF5FF",
+      "muted": "#142741",
+      "muted-foreground": "#9AADC7",
+      "accent": "#142741",
+      "accent-foreground": "#EDF5FF",
+      "destructive": "#FB7185",
+      "destructive-foreground": "#04101D",
+      "success": "#34D399",
+      "success-foreground": "#04101D",
+      "warning": "#FBBF24",
+      "warning-foreground": "#04101D",
+      "border": "#23334A",
+      "input": "#5F7089",
+      "ring": "#38B8FF"
+    }
+  },
+  "typography": {
+    "family": "Geist, Arial, sans-serif",
+    "bodyFamily": "Geist",
+    "headingFamily": "Geist",
+    "bodyWeight": 400,
+    "headingWeight": 650
+  },
+  "shape": {
+    "radius": "8px",
+    "shadow": "none",
+    "buttonMinHeight": "44px"
+  },
+  "tokens": {
+    "fontSize": {
+      "2xl": "24px",
+      "4xl": "36px",
+      "5xl": "56px"
+    },
+    "lineHeight": {
+      "tight": 1.05,
+      "heading": 1.12,
+      "body": 1.6,
+      "code": 1.6
+    },
+    "radius": {
+      "md": "8px",
+      "lg": "16px",
+      "xl": "24px"
+    },
+    "duration": {
+      "normal": "180ms"
+    },
+    "easing": {
+      "standard": "cubic-bezier(.2,.7,.2,1)"
+    }
+  },
+  "presentation": {
+    "logoOnCover": false
+  },
+  "sources": [
+    "brands/rapold/README.md",
+    "brands/rapold/DESIGN.md",
+    "brands/rapold/sources/brand-tokens.json",
+    "brands/rapold/sources/provenance.json"
+  ]
+}
