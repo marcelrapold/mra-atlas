@@ -44,7 +44,7 @@ export default function ReferencePage({section='overview'}:{section?:string}){
  {section==='charts'&&<Tabs defaultValue="recharts"><TabsList aria-label="Diagrammbibliothek"><TabsTrigger value="recharts">Recharts</TabsTrigger><TabsTrigger value="echarts">Apache ECharts</TabsTrigger></TabsList><TabsContent value="recharts"><DataShowcase section="charts"/></TabsContent><TabsContent value="echarts"><EChartsShowcase/></TabsContent></Tabs>}
  {['toasts','empty-states','skeletons','lightbox','forms','auth-flow','login-pattern','mail-templates','prompt-compiler','prompt-vorlagen','health-status','marketing-hero'].includes(section)&&<PatternShowcase section={section}/>}
  {pageGuidance&&pageGuidance.sections.map(s=><section key={s.title} className="doc-section"><h2>{s.title}</h2><p>{s.body}</p>{s.items&&<ul>{s.items.map(x=><li key={x}>{x}</li>)}</ul>}</section>)}
- {section==='engineering'&&<div className="download-row"><a href="/contracts/engineering.md">Vollständiger Engineering-Vertrag</a><a href="https://github.com/marcelrapold/design/blob/main/CHANGELOG.md">Changelog</a></div>}
+ {section==='engineering'&&<div className="download-row"><a href="/contracts/engineering.md">Vollständiger Engineering-Vertrag</a><a href="https://github.com/marcelrapold/mra-atlas/blob/main/CHANGELOG.md">Changelog</a></div>}
 
  {section==='agenten'&&<><label>Repository<Input value={repo} onChange={e=>setRepo(e.target.value)}/></label><pre>{prompt}</pre><Button onClick={()=>copy(prompt)}>Prompt kopieren</Button><p role="status">{copied}</p><div className="download-row"><a href={`/brands/${brand.id}/llms.txt`}>Agenten-Einstieg · {brand.id==='neutral'?'Default':brand.name}</a><a href={`/brands/${brand.id}/management.md`}>Vollständiger Management-Ablauf</a></div></>}
  </>;

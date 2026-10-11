@@ -48,7 +48,7 @@
       "id": "fabric-procedural-reference",
       "product": "AI Fabric",
       "site": "https://ai.rapold.io",
-      "repository": "https://github.com/marcelrapold/ai",
+      "repository": "https://github.com/marcelrapold/mra-ai",
       "repositoryVisibility": "private",
       "commit": "db588fa7e6e4a31ba1ee1a2e91059534695494af",
       "sourceFiles": [

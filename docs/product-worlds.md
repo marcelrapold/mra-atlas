@@ -23,7 +23,7 @@ Der maschinenlesbare [Herkunftsnachweis](../brands/rapold/sources/world-provenan
 
 | Produkt | Gepinnter Quellstand | Geprüfter Designumfang |
 |---|---|---|
-| AI Fabric | Privates Repository `marcelrapold/ai`, `db588fa7e6e4a31ba1ee1a2e91059534695494af` | Autorisierte, gezielte Designlektüre von `apps/dashboard/app/globals.css`, `apps/dashboard/components/shell/ambient.tsx`, `login-shell.tsx` sowie Designexzerpten aus `components/login/login-view.tsx` |
+| AI Fabric | Privates Repository `marcelrapold/mra-ai` (bis 12.10.2026 `ai`), `db588fa7e6e4a31ba1ee1a2e91059534695494af` | Autorisierte, gezielte Designlektüre von `apps/dashboard/app/globals.css`, `apps/dashboard/components/shell/ambient.tsx`, `login-shell.tsx` sowie Designexzerpten aus `components/login/login-view.tsx` |
 | ÆON Learn | Öffentliches [aeon-protocol am Commit bf362a3](https://github.com/marcelrapold/aeon-protocol/tree/bf362a37e2bacd13c502e8ad8a291d4e5bc1aabd) | `site/learn/app/globals.css`, `app/shell.tsx` sowie `components/hero-artwork-stack.tsx`, `hero-knowledge-particles.tsx`, `fake-terminal.tsx`, `glitch-pulse.tsx` und `landing.tsx` |
 | Argus | Freigegebenes Zeichen und gemeinsame Rapold-CI | Keine zugängliche Original-Frontendquelle als Paritätsnachweis vorhanden |
 | EdgePortal | Freigegebenes Zeichen und gemeinsame Rapold-CI | Für diese Integration wird keine vollständige Original-App-Übernahme als belegt ausgegeben |

@@ -45,7 +45,7 @@ const { svg } = await mermaid.render(id, code, container);`}</code></pre>
       <h3>Kategorienpalette · {brand.name}</h3><p>Zwölf Flächen mit weissen Beschriftungen und mindestens 4,5:1 Textkontrast. Die Werte bleiben in beiden Darstellungen gleich; Flächen, Linien und Begleittexte wechseln mit dem Modus.</p>
       <div className="mermaid-palette">{mermaidPalette(brand).map((color,i)=><div key={i}><span style={{background:color,color:'#fff'}}>{i+1}</span><code>{color}</code></div>)}</div>
       <div className="data-table"><table><thead><tr><th>Diagrammtyp</th><th>Stand</th></tr></thead><tbody>{[['Flowchart','Vollständig thematisiert · zwei Beispiele'],['Sequence','Akteure, Signale, Schleifen und Notizen · Beispiel'],['Timeline','Zwölf Kategorien · Beispiel'],['Pie','Zwölf Segmente, Werte und Legende · Beispiel'],['Journey / GitGraph','Paletten vorbereitet; noch keine eigene Abnahme'],['Weitere Mermaid-Typen','Im Editor verfügbar; keine vollständige Brand-Abnahme']].map(([type,status])=><tr key={type}><td>{type}</td><td>{status}</td></tr>)}</tbody></table></div>
-      <div className="download-row"><a href={`/brands/${brand.id}/mermaid.${mode}.json`}>Theme als JSON</a><a href="/contracts/mermaid.md">Verwendungsregeln</a><a href="https://github.com/marcelrapold/design/blob/main/packages/brands/src/mermaid-theme.mjs">Theme-Quelle</a></div>
+      <div className="download-row"><a href={`/brands/${brand.id}/mermaid.${mode}.json`}>Theme als JSON</a><a href="/contracts/mermaid.md">Verwendungsregeln</a><a href="https://github.com/marcelrapold/mra-atlas/blob/main/packages/brands/src/mermaid-theme.mjs">Theme-Quelle</a></div>
     </section>
   </>;
 }
