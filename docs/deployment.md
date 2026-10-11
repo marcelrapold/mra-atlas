@@ -26,7 +26,7 @@ Grundlage: [Vercel für GitHub](https://vercel.com/docs/git/vercel-for-github) u
 | Clean URLs | `true` |
 | Produktionsdomain | `atlas.rapold.io` |
 
-**Domainwechsel:** Seit 0.7.0 heisst das System Atlas und ist unter `atlas.rapold.io` adressiert (`vercel.json`, Metadaten, Verträge). Die bisherige Adresse `design.rapold.io` soll per Redirect auf `atlas.rapold.io` zeigen, sobald die neue Domain im Vercel-Projekt eingerichtet ist. Bis dahin gelten die datierten Nachweise unten für die damalige Adresse.
+**Domainwechsel:** Seit 0.7.0 heisst das System Atlas und ist unter `atlas.rapold.io` adressiert (`vercel.json`, Metadaten, Verträge). Am **11.10.2026, 21:52 UTC**, wurde `atlas.rapold.io` im Vercel-Projekt `atlas` per TXT-Eintrag `_vercel.rapold.io` (Cloudflare) verifiziert. Die bisherige Adresse `design.rapold.io` leitet per **308** auf `atlas.rapold.io` um, Pfad und Query bleiben erhalten. Produktionsnachweis: `https://atlas.rapold.io/build-info.json` meldete Version 0.7.0, Commit `87f27f2f6569bbdfdf58d51fff67d83014be98c9`.
 
 Build- und Routingwerte stehen in `vercel.json`. Die erfolgreiche Veröffentlichung des gemergten `main`-Commits auf der Produktionsdomain ist im Nachtrag unten belegt. Die vollständigen Projekteinstellungen wurden über den eingeschränkten Connector nicht unabhängig ausgelesen; der beobachtete Rollout ersetzt diese Einsicht nicht.
 
