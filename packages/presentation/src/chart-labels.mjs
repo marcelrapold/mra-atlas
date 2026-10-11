@@ -1,6 +1,6 @@
 import JSZip from 'jszip';
 
-// Atlas sets explicit point labels: Office's display locale must not change CH notation.
+// Explicit point labels: Office's display locale must not change CH notation.
 // Numeric series and the embedded workbook remain editable. Regenerate labels after data edits.
 export async function localizeChartLabels(buffer) {
  const zip=await JSZip.loadAsync(buffer);

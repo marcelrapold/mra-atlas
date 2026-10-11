@@ -2,7 +2,7 @@
 
 Atlas ist das Designsystem von Rapold: ein White-Label-Designstandard für Web-Interfaces und Management-Präsentationen.
 Hauptadresse: https://atlas.rapold.io
-Repository: https://github.com/marcelrapold/design
+Repository: https://github.com/marcelrapold/mra-atlas
 Den tatsächlich ausgelieferten Stand über /build-info.json prüfen.
 Atlas ist seine eigene Referenz: Struktur, Muster und Verträge stehen in diesem Repository.
 Die aktive Brand bestimmt die Markenidentität, Atlas die gemeinsame Struktur.

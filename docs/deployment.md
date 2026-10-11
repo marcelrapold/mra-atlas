@@ -2,7 +2,7 @@
 
 ## Automatischer Ablauf
 
-Das GitHub-Repository [`marcelrapold/mra-design`](https://github.com/marcelrapold/mra-design) ist mit dem bestehenden Vercel-Projekt **`design`** im Scope `marcelrapold` verbunden. Jeder Push auf `main` löst den nativen Vercel-Build aus. In `vercel.json` ist `main` ausdrücklich aktiviert; andere Branches lösen durch diese Konfiguration keine Vercel-Deployments aus. Die tatsächlichen Produktionsrollouts 0.5.0 und 0.6.0 vom 11.10.2026 sind unten separat dokumentiert.
+Das GitHub-Repository [`marcelrapold/mra-atlas`](https://github.com/marcelrapold/mra-atlas) (bis 11.10.2026 `mra-design`) ist mit dem bestehenden Vercel-Projekt **`atlas`** (bis 11.10.2026 `design`) im Scope `marcelrapold` verbunden. Jeder Push auf `main` löst den nativen Vercel-Build aus. In `vercel.json` ist `main` ausdrücklich aktiviert; andere Branches lösen durch diese Konfiguration keine Vercel-Deployments aus. Die tatsächlichen Produktionsrollouts 0.5.0 und 0.6.0 vom 11.10.2026 sind unten separat dokumentiert.
 
 Vercel führt `npm ci` und danach `npm run check` aus. Dieser Befehl umfasst Tests, TypeScript, den statischen Produktionsbuild sowie die Prüfung der Präsentationsdateien. Erst ein erfolgreicher Build kann veröffentlicht werden. Das Ausgabe-Verzeichnis ist `apps/docs/out`.
 
@@ -14,7 +14,7 @@ Grundlage: [Vercel für GitHub](https://vercel.com/docs/git/vercel-for-github) u
 
 | Einstellung | Wert |
 |---|---|
-| Git-Repository | `marcelrapold/mra-design` |
+| Git-Repository | `marcelrapold/mra-atlas` |
 | Vercel-Projekt | `design`, Scope `marcelrapold` |
 | Produktionsbranch | `main` |
 | Root Directory | Repository-Wurzel (`.`), da npm-Workspaces verwendet werden |

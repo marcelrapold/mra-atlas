@@ -1,11 +1,11 @@
 # Repository und Veröffentlichung
 
-Zielrepository: https://github.com/marcelrapold/design. Der Benutzer hat dieses Repository erstellt und den vollständigen Upload ausdrücklich beauftragt. Die Sichtbarkeit ist öffentlich. Es wird keine freie Neulizenzierung daraus abgeleitet.
+Zielrepository: https://github.com/marcelrapold/mra-atlas. Der Benutzer hat dieses Repository erstellt und den vollständigen Upload ausdrücklich beauftragt. Die Sichtbarkeit ist öffentlich. Es wird keine freie Neulizenzierung daraus abgeleitet.
 
 ## Quellstand übernehmen
 
 ```sh
-git clone https://github.com/marcelrapold/design.git
+git clone https://github.com/marcelrapold/mra-atlas.git
 cd design
 npm ci
 npm run check

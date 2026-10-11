@@ -1,4 +1,4 @@
-// Neutral adaptation of Atlas muster_bausteine.py. Coordinates retain the measured recipe.
+// Content recipes for the Atlas sample decks. Coordinates retain the measured recipe.
 // All numbers and project names here are illustrative demonstration data.
 export function atlasContent(id,deck){
  const c=deck.colors,g=deck.layout,R=g.randLR,Y=g.inhalt.yStart,W=g.nutzbreite,P=g.shapes.karte.paddingL,T=g.shapes.karte.paddingT,n=[];
