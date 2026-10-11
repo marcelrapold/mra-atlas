@@ -13,10 +13,7 @@ function shade(hex, amount) {
 
 export function mermaidPalette(brand) {
   const c = brand.modes.light;
-  // Goldbach uses Passion Red and greys; status colours do not denote categories.
-  const seeds = brand.id === 'goldbach'
-    ? [c.primary, c['muted-foreground'], c.foreground, c['primary-hover'], c.input]
-    : [c.primary, c.success, c.warning, c.destructive, c['muted-foreground']];
+  const seeds = [c.primary, c.success, c.warning, c.destructive, c['muted-foreground']];
   return Array.from({ length: 12 }, (_, i) => {
     let colour = shade(seeds[i % seeds.length], Math.floor(i / seeds.length) * 0.16);
     while (contrast('#ffffff', colour) < 4.5) colour = shade(colour, 0.08);

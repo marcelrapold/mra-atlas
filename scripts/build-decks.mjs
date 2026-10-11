@@ -3,6 +3,8 @@ import {brands} from '../packages/brands/src/index.mjs';
 import {presentationTheme} from '../packages/brands/src/presentation.mjs';
 import {slideScene} from '../packages/brands/src/slide-scene.mjs';
 import {renderScenes} from '../packages/presentation/src/render.mjs';
+import {pruneBrandOutputs} from './prune-brand-outputs.mjs';
+await pruneBrandOutputs();
 for(const brand of brands){
  const theme=presentationTheme(brand),directory=new URL(`../apps/docs/public/brands/${brand.id}/decks/`,import.meta.url);
  await mkdir(directory,{recursive:true});

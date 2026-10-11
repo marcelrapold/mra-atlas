@@ -15,7 +15,7 @@ Die vorhandene Initial-Historie des Zielrepositorys bleibt erhalten. Der lokale 
 
 ## Open-Source-Release
 
-Die Original-LICENSE beschränkt Verteilung ausserhalb ZVV/Mandatsträger und verlangt schriftliche Zustimmung der ZVV ICT. Das Core-White-Labeling allein ersetzt diese Freigabe nicht. Vor einer freien Lizenz muss der erlaubte Umfang der extrahierten Dateien dokumentiert werden. Goldbach-Quellen und Assets behalten ihren separaten Rechte- und Freigabestatus. Ihr beauftragter Upload erteilt keine allgemeine Nutzungslizenz. Danach können Code-Lizenz, Package-Publish-Konfiguration und Sichtbarkeit gezielt gesetzt werden.
+Die Original-LICENSE beschränkt Verteilung ausserhalb ZVV/Mandatsträger und verlangt schriftliche Zustimmung der ZVV ICT. Das Core-White-Labeling allein ersetzt diese Freigabe nicht. Vor einer freien Lizenz muss der erlaubte Umfang der extrahierten Dateien dokumentiert werden. Brand-Quellen und Assets behalten ihren separaten Rechte- und Freigabestatus. Ihr beauftragter Upload erteilt keine allgemeine Nutzungslizenz. Danach können Code-Lizenz, Package-Publish-Konfiguration und Sichtbarkeit gezielt gesetzt werden.
 
 ## Webbetrieb
 

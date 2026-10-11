@@ -3,7 +3,7 @@
   "title": "Design Framework: Management-Briefing",
   "repository": "marcelrapold/design",
   "commit": "9fcf9f95dc89cf6487fe454dba031b85a3111497",
-  "brand": "goldbach",
+  "brand": "neutral",
   "decisionQuestion": "Welche Pilotpräsentation dient als erste gemeinsame Abnahme?",
   "sections": [
     {
@@ -245,20 +245,20 @@
         }
       ],
       "type": "zwei-grosskarten",
-      "title": "Goldbach ist als Entwurf vorhanden, Sygnum noch offen",
+      "title": "Eine Pilotabnahme braucht Quellstand und Anwendung",
       "section": "freigabe",
-      "takeaway": "Eine neue Brand braucht belastbare Vorgaben. Der Framework-Core kann diese Vorgaben aufnehmen, aber nicht selbst als CI freigeben.",
+      "takeaway": "Der Pilotauftrag braucht einen festen Quellstand und konkrete Abnahmekriterien.",
       "claims": [
         {
-          "title": "Goldbach",
-          "text": "Der Adapter nutzt die gelieferten Design- und Bildregeln sowie das originale Logo. Die Erweiterungen bleiben als Entwurf gekennzeichnet.",
-          "kind": "fact",
+          "title": "Dokumentation",
+          "text": "Der dokumentierte Modulumfang beschreibt die Ausgangslage für einen Pilotauftrag. Er ersetzt keinen Nachweis für dessen konkretes Ergebnis.",
+          "kind": "inference",
           "sourceId": "framework"
         },
         {
-          "title": "Sygnum",
-          "text": "Im dokumentierten Quellstand fehlen gelieferte Brand-Vorgaben. Eine fertige Sygnum-Ausprägung ist deshalb noch nicht belegt.",
-          "kind": "fact",
+          "title": "Anwendung",
+          "text": "Die offene Browser-Abnahme sollte an einem klar abgegrenzten Einsatz geprüft und separat dokumentiert werden.",
+          "kind": "inference",
           "sourceId": "abnahme"
         }
       ]

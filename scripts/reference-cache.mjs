@@ -3,7 +3,7 @@ import {readFile,readdir} from 'node:fs/promises';
 import {brands} from '../packages/brands/src/index.mjs';
 // Only the fields the deck renderer actually consumes. Version, status, sources
 // and the presentation/genAI guidance blocks are metadata: they never reach a
-// rendered slide, so they must not invalidate 72 committed PDFs and PNGs.
+// rendered slide, so they must not invalidate committed PDFs and PNGs.
 export const renderedBrandKeys=Object.freeze(['id','name','modes','typography','shape','assets','palette','tokens']);
 export async function referenceDigest(){
  const h=createHash('sha256');

@@ -1,0 +1,1801 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-10-11T09:51:08.367672+00:00",
+  "sources": [
+    {
+      "path": "brands/rapold/worlds.css",
+      "sha256": "f0159d9a807645c74022cd75415c0c2a89407633b062f309e0ab2bf00e2d2689"
+    },
+    {
+      "path": "brands/rapold/wordmarks.css",
+      "sha256": "4300921d5dac33592f1106a22ffcd277eec5719e5c28582500a1532de24ef57c"
+    }
+  ],
+  "method": {
+    "textThreshold": 4.5,
+    "wordmarkThreshold": 3,
+    "wordmarkMinimum": "20 px, weight 700",
+    "contrast": "Unrounded sRGB source-over channels, WCAG relative luminance and (Lmax+.05)/(Lmin+.05).",
+    "alphaEnvelope": "Conservative declared-alpha envelope: all 625 combinations at 0/25/50/75/100% of each of three halo maxima and the focus maximum. Does not claim full-strength halo centres overlap simultaneously in the browser.",
+    "halos": {
+      "colors": [
+        "#0072CE",
+        "#F472B6",
+        "#38BDF8"
+      ],
+      "lightMaxAlpha": [
+        0.22,
+        0.14,
+        0.12
+      ],
+      "darkMaxAlpha": [
+        0.3,
+        0.3,
+        0.3
+      ],
+      "focusMaxAlpha": 0.14
+    },
+    "gradient": "257 samples per adjacent stop pair in both sRGB and Oklab; lowest contrast retained.",
+    "limitations": [
+      "No browser measurement or full pixel-position guarantee. Blur is not used as a contrast guarantee.",
+      "Learn photographic hero is only evaluated on the flat CSS base in this report. Terminal calculations bound its entire possible backdrop with black/white.",
+      "Decorative signets, icons, borders, fine raster lines and anti-aliasing are not text contrast checks."
+    ]
+  },
+  "textChecks": [
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "unprotected hero (before fix)",
+      "role": "fg",
+      "foreground": "#020817",
+      "minimumRatio": 10.3483,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#9DBDE5",
+      "minimumBackgroundRgb": [
+        157.02386,
+        189.25897,
+        228.60567
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.22,
+        0.14,
+        0.12,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "unprotected hero (before fix)",
+      "role": "muted",
+      "foreground": "#516071",
+      "minimumRatio": 3.3305,
+      "passes": false,
+      "threshold": 4.5,
+      "minimumBackground": "#9DBDE5",
+      "minimumBackgroundRgb": [
+        157.02386,
+        189.25897,
+        228.60567
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.22,
+        0.14,
+        0.12,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "header/footer glass",
+      "role": "fg",
+      "foreground": "#020817",
+      "minimumRatio": 15.6243,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#D8E5F4",
+      "minimumBackgroundRgb": [
+        215.80955,
+        228.70359,
+        244.44227
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.22,
+        0.14,
+        0.12,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "header/footer glass",
+      "role": "muted",
+      "foreground": "#516071",
+      "minimumRatio": 5.0286,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#D8E5F4",
+      "minimumBackgroundRgb": [
+        215.80955,
+        228.70359,
+        244.44227
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.22,
+        0.14,
+        0.12,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "feature glass",
+      "role": "fg",
+      "foreground": "#020817",
+      "minimumRatio": 16.6529,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#E2EBF7",
+      "minimumBackgroundRgb": [
+        225.60716,
+        235.27769,
+        247.0817
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.22,
+        0.14,
+        0.12,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "feature glass",
+      "role": "muted",
+      "foreground": "#516071",
+      "minimumRatio": 5.3596,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#E2EBF7",
+      "minimumBackgroundRgb": [
+        225.60716,
+        235.27769,
+        247.0817
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.22,
+        0.14,
+        0.12,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "feature hover glass",
+      "role": "fg",
+      "foreground": "#020817",
+      "minimumRatio": 18.8432,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#F5F8FC",
+      "minimumBackgroundRgb": [
+        245.20239,
+        248.4259,
+        252.36057
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.22,
+        0.14,
+        0.12,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "feature hover glass",
+      "role": "muted",
+      "foreground": "#516071",
+      "minimumRatio": 6.0646,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#F5F8FC",
+      "minimumBackgroundRgb": [
+        245.20239,
+        248.4259,
+        252.36057
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.22,
+        0.14,
+        0.12,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "main glass",
+      "role": "fg",
+      "foreground": "#020817",
+      "minimumRatio": 18.2788,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#F0F5FB",
+      "minimumBackgroundRgb": [
+        240.30358,
+        245.13885,
+        251.04085
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.22,
+        0.14,
+        0.12,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "main glass",
+      "role": "muted",
+      "foreground": "#516071",
+      "minimumRatio": 5.8829,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#F0F5FB",
+      "minimumBackgroundRgb": [
+        240.30358,
+        245.13885,
+        251.04085
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.22,
+        0.14,
+        0.12,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "main glass",
+      "role": "small kicker",
+      "foreground": "#0068B3",
+      "minimumRatio": 5.2841,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#F0F5FB",
+      "minimumBackgroundRgb": [
+        240.30358,
+        245.13885,
+        251.04085
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.22,
+        0.14,
+        0.12,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "background-only label",
+      "role": "fg",
+      "foreground": "#020817",
+      "minimumRatio": 19.0721,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#F7FAFD",
+      "minimumBackgroundRgb": [
+        247.16191,
+        249.74072,
+        252.88845
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.22,
+        0.14,
+        0.12,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "background-only label",
+      "role": "muted",
+      "foreground": "#516071",
+      "minimumRatio": 6.1383,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#F7FAFD",
+      "minimumBackgroundRgb": [
+        247.16191,
+        249.74072,
+        252.88845
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.22,
+        0.14,
+        0.12,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "tag",
+      "role": "fg",
+      "foreground": "#020817",
+      "minimumRatio": 17.6861,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#EEF1F5",
+      "minimumBackgroundRgb": [
+        238.00239,
+        241.2259,
+        245.16057
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.22,
+        0.14,
+        0.12,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "tag",
+      "role": "muted",
+      "foreground": "#516071",
+      "minimumRatio": 5.6922,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#EEF1F5",
+      "minimumBackgroundRgb": [
+        238.00239,
+        241.2259,
+        245.16057
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.22,
+        0.14,
+        0.12,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "hero backing final",
+      "role": "fg",
+      "foreground": "#020817",
+      "minimumRatio": 18.8432,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#F5F8FC",
+      "minimumBackgroundRgb": [
+        245.20239,
+        248.4259,
+        252.36057
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.22,
+        0.14,
+        0.12,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "hero backing final",
+      "role": "muted",
+      "foreground": "#516071",
+      "minimumRatio": 6.0646,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#F5F8FC",
+      "minimumBackgroundRgb": [
+        245.20239,
+        248.4259,
+        252.36057
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.22,
+        0.14,
+        0.12,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "opaque prompt field",
+      "role": "fg",
+      "foreground": "#020817",
+      "minimumRatio": 17.0799,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#E1EFFA",
+      "minimumBackgroundRgb": [
+        225,
+        239,
+        250
+      ],
+      "scope": "CSS surface"
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "unprotected hero (before fix)",
+      "role": "fg",
+      "foreground": "#F8FAFC",
+      "minimumRatio": 5.5945,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#3B669F",
+      "minimumBackgroundRgb": [
+        59.10436,
+        102.08212,
+        158.52026
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.3,
+        0.3,
+        0.3,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "unprotected hero (before fix)",
+      "role": "muted",
+      "foreground": "#A4B1C5",
+      "minimumRatio": 2.6963,
+      "passes": false,
+      "threshold": 4.5,
+      "minimumBackground": "#3B669F",
+      "minimumBackgroundRgb": [
+        59.10436,
+        102.08212,
+        158.52026
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.3,
+        0.3,
+        0.3,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "header/footer glass",
+      "role": "fg",
+      "foreground": "#F8FAFC",
+      "minimumRatio": 13.0862,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#192E4D",
+      "minimumBackgroundRgb": [
+        24.84174,
+        45.63285,
+        77.2081
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.3,
+        0.3,
+        0.3,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "header/footer glass",
+      "role": "muted",
+      "foreground": "#A4B1C5",
+      "minimumRatio": 6.3071,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#192E4D",
+      "minimumBackgroundRgb": [
+        24.84174,
+        45.63285,
+        77.2081
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.3,
+        0.3,
+        0.3,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "feature glass",
+      "role": "fg",
+      "foreground": "#F8FAFC",
+      "minimumRatio": 14.7986,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#132440",
+      "minimumBackgroundRgb": [
+        19.13131,
+        36.22464,
+        63.65608
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.3,
+        0.3,
+        0.3,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "feature glass",
+      "role": "muted",
+      "foreground": "#A4B1C5",
+      "minimumRatio": 7.1324,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#132440",
+      "minimumBackgroundRgb": [
+        19.13131,
+        36.22464,
+        63.65608
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.3,
+        0.3,
+        0.3,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "feature hover glass",
+      "role": "fg",
+      "foreground": "#F8FAFC",
+      "minimumRatio": 17.9393,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#081125",
+      "minimumBackgroundRgb": [
+        7.71044,
+        17.40821,
+        36.55203
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.3,
+        0.3,
+        0.3,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "feature hover glass",
+      "role": "muted",
+      "foreground": "#A4B1C5",
+      "minimumRatio": 8.6461,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#081125",
+      "minimumBackgroundRgb": [
+        7.71044,
+        17.40821,
+        36.55203
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.3,
+        0.3,
+        0.3,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "main glass",
+      "role": "fg",
+      "foreground": "#F8FAFC",
+      "minimumRatio": 17.2339,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#0B162B",
+      "minimumBackgroundRgb": [
+        10.56565,
+        22.11232,
+        43.32804
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.3,
+        0.3,
+        0.3,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "main glass",
+      "role": "muted",
+      "foreground": "#A4B1C5",
+      "minimumRatio": 8.3061,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#0B162B",
+      "minimumBackgroundRgb": [
+        10.56565,
+        22.11232,
+        43.32804
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.3,
+        0.3,
+        0.3,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "main glass",
+      "role": "small kicker",
+      "foreground": "#38A7F4",
+      "minimumRatio": 6.8708,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#0B162B",
+      "minimumBackgroundRgb": [
+        10.56565,
+        22.11232,
+        43.32804
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.3,
+        0.3,
+        0.3,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "background-only label",
+      "role": "fg",
+      "foreground": "#F8FAFC",
+      "minimumRatio": 18.2013,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#071022",
+      "minimumBackgroundRgb": [
+        6.56835,
+        15.52657,
+        33.84162
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.3,
+        0.3,
+        0.3,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "background-only label",
+      "role": "muted",
+      "foreground": "#A4B1C5",
+      "minimumRatio": 8.7724,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#071022",
+      "minimumBackgroundRgb": [
+        6.56835,
+        15.52657,
+        33.84162
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.3,
+        0.3,
+        0.3,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "tag",
+      "role": "fg",
+      "foreground": "#F8FAFC",
+      "minimumRatio": 17.9393,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#081125",
+      "minimumBackgroundRgb": [
+        7.71044,
+        17.40821,
+        36.55203
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.3,
+        0.3,
+        0.3,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "tag",
+      "role": "muted",
+      "foreground": "#A4B1C5",
+      "minimumRatio": 8.6461,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#081125",
+      "minimumBackgroundRgb": [
+        7.71044,
+        17.40821,
+        36.55203
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.3,
+        0.3,
+        0.3,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "hero backing final",
+      "role": "fg",
+      "foreground": "#F8FAFC",
+      "minimumRatio": 17.9393,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#081125",
+      "minimumBackgroundRgb": [
+        7.71044,
+        17.40821,
+        36.55203
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.3,
+        0.3,
+        0.3,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "hero backing final",
+      "role": "muted",
+      "foreground": "#A4B1C5",
+      "minimumRatio": 8.6461,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#081125",
+      "minimumBackgroundRgb": [
+        7.71044,
+        17.40821,
+        36.55203
+      ],
+      "scope": "CSS surface",
+      "alphas": [
+        0.3,
+        0.3,
+        0.3,
+        0.14
+      ]
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "opaque prompt field",
+      "role": "fg",
+      "foreground": "#F8FAFC",
+      "minimumRatio": 13.475,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#122D46",
+      "minimumBackgroundRgb": [
+        18,
+        45,
+        70
+      ],
+      "scope": "CSS surface"
+    },
+    {
+      "product": "argus",
+      "mode": "light",
+      "surface": "CSS base / patterned background",
+      "role": "fg",
+      "foreground": "#102940",
+      "minimumRatio": 12.4045,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#E0ECF6",
+      "minimumBackgroundRgb": [
+        223.57197,
+        236.35709,
+        246.37278
+      ],
+      "scope": "Declared CSS pattern extrema"
+    },
+    {
+      "product": "argus",
+      "mode": "light",
+      "surface": "CSS base / patterned background",
+      "role": "muted",
+      "foreground": "#4C6278",
+      "minimumRatio": 5.2714,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#E0ECF6",
+      "minimumBackgroundRgb": [
+        223.57197,
+        236.35709,
+        246.37278
+      ],
+      "scope": "Declared CSS pattern extrema"
+    },
+    {
+      "product": "argus",
+      "mode": "light",
+      "surface": "dashboard glass",
+      "role": "fg",
+      "foreground": "#102940",
+      "minimumRatio": 14.7037,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#FDFEFE",
+      "minimumBackgroundRgb": [
+        253.11432,
+        253.88143,
+        254.48237
+      ],
+      "scope": "CSS surface"
+    },
+    {
+      "product": "argus",
+      "mode": "light",
+      "surface": "dashboard glass",
+      "role": "muted",
+      "foreground": "#4C6278",
+      "minimumRatio": 6.2485,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#FDFEFE",
+      "minimumBackgroundRgb": [
+        253.11432,
+        253.88143,
+        254.48237
+      ],
+      "scope": "CSS surface"
+    },
+    {
+      "product": "argus",
+      "mode": "light",
+      "surface": "CSS base / patterned background",
+      "role": "small kicker",
+      "foreground": "#0066B3",
+      "minimumRatio": 4.9361,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#E0ECF6",
+      "minimumBackgroundRgb": [
+        223.57197,
+        236.35709,
+        246.37278
+      ],
+      "scope": "CSS surface"
+    },
+    {
+      "product": "argus",
+      "mode": "dark",
+      "surface": "CSS base / patterned background",
+      "role": "fg",
+      "foreground": "#ECF4FC",
+      "minimumRatio": 14.4049,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#122237",
+      "minimumBackgroundRgb": [
+        18.39413,
+        34.23544,
+        54.87427
+      ],
+      "scope": "Declared CSS pattern extrema"
+    },
+    {
+      "product": "argus",
+      "mode": "dark",
+      "surface": "CSS base / patterned background",
+      "role": "muted",
+      "foreground": "#AAC0D4",
+      "minimumRatio": 8.5304,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#122237",
+      "minimumBackgroundRgb": [
+        18.39413,
+        34.23544,
+        54.87427
+      ],
+      "scope": "Declared CSS pattern extrema"
+    },
+    {
+      "product": "argus",
+      "mode": "dark",
+      "surface": "dashboard glass",
+      "role": "fg",
+      "foreground": "#ECF4FC",
+      "minimumRatio": 16.2217,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#0B1728",
+      "minimumBackgroundRgb": [
+        11.44365,
+        22.73413,
+        39.95246
+      ],
+      "scope": "CSS surface"
+    },
+    {
+      "product": "argus",
+      "mode": "dark",
+      "surface": "dashboard glass",
+      "role": "muted",
+      "foreground": "#AAC0D4",
+      "minimumRatio": 9.6063,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#0B1728",
+      "minimumBackgroundRgb": [
+        11.44365,
+        22.73413,
+        39.95246
+      ],
+      "scope": "CSS surface"
+    },
+    {
+      "product": "argus",
+      "mode": "dark",
+      "surface": "CSS base / patterned background",
+      "role": "small kicker",
+      "foreground": "#57BCFF",
+      "minimumRatio": 7.649,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#122237",
+      "minimumBackgroundRgb": [
+        18.39413,
+        34.23544,
+        54.87427
+      ],
+      "scope": "CSS surface"
+    },
+    {
+      "product": "edgeportal",
+      "mode": "light",
+      "surface": "CSS base / patterned background",
+      "role": "fg",
+      "foreground": "#102940",
+      "minimumRatio": 11.8557,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#D1E9FA",
+      "minimumBackgroundRgb": [
+        208.53985,
+        233.1822,
+        250.05792
+      ],
+      "scope": "Declared CSS pattern extrema"
+    },
+    {
+      "product": "edgeportal",
+      "mode": "light",
+      "surface": "CSS base / patterned background",
+      "role": "muted",
+      "foreground": "#4C6278",
+      "minimumRatio": 5.0382,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#D1E9FA",
+      "minimumBackgroundRgb": [
+        208.53985,
+        233.1822,
+        250.05792
+      ],
+      "scope": "Declared CSS pattern extrema"
+    },
+    {
+      "product": "edgeportal",
+      "mode": "dark",
+      "surface": "CSS base / patterned background",
+      "role": "fg",
+      "foreground": "#ECF4FC",
+      "minimumRatio": 13.9052,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#0C263F",
+      "minimumBackgroundRgb": [
+        12.03626,
+        37.629,
+        63.05446
+      ],
+      "scope": "Declared CSS pattern extrema"
+    },
+    {
+      "product": "edgeportal",
+      "mode": "dark",
+      "surface": "CSS base / patterned background",
+      "role": "muted",
+      "foreground": "#AAC0D4",
+      "minimumRatio": 8.2345,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#0C263F",
+      "minimumBackgroundRgb": [
+        12.03626,
+        37.629,
+        63.05446
+      ],
+      "scope": "Declared CSS pattern extrema"
+    },
+    {
+      "product": "learn",
+      "mode": "light",
+      "surface": "flat CSS base only",
+      "role": "fg",
+      "foreground": "#171717",
+      "minimumRatio": 17.9278,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#FFFFFF",
+      "minimumBackgroundRgb": [
+        255,
+        255,
+        255
+      ],
+      "scope": "Photographic hero not certified by flat base"
+    },
+    {
+      "product": "learn",
+      "mode": "light",
+      "surface": "flat CSS base only",
+      "role": "muted",
+      "foreground": "#646464",
+      "minimumRatio": 5.9176,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#FFFFFF",
+      "minimumBackgroundRgb": [
+        255,
+        255,
+        255
+      ],
+      "scope": "Photographic hero not certified by flat base"
+    },
+    {
+      "product": "learn",
+      "mode": "light",
+      "surface": "background-only label",
+      "role": "fg",
+      "foreground": "#171717",
+      "minimumRatio": 14.9838,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#EBEBEB",
+      "minimumBackgroundRgb": [
+        234.6,
+        234.6,
+        234.6
+      ],
+      "scope": "CSS surface"
+    },
+    {
+      "product": "learn",
+      "mode": "light",
+      "surface": "background-only label",
+      "role": "muted",
+      "foreground": "#646464",
+      "minimumRatio": 4.9458,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#EBEBEB",
+      "minimumBackgroundRgb": [
+        234.6,
+        234.6,
+        234.6
+      ],
+      "scope": "CSS surface"
+    },
+    {
+      "product": "learn",
+      "mode": "dark",
+      "surface": "flat CSS base only",
+      "role": "fg",
+      "foreground": "#FAFAFA",
+      "minimumRatio": 18.968,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#0A0A0A",
+      "minimumBackgroundRgb": [
+        10,
+        10,
+        10
+      ],
+      "scope": "Photographic hero not certified by flat base"
+    },
+    {
+      "product": "learn",
+      "mode": "dark",
+      "surface": "flat CSS base only",
+      "role": "muted",
+      "foreground": "#B3B3BD",
+      "minimumRatio": 9.5216,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#0A0A0A",
+      "minimumBackgroundRgb": [
+        10,
+        10,
+        10
+      ],
+      "scope": "Photographic hero not certified by flat base"
+    },
+    {
+      "product": "learn",
+      "mode": "dark",
+      "surface": "background-only label",
+      "role": "fg",
+      "foreground": "#FAFAFA",
+      "minimumRatio": 15.2059,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#222222",
+      "minimumBackgroundRgb": [
+        34.2,
+        34.2,
+        34.2
+      ],
+      "scope": "CSS surface"
+    },
+    {
+      "product": "learn",
+      "mode": "dark",
+      "surface": "background-only label",
+      "role": "muted",
+      "foreground": "#B3B3BD",
+      "minimumRatio": 7.6331,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#222222",
+      "minimumBackgroundRgb": [
+        34.2,
+        34.2,
+        34.2
+      ],
+      "scope": "CSS surface"
+    },
+    {
+      "product": "learn",
+      "mode": "both",
+      "surface": "terminal text above overlays z3",
+      "role": "body",
+      "foreground": "#E0DDEC",
+      "minimumRatio": 12.2597,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#201D32",
+      "minimumBackgroundRgb": [
+        31.79001,
+        28.93392,
+        50.35458
+      ],
+      "scope": "Terminal .95 over complete black-white backdrop bound; scanlines .07 and vignette .55 affect only the background."
+    },
+    {
+      "product": "learn",
+      "mode": "both",
+      "surface": "terminal text above overlays z3",
+      "role": "header / DEMO",
+      "foreground": "#B9AFD2",
+      "minimumRatio": 7.895,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#201D32",
+      "minimumBackgroundRgb": [
+        31.79001,
+        28.93392,
+        50.35458
+      ],
+      "scope": "Terminal .95 over complete black-white backdrop bound; scanlines .07 and vignette .55 affect only the background."
+    },
+    {
+      "product": "learn",
+      "mode": "both",
+      "surface": "terminal text above overlays z3",
+      "role": "first command",
+      "foreground": "#F0ECFF",
+      "minimumRatio": 14.1497,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#201D32",
+      "minimumBackgroundRgb": [
+        31.79001,
+        28.93392,
+        50.35458
+      ],
+      "scope": "Terminal .95 over complete black-white backdrop bound; scanlines .07 and vignette .55 affect only the background."
+    },
+    {
+      "product": "learn",
+      "mode": "both",
+      "surface": "terminal text above overlays z3",
+      "role": "prompt / line numbers",
+      "foreground": "#B49CFF",
+      "minimumRatio": 7.1267,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#201D32",
+      "minimumBackgroundRgb": [
+        31.79001,
+        28.93392,
+        50.35458
+      ],
+      "scope": "Terminal .95 over complete black-white backdrop bound; scanlines .07 and vignette .55 affect only the background."
+    },
+    {
+      "product": "learn",
+      "mode": "both",
+      "surface": "terminal text above overlays z3",
+      "role": "comment",
+      "foreground": "#A699BE",
+      "minimumRatio": 6.1765,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#201D32",
+      "minimumBackgroundRgb": [
+        31.79001,
+        28.93392,
+        50.35458
+      ],
+      "scope": "Terminal .95 over complete black-white backdrop bound; scanlines .07 and vignette .55 affect only the background."
+    },
+    {
+      "product": "learn",
+      "mode": "both",
+      "surface": "terminal text above overlays z3",
+      "role": "result",
+      "foreground": "#AFDDDD",
+      "minimumRatio": 11.0794,
+      "passes": true,
+      "threshold": 4.5,
+      "minimumBackground": "#201D32",
+      "minimumBackgroundRgb": [
+        31.79001,
+        28.93392,
+        50.35458
+      ],
+      "scope": "Terminal .95 over complete black-white backdrop bound; scanlines .07 and vignette .55 affect only the background."
+    }
+  ],
+  "wordmarkChecks": [
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "flat CSS base",
+      "treatment": "cut",
+      "minimumRatio": 3.6652,
+      "minimumColor": "#2B89B5",
+      "minimumBackground": "#F7F7F7",
+      "interpolation": "sRGB",
+      "segment": 0,
+      "segmentPosition": 1.0,
+      "passes": true,
+      "threshold": 3
+    },
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "unprotected hero (before fix)",
+      "treatment": "cut",
+      "minimumRatio": 2.031,
+      "minimumColor": "#2B89B5",
+      "minimumBackground": "#9DBDE5",
+      "interpolation": "sRGB",
+      "segment": 0,
+      "segmentPosition": 1.0,
+      "passes": false,
+      "threshold": 3
+    },
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "hero backing final",
+      "treatment": "cut",
+      "minimumRatio": 3.6983,
+      "minimumColor": "#2B89B5",
+      "minimumBackground": "#F5F8FC",
+      "interpolation": "sRGB",
+      "segment": 0,
+      "segmentPosition": 1.0,
+      "passes": true,
+      "threshold": 3
+    },
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "flat CSS base",
+      "treatment": "spectrum",
+      "minimumRatio": 5.5194,
+      "minimumColor": "#0066B3",
+      "minimumBackground": "#F7F7F7",
+      "interpolation": "sRGB",
+      "segment": 1,
+      "segmentPosition": 1.0,
+      "passes": true,
+      "threshold": 3
+    },
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "unprotected hero (before fix)",
+      "treatment": "spectrum",
+      "minimumRatio": 3.0586,
+      "minimumColor": "#0066B3",
+      "minimumBackground": "#9DBDE5",
+      "interpolation": "sRGB",
+      "segment": 1,
+      "segmentPosition": 1.0,
+      "passes": true,
+      "threshold": 3
+    },
+    {
+      "product": "fabric",
+      "mode": "light",
+      "surface": "hero backing final",
+      "treatment": "spectrum",
+      "minimumRatio": 5.5693,
+      "minimumColor": "#0066B3",
+      "minimumBackground": "#F5F8FC",
+      "interpolation": "sRGB",
+      "segment": 1,
+      "segmentPosition": 1.0,
+      "passes": true,
+      "threshold": 3
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "flat CSS base",
+      "treatment": "cut",
+      "minimumRatio": 6.9228,
+      "minimumColor": "#009DFF",
+      "minimumBackground": "#020817",
+      "interpolation": "Oklab",
+      "segment": 0,
+      "segmentPosition": 0.0,
+      "passes": true,
+      "threshold": 3
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "unprotected hero (before fix)",
+      "treatment": "cut",
+      "minimumRatio": 2.0255,
+      "minimumColor": "#009DFF",
+      "minimumBackground": "#3B669F",
+      "interpolation": "Oklab",
+      "segment": 0,
+      "segmentPosition": 0.0,
+      "passes": false,
+      "threshold": 3
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "hero backing final",
+      "treatment": "cut",
+      "minimumRatio": 6.4949,
+      "minimumColor": "#009DFF",
+      "minimumBackground": "#081125",
+      "interpolation": "Oklab",
+      "segment": 0,
+      "segmentPosition": 0.0,
+      "passes": true,
+      "threshold": 3
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "flat CSS base",
+      "treatment": "spectrum",
+      "minimumRatio": 5.5276,
+      "minimumColor": "#597DFF",
+      "minimumBackground": "#020817",
+      "interpolation": "Oklab",
+      "segment": 0,
+      "segmentPosition": 1.0,
+      "passes": true,
+      "threshold": 3
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "unprotected hero (before fix)",
+      "treatment": "spectrum",
+      "minimumRatio": 1.6173,
+      "minimumColor": "#597DFF",
+      "minimumBackground": "#3B669F",
+      "interpolation": "Oklab",
+      "segment": 0,
+      "segmentPosition": 1.0,
+      "passes": false,
+      "threshold": 3
+    },
+    {
+      "product": "fabric",
+      "mode": "dark",
+      "surface": "hero backing final",
+      "treatment": "spectrum",
+      "minimumRatio": 5.1859,
+      "minimumColor": "#597DFF",
+      "minimumBackground": "#081125",
+      "interpolation": "Oklab",
+      "segment": 0,
+      "segmentPosition": 1.0,
+      "passes": true,
+      "threshold": 3
+    },
+    {
+      "product": "argus",
+      "mode": "light",
+      "surface": "flat CSS base",
+      "treatment": "cut",
+      "minimumRatio": 3.733,
+      "minimumColor": "#2B89B5",
+      "minimumBackground": "#F4FAFF",
+      "interpolation": "sRGB",
+      "segment": 0,
+      "segmentPosition": 1.0,
+      "passes": true,
+      "threshold": 3
+    },
+    {
+      "product": "argus",
+      "mode": "light",
+      "surface": "flat CSS base",
+      "treatment": "spectrum",
+      "minimumRatio": 5.6216,
+      "minimumColor": "#0066B3",
+      "minimumBackground": "#F4FAFF",
+      "interpolation": "sRGB",
+      "segment": 1,
+      "segmentPosition": 1.0,
+      "passes": true,
+      "threshold": 3
+    },
+    {
+      "product": "argus",
+      "mode": "dark",
+      "surface": "flat CSS base",
+      "treatment": "cut",
+      "minimumRatio": 6.8018,
+      "minimumColor": "#009DFF",
+      "minimumBackground": "#050B19",
+      "interpolation": "Oklab",
+      "segment": 0,
+      "segmentPosition": 0.0,
+      "passes": true,
+      "threshold": 3
+    },
+    {
+      "product": "argus",
+      "mode": "dark",
+      "surface": "flat CSS base",
+      "treatment": "spectrum",
+      "minimumRatio": 5.431,
+      "minimumColor": "#597DFF",
+      "minimumBackground": "#050B19",
+      "interpolation": "Oklab",
+      "segment": 0,
+      "segmentPosition": 1.0,
+      "passes": true,
+      "threshold": 3
+    },
+    {
+      "product": "learn",
+      "mode": "light",
+      "surface": "flat CSS base",
+      "treatment": "cut",
+      "minimumRatio": 3.9265,
+      "minimumColor": "#2B89B5",
+      "minimumBackground": "#FFFFFF",
+      "interpolation": "sRGB",
+      "segment": 0,
+      "segmentPosition": 1.0,
+      "passes": true,
+      "threshold": 3
+    },
+    {
+      "product": "learn",
+      "mode": "light",
+      "surface": "flat CSS base",
+      "treatment": "spectrum",
+      "minimumRatio": 5.913,
+      "minimumColor": "#0066B3",
+      "minimumBackground": "#FFFFFF",
+      "interpolation": "sRGB",
+      "segment": 1,
+      "segmentPosition": 1.0,
+      "passes": true,
+      "threshold": 3
+    },
+    {
+      "product": "learn",
+      "mode": "dark",
+      "surface": "flat CSS base",
+      "treatment": "cut",
+      "minimumRatio": 6.8509,
+      "minimumColor": "#009DFF",
+      "minimumBackground": "#0A0A0A",
+      "interpolation": "Oklab",
+      "segment": 0,
+      "segmentPosition": 0.0,
+      "passes": true,
+      "threshold": 3
+    },
+    {
+      "product": "learn",
+      "mode": "dark",
+      "surface": "flat CSS base",
+      "treatment": "spectrum",
+      "minimumRatio": 5.4701,
+      "minimumColor": "#597DFF",
+      "minimumBackground": "#0A0A0A",
+      "interpolation": "Oklab",
+      "segment": 0,
+      "segmentPosition": 1.0,
+      "passes": true,
+      "threshold": 3
+    },
+    {
+      "product": "edgeportal",
+      "mode": "light",
+      "surface": "flat CSS base",
+      "treatment": "cut",
+      "minimumRatio": 3.733,
+      "minimumColor": "#2B89B5",
+      "minimumBackground": "#F4FAFF",
+      "interpolation": "sRGB",
+      "segment": 0,
+      "segmentPosition": 1.0,
+      "passes": true,
+      "threshold": 3
+    },
+    {
+      "product": "edgeportal",
+      "mode": "light",
+      "surface": "flat CSS base",
+      "treatment": "spectrum",
+      "minimumRatio": 5.6216,
+      "minimumColor": "#0066B3",
+      "minimumBackground": "#F4FAFF",
+      "interpolation": "sRGB",
+      "segment": 1,
+      "segmentPosition": 1.0,
+      "passes": true,
+      "threshold": 3
+    },
+    {
+      "product": "edgeportal",
+      "mode": "dark",
+      "surface": "flat CSS base",
+      "treatment": "cut",
+      "minimumRatio": 6.8018,
+      "minimumColor": "#009DFF",
+      "minimumBackground": "#050B19",
+      "interpolation": "Oklab",
+      "segment": 0,
+      "segmentPosition": 0.0,
+      "passes": true,
+      "threshold": 3
+    },
+    {
+      "product": "edgeportal",
+      "mode": "dark",
+      "surface": "flat CSS base",
+      "treatment": "spectrum",
+      "minimumRatio": 5.431,
+      "minimumColor": "#597DFF",
+      "minimumBackground": "#050B19",
+      "interpolation": "Oklab",
+      "segment": 0,
+      "segmentPosition": 1.0,
+      "passes": true,
+      "threshold": 3
+    }
+  ],
+  "fabricBacking": [
+    {
+      "mode": "light",
+      "opacity": 0.9,
+      "source": "rgb(var(--rw-card-rgb) / .90)",
+      "backingColor": "#FFFFFF",
+      "minimumCopyRatio": 6.0646,
+      "minimumBodyRatio": 18.8432,
+      "cut": {
+        "minimumRatio": 3.6983,
+        "minimumColor": "#2B89B5",
+        "minimumBackground": "#F5F8FC",
+        "interpolation": "sRGB",
+        "segment": 0,
+        "segmentPosition": 1.0,
+        "passes": true,
+        "threshold": 3
+      },
+      "spectrum": {
+        "minimumRatio": 5.5693,
+        "minimumColor": "#0066B3",
+        "minimumBackground": "#F5F8FC",
+        "interpolation": "sRGB",
+        "segment": 1,
+        "segmentPosition": 1.0,
+        "passes": true,
+        "threshold": 3
+      }
+    },
+    {
+      "mode": "dark",
+      "opacity": 0.9,
+      "source": "rgb(var(--rw-card-rgb) / .90)",
+      "backingColor": "#020817",
+      "minimumCopyRatio": 8.6461,
+      "minimumBodyRatio": 17.9393,
+      "cut": {
+        "minimumRatio": 6.4949,
+        "minimumColor": "#009DFF",
+        "minimumBackground": "#081125",
+        "interpolation": "Oklab",
+        "segment": 0,
+        "segmentPosition": 0.0,
+        "passes": true,
+        "threshold": 3
+      },
+      "spectrum": {
+        "minimumRatio": 5.1859,
+        "minimumColor": "#597DFF",
+        "minimumBackground": "#081125",
+        "interpolation": "Oklab",
+        "segment": 0,
+        "segmentPosition": 1.0,
+        "passes": true,
+        "threshold": 3
+      }
+    }
+  ],
+  "summary": {
+    "textChecks": 64,
+    "wordmarkChecks": 24,
+    "remainingTextFailures": [],
+    "remainingWordmarkFailures": [],
+    "terminalMinimum": 6.1765,
+    "finalFabricBacking": [
+      {
+        "mode": "light",
+        "opacity": 0.9,
+        "source": "rgb(var(--rw-card-rgb) / .90)",
+        "backingColor": "#FFFFFF",
+        "minimumCopyRatio": 6.0646,
+        "minimumBodyRatio": 18.8432,
+        "cut": {
+          "minimumRatio": 3.6983,
+          "minimumColor": "#2B89B5",
+          "minimumBackground": "#F5F8FC",
+          "interpolation": "sRGB",
+          "segment": 0,
+          "segmentPosition": 1.0,
+          "passes": true,
+          "threshold": 3
+        },
+        "spectrum": {
+          "minimumRatio": 5.5693,
+          "minimumColor": "#0066B3",
+          "minimumBackground": "#F5F8FC",
+          "interpolation": "sRGB",
+          "segment": 1,
+          "segmentPosition": 1.0,
+          "passes": true,
+          "threshold": 3
+        }
+      },
+      {
+        "mode": "dark",
+        "opacity": 0.9,
+        "source": "rgb(var(--rw-card-rgb) / .90)",
+        "backingColor": "#020817",
+        "minimumCopyRatio": 8.6461,
+        "minimumBodyRatio": 17.9393,
+        "cut": {
+          "minimumRatio": 6.4949,
+          "minimumColor": "#009DFF",
+          "minimumBackground": "#081125",
+          "interpolation": "Oklab",
+          "segment": 0,
+          "segmentPosition": 0.0,
+          "passes": true,
+          "threshold": 3
+        },
+        "spectrum": {
+          "minimumRatio": 5.1859,
+          "minimumColor": "#597DFF",
+          "minimumBackground": "#081125",
+          "interpolation": "Oklab",
+          "segment": 0,
+          "segmentPosition": 1.0,
+          "passes": true,
+          "threshold": 3
+        }
+      }
+    ],
+    "heroBackingPresentInCSS": true
+  }
+}

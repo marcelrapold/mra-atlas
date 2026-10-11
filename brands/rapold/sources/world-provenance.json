@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 1,
+  "brand": "rapold",
+  "recordedOn": "2026-10-11",
+  "scope": "Originale dekorative Assets für die Rapold-Produktwelten; neue Raumfalten-Signets werden separat geführt.",
+  "status": "original-assets-verified",
+  "sources": [
+    {
+      "id": "learn-original",
+      "product": "ÆON Learn",
+      "site": "https://learn.rapold.io",
+      "repository": "https://github.com/marcelrapold/aeon-protocol",
+      "repositoryVisibility": "public",
+      "commit": "bf362a37e2bacd13c502e8ad8a291d4e5bc1aabd",
+      "sourceDirectory": "site/learn/public/hero-v2/",
+      "licence": {
+        "spdxId": "Apache-2.0",
+        "basis": "Root-LICENSE des gepinnten Quellrepositories; keine weitere LICENSE- oder NOTICE-Datei im geprüften vollständigen Quellbaum.",
+        "sourcePath": "LICENSE",
+        "sourceUrl": "https://github.com/marcelrapold/aeon-protocol/blob/bf362a37e2bacd13c502e8ad8a291d4e5bc1aabd/LICENSE",
+        "rawSourceUrl": "https://raw.githubusercontent.com/marcelrapold/aeon-protocol/bf362a37e2bacd13c502e8ad8a291d4e5bc1aabd/LICENSE",
+        "copiedTo": "brands/rapold/assets/worlds/learn/LICENSE",
+        "bytes": 11358,
+        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "gitBlobSha1": "d645695673349e3947e8e5ae42332d0ac3164cd7",
+        "modified": false,
+        "upstreamNoticePresent": false,
+        "integrationNoticePath": "brands/rapold/assets/worlds/learn/NOTICE",
+        "integrationNoticeTreatment": "Neu hinzugefügter Herkunftshinweis; kein ersetzter oder veränderter Upstream-NOTICE."
+      },
+      "usageEvidence": [
+        {
+          "path": "site/learn/components/hero-artwork-stack.tsx",
+          "url": "https://github.com/marcelrapold/aeon-protocol/blob/bf362a37e2bacd13c502e8ad8a291d4e5bc1aabd/site/learn/components/hero-artwork-stack.tsx",
+          "gitBlobSha1": "fe74754c35d61f89a68196f0cbe9624b6518a18b",
+          "evidence": "LAYERS referenziert genau die vier hero-v2-Dateien als dekorative Ebenen."
+        },
+        {
+          "path": "site/learn/components/landing.tsx",
+          "url": "https://github.com/marcelrapold/aeon-protocol/blob/bf362a37e2bacd13c502e8ad8a291d4e5bc1aabd/site/learn/components/landing.tsx",
+          "gitBlobSha1": "6ccb519bf4881ff4af3af2065bd238b6c0a1b901",
+          "evidence": "Die Landingpage bindet HeroArtworkStack ein."
+        }
+      ],
+      "copyPolicy": "Nur die vier tatsächlich verwendeten Hero-Assets; unveränderte öffentliche Bildbytes, anhand der gepinnten Git-Blobs verifiziert."
+    },
+    {
+      "id": "fabric-procedural-reference",
+      "product": "AI Fabric",
+      "site": "https://ai.rapold.io",
+      "repository": "https://github.com/marcelrapold/ai",
+      "repositoryVisibility": "private",
+      "commit": "db588fa7e6e4a31ba1ee1a2e91059534695494af",
+      "sourceFiles": [
+        {
+          "path": "apps/dashboard/components/shell/ambient.tsx",
+          "gitBlobSha1": "4049c9113eb566af087e5164d8521230b7cd3651"
+        },
+        {
+          "path": "apps/dashboard/app/globals.css",
+          "gitBlobSha1": "4ea25f663a488abd6c1e5c0d24e90315e4ace660"
+        },
+        {
+          "path": "apps/dashboard/components/shell/login-shell.tsx",
+          "gitBlobSha1": "6db01dd6bcace1081f7cbe5df43c2c81f0a94489"
+        }
+      ],
+      "sourceReview": "Gezielte, vom Nutzer autorisierte Lektüre der Designkomponenten durch die Quellenprüfung.",
+      "assetTransfer": "none",
+      "reason": "Der Hintergrund besteht aus prozeduraler CSS-Aurora und deterministischem SVG-Netz. Dafür gibt es keine zu übernehmende Original-Hintergrundbilddatei.",
+      "licence": "Keine offene Repository-Lizenz festgestellt. Diese Übernahme kopiert weder AI-Quellcode noch private App-, Auth- oder Backend-Dateien und vergibt keine neue Lizenz daran.",
+      "integrationScope": "Eine gesonderte, vom Nutzer beauftragte Gestaltung im Docs-Adapter kann die öffentlich sichtbare Atmosphäre reproduzieren; sie ist keine unveränderte Originalbilddatei."
+    }
+  ],
+  "assets": [
+    {
+      "id": "learn-base-atmosphere",
+      "world": "learn",
+      "title": "Atmosphärenboden",
+      "path": "brands/rapold/assets/worlds/learn/hero-v2/base-atmosphere.webp",
+      "publicPath": "/brands/rapold/assets/worlds/learn/hero-v2/base-atmosphere.webp",
+      "sourceId": "learn-original",
+      "sourcePath": "site/learn/public/hero-v2/base-atmosphere.webp",
+      "sourceUrl": "https://github.com/marcelrapold/aeon-protocol/blob/bf362a37e2bacd13c502e8ad8a291d4e5bc1aabd/site/learn/public/hero-v2/base-atmosphere.webp",
+      "downloadUrl": "https://learn.rapold.io/hero-v2/base-atmosphere.webp",
+      "retrievedOn": "2026-10-11",
+      "httpStatus": 200,
+      "contentType": "image/webp",
+      "width": 1672,
+      "height": 941,
+      "colorMode": "RGB",
+      "bytes": 26638,
+      "sha256": "6ebe539227b27e14ff89479e4ebac7270e37dc2f0186790a11c1d65e645988b8",
+      "gitBlobSha1": "ed2e13b1ca5db16ddf5694a6cd274085fb543390",
+      "matchesPinnedSourceBlob": true,
+      "modified": false,
+      "treatment": "Unveränderte Originalbytes; keine Neucodierung, Farbänderung, Beschneidung oder Logo-Ersetzung.",
+      "decorative": true,
+      "visualReview": {
+        "reviewedOn": "2026-10-11",
+        "method": "Originaldatei mit view_image betrachtet; Format und Abmessungen mit Pillow geprüft.",
+        "finding": "Dunkler Atmosphärenboden mit violettem Licht; keine sichtbare Schrift oder alte Produktmarke.",
+        "legacyLogoDetected": false
+      }
+    },
+    {
+      "id": "learn-knowledge-rig",
+      "world": "learn",
+      "title": "Wissensnetz",
+      "path": "brands/rapold/assets/worlds/learn/hero-v2/knowledge-rig.svg",
+      "publicPath": "/brands/rapold/assets/worlds/learn/hero-v2/knowledge-rig.svg",
+      "sourceId": "learn-original",
+      "sourcePath": "site/learn/public/hero-v2/knowledge-rig.svg",
+      "sourceUrl": "https://github.com/marcelrapold/aeon-protocol/blob/bf362a37e2bacd13c502e8ad8a291d4e5bc1aabd/site/learn/public/hero-v2/knowledge-rig.svg",
+      "downloadUrl": "https://learn.rapold.io/hero-v2/knowledge-rig.svg",
+      "retrievedOn": "2026-10-11",
+      "httpStatus": 200,
+      "contentType": "image/svg+xml",
+      "width": 1672,
+      "height": 941,
+      "viewBox": "0 0 1672 941",
+      "bytes": 3602,
+      "sha256": "e19927bb654fdf00e5392dd1af35d6989b754b1bc30a8b45495aeb1fbd3f7512",
+      "gitBlobSha1": "c04728d28ff3c14b6a147b4e170e0350df00924c",
+      "matchesPinnedSourceBlob": true,
+      "modified": false,
+      "treatment": "Unveränderte Originalbytes; keine Neucodierung, Farbänderung, Beschneidung oder Logo-Ersetzung.",
+      "decorative": true,
+      "visualReview": {
+        "reviewedOn": "2026-10-11",
+        "method": "SVG mit Inkscape ausschliesslich für die Sichtprüfung temporär gerendert und mit view_image betrachtet; zusätzlich XML geprüft.",
+        "finding": "Dünne violette und cyanfarbene Leitungen, Knoten und Rahmen; keine Schrift, Rasterbilder oder Produktlogos.",
+        "legacyLogoDetected": false
+      }
+    },
+    {
+      "id": "learn-learning-core",
+      "world": "learn",
+      "title": "Lernreaktor",
+      "path": "brands/rapold/assets/worlds/learn/hero-v2/learning-core.webp",
+      "publicPath": "/brands/rapold/assets/worlds/learn/hero-v2/learning-core.webp",
+      "sourceId": "learn-original",
+      "sourcePath": "site/learn/public/hero-v2/learning-core.webp",
+      "sourceUrl": "https://github.com/marcelrapold/aeon-protocol/blob/bf362a37e2bacd13c502e8ad8a291d4e5bc1aabd/site/learn/public/hero-v2/learning-core.webp",
+      "downloadUrl": "https://learn.rapold.io/hero-v2/learning-core.webp",
+      "retrievedOn": "2026-10-11",
+      "httpStatus": 200,
+      "contentType": "image/webp",
+      "width": 1672,
+      "height": 941,
+      "colorMode": "RGB",
+      "bytes": 88752,
+      "sha256": "57673146d255c06084cb6b253bd5e65453f74e4aac8502bcf7e88194571aed79",
+      "gitBlobSha1": "6b6861e44b9ce46034453030ec3bc884829f510f",
+      "matchesPinnedSourceBlob": true,
+      "modified": false,
+      "treatment": "Unveränderte Originalbytes; keine Neucodierung, Farbänderung, Beschneidung oder Logo-Ersetzung.",
+      "decorative": true,
+      "visualReview": {
+        "reviewedOn": "2026-10-11",
+        "method": "Originaldatei mit view_image betrachtet; Format und Abmessungen mit Pillow geprüft.",
+        "finding": "Violetter Reaktor auf einer Chip-/Leiterbahnszene. Der kleine leuchtende Würfel ist Teil der Illustration; der Abgleich mit dem bestehenden Learn-Icon und der Æ-Wortmarke zeigt kein eingebranntes Altlogo.",
+        "legacyLogoDetected": false
+      }
+    },
+    {
+      "id": "learn-cognitive-signals",
+      "world": "learn",
+      "title": "Kognitive Signale",
+      "path": "brands/rapold/assets/worlds/learn/hero-v2/cognitive-signals.svg",
+      "publicPath": "/brands/rapold/assets/worlds/learn/hero-v2/cognitive-signals.svg",
+      "sourceId": "learn-original",
+      "sourcePath": "site/learn/public/hero-v2/cognitive-signals.svg",
+      "sourceUrl": "https://github.com/marcelrapold/aeon-protocol/blob/bf362a37e2bacd13c502e8ad8a291d4e5bc1aabd/site/learn/public/hero-v2/cognitive-signals.svg",
+      "downloadUrl": "https://learn.rapold.io/hero-v2/cognitive-signals.svg",
+      "retrievedOn": "2026-10-11",
+      "httpStatus": 200,
+      "contentType": "image/svg+xml",
+      "width": 1672,
+      "height": 941,
+      "viewBox": "0 0 1672 941",
+      "bytes": 4153,
+      "sha256": "7be40c065b985ff83fad7126814c8e4483ec46b66ad03ebf6b3f71a81afc45bd",
+      "gitBlobSha1": "f3718ed3df8a5650c29d5de32076647efaa360c7",
+      "matchesPinnedSourceBlob": true,
+      "modified": false,
+      "treatment": "Unveränderte Originalbytes; keine Neucodierung, Farbänderung, Beschneidung oder Logo-Ersetzung.",
+      "decorative": true,
+      "visualReview": {
+        "reviewedOn": "2026-10-11",
+        "method": "SVG mit Inkscape ausschliesslich für die Sichtprüfung temporär gerendert und mit view_image betrachtet; zusätzlich XML geprüft.",
+        "finding": "Violette und cyanfarbene Lichtbahnen mit Signalpunkten; keine Schrift, Rasterbilder oder Produktlogos.",
+        "legacyLogoDetected": false
+      }
+    }
+  ],
+  "exclusions": [
+    {
+      "sourceId": "learn-original",
+      "path": "site/learn/public/hero-v2/master-composite.webp",
+      "reason": "Im aktuellen Hero-Stack nicht referenziert; byteidentisch zu learning-core.webp laut Quellenprüfung."
+    },
+    {
+      "sourceId": "learn-original",
+      "path": "site/learn/public/visuals/backgrounds/",
+      "reason": "Die acht vorhandenen Hintergrunddateien sind im aktuellen site/learn-Code nicht referenziert. Sie werden nicht als tatsächlich verwendete Gestaltung übernommen."
+    },
+    {
+      "scope": "Legacy-Produktlogos und Wortmarken",
+      "reason": "Nicht kopiert. Die freigegebenen Raumfalten-Signets unter assets/logos bleiben die Produktzeichen."
+    },
+    {
+      "scope": "Private Nutzerdaten, Auth- und Backend-Dateien",
+      "reason": "Nicht Bestandteil dieser Asset-Übernahme."
+    }
+  ],
+  "validation": {
+    "httpAssets": 4,
+    "totalArtworkBytes": 123145,
+    "allHttpStatus200": true,
+    "allContentTypesMatch": true,
+    "allPinnedGitBlobsMatch": true,
+    "sha256RecordedForEveryAsset": true,
+    "allDimensions": "1672 × 941",
+    "allFourAssetsVisuallyReviewed": true,
+    "svgExternalResourcesScriptsFontsOrEmbeddedRaster": "none",
+    "originalAssetBytesModified": false,
+    "uiIntegrationAndBrowserAcceptance": "separate; not claimed by this asset verification"
+  }
+}

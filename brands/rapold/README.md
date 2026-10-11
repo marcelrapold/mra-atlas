@@ -4,6 +4,8 @@ Ein optional wählbares Rapold-Theme für die vier Produkte AI Fabric, Argus, Æ
 
 **Status des UI-Adapters: `draft`, Version 0.1.0.** Marcel Rapold hat am **11.10.2026** die vier Signets der Raumfalten-Familie B freigegeben. Die neue Zuordnung zu vollständigen UI-Rollen und ihre visuelle Abnahme bleiben als separate Integrationsarbeit dokumentiert.
 
+**Produktwelten für Framework 0.6.0: in Umsetzung.** Der erste Produktionsnachweis gilt für Framework 0.5.0. Die neue Ergänzung führt Originalmotive, atmosphärische Flächen und steuerbare Bewegung innerhalb der Rapold-Referenz zusammen. Die vier Original-Learn-Assets sind geprüft; ein erfolgreicher 0.6.0-Build, Rollout oder eine Browserabnahme wird hier noch nicht behauptet.
+
 ## Markenstruktur
 
 | Ebene | Inhalt | Kanonische Quelle |
@@ -13,6 +15,8 @@ Ein optional wählbares Rapold-Theme für die vier Produkte AI Fabric, Argus, Æ
 | Produktassets | Transparente SVG-Master und Farbvarianten | `brands/rapold/assets/logos/` |
 | Belegte Ausgangswerte | Unveränderte Tokenkopie des gelieferten Brand-Pakets | `brands/rapold/sources/brand-tokens.json` |
 | Herkunft und Ableitungen | Nutzerfreigabe, Prüfsumme, Quellen und UI-Verfeinerungen | `brands/rapold/sources/provenance.json` |
+| Originale Produktwelt-Assets | Vier unveränderte Learn-Hero-Ebenen samt Apache-2.0-Lizenz | `brands/rapold/assets/worlds/learn/` |
+| Herkunft der Produktwelten | Gepinnte Quellen, Originalbytes, Lizenzen und bewusste Abweichungen | [world-provenance.json](sources/world-provenance.json) |
 
 Es gibt genau einen Rapold-Eintrag in der Brand-Registry. Die Produktkennungen wählen ein Zeichen innerhalb der gemeinsamen Identität. Sie erzeugen keine zusätzlichen Farbpresets. Für die Dachmarke ist kein separates Symbol festgelegt; `assets.logo` bleibt deshalb ungesetzt. Ein Produktsignet wird nur bei ausdrücklicher Produktwahl verwendet.
 
@@ -46,9 +50,39 @@ Azure erreicht mit Weiss nur **2,89:1**. Der helle Aktionswert erreicht **5,91:1
 
 Die exakten Zuordnungen, abgeleiteten Werte und Berechnungsregeln stehen in [DESIGN.md](DESIGN.md) und der Provenance-Datei. Diese technische Prüfung ersetzt keine visuelle UI-Abnahme.
 
+Die Zahlen oben beschreiben die statischen Tokenpaare. Text auf neuen Glasflächen oder vor bewegtem Licht muss zusätzlich gegen den tatsächlich zusammengesetzten Hintergrund geprüft werden. Transparenz und Blur liefern für sich keinen Kontrastnachweis.
+
+## Produktwelten für 0.6.0
+
+Die Produktwelten sind begrenzte Referenzcontainer innerhalb des Rapold-Showcases. Sie zeigen, wie sich die gemeinsame Identität in unterschiedlichen Produkten anwenden lässt. Sie übernehmen weder vollständige Source-Apps noch deren Anmeldung, Datenverbindungen oder operative Zustände. Die unveränderten Originalassets und die neu gebauten UI-Beispiele werden in der [Produktwelten-Spezifikation](../../docs/product-worlds.md) getrennt beschrieben.
+
+| Produkt / Motiv | Herkunft und geplanter Umfang |
+|---|---|
+| AI Fabric | Aus der belegten Originalgestaltung abgeleitete prozedurale Aurora, deterministisches Netz mit Pulsen und Glasflächen. Keine Original-Hintergrundbitmap vorhanden; kein privater App-Quellcode wird als Asset kopiert. Geist und Geist Mono entsprechen bereits der AI-Quelle. |
+| ÆON Learn | Vier bytegleich übernommene Hero-Dateien mit Atmosphäre, Wissensnetz, Reaktorkern und Signalbahnen. Partikel, Terminal und dezente Parallax werden als steuerbare Referenz umgesetzt. Die ursprünglichen Schriften Inter und JetBrains Mono werden bewusst durch Geist und Geist Mono ersetzt. |
+| Argus | Neues CI-Anwendungsbeispiel mit dem freigegebenen Argus-Zeichen. Es belegt keine Parität mit einer nicht zugänglichen Argus-Oberfläche und zeigt keine realen Kameras oder Betriebszustände. |
+| EdgePortal | Neues CI-Anwendungsbeispiel für das freigegebene Portalzeichen. Eine vollständige Übernahme der ursprünglichen App oder ihrer Verbindungszustände wird nicht behauptet. |
+| Facetten und Spektrum | Neue gemeinsame CI-Dekore aus der freigegebenen Faltensprache und dem Rapold-Farbspektrum. Sie sind gestalterische Anwendungen der Identität, keine als Original ausgegebenen App-Assets. |
+
+Alle Referenzen verwenden die neuen Raumfalten-Signets. Bestehende Produktlogos oder Wortmarken werden dafür nicht kopiert. Es bleibt eine gemeinsame Brand `rapold` mit vier Produktkennungen.
+
+### Bewegung und ehrliche Beispiele
+
+Ein sichtbarer, per Tastatur bedienbarer Bewegungsregler soll die gesamte Referenz stillsetzen: CSS-Animationen, Partikel, Pulse, Terminalsequenz und Parallax. `prefers-reduced-motion` erhält eine ruhige Darstellung mit vollständigem Terminaltext. Eine Pause bleibt beim Wechsel zwischen Referenzen erhalten; der übrige Inhalt bleibt bedienbar.
+
+Terminalausgaben und Statuskarten werden direkt am Beispiel als fiktive Demonstration bezeichnet. Sie melden keine echte Verbindung, Kameraaktivität, Auslastung oder laufende Verarbeitung. Dekorative Ebenen bleiben ausserhalb der Bedien- und Lesereihenfolge. Überschriften, erklärender Text und echte Aktionen stehen auf ausreichend tragfähigen Flächen und bleiben auch ohne Bewegung oder Hintergrundbilder nutzbar. Das sind Anforderungen an die neue Integration; ihre Laufzeitprüfung steht noch aus.
+
+### Originaldateien und Rechte
+
+Die vier Learn-Dateien unter `assets/worlds/learn/hero-v2/` stammen aus dem öffentlichen Repository `marcelrapold/aeon-protocol`, Commit `bf362a37e2bacd13c502e8ad8a291d4e5bc1aabd`. Sie wurden unverändert von `learn.rapold.io` übernommen; alle Git-Blob- und SHA-256-Werte stimmen mit dem dokumentierten Quellstand überein. Alle Ebenen messen 1672 × 941, zusammen 123145 Bytes. Die unveränderte [Apache-2.0-LICENSE](assets/worlds/learn/LICENSE) und ein eigener [Herkunftshinweis](assets/worlds/learn/NOTICE) liegen daneben.
+
+Für die private AI-Quelle ist keine offene Repository-Lizenz belegt. Die vom Nutzer beauftragte, eng abgegrenzte Nachbildung der sichtbaren Gestaltung wird getrennt von einer Quellcode- oder Bildübernahme behandelt. Der [Herkunftsnachweis](sources/world-provenance.json) hält die autorisiert geprüften Designpfade fest; private Nutzerdaten und Auth-/Backend-Dateien gehören nicht zum Paket. Die Lizenz der Learn-Originaldateien vergibt keine neuen Rechte an den Signets oder Fonts.
+
 ## Typografie und Anwendung
 
 Geist ist die gemeinsame Schrift: Fliesstext 400, UI-Überschriften 650. Das Quellpaket definiert für separate Wortmarken 700; dieses Gewicht wird nicht automatisch auf alle UI-Überschriften übertragen. Geist Mono dient Code, technischen Kennungen und tabellarischen Daten.
+
+Für AI bleibt damit die belegte Schriftfamilie erhalten. Bei Learn ist der Wechsel von Inter/JetBrains Mono auf Geist/Geist Mono eine bewusste Vereinheitlichung der Rapold-Identität. Zusammen mit den neuen Signets ist dies eine dokumentierte Abweichung von der Source-App, kein Anspruch auf pixelgenaue Originalparität.
 
 Die Fontdateien liegen unter `assets/fonts/`. Zugehörige Lizenz- und Autorenhinweise werden dort mitgeführt. Die konsumierende Anwendung lädt die Schriften und bindet sie im Rapold-Scope ein. Der Core erhält keine firmenspezifischen Fonts. Das bestehende Brand-Schema bleibt unverändert; eine zusätzliche `typography.monoFamily`-Eigenschaft ist für diese Integration nicht erforderlich.
 
@@ -79,6 +113,7 @@ Die Ausgaben liegen ausschliesslich unter `~/.local/share/fonts/framework`. Konv
 
 - Nutzerfreigabe der vier Raumfalten-Signets vom 11.10.2026.
 - Geliefertes `rapold-brand-system`, Version 1.0.0: Tokenkopie und SHA-256-Nachweis im Brand-Paket.
+- [Produktwelten-Spezifikation](../../docs/product-worlds.md) und [World-Provenance](sources/world-provenance.json): Originalquellen, unveränderte Dateien, geplante Anpassungen und noch offene Abnahme der 0.6.0-Ergänzung.
 - [Brand-Vertrag](https://design.rapold.io/contracts/brand-contract.md) für vollständige Rollen, Kontraste und Quellenstatus; Repository-Quelle: `docs/brand-contract.md`.
 - [Atlas-Referenz](https://design.rapold.io/contracts/atlas-reference.md) für die neutrale Systemstruktur; Repository-Quelle: `docs/atlas-reference.md`. Diese Integration verändert keine Seitenarchitektur.
 

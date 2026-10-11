@@ -1,0 +1,648 @@
+{
+  "schemaVersion": 1,
+  "version": "1.0.0",
+  "brandId": "rapold",
+  "name": "Rapold Produktwelten",
+  "publicBase": "/brands/rapold/",
+  "scope": "Hintergründe, Oberflächen, Wortmarken und Bewegung für die vier freigegebenen Produktzeichen.",
+  "identity": "identity.json",
+  "sharedTypography": {
+    "sans": "Geist",
+    "mono": "Geist Mono",
+    "wordmarkWeight": 700,
+    "wordmarkTracking": "-.052em"
+  },
+  "wordmarks": {
+    "cut": {
+      "angle": 153,
+      "transition": [
+        48,
+        48.4
+      ]
+    },
+    "spectrum": {
+      "angle": 110,
+      "dark": [
+        "#A28AFF",
+        "#597DFF",
+        "#009DFF",
+        "#42D6EC"
+      ],
+      "light": [
+        "#6844B8",
+        "#2256BF",
+        "#0066B3",
+        "#006C85"
+      ]
+    },
+    "source": "Freigegebenes Rapold-CI-Paket 1.0, tokens/brand-tokens.css"
+  },
+  "motion": {
+    "finePointerOnly": true,
+    "respectReducedMotion": true,
+    "pauseWhenHidden": true,
+    "pauseWhenOutsideViewport": true,
+    "pauseControl": true,
+    "parallaxLerp": 0.075,
+    "maximumDepthPx": 12
+  },
+  "products": [
+    {
+      "id": "fabric",
+      "label": "AI Fabric",
+      "title": "Signal & Glas",
+      "description": "Aurora-Licht, ein verbundenes Signalnetz und transparente Karten. Die Raumfalte bringt die neue Identität in die bestehende Atmosphäre.",
+      "sourceLabel": "AI Fabric · Originalmuster",
+      "sourceUrl": "https://ai.rapold.io/login",
+      "sourceKind": "original-adapted",
+      "sourceNote": "Hintergrund und Karten basieren auf der öffentlichen AI-Fabric-Oberfläche. Anmeldung und Betriebsdaten sind kein Bestandteil dieses Gestaltungsbeispiels.",
+      "layers": [
+        {
+          "id": "aurora",
+          "label": "Aurora-Licht",
+          "kind": "css"
+        },
+        {
+          "id": "network",
+          "label": "Signalnetz",
+          "kind": "svg"
+        },
+        {
+          "id": "focus",
+          "label": "Fokuslicht",
+          "kind": "css"
+        }
+      ],
+      "rules": [
+        "Transparente Karten brauchen eine ruhige Fläche hinter Text.",
+        "Licht bewegt sich langsam; Karten reagieren auf Hover und Tastaturfokus.",
+        "Netz und Impulse bleiben dekorativ."
+      ],
+      "palette": {
+        "brand": "#0072ce",
+        "pink": "#f472b6",
+        "sky": "#38bdf8",
+        "yellow": "#fde047"
+      }
+    },
+    {
+      "id": "learn",
+      "label": "ÆON Learn",
+      "title": "Wissen mit Tiefe",
+      "description": "Vier originale Bildebenen schaffen Tiefe: Atmosphäre, Wissensstruktur, Reaktorkern und kognitive Signale. Dazu kommt die Terminal-Oberfläche.",
+      "sourceLabel": "ÆON Learn · Originalmuster",
+      "sourceUrl": "https://learn.rapold.io/",
+      "sourceKind": "original-adapted",
+      "sourceNote": "Die vier Hero-Ebenen stammen unverändert aus ÆON Learn. Die gemeinsame Rapold-Fassung verwendet das neue Signet und Geist statt der ursprünglichen Inter-/JetBrains-Mono-Kombination.",
+      "layers": [
+        {
+          "id": "atmosphere",
+          "label": "Atmosphäre",
+          "kind": "webp",
+          "path": "assets/worlds/learn/hero-v2/base-atmosphere.webp",
+          "opacity": 1,
+          "depth": 2,
+          "blend": "normal"
+        },
+        {
+          "id": "rig",
+          "label": "Wissensstruktur",
+          "kind": "svg",
+          "path": "assets/worlds/learn/hero-v2/knowledge-rig.svg",
+          "opacity": 0.28,
+          "depth": 5,
+          "blend": "screen"
+        },
+        {
+          "id": "core",
+          "label": "Reaktorkern",
+          "kind": "webp",
+          "path": "assets/worlds/learn/hero-v2/learning-core.webp",
+          "opacity": 0.92,
+          "depth": 8,
+          "blend": "normal"
+        },
+        {
+          "id": "signals",
+          "label": "Kognitive Signale",
+          "kind": "svg",
+          "path": "assets/worlds/learn/hero-v2/cognitive-signals.svg",
+          "opacity": 0.52,
+          "depth": 12,
+          "blend": "screen"
+        }
+      ],
+      "rules": [
+        "Die Bildtiefe begleitet den Inhalt und trägt keine Information.",
+        "Parallaxe reagiert nur auf einen feinen Zeiger.",
+        "Terminal-Zeilen bleiben vollständig lesbar; kein automatisches Vorlesen der Effekte."
+      ],
+      "palette": {
+        "lightPrimary": "hsl(246 62% 52%)",
+        "darkPrimary": "hsl(248 88% 74%)",
+        "darkBackground": "#0A0A0A"
+      }
+    },
+    {
+      "id": "argus",
+      "label": "Argus",
+      "title": "Fokus & Facetten",
+      "description": "Die freigegebene Raumfalten-Geometrie bildet den Hintergrund. Ruhige Flächen und klare Zustandsfarben strukturieren die Ansicht.",
+      "sourceLabel": "Rapold CI · Argus-Anwendung",
+      "sourceUrl": null,
+      "sourceKind": "approved-ci-application",
+      "sourceNote": "Ein Anwendungsbeispiel aus der freigegebenen Rapold-CI. Für die geschützte Argus-Oberfläche liegt hier kein visueller Originalabgleich vor.",
+      "layers": [
+        {
+          "id": "folds",
+          "label": "Raumfalten",
+          "kind": "css"
+        },
+        {
+          "id": "grid",
+          "label": "Orientierungsraster",
+          "kind": "css"
+        }
+      ],
+      "rules": [
+        "Status wird mit Text und Symbol erklärt.",
+        "Facetten bleiben hinter dem Inhalt.",
+        "Kennzahlen in der Vorschau sind ausdrücklich Beispieldaten."
+      ],
+      "palette": {
+        "dark": "#050B19",
+        "light": "#F4FAFF",
+        "cutDark": [
+          "#0B182C",
+          "#10243B"
+        ],
+        "cutLight": [
+          "#E8F2FB",
+          "#DCECF8"
+        ]
+      }
+    },
+    {
+      "id": "edgeportal",
+      "label": "EdgePortal",
+      "title": "Ein gemeinsamer Raum",
+      "description": "Das vollständige Anwendungsbeispiel aus dem CI-Paket: ein Header, Navigation, Screens und Sitzungen auf abgestuften Flächen.",
+      "sourceLabel": "Rapold CI · EdgePortal-Anwendung",
+      "sourceUrl": null,
+      "sourceKind": "approved-ci-application",
+      "sourceNote": "Die Oberfläche führt das bereits freigegebene EdgePortal-Beispiel aus dem HTML-CI-Paket weiter. Alle Screens und Sitzungen sind Beispiele.",
+      "layers": [
+        {
+          "id": "glow",
+          "label": "Azure-Glow",
+          "kind": "css"
+        },
+        {
+          "id": "grid",
+          "label": "Orientierungsraster",
+          "kind": "css"
+        }
+      ],
+      "rules": [
+        "Abgestufte Flächen ordnen Navigation und Arbeitsbereich.",
+        "Das Produktsignet steht neben editierbarem Namen.",
+        "Bewegung ist auf gezieltes Feedback begrenzt."
+      ],
+      "palette": {
+        "panel2Dark": "#101F36",
+        "panel2Light": "#EAF2FA"
+      }
+    }
+  ],
+  "fabricNetwork": {
+    "width": 1600,
+    "height": 900,
+    "seed": 1909,
+    "nodes": [
+      {
+        "x": 1561,
+        "y": 389,
+        "radius": 2.6
+      },
+      {
+        "x": 1484,
+        "y": 299,
+        "radius": 1.6
+      },
+      {
+        "x": 1069,
+        "y": 2,
+        "radius": 1.6
+      },
+      {
+        "x": 309,
+        "y": 518,
+        "radius": 1.6
+      },
+      {
+        "x": 1032,
+        "y": 226,
+        "radius": 1.6
+      },
+      {
+        "x": 1534,
+        "y": 40,
+        "radius": 2.6
+      },
+      {
+        "x": 707,
+        "y": 814,
+        "radius": 1.6
+      },
+      {
+        "x": 1412,
+        "y": 261,
+        "radius": 1.6
+      },
+      {
+        "x": 127,
+        "y": 296,
+        "radius": 1.6
+      },
+      {
+        "x": 610,
+        "y": 458,
+        "radius": 1.6
+      },
+      {
+        "x": 1296,
+        "y": 884,
+        "radius": 2.6
+      },
+      {
+        "x": 1399,
+        "y": 126,
+        "radius": 1.6
+      },
+      {
+        "x": 199,
+        "y": 615,
+        "radius": 1.6
+      },
+      {
+        "x": 158,
+        "y": 863,
+        "radius": 1.6
+      },
+      {
+        "x": 740,
+        "y": 524,
+        "radius": 1.6
+      },
+      {
+        "x": 126,
+        "y": 136,
+        "radius": 2.6
+      },
+      {
+        "x": 535,
+        "y": 882,
+        "radius": 1.6
+      },
+      {
+        "x": 925,
+        "y": 138,
+        "radius": 1.6
+      },
+      {
+        "x": 1295,
+        "y": 336,
+        "radius": 1.6
+      },
+      {
+        "x": 178,
+        "y": 240,
+        "radius": 1.6
+      },
+      {
+        "x": 913,
+        "y": 347,
+        "radius": 2.6
+      },
+      {
+        "x": 1348,
+        "y": 275,
+        "radius": 1.6
+      },
+      {
+        "x": 1582,
+        "y": 417,
+        "radius": 1.6
+      },
+      {
+        "x": 1517,
+        "y": 728,
+        "radius": 1.6
+      },
+      {
+        "x": 1474,
+        "y": 423,
+        "radius": 1.6
+      },
+      {
+        "x": 444,
+        "y": 511,
+        "radius": 2.6
+      }
+    ],
+    "edges": [
+      {
+        "from": 0,
+        "to": 22,
+        "pulse": {
+          "duration": 7.0,
+          "delay": 0.0,
+          "color": "brand"
+        }
+      },
+      {
+        "from": 0,
+        "to": 24
+      },
+      {
+        "from": 1,
+        "to": 7
+      },
+      {
+        "from": 0,
+        "to": 1,
+        "pulse": {
+          "duration": 7.9,
+          "delay": 5.1,
+          "color": "yellow"
+        }
+      },
+      {
+        "from": 2,
+        "to": 17
+      },
+      {
+        "from": 2,
+        "to": 4
+      },
+      {
+        "from": 3,
+        "to": 25,
+        "pulse": {
+          "duration": 8.8,
+          "delay": 1.2,
+          "color": "sky"
+        }
+      },
+      {
+        "from": 3,
+        "to": 12
+      },
+      {
+        "from": 4,
+        "to": 17
+      },
+      {
+        "from": 4,
+        "to": 20,
+        "pulse": {
+          "duration": 9.7,
+          "delay": 6.3,
+          "color": "pink"
+        }
+      },
+      {
+        "from": 5,
+        "to": 11
+      },
+      {
+        "from": 5,
+        "to": 7
+      },
+      {
+        "from": 6,
+        "to": 16,
+        "pulse": {
+          "duration": 10.6,
+          "delay": 2.4,
+          "color": "brand"
+        }
+      },
+      {
+        "from": 6,
+        "to": 14
+      },
+      {
+        "from": 7,
+        "to": 21
+      },
+      {
+        "from": 8,
+        "to": 19,
+        "pulse": {
+          "duration": 11.5,
+          "delay": 7.5,
+          "color": "yellow"
+        }
+      },
+      {
+        "from": 8,
+        "to": 15
+      },
+      {
+        "from": 9,
+        "to": 14
+      },
+      {
+        "from": 9,
+        "to": 25,
+        "pulse": {
+          "duration": 12.4,
+          "delay": 3.6,
+          "color": "sky"
+        }
+      },
+      {
+        "from": 10,
+        "to": 23
+      },
+      {
+        "from": 10,
+        "to": 24
+      },
+      {
+        "from": 7,
+        "to": 11,
+        "pulse": {
+          "duration": 7.3,
+          "delay": 8.7,
+          "color": "pink"
+        }
+      },
+      {
+        "from": 11,
+        "to": 21
+      },
+      {
+        "from": 12,
+        "to": 13
+      },
+      {
+        "from": 3,
+        "to": 13,
+        "pulse": {
+          "duration": 8.2,
+          "delay": 4.8,
+          "color": "brand"
+        }
+      },
+      {
+        "from": 14,
+        "to": 20
+      },
+      {
+        "from": 15,
+        "to": 19
+      },
+      {
+        "from": 13,
+        "to": 16,
+        "pulse": {
+          "duration": 9.1,
+          "delay": 0.9,
+          "color": "yellow"
+        }
+      },
+      {
+        "from": 18,
+        "to": 21
+      },
+      {
+        "from": 7,
+        "to": 18
+      },
+      {
+        "from": 17,
+        "to": 20,
+        "pulse": {
+          "duration": 10.0,
+          "delay": 6.0,
+          "color": "sky"
+        }
+      },
+      {
+        "from": 22,
+        "to": 24
+      },
+      {
+        "from": 23,
+        "to": 24
+      }
+    ],
+    "source": "Öffentlich sichtbare AI-Fabric-Netzgeometrie; unabhängige Umsetzung nach dokumentierten Gestaltungswerten."
+  },
+  "adaptations": [
+    "Gemeinsame Geist-/Geist-Mono-Typografie und neue Raumfalten-Signets.",
+    "Viewport-Effekte werden auf die begrenzte Referenzfläche skaliert.",
+    "Terminal-Transkript bleibt vollständig sichtbar. Glitch startet ausschliesslich auf Knopfdruck.",
+    "Partikelbewegung ist auf 60-Hz-Zeitwerte normalisiert, damit sie auf schnellen Displays ruhig bleibt.",
+    "Terminal-Glut wird über die Deckkraft einer eigenen Lichtebene animiert.",
+    "AI-Hero-Text erhält eine lokale Kartenrücklage mit 90 % Deckkraft für verlässliche Lesbarkeit über dem bewegten Licht."
+  ],
+  "fabricAtmosphere": {
+    "halos": [
+      {
+        "color": "#0072ce",
+        "opacityLight": 0.22,
+        "opacityDark": 0.3,
+        "durationSeconds": 70
+      },
+      {
+        "color": "#f472b6",
+        "opacityLight": 0.14,
+        "opacityDark": 0.3,
+        "durationSeconds": 90
+      },
+      {
+        "color": "#38bdf8",
+        "opacityLight": 0.12,
+        "opacityDark": 0.3,
+        "durationSeconds": 110
+      }
+    ],
+    "blurPx": 90,
+    "originalSizeVmax": 55,
+    "networkBreathingSeconds": 24,
+    "networkOpacity": [
+      0.65,
+      1
+    ],
+    "edgeOpacity": {
+      "light": 0.07,
+      "dark": 0.1
+    },
+    "nodeOpacity": 0.18,
+    "focusLight": {
+      "at": "50% 0%",
+      "color": "#0072ce",
+      "opacity": 0.14,
+      "stopPercent": 65
+    },
+    "glass": {
+      "headerOpacity": 0.6,
+      "mainOpacity": 0.85,
+      "featureOpacity": 0.7,
+      "featureHoverOpacity": 0.9,
+      "blurPx": 24,
+      "mainRadiusPx": 24,
+      "featureRadiusPx": 16,
+      "hoverLiftPx": 4,
+      "entryDurationMs": 600,
+      "entryCurve": "cubic-bezier(.22,1,.36,1)",
+      "heroCopyOpacity": 0.9
+    }
+  },
+  "learnAtmosphere": {
+    "imageSize": [
+      1672,
+      941
+    ],
+    "objectFit": "cover",
+    "objectPosition": "center",
+    "scale": 1.07,
+    "stackOpacity": {
+      "lightWide": 0.35,
+      "lightCompact": 0.25,
+      "darkWide": 1,
+      "darkCompact": 0.7
+    },
+    "coreMask": "linear-gradient(to right, transparent 32%, rgb(0 0 0 / .12) 40%, rgb(0 0 0 / .72) 52%, #000 61%)",
+    "particles": {
+      "count": 58,
+      "countBelow640Px": 24,
+      "radius": [
+        0.7,
+        2.25
+      ],
+      "opacity": 0.65,
+      "maximumDpr": 2,
+      "hues": [
+        252,
+        187
+      ],
+      "maximumConnectionPx": 112,
+      "staticReducedMotion": true
+    },
+    "terminal": {
+      "background": "#0b0918",
+      "opacity": 0.95,
+      "radiusPx": 14,
+      "scanlineOpacity": 0.07,
+      "glowSeconds": 5,
+      "cursorSeconds": 1.1,
+      "transcript": "complete-static-demo",
+      "glitch": "explicit-user-request",
+      "glitchDurationMs": 1250
+    }
+  }
+}

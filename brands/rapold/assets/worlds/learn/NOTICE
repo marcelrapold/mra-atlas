@@ -1,0 +1,28 @@
+AEON Learn original hero artwork
+
+Source repository: https://github.com/marcelrapold/aeon-protocol
+Source commit: bf362a37e2bacd13c502e8ad8a291d4e5bc1aabd
+Source directory: site/learn/public/hero-v2/
+Public source: https://learn.rapold.io/hero-v2/
+Retrieved: 2026-10-11
+
+The following files are unmodified copies of the publicly served source
+artwork. Their bytes also match the Git blobs at the source commit above:
+
+  hero-v2/base-atmosphere.webp
+  hero-v2/knowledge-rig.svg
+  hero-v2/learning-core.webp
+  hero-v2/cognitive-signals.svg
+
+The source repository is licensed under the Apache License, Version 2.0.
+The adjacent LICENSE is an unmodified copy of its root LICENSE file.
+No upstream NOTICE file was present in the reviewed source tree. This
+NOTICE was added by the Rapold brand integration solely to record origin;
+the original artwork files have not been edited, recoloured or recompressed.
+
+The artwork is decorative. It is not a replacement for the separately
+approved Raumfalten product signets. The small cube in learning-core.webp
+belongs to the reactor illustration and is not used as a product logo.
+
+Full source URLs, Git blob IDs, dimensions, byte counts and SHA-256 values
+are recorded in brands/rapold/sources/world-provenance.json.

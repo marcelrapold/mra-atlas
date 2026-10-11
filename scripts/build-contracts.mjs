@@ -3,8 +3,10 @@ import { brands } from '../packages/brands/src/index.mjs';
 import { mermaidTheme,mermaidThemeCSS,mermaidClassDefs,MERMAID_WRAPPING_WIDTH,MERMAID_NODE_PADDING } from '../packages/brands/src/mermaid-theme.mjs';
 import { presentationTheme } from '../packages/brands/src/presentation.mjs';
 import { buildBrandAssets } from './build-brand-assets.mjs';
+import { pruneBrandOutputs } from './prune-brand-outputs.mjs';
 // Source assets and their reproducible exports must exist before documentation
 // and presentation contracts reference them.
+await pruneBrandOutputs();
 await buildBrandAssets();
 const {version}=JSON.parse(await readFile(new URL('../package.json',import.meta.url),'utf8'));
 const root = new URL('../apps/docs/public/',import.meta.url);

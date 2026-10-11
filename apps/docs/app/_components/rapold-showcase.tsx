@@ -5,6 +5,7 @@ import {useEffect, useRef, useState} from 'react';
 import {Check, Copy, Download, ExternalLink, RefreshCw} from 'lucide-react';
 import identity from '../../../../brands/rapold/identity.json';
 import {useActiveBrand} from './framework-shell';
+import RapoldWorlds from './rapold-worlds';
 
 type Product = typeof identity.products[number];
 type Variant = keyof Product['variants'];
@@ -37,6 +38,7 @@ export default function RapoldShowcase() {
   const [loadState, setLoadState] = useState<'loading' | 'ready' | 'error'>('loading');
   const [attempt, setAttempt] = useState(0);
   const [copyStatus, setCopyStatus] = useState('');
+  const [wordmarkTreatment, setWordmarkTreatment] = useState<'cut' | 'spectrum'>('cut');
   const previewHeading = useRef<HTMLHeadingElement>(null);
   const copyVersion = useRef(0);
   useEffect(() => {copyVersion.current += 1; setCopyStatus('');}, [mode, productId]);
@@ -66,7 +68,7 @@ export default function RapoldShowcase() {
   const bundle = assets.find(item => item.category === 'bundle');
   const snippet = `<div class="product-identity">\n  <img src="${base + product.variants[mode]}"\n       width="32" height="32" alt="" />\n  <span>${product.name}</span>\n</div>`;
 
-  return <div className="rapold-showcase">
+  return <div className="rapold-showcase" data-wordmark={wordmarkTreatment}>
     <section className="rapold-intro" aria-labelledby="rapold-family-title">
       <div><p className="eyebrow">Rapold / Raumfalten</p><h2 id="rapold-family-title">Eine Familie.<br/><span>Vier Perspektiven.</span></h2><p>Gemeinsame Farbe, Typografie und Geometrie. Jedes Produkt trägt ein eigenes Zeichen.</p></div>
       <div className="rapold-intro-meta"><strong>01—04</strong><span>Signets als reine Vektoren</span><span>Geist + Geist Mono</span><span>Hell / Dunkel / Monochrom</span></div>
@@ -83,7 +85,9 @@ export default function RapoldShowcase() {
     <p className="rapold-selection" role="status">Ausgewählt: <strong>{product.name}</strong>. {product.purpose}</p>
     {'namingNote' in product && <p className="muted">{product.name}: {product.namingNote}.</p>}
 
-    <nav className="rapold-section-links" aria-label="Markenreferenz"><a href="#rapold-signets">Signets</a><a href="#rapold-formats">Formate</a><a href="#rapold-colours">Farbe & Schrift</a><a href="#rapold-downloads">Downloads</a><a href="#rapold-usage">Einbindung</a></nav>
+    <nav className="rapold-section-links" aria-label="Markenreferenz"><a href="#rapold-worlds">Produktwelten</a><a href="#rapold-signets">Signets</a><a href="#rapold-formats">Formate</a><a href="#rapold-colours">Farbe & Schrift</a><a href="#rapold-downloads">Downloads</a><a href="#rapold-usage">Einbindung</a></nav>
+
+    <RapoldWorlds productId={product.id} onProductChange={selectProduct} wordmarkTreatment={wordmarkTreatment} onWordmarkChange={setWordmarkTreatment}/>
 
     <section className="doc-section" id="rapold-signets">
       <h2>Das Zeichen in jeder Umgebung</h2><p>Alle Varianten verwenden dieselben Pfade und Proportionen. Die Produktnamen bleiben editierbarer Text ausserhalb der SVGs.</p>
@@ -107,6 +111,7 @@ export default function RapoldShowcase() {
     <section className="doc-section" id="rapold-colours">
       <h2>Farbe mit Funktion. Schrift mit Charakter.</h2><p>Die Identitätsfarben bestimmen die Signets. Text, Fokus, Aktionen und Status verwenden daraus abgeleitete semantische Rollen für die jeweilige Darstellung.</p>
       <div className="rapold-palette">{Object.entries(identity.palette).map(([name, color]) => <button type="button" key={name} onClick={() => copy(color, identity.paletteLabels[name as keyof typeof identity.paletteLabels])} aria-label={`${identity.paletteLabels[name as keyof typeof identity.paletteLabels]} ${color} kopieren`}><span style={{background: color}}/><strong>{identity.paletteLabels[name as keyof typeof identity.paletteLabels]}</strong><code>{color}</code></button>)}</div>
+      <div className="rapold-wordmark-specimen"><div><p className="eyebrow">Geist / 700 / −0.052 em</p><h3>Farbe gehört zum Namen.</h3></div><div className="rapold-wordmark-options" role="group" aria-label="Farbbehandlung der Wortmarken"><button type="button" aria-pressed={wordmarkTreatment === 'cut'} onClick={() => setWordmarkTreatment('cut')}>Facetten</button><button type="button" aria-pressed={wordmarkTreatment === 'spectrum'} onClick={() => setWordmarkTreatment('spectrum')}>Spektrum</button></div><p className="rapold-wordmark rapold-wordmark-large">{product.name}</p><p>Der diagonale Farbwechsel greift die Raumfalte auf. Das Spektrum ist die lebendigere Fassung für grosse digitale Anwendungen. Lesetext bleibt ruhig und kontrastreich.</p><a href={base + 'wordmarks.css'} download>Wortmarken-CSS herunterladen</a></div>
       <div className="rapold-type"><div><p className="eyebrow">Geist / 650</p><p className="rapold-type-display">Verbindungen<br/><span>schaffen.</span></p><p>Klare Hierarchie, farbige Akzente und ruhiger Mengentext.</p></div><div className="rapold-type-mono"><p className="eyebrow">Geist Mono / 400</p><p>ÆON / ARGUS<br/>FABRIC / EDGE<br/>0123456789<br/>ä ö ü & →</p><span>Für Code, Messwerte und technische Kennungen.</span></div></div>
       <div className="download-row"><Link href="/tokens?brand=rapold">Semantische Tokens</Link><Link href="/typography?brand=rapold">Typografieskala</Link><a href={base + identity.fonts.stylesheet}>Lokales Font-CSS</a><a href={base + identity.fonts.licenseFiles[0]}>Schriftlizenz · OFL</a></div>
       <p className="copy-status" role="status">{copyStatus}</p>

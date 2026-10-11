@@ -298,6 +298,8 @@ async function performBuild() {
   await writeFile(join(publicRoot,'identity.json'),identityBytes);
   await writeFile(join(publicRoot,'assets-manifest.json'),JSON.stringify(manifest,null,2)+'\n');
   console.log(`Generated Rapold product assets: ${assets.length} exports, ${resources.length} canonical resources, ${identity.products.length} products.`);
+  const {buildProductWorlds}=await import('./build-product-worlds.mjs');
+  await buildProductWorlds();
   return manifest;
 }
 

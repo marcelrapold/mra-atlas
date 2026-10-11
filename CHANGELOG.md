@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.6.0 — 2026-10-11
+
+- Produktwelten in der Rapold-Markenreferenz: originale AI-Fabric-Aurora mit Signalnetz und Glasflächen sowie vier unveränderte ÆON-Learn-Hero-Layer mit Partikelfeld, Terminal und begrenzter Parallax.
+- Freigegebene Facetten- und Spektrum-Wortmarken in Geist ergänzt. Die vier Signets bleiben unveränderte reine SVGs ohne Schrift.
+- Steuerbare Ebenen, Hintergrundansicht, 320-/390-px-Referenzcontainer, gemeinsame Bewegungspause und statische Reduced-Motion-Darstellung. Glitch startet nur auf ausdrücklichen Knopfdruck; das Beispieltranskript bleibt vollständig sichtbar.
+- Argus- und EdgePortal-Oberflächen als klar gekennzeichnete CI-Anwendungsbeispiele; Herkunft, Originaldateien, Schriften und Lizenzen sind im Produktweltenvertrag dokumentiert.
+- Eigenständiges Produktwelten-Paket mit HTML, CSS, lokalen Schriften, SVG-Signets, Original-Hintergründen und separatem Ressourcenmanifest.
+- Goldbach und Sygnum aus Registry, Auswahl, Quellen, aktiven Vorlagen und erzeugten Downloads entfernt. Aktive Brands: neutrale Basis, Dominicano Express und Rapold. Historische Release- und Prüfnachweise bleiben zeitlich eingeordnet erhalten.
+- Canonical- und Open-Graph-URLs der Präsentations- und Präsentationslogikseite auf ihre eigenen Routen korrigiert.
+
 ## 0.5.0 — 2026-10-11
 
 - Gemeinsame Rapold-Brand mit vier originalen Raumfalten-Signets, Geist und Geist Mono, separaten Identitätsfarben und geprüften semantischen Rollen für Hell und Dunkel.

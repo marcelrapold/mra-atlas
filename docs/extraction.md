@@ -16,7 +16,7 @@ Der GitHub-Dateibaum umfasst 1536 Einträge inklusive Verzeichnissen. Der Quellz
 
 ## Neu implementiert
 
-Validierter Brand-Vertrag mit CSS-Variablenadapter, neutralen Defaults, scoped BrandProvider, Goldbach-Adapter, Präsentationsadapter und kleine direkt konsumierende Referenz-App. Alte Farbwerte und Hausschriften werden nicht als neutrale Defaults weitergeführt.
+Validierter Brand-Vertrag mit CSS-Variablenadapter, neutralen Defaults, scoped BrandProvider, austauschbaren Brand-Adaptern, Präsentationsadapter und kleine direkt konsumierende Referenz-App. Die aktuelle Registry enthält Neutral, Dominicano Express und Rapold. Alte Farbwerte und Hausschriften werden nicht als neutrale Defaults weitergeführt.
 
 ## Bewusst nicht übernommen
 

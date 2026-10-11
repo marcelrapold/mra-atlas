@@ -1,0 +1,45 @@
+/* Rapold Raumfalten · approved wordmark treatments from the original CI 1.0.
+   Use with local Geist, data-brand="rapold" and data-mode="light|dark".
+   Product names remain text; the SVG signets contain no lettering. */
+[data-brand='rapold'] {
+  --wordmark-a: #0066B3;
+  --wordmark-b: #2B89B5;
+  --wordmark-spectrum: linear-gradient(110deg, #6844B8, #2256BF 45%, #0066B3 75%, #006C85);
+}
+[data-brand='rapold'][data-mode='dark'], .rapold-world-stage[data-world-mode='dark'] {
+  --wordmark-a: #009DFF;
+  --wordmark-b: #A8EDFF;
+  --wordmark-spectrum: linear-gradient(110deg, #A28AFF 0%, #597DFF 34%, #009DFF 63%, #42D6EC 100%);
+}
+.rapold-world-stage[data-world-mode='light'] {
+  --wordmark-a: #0066B3;
+  --wordmark-b: #2B89B5;
+  --wordmark-spectrum: linear-gradient(110deg, #6844B8, #2256BF 45%, #0066B3 75%, #006C85);
+}
+.rapold-wordmark {
+  font-family: 'Geist', system-ui, sans-serif;
+  font-size: clamp(20px, 1.8vw, 25px);
+  font-weight: 700;
+  letter-spacing: -.052em;
+  line-height: 1.04;
+  color: var(--wordmark-a);
+}
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  .rapold-wordmark {
+    background: linear-gradient(153deg, var(--wordmark-a) 0%, var(--wordmark-a) 48%, var(--wordmark-b) 48.4%, var(--wordmark-b) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+  [data-wordmark='spectrum'] .rapold-wordmark, .rapold-wordmark[data-treatment='spectrum'] {background-image: var(--wordmark-spectrum);}
+}
+.rapold-wordmark-specimen {display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 22px; margin: 28px 0 18px; padding: clamp(20px, 3vw, 36px); border: 1px solid var(--border); border-radius: var(--brand-radius); background: var(--card);}
+.rapold-wordmark-specimen h3 {margin: 0;}
+.rapold-wordmark-specimen > p, .rapold-wordmark-specimen > a {grid-column: 1 / -1; margin: 0;}
+.rapold-wordmark-specimen > p:not(.rapold-wordmark) {max-width: 70ch; color: var(--muted-foreground); font-size: 14px;}
+.rapold-wordmark-specimen .rapold-wordmark-large {font-size: clamp(36px, 5.8vw, 78px); padding-bottom: .08em; overflow-wrap: anywhere;}
+.rapold-wordmark-options {display: flex; flex-wrap: wrap; gap: 4px; align-items: flex-start;}
+.rapold-wordmark-options button {min-height: 44px; padding: 8px 13px; border: 1px solid var(--input); border-radius: 8px; background: var(--background); color: var(--foreground); font-size: 13px;}
+.rapold-wordmark-options button[aria-pressed='true'] {background: var(--primary); border-color: var(--primary); color: var(--primary-foreground);}
+@media (max-width: 600px) {.rapold-wordmark-specimen {grid-template-columns: 1fr;}}
+@media (forced-colors: active) {.rapold-wordmark {background: none; color: CanvasText;}}

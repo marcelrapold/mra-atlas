@@ -6,7 +6,7 @@ import path from 'node:path';
 import JSZip from 'jszip';
 import {validateProject,createProjectDeck,projectScene} from '../packages/presentation/src/index.mjs';
 import {assetPath} from '../packages/presentation/src/render.mjs';
-import {goldbach,neutral,defineBrand} from '../packages/brands/src/index.mjs';
+import {brands,neutral,defineBrand} from '../packages/brands/src/index.mjs';
 import {presentationTheme,slides} from '../packages/brands/src/presentation.mjs';
 const input=JSON.parse(await readFile(new URL('../examples/framework-review.json',import.meta.url),'utf8'));
 test('real repository briefing preserves claims, tables and provenance in editable PowerPoint',async()=>{
@@ -20,7 +20,7 @@ test('real repository briefing preserves claims, tables and provenance in editab
  assert.equal(result.manifest.slides[2].metrics[0].value,19);
  assert.equal(result.manifest.slides[2].metrics[0].comparison,5);
  const note=await zip.file('ppt/notesSlides/notesSlide3.xml').async('string');assert.ok(note.includes(input.commit));assert.ok(note.includes('docs/extraction.md'));
- assert.ok(xml.includes('Inter Light'),'Goldbach body face must preserve the supplied 300 weight');
+ assert.ok(xml.includes('typeface="Inter"'),'The neutral project deck must preserve its configured Inter family');
 });
 test('renderer rejects over-capacity content, inconsistent evidence, unknown brands and impossible charts',async()=>{
  for(const change of [d=>{d.slides[1].sources.push({...d.slides[1].sources[0],id:'fourth'});},d=>{d.slides[2].metrics[0].comparisonSourceId='unknown';},d=>{d.slides[2].sources[0].commit='0'.repeat(40);},d=>{d.slides[2].type='kpi-board';d.slides[2].content={chart:true};},d=>{d.slides[2].metrics[0].label='x'.repeat(90);}]){const bad=structuredClone(input);change(bad);assert.equal(validateProject(bad).valid,false);await assert.rejects(()=>createProjectDeck(bad));}
@@ -29,7 +29,7 @@ test('renderer rejects over-capacity content, inconsistent evidence, unknown bra
 test('all 18 project recipes construct finite bounded scenes without importing demonstration content',()=>{
  const evidence=input.slides[1].sources,claims=Array.from({length:4},(_,i)=>({title:`Befund ${i+1}`,text:'Eine konkrete belegte Aussage.',kind:'fact',sourceId:evidence[0].id}));
  const metrics=Array.from({length:3},(_,i)=>({label:`Messpunkt ${i+1}`,value:9+i,comparison:7+i,unit:'Fälle',period:'2026',comparisonPeriod:'2025',sourceId:evidence[0].id}));
- for(const brand of [goldbach,neutral])for(const recipe of slides){
+ for(const brand of brands)for(const recipe of slides){
   const s={...input.slides[2],type:recipe.id,title:'Prüfbare Projektinhalte',claims:claims.slice(0,recipe.id==='phasen-karten-gate'?4:recipe.id==='zwei-grosskarten'?2:3),metrics,sources:evidence,items:['Projektstand'],resolution:{kind:'open-question',text:'Welcher Nachweis fehlt?'},content:{chart:true,image:{path:'local-photo.png',alt:'Lokales Prüfmotiv',credit:'Test'},gates:['Abnahmekriterium'],timeline:[{label:'Beginn',date:'Jan',kind:'past'},{label:'Review',date:'Jun',kind:'current'}],columns:['Q1','Q2','Q3','Q4'],rows:[{label:'Pilot',start:0,span:2}]}};
   const scene=projectScene(s,presentationTheme(brand));
   for(const n of scene.nodes){for(const k of ['x','y','w','h'])assert.ok(Number.isFinite(n[k])&&n[k]>=0,`${recipe.id}/${k}`);assert.ok(n.x+n.w<=scene.width+.01,recipe.id);assert.ok(n.y+n.h<=scene.height+.01,recipe.id);}
@@ -42,6 +42,6 @@ test('brand assets remain configurable and local image resolution cannot escape 
 test('photographic recipes embed a supplied local image using proportional sizing',async()=>{
  const {renderScenes}=await import('../packages/presentation/src/render.mjs');
  const root=new URL('../apps/docs/public/',import.meta.url).pathname;
- const pptx=await renderScenes(neutral,[{nodes:[{kind:'image',x:0,y:0,w:33.867,h:17.524,path:'brands/goldbach/reference/cover-foto.png',fit:'cover',alt:'Test asset'}]}],{assetRoot:root});
+ const pptx=await renderScenes(neutral,[{nodes:[{kind:'image',x:0,y:0,w:33.867,h:17.524,path:'brands/neutral/reference/cover-foto.png',fit:'cover',alt:'Test asset'}]}],{assetRoot:root});
  const zip=await JSZip.loadAsync(pptx);assert.ok((await zip.file('ppt/slides/slide1.xml').async('string')).includes('<p:pic>'));
 });
