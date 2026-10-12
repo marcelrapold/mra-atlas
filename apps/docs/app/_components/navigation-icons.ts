@@ -3,7 +3,7 @@ import {
   ClipboardCopy, Database, Fingerprint, HeartPulse, Images, Inbox,
   KeyRound, Layers, Layout, LayoutDashboard, Mail, Maximize2,
   Network, Palette, Presentation, ScrollText, ShieldCheck, Skull, Sparkles,
-  Type, Wand2, Waypoints, Workflow, Accessibility, Ruler, type LucideIcon,
+  Type, Wand2, Waypoints, Workflow, Accessibility, Ruler, CircleDot, ToggleRight, MessageSquareWarning, PanelTop, Disc3, Megaphone, type LucideIcon,
 } from 'lucide-react';
 
 // One semantic Lucide icon per page and navigation group.
@@ -19,6 +19,8 @@ export const pageIcons: Record<string, LucideIcon> = {
   'login-pattern': KeyRound, 'auth-flow': ShieldCheck, 'mail-templates': Mail,
   motion: Waypoints, 'marketing-hero': Wand2, 'health-status': HeartPulse,
   engineering: ScrollText, accessibility: Accessibility,
+  'status-tones': CircleDot, controls: ToggleRight, dialogs: MessageSquareWarning,
+  'page-structure': PanelTop, media: Disc3, notices: Megaphone,
 };
 export const groupIcons: Record<string, LucideIcon> = {
   Einstieg: Layers, Marke: Fingerprint, Agenten: Bot, Komponenten: Boxes,
