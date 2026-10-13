@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.9.1 — 2026-10-14
+
+- **RadioX-Markenseite** mit eigenem Showcase: Hero mit Port des RadioX-Matrix-Regens (fallende, aufleuchtende X in drei Tiefen) über animiertem Aurora-Licht, Pause-Schalter, Standbild bei reduzierter Bewegung, Lauf nur sichtbar und im aktiven Tab.
+- **RadioX-Logos** als Vektorpfade aus Inter-Glyphen (Wortmarke «RadioX» und RX-Zeichen, dunkel, hell, einfarbig) sowie das Aurora-App-Icon und die Favicon-/App-Icon-Sätze aus radiox.cloud, alle mit Download.
+- Signalfarben mit Bedeutung und Kopierfunktion, Schrift- und Label-Regeln, Links in alle Komponentenseiten im RadioX-Look.
+- Statische Brand-Assets unter `brands/<id>/assets` werden beim Build veröffentlicht.
+
 ## 0.9.0 — 2026-10-14
 
 - **Brand RadioX** (`radiox`, Status `draft`): Farben, Signalfarben und Radien aus `marcelrapold/radiox` (`apps/frontend/index.css`), Glasflächen, Aurora-Licht, Cyan-Glow und Pillen-Buttons in `brands/radiox/theme.css`. Der helle Modus ist dokumentiert abgeleitet; alle Kontrastpaare bestehen. Über den Brand-Wechsler zeigen alle Komponenten den Look von radiox.cloud.

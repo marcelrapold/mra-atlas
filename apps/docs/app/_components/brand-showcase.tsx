@@ -2,11 +2,13 @@
 import Link from 'next/link';
 import {Layers} from 'lucide-react';
 import RapoldShowcase from './rapold-showcase';
+import RadioxShowcase from './radiox-showcase';
 import {useActiveBrand} from './framework-shell';
 
 export default function BrandShowcase() {
   const {brand}=useActiveBrand();
   if(brand.id==='rapold')return <RapoldShowcase/>;
+  if(brand.id==='radiox')return <RadioxShowcase/>;
   return <>
     <section className="active-brand-card" aria-label="Aktives Theme">
       <div className="active-brand-mark">{brand.assets?.logo?<img src={`/${brand.assets.logo.path}`} width={168} height={29} alt={`${brand.name}-Logo`}/>:<Layers size={32} aria-hidden="true"/>}</div>

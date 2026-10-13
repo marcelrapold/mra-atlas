@@ -47,4 +47,8 @@ Im dunklen Modus sind die Rollen `card`, `popover`, `secondary` und `muted` deck
 - Cyan-Glow auf Primäraktionen und dem Play-Button. Der Tastaturfokus bleibt eine Outline und wird nie durch den Glow ersetzt.
 - Buttons als Pille, Versalien-Labels mit 0.16em Laufweite.
 
-Nicht übernommen: Logos (das RadioX-Zeichen ist Text in Systemschrift und bleibt im Produkt), Matrix-/StarCraft-Effekte und produktspezifische Bedeutungen (Klang-DNA, Battles).
+## Logos und Hintergrund
+
+Wortmarke und RX-Zeichen sind unter `assets/logos/` als Vektorpfade aus Inter (600 für «Radio», 900 für «X») nachgebaut, weil das Original Text in Systemschrift ist. Das Aurora-App-Icon und die Favicons unter `assets/icons/` sind unveränderte Kopien aus `apps/frontend/public`. Der Hintergrund der Markenseite portiert `MatrixBackground.tsx` (fallende X) und ergänzt Aurora-Licht in CSS.
+
+Nicht übernommen: StarCraft-Effekte und produktspezifische Bedeutungen (Klang-DNA, Battles).
