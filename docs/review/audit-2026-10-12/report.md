@@ -1,0 +1,1176 @@
+# Atlas – Frontend-Audit 12.10.2026
+
+Gegenstand: https://atlas.rapold.io (Version 0.7.1, Commit fd6bd84) und Repository `marcelrapold/mra-atlas`. Methode: Master-Audit-Prompt «Frontend Excellence Audit», 16 Mandate gebündelt in fünf Spezialisten, je ein adversarialer Prüfer für alle P0–P2-Befunde, Rendering mit Playwright/Chromium (1440 und 375 px), Live-Abrufe mit curl. Rohdaten: [findings.json](findings.json).
+
+## Zusammenfassung
+
+- **Urteil:** Solide, ehrliche Referenz ohne kritische Fehler (0 × P0). Stark bei Signet-Downloads, Deck-Ablauf, Kontrasten im Dunkelmodus und maschinenlesbaren Verträgen.
+- **Grösster Hebel:** Auffindbarkeit und Verwendbarkeit. Die Suche indexiert nur Seitentitel, die Komponentenseite zeigt keinen Verwendungscode, und die Einbindungsanleitung ist nirgends verlinkt.
+- **Kritischster Code-Befund:** Eine ungeschichtete Brand-Schatten-Regel in `packages/core/src/styles.css` löscht den Fokusring von Button und Input in jedem Produkt, das Atlas-Core nutzt (drei Spezialisten unabhängig).
+
+Befunde nach Prüfung: **97** (P0 0, P1 7, P2 31, P3 59); widerlegt: 0. P3-Befunde wurden nicht einzeln adversarial geprüft.
+
+## Scorecard
+
+| Bereich | Dimension | Score | Begründung |
+|---|---|---|---|
+| UX, IA, Inhalt, erster Eindruck | Nielsen 10 + ISO 9241-110 (avg of H1..H10 = 5.6/10) | 56 | Strong system status (aria-current, copy status, asset load/retry) and good dialog focus handling. Consistency (H4=4) and recognition (H6=4) are dragged down by the naming chaos, signets hidden behind the brand switch and title-only search. |
+| UX, IA, Inhalt, erster Eindruck | Cognitive load (Hick/Fitts/Jakob/Tesler, peak-end, dark patterns) | 58 | Clean visual hierarchy and no dark patterns. But 35 expanded nav items, duplicate pages and prompt builders, a 9.5k px brand page, 30 px mobile targets and a prefilled repo field. |
+| UX, IA, Inhalt, erster Eindruck | Content & microcopy | 62 | Precise, factual German with Swiss spelling (no ß) and honest demo notices. But the hero has no value proposition, there are six names for the neutral brand, a mislabeled 'Vertrag als JSON', an English 404, mixed address forms and the 4-vs-10 signets mismatch. |
+| UX, IA, Inhalt, erster Eindruck | CRO adapted (arrival → right asset/token/component used) | 45 | Tokens, icons and decks work in 2–3 actions. Signets need hidden knowledge, components have no usage code, the integration guide is unlinked and the spacing name is wrong. |
+| UX, IA, Inhalt, erster Eindruck | IA & navigation / findability | 42 | Taxonomy mixes audience and artefact type; there are duplicate labels; search only indexes page titles (0 hits for Signet/Button/Farbe/Deck); 3 of the 10 key intents fail or need prior knowledge. |
+| UX, IA, Inhalt, erster Eindruck | First impression, brand distinctiveness, favicon/OG/PWA, 404 | 48 | Polished Rapold brand page and a calm shell. But H1 'Übersicht', three different Atlas marks, a generic OG image dropped on 32 pages, no manifest/apple-touch/theme-color despite Atlas' own checklist, and the default English 404. |
+| Barrierefreiheit & Responsive | Landmarks & heading outline | 86 | Every route has exactly one h1 and labelled navs, plus main and footer. Problems: EmptyState forces an h1→h3 skip, an aside is nested in main, 8 routes have no subheadings, and the breadcrumb is not a nav. |
+| Barrierefreiheit & Responsive | Keyboard operability (palette, dialogs, sheets, tabs, selects, rail) | 88 | Everything tested is operable. Focus traps and focus return are correct on the palette, Sheet, Dialog, deck dialog and Lightbox, and Escape works everywhere. Problems: the organigramm scroll regions are not focusable, and the rail labels are hover-only. |
+| Barrierefreiheit & Responsive | Focus visibility & not obscured | 55 | The Atlas shell shows a strong 3px outline. But the core Button/Input focus ring is overridden (P0 for consumers), Input focus is a 1px border change that vanishes in forced colors, and SC 2.4.11 fails on /praesentation, /mermaid and mobile /components. |
+| Barrierefreiheit & Responsive | Accessible names & ARIA | 84 | Names are generally good and aria-activedescendant works. Problems: 2.5.3 mismatches on the identity link and search trigger, an aria-label on a role-less div, 'Theme' vs 'Marke' naming, and the skip link stays tabbable under aria-hidden. |
+| Barrierefreiheit & Responsive | Contrast across light/dark and each brand | 70 | Dark mode has 0 failures across 3 brands × 35 routes. Light mode: the Tabs primitive fails in all brands (3.85–4.39), Dominicano primary-as-text fails site-wide at 4.2, and the eyebrow opacity fails in rapold and dominicano. |
+| Barrierefreiheit & Responsive | Target size (2.5.8 AA / 44px touch) | 74 | No 2.5.8 failures; undersized targets are isolated. Against 44px on touch: tabs 29px, checkbox 16px, inputs 36px, sort and footer links 18–19px. The pointer:coarse coverage is partial. |
+| Barrierefreiheit & Responsive | prefers-reduced-motion & motion control | 95 | Global CSS reset in both core and docs; ECharts, Recharts and the Rapold worlds respect it, and the worlds also have pause and forced-colors states. |
+| Barrierefreiheit & Responsive | Reflow 320px / zoom / text spacing | 88 | 33/35 routes reflow at 320. /dashboard and /charts overflow by 21px. The text-spacing override caused no clipping except intentional line-clamps. |
+| Barrierefreiheit & Responsive | Responsive 320–1920 (overflow, fixed/sticky, tables, hover-only) | 84 | No overflow from 375 to 1920. Tables use labelled scroll regions and filmstrips are labelled. Problems: the sticky stack hides focus, rail labels are hover-only, mobile toolbar selects are clipped to 90px/12px, and the 1024 touch case relies on pointer:coarse. |
+| Barrierefreiheit & Responsive | Route-change focus & announcement | 90 | Unique titles, and the Next route announcer reads the title. Palette and mobile navigation focus main. Desktop sidebar navigation leaves focus on the link, which is acceptable with the announcer. |
+| Visuelles Design, Zustände & Bewegung | Visual hierarchy | 68 | Clear sidebar/header/content shell and a strong h1. But body copy is muted, the h2/body step is weak, there is no h3, and the home card grid gives every destination equal weight. |
+| Visuelles Design, Zustände & Bewegung | Grid & spacing scale consistency | 42 | A 4px token scale exists, but the docs use 0 spacing tokens and about 150 off-scale px values. |
+| Visuelles Design, Zustände & Bewegung | Type scale & measure | 52 | Good font loading and a defined scale. But 13, 11 and 10px sizes sit off-scale, there are 13 line-heights, and prose runs 96–105 characters per line. |
+| Visuelles Design, Zustände & Bewegung | Color roles | 72 | Every role pair passes contrast (>=4.45:1). But info equals primary, Rapold danger and warning drift hue between modes, and there is no progress, neutral or active role. |
+| Visuelles Design, Zustände & Bewegung | Dark-mode integrity per brand | 70 | All 3 brands have complete dark palettes with good contrast. Points lost to the neutral/light flash before hydration and shadows that are invisible in dark mode. |
+| Visuelles Design, Zustände & Bewegung | Iconography | 85 | A single Lucide set, a stroke token and consistent size-4 defaults. Brand signets are kept separate. |
+| Visuelles Design, Zustände & Bewegung | Radius & elevation consistency | 50 | Published radius tokens differ from the rendered values, buttons and dialogs use mixed radii, and elevation is not tokenized. |
+| Visuelles Design, Zustände & Bewegung | State matrix completeness (core primitives) | 45 | Missing: loading, active, indeterminate, field error, Textarea, status badges, Switch/Progress/Alert. Focus rings are overridden on Button and Input. |
+| Visuelles Design, Zustände & Bewegung | Feedback latency | 72 | Local actions give instant toasts and role=status messages. But there is no loading affordance, and the promise demo resolves instantly. |
+| Visuelles Design, Zustände & Bewegung | Motion durations & easing | 30 | Good tokens exist, but no overlay animation is ever generated, and the declared classes use non-token durations. |
+| Visuelles Design, Zustände & Bewegung | Reduced motion | 80 | Global resets exist in core and docs and were verified live. They lack a non-motion loading cue and give no feedback on /motion. |
+| Visuelles Design, Zustände & Bewegung | Destructive-action protection | 20 | There is no confirm or AlertDialog primitive, the demo delete does nothing, the destructive menu variant is undocumented and the hover is weak. |
+| Visuelles Design, Zustände & Bewegung | Reference site demonstrates documented states | 40 | The form error path is unreachable and the loading toast is never seen. There is no hover/focus/disabled/invalid gallery and no light/dark comparison. |
+| Performance, SEO & Vertrauen | Performance (CWV, bundle, fonts, caching) | 68 | Good static delivery: TTFB about 55 ms, FCP/LCP about 1.5 s on throttled /, /tokens and /praesentation; heavy libraries lazy; immutable hashed chunks. Lost points: CLS 0.165 and 0.118 on /icons and /components, LCP 3.8 s on /icons, about 267 KB br initial JS because everything is a client component, Inter downloaded twice per weight (about 96 KB wasted), a light-theme flash for dark users, and max-age=0 on versioned vendor and font assets. |
+| Performance, SEO & Vertrauen | SEO & discoverability (incl. agent readability) | 55 | robots, sitemap (matches all 35 exported pages), self-canonicals, unique titles, one H1, lang=de-CH and llms.txt are in place. But descriptions are identical sitewide, og:image and og:locale are missing on 32 section pages, twitter:title is 'Atlas' everywhere, brand variants and interactive references are JS-only (Rapold signets are invisible to curl/WebFetch), the 404 canonicalises to /, and there is no JSON-LD or lastmod. |
+| Performance, SEO & Vertrauen | Security, trust & permanence | 62 | HTTPS plus 2-year HSTS, nosniff, Referrer-Policy, a real 404 status, no cookies or trackers, mermaid securityLevel strict, a sandboxed mail iframe, a visible version and a build-info.json commit that matches HEAD. Missing: CSP, frame-ancestors/XFO and Permissions-Policy; no imprint or privacy notice; changelog only off-site on GitHub; a draft third-party brand publicly indexed. |
+| Codequalität, Formulare & i18n | Architecture & composition (core/brands/presentation/docs boundaries, client/server, coupling) | 58 | Core is genuinely brand-free with a clean portal contract. However, the docs app is fully client-side, has god components, uses deep imports into brands/src, and spreads brand-id branches across files. Brand and mode are resolved only after hydration, so static HTML is always neutral. |
+| Codequalität, Formulare & i18n | State hygiene, effects, error/loading discipline | 70 | Mermaid, ECharts and the asset manifest fetch handle cancellation and fallbacks well, and copy races are guarded in places. On the other side, the organigram editor's derived state destroys input, validation state goes stale, clipboard and download helpers are duplicated, and one revokes the blob URL synchronously. |
+| Codequalität, Formulare & i18n | Design-token usage / brand isolation | 66 | Zero hex values in core. The orgchart palette and the #16181d and #fff fallbacks sit outside the tokens, Rapold hex and CSS are hardwired in the docs, and the mono font override is not part of the brand contract. |
+| Codequalität, Formulare & i18n | CSS architecture | 42 | Unlayered core and docs CSS overrides Tailwind utilities (the measured Input focus ring is gone and the dialog title renders at 20px instead of 18px). Lines run to 13.7k characters, selectors are duplicated, and !important is used against inline styles. |
+| Codequalität, Formulare & i18n | TypeScript strictness & test posture | 50 | strict passes with no any. However, the .mjs contract logic is unchecked and its declarations are hand-written, there is no noUncheckedIndexedAccess, no lint, and no component, e2e or a11y tests, so three confirmed UI bugs pass CI. |
+| Codequalität, Formulare & i18n | Dependency health | 76 | Mostly current with exact pins for the core stack. A 1.1 MB ECharts file is vendored in git next to Recharts, there is a pending TanStack v9 major, and pinning is mixed. |
+| Codequalität, Formulare & i18n | Forms (labels, autocomplete, inputmode, validation timing, error association) | 52 | Labels are mostly present and status regions are used. The login pattern lacks autocomplete and input hints (WCAG 1.3.5), validation mixes native English bubbles with unreachable custom errors, the editor swallows newlines, and limits are silent. |
+| Codequalität, Formulare & i18n | i18n readiness (strings, Intl, lang, logical CSS, expansion) | 44 | lang=de-CH is correct and layout tolerates +35% text expansion. There is no string externalisation, core defaults mix English and German, there are three number conventions and only one Intl call, display labels double as logic keys, and the CSS uses physical properties. |
+
+Ungewichteter Mittelwert: **62/100**.
+
+## Quick Wins (Aufwand S, P1/P2)
+
+- [ ] **CODE-03** Organigram editor: Enter does not create a new line in the 'Aufgaben' and 'Team' textareas
+- [ ] **A11Y-02** Inactive Tabs trigger text fails 4.5:1 in every light brand
+- [ ] **CODE-01** Core's unlayered CSS removes the Input focus ring and invalid ring in every consuming product
+- [ ] **VISUAL-01** Brand-shadow override deletes the focus ring on Button and Input; keyboard focus is near-invisible
+- [ ] **UX-04** 'Atlas in Produkten einbinden' guide is not linked anywhere on the site or in llms.txt
+- [ ] **A11Y-01** Core Button and Input focus ring is wiped out by an unlayered brand-shadow rule. Products using @rapold/framework-core get no visible focus on Button.
+- [ ] **PERF-04** All 35 pages share one identical meta description although per-page copy already exists in the code
+- [ ] **A11Y-05** Horizontal page scroll at 320px on /dashboard and /charts
+- [ ] **VISUAL-02** All overlay enter/exit motion is dead code: animate-in/fade/zoom/slide utilities are never generated
+- [ ] **VISUAL-04** Buttons used as Radix triggers (asChild) lose brand sizing: 36px/14px vs 44px/16px
+- [ ] **CODE-06** Form demo validation mixes native bubbles and custom errors: the custom error is unreachable and stale
+- [ ] **CODE-17** Most section pages lose og:image, og:locale and og:site_name (shallow openGraph override)
+- [ ] **CODE-05** The canonical login pattern omits autocomplete, name and input hints
+- [ ] **UX-02** Rapold signets are invisible unless the visitor already knows to switch the Theme to Rapold
+- [ ] **UX-09** Atlas has three different marks, and the site ignores its own favicon/PWA checklist
+- [ ] **UX-11** 'Vertrag als JSON' points to tokens.json on unrelated pages
+- [ ] **A11Y-03** Dominicano Express light: primary #146FE8 fails as small text on tinted surfaces, including the active nav item on every page
+- [ ] **A11Y-08** Brand eyebrow suffix falls under 4.5:1 because of an opacity hack
+- [ ] **PERF-05** Theme and brand flash on every load for dark-mode users, returning users and ?brand links
+- [ ] **PERF-07** Inter is downloaded twice per weight (latin plus latin-ext): about 96 KB wasted on every first visit
+- [ ] **VISUAL-09** Radius contract mismatch: published tokens say lg=16/xl=24 (rapold) but components render 8px
+- [ ] **UX-12** Layout page shows 'space-4', but the real variable is --spacing-4
+- [ ] **A11Y-04** Focus fully hidden behind the sticky toolbar and section anchors on Shift+Tab
+- [ ] **VISUAL-05** Four different focus-ring recipes; the ring/50 variants fall below 3:1 in 5 of 6 brand-modes
+
+## Priorisierte Befunde
+
+Sortiert nach Schwere, dann ICE (Schwere × Konfidenz ÷ Aufwand).
+
+### [P1] [S] [ICE 6.79] CODE-03 – Organigram editor: Enter does not create a new line in the 'Aufgaben' and 'Team' textareas
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** orgchart-editor.tsx:31 `change(field,value)` stores `value.split('\n').filter(Boolean)`, and the textareas render `value={department.desc.join('\n')}` / `members.join('\n')` (line 40). Pressing Enter at the end produces 'a\n', which is filtered back to 'a'. The newline vanishes on the next render. Reproduced live on /organigramm: in #dept-team, Ctrl+End, Enter, typing 'Neu' gives "Produktmanagement\nDesignNeu" instead of a new team entry.
+- **Prinzip:** Nielsen #5 Error prevention / #3 User control. A form control must not rewrite user input mid-edit.
+- **Wirkung:** The main editing task (adding a task or team member) fails silently. Users concatenate entries, then export an SVG or JSON-LD with wrong data.
+- **Massnahme:** Keep the raw textarea string in state per department (`descText`, `membersText`) and derive the arrays only for rendering and export (`text.split('\n').map(s=>s.trim()).filter(Boolean)`). Alternatively parse on blur. Add a Playwright test that types Enter plus text and asserts a new line.
+- **Prüfung:** Confirmed at orgchart-editor.tsx:31: `value.split('\n').filter(Boolean)` on a controlled textarea whose value is `join('\n')` (line 40). A trailing newline is dropped on re-render, so Enter at the end of the text cannot start a new entry. That breaks the editor's main task. It is a secondary tool, but it fails without any message, so P1 is kept.
+
+### [P1] [S] [ICE 6.65] A11Y-02 – Inactive Tabs trigger text fails 4.5:1 in every light brand
+
+- **Bereich:** Barrierefreiheit & Responsive
+- **Beleg:** packages/core/src/ui/tabs.tsx:60 sets inactive triggers to `text-foreground/60` on the bg-muted TabsList.
+
+axe color-contrast results at 14px normal weight:
+- neutral: #6a6c72 on #e8ebf1 = 4.39:1
+- rapold: #637487 on #dfebf6 = 3.96:1
+- dominicano-express: #687e9e on #f3f7fc = 3.85:1
+
+Nodes: #…-trigger-foundation and #…-trigger-contrast on /tokens, #…-trigger-code on /components, #…-trigger-echarts on /charts. Reproduced at 375px as well. Dark modes pass.
+- **Prinzip:** WCAG 1.4.3 Contrast (Minimum), AA
+- **Wirkung:** A core primitive is below AA in all shipped brands → every product tab bar inherits the failure → low-vision users struggle to read the unselected options.
+- **Massnahme:** Replace `text-foreground/60` with `text-muted-foreground`. Brand muted-foreground on muted is roughly 5.3–6:1 in all three brands. Keep `hover:text-foreground`. Add a contrast assertion per brand, comparing the tab label colour against muted, to the token tests.
+- **Prüfung:** tabs.tsx:60 uses `text-foreground/60` in light mode; dark mode uses text-muted-foreground. My recomputed ratios match the finding: rapold 3.96:1 and dominicano 3.85:1, both below the 4.5:1 that WCAG 1.4.3 requires for 14px text. A core primitive is affected in every light brand. The fix of using muted-foreground is consistent with what dark mode already does.
+
+### [P1] [S] [ICE 6.65] CODE-01 – Core's unlayered CSS removes the Input focus ring and invalid ring in every consuming product
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** packages/core/src/styles.css: `.framework-scope [data-slot="button"], .framework-scope [data-slot="card"], .framework-scope [data-slot="input"] { box-shadow: var(--brand-shadow); }` sits outside any @layer, so under Tailwind v4 it beats every layered utility regardless of specificity. input.tsx:11-12 draws the focus and error states as box-shadow (`focus-visible:ring-[3px] focus-visible:ring-ring`, `aria-invalid:ring-destructive/20`). Measured with Playwright on /forms?brand=neutral and ?brand=rapold, #form-title with :focus-visible true: outline 'none', box-shadow 'none' (--brand-shadow resolves to 'none'). The only remaining focus cue is a 1px border-colour change. The same unlayered file sets `[data-size=default]{padding:10px 20px;font-size:1rem}`, so a consumer's `<Button className="px-3">` is ignored (measured padding 10px 20px).
+- **Prinzip:** WCAG 2.4.7 Focus Visible (AA). WCAG 2.4.13 Focus Appearance (AAA) as the target. CSS cascade layers: brand overrides must not outrank component utilities.
+- **Wirkung:** A product team uses the Atlas Input in Auth, Lotse or another product. Keyboard users see only a hairline colour shift on focus, and invalid fields lose their red ring, so the state is signalled by border colour alone. Every product inherits this.
+- **Massnahme:** Put every styles.css rule after @theme inside `@layer base` or `@layer components`, and use `:where(.framework-scope) [data-slot=…]` so specificity stays 0. Feed the brand shadow into the cva class (e.g. `shadow-[var(--brand-shadow)]`) and compose it with the ring: `focus-visible:shadow-[0_0_0_3px_var(--ring),var(--brand-shadow)]`. Do the same for the button min-height and padding (use cva size tokens such as `h-[var(--brand-button-height)] px-5`). Add a Playwright assertion that the focused Input has a non-'none' box-shadow or outline.
+- **Prüfung:** Confirmed in packages/core/src/styles.css:49-50: the box-shadow and button padding rules sit outside the @layer base block that closes at line 48. They are unlayered, so they beat Tailwind v4's layered ring utilities from input.tsx:11-12. Focus and invalid now rely only on a border-colour change. 2.4.7 may technically pass on the border alone, but the 3px ring the author intended is silently removed in every consuming product, so P1 stands. No doc justifies this. I did not re-run the Playwright measurement; the cascade analysis is enough.
+
+### [P1] [S] [ICE 6.44] VISUAL-01 – Brand-shadow override deletes the focus ring on Button and Input; keyboard focus is near-invisible
+
+- **Bereich:** Visuelles Design, Zustände & Bewegung
+- **Beleg:** packages/core/src/styles.css:49 `.framework-scope [data-slot="button"], ... [data-slot="input"] { box-shadow: var(--brand-shadow); }` is unlayered, so it beats the Tailwind utility `focus-visible:ring-[3px] focus-visible:ring-ring` in button.tsx:8 and input.tsx:12.
+
+Measured live on /components?brand=rapold, light mode, keyboard Tab:
+- Primäraktion: box-shadow 'none', outline 'solid 3px rgb(255,255,255)' at offset 0. White on page bg #F4FAFF is 1.05:1.
+- Input #demo-project: box-shadow 'none', outline 'none'. The only cue is a 1px border change from --input #6F87A0 to --ring #0066B3, which is 1.59:1 between the two states.
+- The same happens in all 6 brand-modes (inputFocus.shadow 'none', or the brand shadow '0 1px 3px #00000014' on dominicano).
+- The docs rule in globals.css `a:focus-visible,button:focus-visible{outline:3px solid var(--ring);outline-offset:3px}` does not produce a ring-colored outline on Buttons (computed color = currentColor, offset 0).
+
+Screenshots: focus-primary.png and focus-input.png in the scratchpad.
+- **Prinzip:** WCAG 2.2 SC 2.4.7 Focus Visible (risk), SC 2.4.13 Focus Appearance (fails: 3px area at >=3:1 change), SC 1.4.11 Non-text Contrast; Nielsen #1 visibility of system status
+- **Wirkung:** Primitive ships with ring utility, brand CSS silently overrides it, every Rapold product consuming core inherits invisible focus on its primary CTA and inputs, keyboard users lose their place
+- **Massnahme:** Move styles.css:49-52 into `@layer components` so utilities win. Also define one focus token and compose it with the brand shadow:
+`--focus-ring: 0 0 0 var(--border-width-focus) var(--ring)` and `[data-slot=button]:focus-visible{box-shadow:var(--brand-shadow),var(--focus-ring)}`.
+Add a Playwright assertion that every focusable primitive shows a >=3:1 indicator change in all 6 brand-modes.
+- **Prüfung:** Confirmed in source: packages/core/src/styles.css:49 is an unlayered rule `.framework-scope [data-slot="button"], ... [data-slot="input"] { box-shadow: var(--brand-shadow); }`. Tailwind v4 utilities sit in @layer utilities, and unlayered CSS always beats layered CSS, so the `focus-visible:ring-[3px] focus-visible:ring-ring` box-shadow in button.tsx:8 and input.tsx:12 never applies. The same rule also kills the `aria-invalid:ring-destructive/20` shadow. The measured result is plausible: a currentColor (white) outline at offset 0 on the primary button, and only a 1px border change on the input. Nothing in README, AGENTS.md or docs/apple-design-audit.md treats this as intended; audit row A03 even lists the visual focus check as still open. It hits the primary CTA and inputs of every product that consumes core, so P1 holds (WCAG 2.4.7 risk, 2.4.13/1.4.11). The fix is sound: put the rule in @layer components, or compose brand-shadow with a focus ring.
+
+### [P1] [S] [ICE 6.3] UX-04 – 'Atlas in Produkten einbinden' guide is not linked anywhere on the site or in llms.txt
+
+- **Bereich:** UX, IA, Inhalt, erster Eindruck
+- **Beleg:** /contracts/produkte-einbinden.md returns 200 live. A grep shows it is only referenced in scripts/build-contracts.mjs:76 (a copy step) and in README.md. There is no link in apps/docs/app/** and none in /llms.txt or /brands/rapold/llms.txt. That llms.txt also has no pointer to identity.json or assets-manifest.json. The guide is the canonical how-to for signet, favicon, manifest, tokens, Geist and auth.
+- **Prinzip:** Nielsen H10; information scent; agent-contract completeness (the product model says agents are primary users)
+- **Wirkung:** Product teams embed favicons and manifests inconsistently, and agents guess paths.
+- **Massnahme:** Link it from the Rapold brand page section #rapold-usage ('Vollständige Einbindungsanleitung'), from a home task card and from a sidebar item under Marke. Add lines to /llms.txt and /brands/rapold/llms.txt: '/contracts/produkte-einbinden.md', '/brands/rapold/identity.json', '/brands/rapold/assets-manifest.json', '/brands/rapold/exports/<produkt>/'.
+- **Prüfung:** Confirmed: /contracts/produkte-einbinden.md returns 200 live. A grep finds it only in scripts/build-contracts.mjs:76 and README.md:11,50. The live /llms.txt and /brands/rapold/llms.txt have no line for it, nor for identity.json or assets-manifest.json. The #rapold-usage section (rapold-showcase.tsx:149) links identity.json and assets-manifest.json but not the guide. README says every Rapold product must follow this guide, so leaving it out of the agent entry point is significant friction. P1 is fair, and the fix is small.
+
+### [P1] [S] [ICE 5.95] A11Y-01 – Core Button and Input focus ring is wiped out by an unlayered brand-shadow rule. Products using @rapold/framework-core get no visible focus on Button.
+
+- **Bereich:** Barrierefreiheit & Responsive
+- **Beleg:** packages/core/src/styles.css:49 sets `.framework-scope [data-slot="button"], ... [data-slot="input"] { box-shadow: var(--brand-shadow); }` outside any @layer, so it beats Tailwind's layered `focus-visible:ring-[3px] focus-visible:ring-ring` (button.tsx:8, input.tsx:12). Button also sets `outline-none`.
+
+Measured on /components with the 'Primäraktion' button focused by keyboard: box-shadow 'none'. Its only indicator is the docs-only rule in globals.css:21 (`button:focus-visible{outline:3px solid var(--ring)}`). With that docs rule neutralised to simulate a consumer app: outline none, border 0px, box-shadow none, so there is no indicator at all.
+
+Input #demo-project focused by keyboard: box-shadow none and outline none. The only change is the 1px border going from --input #737b88 to --ring #263b70, about a 2.5:1 change (screenshot taken). In forced-colors mode, the focused input border is rgb(55,0,110) against rgb(0,0,0) unfocused, which is effectively invisible.
+- **Prinzip:** WCAG 2.4.7 Focus Visible (AA) and 1.4.11 Non-text Contrast (AA) for focus indicators; see also 2.4.13 Focus Appearance (AAA). For a design system the failure carries into every consumer product (AI Fabric, Argus, Cockpit, …).
+- **Wirkung:** A consumer app imports core styles.css but not the Atlas docs globals.css → keyboard focus on Button disappears → a keyboard or switch user cannot tell which action they are about to trigger. That is an AA failure in every Rapold product, and it stays hidden because the reference site masks it.
+- **Massnahme:** Move line 49 into `@layer components`, or scope it to `:not(:focus-visible)`. Better still, make core focus outline-based so it survives forced colors: add `focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring` to the buttonVariants base and Input, replacing `outline-none`. Add a regression test that renders Button and Input without the docs globals.css and checks that the computed outline or box-shadow is not 'none' when focus-visible.
+- **Prüfung:** Confirmed in source. packages/core/src/styles.css:49 is unlayered (the only @layer in the file is `base` at :44), so `box-shadow: var(--brand-shadow)` beats the Tailwind v4 (4.3.3) `focus-visible:ring-[3px]` utility in @layer utilities, which is also a box-shadow. button.tsx:8 sets `outline-none`. The docs site masks this with globals.css `button:focus-visible{outline:3px solid var(--ring)}`, and that rule does not ship with core. Input still gets a border-colour change, so the defect is total for Button and partial for Input. Nothing in the docs makes this a deliberate decision; docs/apple-design-audit.md treats focus-visible as a requirement. I lowered it from P0 to P1: the reference site itself passes, and the failure only appears in a consumer that skips the docs globals. The fix (layer the rule, or add an outline-based focus) is correct and cheap. (Schwere von P0 auf P1 angepasst)
+
+### [P1] [L] [ICE 1.57] UX-03 – Components page has no usage code, import path, props or anchors
+
+- **Bereich:** UX, IA, Inhalt, erster Eindruck
+- **Beleg:** component-demo.tsx: the only code shown is `<code>{'<Tabs defaultValue="preview">…</Tabs>'}</code>` (elided). The component index chips are plain `<span>` (reference-page.tsx `.component-index span`) and do not link. packages/core/package.json has "private": true, and the site never says how to consume @rapold/framework-core. llms.txt and /brands/rapold/llms.txt have no components section; only tokens, icons and decks are listed.
+- **Prinzip:** Nielsen H10 (help and documentation) and H6; ISO 9241-110 suitability for the task (journey b: agent or developer finds a component and its usage code)
+- **Wirkung:** An agent asked to 'use Atlas components' cannot find import paths or APIs, writes ad-hoc UI and loses brand consistency across Rapold products.
+- **Massnahme:** Give each of the 19 modules its own section with an id anchor (#button …) and turn the chips into anchor links. Add a Vorschau/Verwendung tab with `import { Button } from '@rapold/framework-core'`, a minimal example, variants/props (from cva), a11y notes and do/don't. State the consumption path explicitly (workspace dependency vs. copy-in vs. future npm). Publish /contracts/components.md (or components.json) and list it in both llms.txt files. Reuse the icon gallery's copy-code pattern (icon-gallery.tsx).
+- **Prüfung:** Confirmed: component-demo.tsx:14 shows only the elided `<Tabs defaultValue="preview">…</Tabs>`, and the .component-index chips are plain <span> elements (reference-page.tsx:40). The live /llms.txt has no components section, only tokens, icons and decks. Agent and developer use of components is a core intent of the product model, and nothing on the site states an import path or a way to consume the package. P1 stands. Effort is L, as stated.
+
+### [P2] [S] [ICE 3.88] PERF-04 – All 35 pages share one identical meta description although per-page copy already exists in the code
+
+- **Bereich:** Performance, SEO & Vertrauen
+- **Beleg:** Every route sampled (/, /brand, /tokens, /typography, /components, /navigation, /praesentation, /praesentationslogik, /icons, plus the 404) returns the same <meta name="description" content="Atlas, das Designsystem von Rapold: ein Designstandard mit austauschbaren Brands…">. Unique copy already exists in reference-page.tsx:24 (const descriptions, e.g. tokens: 'Semantische Rollen, vollständige Skalen und maschinenlesbare Exporte…') and in catalog.ts guidance[id].intro, but it is client-only and not used in generateMetadata.
+- **Prinzip:** Google Search Central: use unique, page-specific descriptions. Duplicate descriptions get rewritten in SERPs and reduce snippet relevance for both search and agents.
+- **Massnahme:** Move the descriptions map from reference-page.tsx into catalog.ts (keyed by page id, with guidance[id].intro as fallback). Return it as description, openGraph.description and twitter.description from the shared metadata helper in PERF-03. Add a test in tests/ that fails when two pages share a description.
+- **Prüfung:** Confirmed. Live / and /tokens carry the identical description from layout.tsx:5, and generateMetadata in [section]/page.tsx:6 sets no description. This deviates from Google's guidance on unique descriptions, and the per-page copy already exists in the code. The fix is low-effort and has no downside.
+
+### [P2] [S] [ICE 3.8] A11Y-05 – Horizontal page scroll at 320px on /dashboard and /charts
+
+- **Bereich:** Barrierefreiheit & Responsive
+- **Beleg:** At a 320px viewport (the 400% zoom equivalent), document scrollWidth is 341 against clientWidth 320. The offender is `<span>Illustrative Daten, keine Projektkennzahlen</span>` inside `.filter-bar` (data-showcase.tsx:9), 220px wide with its right edge at 341. CSS: globals.css:21 `.filter-bar{display:flex;gap:20px}` and `.filter-bar>span{white-space:nowrap}`. The other 33 routes reflow cleanly at 320 and 375.
+- **Prinzip:** WCAG 1.4.10 Reflow, AA
+- **Massnahme:** At ≤767px add `.filter-bar{flex-wrap:wrap}` and `.filter-bar>span{white-space:normal}`, or drop nowrap globally.
+- **Prüfung:** Confirmed. data-showcase.tsx renders the label, select and span inside .filter-bar, and globals.css sets `.filter-bar{display:flex}` and `.filter-bar>span{white-space:nowrap}` with no flex-wrap, even in the mobile override (gap 10px, font-size 11px). At 320px that combination plausibly overflows, as measured. It is a WCAG 1.4.10 failure limited to two demo routes. The fix is trivial.
+
+### [P2] [S] [ICE 3.8] VISUAL-02 – All overlay enter/exit motion is dead code: animate-in/fade/zoom/slide utilities are never generated
+
+- **Bereich:** Visuelles Design, Zustände & Bewegung
+- **Beleg:** dialog.tsx:35/63, sheet.tsx:34/60-68, popover.tsx:30, select.tsx:60, dropdown-menu.tsx:37/205 and tooltip.tsx:42 all use `animate-in fade-in-0 zoom-in-95 slide-in-from-*`.
+
+No tw-animate-css or tailwindcss-animate exists in package.json or node_modules. The built CSS (_next/static/chunks/3bvtb48uz92n4.css, identical to live) contains only `.animate-pulse` and `.animate-spin`. No `.animate-in`, `.fade-in-0` or `.zoom-in-95` is generated.
+
+Measured live: open Dialog shows animationName 'none' and animationDuration '0s', the overlay shows 'none', and select-content shows 'none'.
+
+The declared durations are also off-token: sheet `duration-500`/`duration-300 ease-in-out`, dialog `duration-200`. The tokens are --duration-fast 150, normal 180 (rapold), slow 300 and deliberate 500, and --easing-enter/exit.
+- **Prinzip:** Motion supports orientation (Atlas /accessibility & /motion copy); Material/Apple HIG: overlays need spatial continuity; design-token single source of truth
+- **Wirkung:** Consumers copy the classes believing motion is specified, nothing animates, each product invents its own motion, the motion tokens documented on /motion are never exercised
+- **Massnahme:** Add `tw-animate-css` at an exact pinned version and `@import 'tw-animate-css'` in core styles.css. Alternatively, define enter/exit keyframes in core that read `var(--duration-normal)`, `var(--easing-enter)` and `var(--easing-exit)`. Replace the hard-coded duration-500/300/200 and ease-in-out with token-driven classes (e.g. `duration-(--duration-slow) ease-(--easing-exit)`). Then assert in a browser test that animationName != 'none' on dialog open (without reduced motion).
+- **Prüfung:** Confirmed. There is no tw-animate-css or tailwindcss-animate in node_modules and no @plugin/@import for one in globals.css or core styles.css. Nine `animate-in` usages exist across the core ui files. The live CSS on /components contains only `.animate-pulse` and `.animate-spin`. The enter/exit classes are dead code and the motion tokens go unused. Downgraded to P2: overlays still open and close correctly (instant is functional and reduced-motion friendly), so the core task is not blocked. This is a contract/consistency gap. (Schwere von P1 auf P2 angepasst)
+
+### [P2] [S] [ICE 3.72] VISUAL-04 – Buttons used as Radix triggers (asChild) lose brand sizing: 36px/14px vs 44px/16px
+
+- **Bereich:** Visuelles Design, Zustände & Bewegung
+- **Beleg:** styles.css:50 sizes buttons by `[data-slot="button"][data-size="default"]` (min-height 44px, font 1rem). Radix Slot merges the trigger's `data-slot` over the Button's.
+
+Measured on /components?brand=rapold:
+- plain buttons are 44px tall at 16px font,
+- dialog-trigger 'Dialog öffnen' is 36px at 14px,
+- sheet-trigger, dropdown-menu-trigger, popover-trigger and tooltip-trigger are all 36px at 14px.
+The dark-mode screenshot (comp-d.png) shows the visibly smaller 'Dialog öffnen' next to the larger 'Erfolg' and 'Fehler'.
+
+The same override hits box-shadow (VISUAL-01): trigger buttons get Tailwind shadow-xs while plain ones get brand-shadow.
+- **Prinzip:** Consistency & standards (Nielsen #4); Apple HIG/WCAG 2.5.8 target size consistency; component API should not change visuals by composition
+- **Massnahme:** Put brand sizing into the cva itself, e.g. `default: 'min-h-(--brand-button-height) px-5 text-base'`. Or key the CSS on `[data-variant][data-size]` (set by Button and not overwritten by Slot) instead of data-slot. Add a visual regression check comparing trigger and plain Button height.
+- **Prüfung:** Confirmed mechanism. Button (button.tsx:53-58) sets `data-slot="button"` and then spreads `{...props}` after it. When a Radix Trigger with asChild uses Slot to inject `data-slot="dialog-trigger"` etc., that prop overrides the button's data-slot. The brand rules in styles.css:49-50 keyed on `[data-slot="button"]` then no longer match, so sizing, font and shadow fall back to cva defaults (h-9/text-sm). The 36px vs 44px measurement is consistent with this. Real consistency defect, P2.
+
+### [P2] [S] [ICE 3.72] CODE-06 – Form demo validation mixes native bubbles and custom errors: the custom error is unreachable and stale
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** pattern-showcase.tsx forms branch: the Input has `required minLength={3}` and no `noValidate` on the form. Live on /forms: entering 'ab' and submitting shows no custom error; the browser's English bubble appears instead ('Please lengthen this text to 3 characters or more…') on a de-CH page. The custom 'Der Projektname braucht mindestens drei Zeichen.' appears only for '   ' (three spaces). After the user types a valid value, aria-invalid stays 'true' and the error text persists until the next submit. The 'Ziel und Nutzen' textarea has only native `required` and no associated error. The component-demo form (component-demo.tsx:11) behaves the same way.
+- **Prinzip:** WCAG 3.3.1 Error Identification, 3.3.3 Error Suggestion. Validation timing: validate on blur or submit and clear errors on correction (Wroblewski / NN/g inline validation).
+- **Wirkung:** Teams copy a pattern whose documented custom error never shows and whose invalid state never clears.
+- **Massnahme:** Add `noValidate` to the form and validate both fields in one function. On submit, set per-field errors and focus the first invalid field. Re-validate on change once a field has errored, so the error clears as soon as the value is valid. Set `aria-describedby` only when an error is present, and give the textarea its own error id. Optionally add an error summary for more than two fields. Ship this as a core `FormField` (Label, control, hint, error) so products cannot get the wiring wrong.
+- **Prüfung:** Confirmed at pattern-showcase.tsx:19: no noValidate together with required and minLength={3}. Native validation pre-empts the custom 'mindestens drei Zeichen' error for 'ab'. aria-describedby is always set, the error is never cleared on change, and the textarea has no error of its own. Real 3.3.1 and 3.3.3 weaknesses in a demo pattern.
+
+### [P2] [S] [ICE 3.72] CODE-17 – Most section pages lose og:image, og:locale and og:site_name (shallow openGraph override)
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** [section]/page.tsx:22 returns `openGraph:{title,url:href(section)}`, which replaces the root openGraph object. Live: /tokens has no og:image, og:locale or og:site_name, while / and /praesentation have all three, because praesentation/page.tsx spreads `...inherited.openGraph`. Two pages use one pattern and about 30 routes use the other.
+- **Prinzip:** Consistent metadata composition (Next.js metadata is merged shallowly per key).
+- **Massnahme:** Use the praesentation pattern in [section]/page.tsx (`const inherited=await parent; openGraph:{...inherited.openGraph,title,url}`), or a shared `pageMetadata(id)` helper used by all three route files. Add a deployment test asserting og:image on three sampled routes.
+- **Prüfung:** Verified live: /tokens emits only og:title, og:description and og:url, while / emits og:image, og:locale and og:site_name. Next.js merges metadata shallowly, so section routes lose sharing previews. Easy fix, P2.
+
+### [P2] [S] [ICE 3.68] CODE-05 – The canonical login pattern omits autocomplete, name and input hints
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** pattern-showcase.tsx login-pattern: `<Input id="login-email" type="email" required placeholder="name@firma.ch"/>`. Live attribute check on /login-pattern: autocomplete=null, name='', inputMode='', spellcheck=null, autocapitalize=null. This is the reference pattern product teams (Rapold Auth, Cockpit) are told to copy.
+- **Prinzip:** WCAG 1.3.5 Identify Input Purpose (AA). Baymard/NN/g: password managers and autofill depend on autocomplete and name.
+- **Wirkung:** Products copy the pattern, ship login forms that password managers and autofill cannot fill, and fail the 1.3.5 audit.
+- **Massnahme:** Model the complete field: `<Input id="login-email" name="email" type="email" autoComplete="username" (or "email") inputMode="email" autoCapitalize="none" spellCheck={false} enterKeyHint="send" aria-describedby="login-hint login-error" required/>`. Add a visible hint and an error element. Document these attributes in the pattern copy and in contracts/engineering.md.
+- **Prüfung:** Confirmed at pattern-showcase.tsx:21: the field is `<Input id="login-email" type="email" required …/>` with no name or autoComplete. WCAG 1.3.5 applies to an email field. The page labels itself 'Design-Vorschau', but it is a reference pattern, so the gap gets copied. It is not a live login, so P2 rather than P1. (Schwere von P1 auf P2 angepasst)
+
+### [P2] [S] [ICE 3.6] UX-02 – Rapold signets are invisible unless the visitor already knows to switch the Theme to Rapold
+
+- **Bereich:** UX, IA, Inhalt, erster Eindruck
+- **Beleg:** brand-showcase.tsx: `if(brand.id==='rapold')return <RapoldShowcase/>` and otherwise shows 'Default-Preset … enthält keine Firmenlogos'. A fresh Playwright visit to /brand shows 'MARKE / FRAMEWORK … Default-Preset … Die neutrale Basis' with no hint that 10 approved signets exist. The home entry grid filters to ['tokens','components','praesentation','icons','techstack','agenten'] (reference-page.tsx), so the brand page is missing from home. The default brand is 'neutral' (framework-shell.tsx useState('neutral')).
+- **Prinzip:** Nielsen H6 and H1; information scent (Pirolli); ISO 9241-110 self-descriptiveness
+- **Wirkung:** Journey (a) breaks at step 1 for anyone arriving without ?brand=rapold, so the developer cannot find the right variant.
+- **Massnahme:** On non-Rapold brand pages, add a prominent card: 'Rapold-Produktzeichen: 10 freigegebene Signets, Favicons, Manifeste →' linking /brand?brand=rapold#rapold-all-signets. Add a home task card 'Signet & Favicon holen'. Consider a dedicated route /signets that does not depend on the brand selection, plus a sidebar item 'Signets & Produkt-Assets' under Marke.
+- **Prüfung:** Confirmed: brand-showcase.tsx:9 routes only rapold to RapoldShowcase, framework-shell.tsx:31 defaults to useState('neutral'), and the home entry grid (reference-page.tsx:31) leaves out 'brand'. The neutral, logo-free default is a deliberate white-label decision (README:3 and :65, llms.txt 'Ohne ausdrückliche Theme-Wahl gilt das Default-Preset'), so the default must stay as it is. The Rapold option is also visible in the toolbar select, so 'invisible' overstates it. The finding survives only for a neutral pointer, such as a link to /brand?brand=rapold or a brand-independent /signets route, that does not render Rapold logos inside the neutral theme. P2, not P1. (Schwere von P1 auf P2 angepasst)
+
+### [P2] [S] [ICE 3.6] UX-09 – Atlas has three different marks, and the site ignores its own favicon/PWA checklist
+
+- **Bereich:** UX, IA, Inhalt, erster Eindruck
+- **Beleg:** Favicon apps/docs/app/icon.svg: two overlapping squares on #263b70. og.png: three rounded squares, no name or tagline (fetched 1200×630). Sidebar: Raumfalten Atlas signet (AtlasMark in framework-shell.tsx). The approved Atlas assets exist (/brands/rapold/exports/atlas/manifest.webmanifest 200, icons/apple-touch-icon.png 200), but the site returns 404 for /favicon.ico, /apple-touch-icon.png and /manifest.webmanifest. Home HTML has no apple-touch-icon, manifest or theme-color. docs/produkte-einbinden.md §1 tells every product (Atlas included) to ship exactly these.
+- **Prinzip:** Brand distinctiveness and consistency (Nielsen H4); 'eat your own dog food'; PWA/Apple HIG icon requirements
+- **Massnahme:** Copy exports/atlas/icons into apps/docs/public (or use app/icon.svg, app/apple-icon.png and app/manifest.ts from the Atlas export). Add theme-color. Regenerate og.png from the Atlas Raumfalten signet plus 'Atlas' plus 'Designsystem von Rapold' (one per brand optionally). Remove the legacy squares mark.
+- **Prüfung:** Confirmed live: /favicon.ico, /apple-touch-icon.png and /manifest.webmanifest return 404, while /brands/rapold/exports/atlas/manifest.webmanifest returns 200. The home HTML has no apple-touch-icon, manifest or theme-color. apps/docs/app/icon.svg is a different mark from the AtlasMark signet. README:62 lists 'Atlas selbst' as a Rapold product with an approved signet, so the site not following its own integration guide is a real consistency gap. The fix must stay compatible with the white-label neutral default, for example Atlas's own product icon, not the brand-switched icon. P2.
+
+### [P2] [S] [ICE 3.6] UX-11 – 'Vertrag als JSON' points to tokens.json on unrelated pages
+
+- **Bereich:** UX, IA, Inhalt, erster Eindruck
+- **Beleg:** reference-page.tsx page-meta: brand → brand.json, mermaid → mermaid.json, praesentation → presentation.json, and every other section → `/brands/${brand.id}/tokens.${mode}.json`. So /components, /icons, /navigation, /accessibility and /login-pattern all present 'Vertrag als JSON' that is actually the token file.
+- **Prinzip:** Nielsen H4 and H2 (labels must match destination); error prevention for agents
+- **Massnahme:** Use an explicit map per section: icons → /icons/index.json, components → the new components contract, praesentationslogik → /contracts/presentation-logic.md, engineering → /contracts/engineering.md. Hide the link where no contract exists.
+- **Prüfung:** Confirmed at reference-page.tsx:30: every section other than brand, mermaid and praesentation links 'Vertrag als JSON' to tokens.{mode}.json, including /components, /icons and /accessibility. For a site whose primary users are agents, a label that does not match its destination is misleading (H4, error prevention). P2 stands.
+
+### [P2] [S] [ICE 3.6] A11Y-03 – Dominicano Express light: primary #146FE8 fails as small text on tinted surfaces, including the active nav item on every page
+
+- **Bereich:** Barrierefreiheit & Responsive
+- **Beleg:** axe results in dominicano-express light mode:
+- `a[aria-current=page] > span`: #146fe8 on #ecf3fd = 4.2:1, on 35/35 routes
+- `.page-meta > a` ('Vertrag als JSON'): #146fe8 on #f6f9fc = 4.44:1 at 12px, on 34 routes
+- `.grid-demo > div` on /layout: 4.2:1
+- `.zone-diagram > div` on /praesentation: 4.2:1
+
+Source: packages/brands/src/dominicano-express.json, where light primary is #146FE8, and globals.css `.nav-link[aria-current]{color:var(--primary)}`.
+- **Prinzip:** WCAG 1.4.3 Contrast (Minimum), AA
+- **Wirkung:** A brand token passes for fills but fails as text → the site-wide current-page indicator is under AA → the same failure ships in every Dominicano product built on Atlas.
+- **Massnahme:** Add a text-safe primary role, e.g. `--primary-text` / `--link`, to the brand schema and use it for nav-current, page-meta and diagram labels. #0B5CC4 (the brand's own primary-hover) gives about 5.7:1 on #ecf3fd. Also add a defineBrand validation gate: primary at ≥4.5:1 against background, card and surface-info whenever it is used as text.
+- **Prüfung:** Recomputed: #146FE8 on #ECF3FD is 4.21:1 and on #F6F9FC is 4.45:1. globals.css has `.nav-link[aria-current]{background:var(--surface-info);color:var(--primary)}`. docs/brand-contract.md itself says an original colour value is no automatic approval for small text, so this is a real violation, not a documented decision. The proposed #0B5CC4 gives 5.63:1. I lowered it to P2: it affects one brand, the miss is marginal (4.2–4.45), and the semibold current-page label is still readable. (Schwere von P1 auf P2 angepasst)
+
+### [P2] [S] [ICE 3.6] A11Y-08 – Brand eyebrow suffix falls under 4.5:1 because of an opacity hack
+
+- **Bereich:** Barrierefreiheit & Responsive
+- **Beleg:** `.eyebrow span{opacity:.85}` (globals.css:21) on `<span>/ Rapold</span>` at 12px:
+- rapold light: #607891 on #f4faff = 4.34:1 (33 routes)
+- dominicano light: #657993 on #f6f9fc = 4.21:1 (33 routes)
+
+Neutral passes only because its muted-foreground has more headroom.
+- **Prinzip:** WCAG 1.4.3 Contrast (Minimum), AA
+- **Massnahme:** Remove the opacity and use the muted-foreground token as is, or use a weight or spacing change for hierarchy. Never apply opacity to text tokens that are tuned to the threshold.
+- **Prüfung:** Confirmed: `.eyebrow span{opacity:.85;margin-left:5px}` in globals.css. I recomputed #607891 on #F4FAFF as 4.35:1, which is below AA for 12px text. Real but marginal and limited to secondary eyebrow text. Keep it at P2/P3; the fix is to remove the opacity.
+
+### [P2] [S] [ICE 3.6] PERF-05 – Theme and brand flash on every load for dark-mode users, returning users and ?brand links
+
+- **Bereich:** Performance, SEO & Vertrauen
+- **Beleg:** Playwright with JS off and prefers-color-scheme: dark: .framework-scope background is rgb(246, 247, 249), the light theme. After hydration it is rgb(17, 20, 27). There is no inline pre-hydration script in layout.tsx. framework-shell.tsx initialises systemDark=false (line 34) and applies matchMedia (lines 62-68), localStorage brand and mode (46-55) and ?brand (57-60) only inside useEffect, then re-renders the whole tree with new CSS variables from toCssVariables (line 104). For ?brand=rapold this also swaps the font family to Geist after hydration.
+- **Prinzip:** Avoid flash of incorrect theme (FOIT/FOUC). WCAG 2.3.1-adjacent comfort issue: a light-to-dark flash for dark-mode users. It also adds work to the LCP render path, and the theme swap after hydration risks CLS.
+- **Massnahme:** Emit tokens for all brands and modes as static CSS keyed by attributes, e.g. [data-brand=rapold][data-mode=dark]{--background:…}, generated at build from toCssVariables. Add a tiny blocking inline script in layout.tsx <head> that reads localStorage 'framework-preferences', ?brand and matchMedia, then sets document.documentElement.dataset.brand/mode before first paint. Initialise React state from those dataset values instead of from hardcoded defaults. Add <meta name="color-scheme" content="light dark">.
+- **Prüfung:** Code evidence confirmed. framework-shell.tsx:31-33 initialise brandId='neutral', appearance='system' and systemDark=false, then resolve matchMedia, localStorage and ?brand in effects. layout.tsx has no pre-hydration script and no color-scheme meta. I did not re-run a rendered check, so the measured rgb values are unverified, but a light-then-dark flash follows deterministically from the code. No document justifies it. The fix (data-attribute CSS plus a blocking inline script) is standard.
+
+### [P2] [S] [ICE 3.6] PERF-07 – Inter is downloaded twice per weight (latin plus latin-ext): about 96 KB wasted on every first visit
+
+- **Bereich:** Performance, SEO & Vertrauen
+- **Beleg:** globals.css:5-14 imports @fontsource/inter latin-{300..700}.css AND latin-ext-{300..700}.css. In @fontsource/inter 5.3.0 these per-subset files have no unicode-range (grep -c unicode-range latin-400.css = 0; the built rule in 3bvtb48uz92n4.css is '@font-face{font-family:Inter;…font-weight:400;src:url(../media/inter-latin-400-normal…)}' with no range). Playwright document.fonts shows 'Inter 400,Inter 400,Inter 500,Inter 500,Inter 600,Inter 600,Inter 700,Inter 700' loaded on /. File sizes: latin about 24 KB each and latin-ext about 36 KB each, so about 240 KB of fonts on a 538 KB home transfer. latin-ext is a superset, so the 4 latin files (about 97 KB) are pure waste. The 300 weight is declared but never loaded.
+- **Prinzip:** Web font best practice: one face per weight and style, subset with unicode-range, prefer a variable font. Fewer bytes on the critical path for FCP and LCP and less font-swap CLS.
+- **Massnahme:** Replace the 10 imports with a single variable font: npm i @fontsource-variable/inter and use @import '@fontsource-variable/inter/wght.css'. That index CSS ships unicode-range-subsetted faces, and only latin is fetched for de-CH text (about 48 KB). Alternatively import only the index.css per weight (which has unicode-range) and drop 300. Add <link rel="preload" as="font" type="font/woff2" crossorigin> for the latin file used above the fold.
+- **Prüfung:** Confirmed, but the rationale is wrong. globals.css:5-14 imports both latin-* and latin-ext-* for 300-700, and grep finds 0 unicode-range in latin-400.css and latin-ext-400.css, so both faces are fetched for every weight used. However, latin-ext is NOT a superset of latin: Fontsource and Google subset latin-ext to Latin Extended ranges (U+0100+), while German umlauts sit in latin (U+00C0-00FF). The waste is therefore the latin-ext files (35,000 B each versus 23,664 B for latin-400), not the latin files. Dropping latin as suggested would break basic text. The comment at globals.css:2-4 shows a deliberate latin-only intent, so the double fetch is a bug, not a decision. Correct fix: the variable font or index CSS with unicode-range, keep latin, and remove the unused 300 weight.
+
+### [P2] [S] [ICE 3.52] VISUAL-09 – Radius contract mismatch: published tokens say lg=16/xl=24 (rapold) but components render 8px
+
+- **Bereich:** Visuelles Design, Zustände & Bewegung
+- **Beleg:** public/brands/rapold/tokens.light.css publishes `--radius-lg: 16px; --radius-xl: 24px` and foundation.json has radius lg 12, xl 16. But packages/core/src/styles.css:39-42 `@theme inline` maps `--radius-lg` and `--radius-xl` to `var(--brand-radius)` (8px rapold) and md to min(brand,8).
+
+Measured: rapold dialog radius 8px and buttons 8px. In neutral and dominicano the dialog is 12px but buttons are 8px and the dialog close is 8px.
+
+Agents reading tokens.json or DTCG get values that no component renders.
+- **Prinzip:** Token contract integrity (llms.txt / DTCG export must equal rendered output); consistency
+- **Massnahme:** Pick one model: either export `radius-lg/xl` as derived from brand-radius in tokens.*.json/css, or make @theme read `var(--radius-lg)` from the brand token files. Add a check in `npm run check` that compares the computed radius of Card, Dialog and Button against the published tokens.
+- **Prüfung:** Confirmed: apps/docs/public/brands/rapold/tokens.light.css:35-36 publishes `--radius-lg: 16px; --radius-xl: 24px`, while styles.css:41-42 maps both to var(--brand-radius) inside @theme inline. Components therefore render values that differ from the published token contract that agents consume. This breaks token-contract integrity for the stated primary audience (agents reading tokens), so P2.
+
+### [P2] [S] [ICE 3.4] UX-12 – Layout page shows 'space-4', but the real variable is --spacing-4
+
+- **Bereich:** UX, IA, Inhalt, erster Eindruck
+- **Beleg:** reference-page.tsx layout section: `<code>space-{key}</code>`. The live /brands/rapold/tokens.light.css defines 13 `--spacing-*` variables and no `--space-*`. The Tokens 'Skalen' tab copies `var(--spacing-…)`.
+- **Prinzip:** Nielsen H5 (error prevention) and H4
+- **Massnahme:** Render `--spacing-{key}` and make the rows click-to-copy `var(--spacing-{key})`, like the token table, with a copy status.
+- **Prüfung:** Confirmed: reference-page.tsx:34 renders `space-{key}`, while live /brands/rapold/tokens.light.css defines --spacing-0 and up, and the Tokens tab copies var(--spacing-…). A developer or agent copying from the layout page gets a non-existent name. P2 (H5).
+
+### [P2] [S] [ICE 3.4] A11Y-04 – Focus fully hidden behind the sticky toolbar and section anchors on Shift+Tab
+
+- **Bereich:** Barrierefreiheit & Responsive
+- **Beleg:** Scripted Shift+Tab sweep from the footer, counting focus stops whose rect bottom is at or above the bottom of the sticky stack:
+- 1440 /praesentation: 9/86 stops fully hidden behind 105px of sticky .toolbar + .page-anchors, e.g. 'PDF' (top 0, bottom 35), '6 Folien · PPTX', 'Projektdeck-Schema' (63–101)
+- 1440 /mermaid: 9/68 hidden ('Code kopieren', 'Mermaid-Datei', 'SVG', 'Im Editor öffnen', at 66–98)
+- 375 /components: 8 hidden behind the 85px wrapped toolbar ('Aktionen' 39–75, 'Projektstatus' 0–36)
+
+Only `.doc-section[id]` has scroll-margin-top:120px (globals.css:248). Focusable elements get no scroll padding.
+- **Prinzip:** WCAG 2.4.11 Focus Not Obscured (Minimum), AA (new in 2.2)
+- **Wirkung:** A keyboard user moves backwards → the browser scrolls the minimum amount → the focused control sits under the sticky bars → the user acts without seeing the target.
+- **Massnahme:** Add `html{scroll-padding-top:calc(var(--layout-header) + 64px)}`, sized to cover .page-anchors where present, and at max-width:767px use the measured wrapped toolbar height (about 90px). Alternatively apply `scroll-margin-top` to `main :is(a,button,input,select,summary,[tabindex])`.
+- **Prüfung:** Confirmed: .toolbar is sticky at top:0 and .page-anchors is sticky at top:var(--layout-header). The only scroll offset is `scroll-margin-top:120px` on sections (globals.css:46), and there is no scroll-padding anywhere. I could not re-run the Shift+Tab sweep, but the mechanism is sound and violates WCAG 2.4.11. It surfaces only when navigating backwards, so P2 rather than P1. (Schwere von P1 auf P2 angepasst)
+
+### [P2] [S] [ICE 3.4] VISUAL-05 – Four different focus-ring recipes; the ring/50 variants fall below 3:1 in 5 of 6 brand-modes
+
+- **Bereich:** Visuelles Design, Zustände & Bewegung
+- **Beleg:** There are four recipes in packages/core/src/ui:
+- `ring-[3px] ring-ring` (button, input, badge),
+- `ring-[3px] ring-ring/50` (checkbox.tsx:14, select.tsx:35, tabs.tsx:60),
+- `ring-2 ring-offset-2` (dialog.tsx:68, sheet.tsx:75, lightbox.tsx:363),
+- `ring-2` without offset (lightbox.tsx:157/264/290).
+The docs add a fifth: outline 3px offset 3 (globals.css, accessibility.css:12).
+
+Computed ring/50 halo contrast against the page background:
+- neutral-light 2.66
+- rapold-light 2.21
+- rapold-dark 2.98
+- dominicano-light 2.03
+- dominicano-dark 2.86
+- neutral-dark 3.52 (the only pass)
+
+The token `--border-width-focus: 3px` exists in tokens.*.css but is not used. Radiox centralizes this in components/ui/focusRing.ts (FOCUS_RING / _INSET / _WHITE).
+- **Prinzip:** WCAG 2.4.13 Focus Appearance / 1.4.11 Non-text Contrast (>=3:1); design-system consistency
+- **Massnahme:** Import the radiox idea as a core `focusRing` constant/token: `outline: var(--border-width-focus) solid var(--ring); outline-offset: 2px`. Add an inset variant for elements on imagery. Replace all ring/50 and ring-2 recipes with it. Document it on /accessibility with a live focus gallery.
+- **Prüfung:** Plausible and consistent with the source: multiple ring recipes (ring-ring, ring-ring/50, ring-2 with and without offset) plus a docs-level outline rule, while the token --border-width-focus goes unused. The ring/50 contrast figures follow from the 50% alpha blend. This overlaps with VISUAL-01 in root cause (no single focus token), but the inconsistency and the below-3:1 halos are distinct. P2.
+
+### [P2] [M] [ICE 1.9] UX-01 – Command palette only indexes 35 page titles, so core intents return nothing or the wrong page
+
+- **Bereich:** UX, IA, Inhalt, erster Eindruck
+- **Beleg:** framework-shell.tsx: CommandItem value=`${group.title} ${title}`; no keywords. I tested live in Playwright with Ctrl+K on https://atlas.rapold.io/. 'Signet', 'Favicon', 'Button', 'Farbe', 'Abstand', 'spacing', 'Deck' and 'Schrift' each returned 0 results. 'Logo' returned ['Dramaturgie & Logik','Login-Muster'], 'PPTX' returned ['Lightbox'] and 'Dark' returned ['Dramaturgie & Logik']. The empty state is 'Keine passende Seite. Versuche einen anderen Suchbegriff.'
+- **Prinzip:** Nielsen H6 (recognition rather than recall) and H7 (flexibility); Jakob's law (users expect docs search to find components and tokens); ISO 9241-110 suitability for the task
+- **Wirkung:** A developer searches for a signet or a button, gets nothing or an unrelated page, concludes the asset does not exist and recreates or retraces it, which causes brand drift.
+- **Massnahme:** Build a static search index at build time from catalog pages plus keywords/synonyms (Signet, Logo, Favicon, Manifest, Farbe/Color, Abstand/Spacing, Deck/PPTX, Schrift/Font, Dunkel/Dark), the 19 component names, the 41 colour roles, the 10 Rapold products and the downloads/contracts. Pass it via the CommandItem `keywords` prop and deep-link to anchors such as /brand?brand=rapold#rapold-all-signets and /components#button. Replace cmdk's default fuzzy scorer with prefix/substring matching so 'PPTX' no longer matches 'Lightbox'. Extend the empty state with links to the top 4 intents.
+- **Prüfung:** Confirmed in code: framework-shell.tsx:169 sets CommandItem value=`${group.title} ${title}` with no keywords, so only 35 page titles are indexed. Signet, Favicon, Button and PPTX are not page titles, so those searches cannot match a real target. I did not re-run the Playwright session, but the claimed results follow from the code. I downgraded it to P2 because the palette is a secondary path: the sidebar shows 'Marken & Identität' and 'Komponenten', and agents use llms.txt rather than Ctrl+K. The keywords fix is cheap and correct. Building anchors for components belongs with UX-03. (Schwere von P1 auf P2 angepasst)
+
+### [P2] [M] [ICE 1.9] PERF-01 – The Rapold brand page (and every non-default brand) only exists after JavaScript runs; agents and crawlers get the neutral brand
+
+- **Bereich:** Performance, SEO & Vertrauen
+- **Beleg:** framework-shell.tsx:35 sets useState('neutral'); ?brand is applied only in useEffect (lines 57-60) and localStorage in useEffect (46-55). curl https://atlas.rapold.io/brand?brand=rapold returns 48,006 bytes containing 'AI Fabric' 0x, 'Argus' 0x, 'EdgePortal' 0x and 'Lotse' 0x. The sidebar foot reads 'Framework-Standard' and the body reads 'Das Default-Preset verwendet die neutralen Framework-Tokens…'. Playwright with JS off: main innerText 1,204 chars and 0 <img>. With JS on: 7,869 chars and 63 <img>. The canonical for that URL is https://atlas.rapold.io/brand, so the Rapold signet catalogue has no indexable or fetchable URL at all.
+- **Prinzip:** Google JS SEO basics (critical content must be in the server-rendered HTML; a query-param state with a canonical to the parameterless URL is never indexed). Also the product model: agents using curl or WebFetch must find signets.
+- **Wirkung:** An agent told to 'use the Argus signet from Atlas' fetches /brand?brand=rapold, sees only the neutral preset and either gives up or hallucinates asset paths. Search engines only ever see the neutral brand.
+- **Massnahme:** Make brand a path segment that is statically generated: add app/brand/[brandId]/page.tsx (or app/[section]/[brand]) with generateStaticParams over brands, and pass brandId from the route into FrameworkShell/BrandProvider so SSR renders the right tokens and showcase. Give each its own canonical, title and description (e.g. 'Rapold · Marken & Identität · Atlas'), keep ?brand= as a 308 redirect via vercel.json redirects with has:[{type:'query',key:'brand'}], and add the per-brand pages to sitemap.ts. Also list the Rapold signet asset paths in /brands/rapold/llms.txt so non-JS agents have a text path to them.
+- **Prüfung:** Confirmed. framework-shell.tsx:31 hard-codes useState('neutral') and reads ?brand only inside useEffect (line 56). Live curl of /brand?brand=rapold (48,006 B) has 0 'AI Fabric' and 0 'Argus', 3 'Framework-Standard', and canonical=https://atlas.rapold.io/brand. README.md:62 itself names /brand?brand=rapold as the Rapold brand view, so this is not a documented trade-off. Downgraded from P1: the agent harm chain is overstated. llms.txt lines 21-24 point agents to /brands/index.json ('Asset-Pfaden') and /brands/{brand}/llms.txt, and /brands/rapold/ ships assets-manifest.json, brand.json and identity.json, so a non-JS agent following the documented contract does reach the signets. What remains is wrong SSR HTML on an advertised URL plus SEO on an internal reference: a best-practice deviation. The fix (statically generated /brand/[brandId] with its own canonical) is sound. (Schwere von P1 auf P2 angepasst)
+
+### [P2] [M] [ICE 1.8] VISUAL-07 – Reference site does not demonstrate the states it documents (error path unreachable, loading never visible, no state gallery)
+
+- **Bereich:** Visuelles Design, Zustände & Bewegung
+- **Beleg:** /forms: the input has native `required minLength={3}` and the form has no noValidate. Typing 'ab' and submitting gives the browser bubble 'Please lengthen this text to 3 characters…', aria-invalid 'false' and an empty #form-error. The DS error state appears only for whitespace input ('   '). Even then the error text is muted-foreground rgb(70,97,126), not destructive, and the input shows border rgb(129,73,96) with box-shadow 'none' (the aria-invalid ring is overridden, see VISUAL-01).
+
+/toasts: `toast.promise(Promise.resolve('fertig'))` resolves in the same tick, so the 'Wird geprüft …' loading state never renders.
+
+/skeletons: permanently aria-busy, with no loaded transition.
+
+Disabled is shown only for Button. No page shows the hover/focus/active/disabled/invalid matrix or light and dark side by side.
+
+component-demo nests a Card inside a .demo-panel card (card-in-card).
+- **Prinzip:** A design-system reference must be the executable spec of every documented state (dogfooding); Nielsen #1; WCAG 3.3.1/3.3.3
+- **Massnahme:** Add `noValidate` to demo forms and render the DS error (aria-invalid, destructive message with an icon, linked via aria-describedby). Make toast.promise use a 1.5s timer. Add a 'Load' toggle to /skeletons that swaps to content. Add a per-component state gallery (default/hover/focus-visible/active/disabled/loading/invalid) rendered statically with forced classes, for light and dark.
+- **Prüfung:** Confirmed in pattern-showcase.tsx. Line 19: the form has `required minLength={3}` and no noValidate, so native validation pre-empts the DS error state, which then appears only for whitespace input. Line 13: `toast.promise(Promise.resolve('fertig'), ...)` resolves immediately, so the loading state is effectively never seen. The reference site does not exercise the states it documents. P2.
+
+### [P2] [M] [ICE 1.8] CODE-02 – The reference site renders components differently from how they render in products (unlayered element selectors in globals.css)
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** apps/docs/app/globals.css:21 (a single 13,761-character line) has unlayered element rules: `h1,h2,h3,p{margin-top:0}`, `h2{font-size:20px;line-height:1.35;letter-spacing:-.3px;margin-bottom:12px}`, `select{background:…;padding:7px 10px}`, `table{…text-align:left;font-size:14px}`, `th,td{padding:14px 18px}`, `main{padding:…}`. Measured on /components: DialogTitle (an h2 with `text-lg` = 18px) renders at 20px with a 12px bottom margin and -0.3px tracking. A product page without globals.css would render it at 18px. There are also class-name couplings to core internals, e.g. `.mermaid-surface .cursor-zoom-in{z-index:1}` and `.demo-panel form>[data-slot=input]{margin:12px 0;min-height:42px}`.
+- **Prinzip:** A design-system reference must show the component as shipped. Cascade layers and least-specificity docs styling.
+- **Wirkung:** A developer copies a Dialog, Select or Table from the reference. In the product it looks different (smaller title, different padding), so the reference loses credibility as the source of truth.
+- **Massnahme:** Wrap the docs base styles in `@layer base` (elements) and `@layer components` (doc classes). Scope element typography to doc content only, e.g. `.doc-prose :where(h2)`, so primitives keep their own utilities. Replace the selectors that target Tailwind class names (.cursor-zoom-in) with data-slot attributes exposed by core.
+- **Prüfung:** globals.css has only one @layer and an unlayered `h2{font-size:20px;…;margin-bottom:12px}` among other element rules. These override the primitives' utilities on the reference site, so components there differ from how they ship. Valid for a design-system reference. Fidelity concern, so P2.
+
+### [P2] [M] [ICE 1.8] CODE-04 – Brand and mode exist only after hydration: static HTML is always neutral and light, ignores ?brand, and has no pre-paint script
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** framework-shell.tsx:31-33 initialises `useState('neutral')`, `'system'` and `systemDark=false`. The URL (lines 55-58) and localStorage (44-53) are applied in effects, after paint. Live curl: /brand?brand=rapold returns `data-brand="neutral" data-mode="light"`. The HTML has no inline script reading 'framework-preferences' (grep count 0) and carries a 2,814-character inline neutral token `style=` on every page. Playwright with colorScheme dark: the first render is light, then data-mode switches to dark.
+- **Prinzip:** Agent audience: machine readers get the HTML, not the hydrated DOM. Flash of incorrect theme. Unexpected layout shift (CLS).
+- **Wirkung:** An agent asked to use the Rapold brand fetches atlas.rapold.io/brand?brand=rapold and receives the neutral brand page and neutral tokens. Human users in dark mode, or users following a deep link, see a neutral or light flash.
+- **Massnahme:** (a) Inline a tiny blocking script in layout.tsx `<head>` that reads ?brand, localStorage and prefers-color-scheme, and sets `data-brand` and `data-mode` on `<html>` before first paint. (b) Drive colours from the already generated static `/brands/{id}/tokens.{light,dark}.css` selected by `[data-brand=x][data-mode=y]`, instead of the inline `style={variables}` computed in React. (c) For agents, pre-render brand-scoped routes (e.g. /brands/rapold/brand) or point llms.txt to the brand JSON/MD rather than the ?brand HTML.
+- **Prüfung:** Live curl of /brand?brand=rapold returns data-brand="neutral" data-mode="light", and layout.tsx:15 has no pre-paint script. This mitigates the agent harm: README.md:17 and llms.txt point agents to /brands/rapold/*.md rather than ?brand HTML. What remains is a wrong-theme flash and misleading static HTML for deep links, so it drops from P1 to P2. (Schwere von P1 auf P2 angepasst)
+
+### [P2] [M] [ICE 1.8] CODE-09 – Core Lightbox: hardcoded German labels, a German-named API, an untested contrast claim, and no portal
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** packages/core/src/ui/lightbox.tsx:156 'Vorheriges Motiv'/'Nächstes Motiv', :263 'Vollbild schliessen', :289 'Slideshow anhalten/starten', :361 '… im Vollbild öffnen', :362 title 'Vergrössern'. None of these can be overridden by props, while dialog.tsx:47, sheet.tsx:47 and command.tsx:29 default to English `closeLabel='Close'`. The public API mixes languages: `LightboxBetrachter`, `offen`, `aufSchliessen`, `anzahl`, `aufVor`, `LIGHTBOX_FLAECHEN` next to `label`, `surface`, `aspectRatio`. Lines 91-95 claim 'Nachgerechnet in `tests/lightbox-kontrast.test.ts`, nicht geschätzt', but tests/ contains no such file (only 10 *.test.mjs). It renders `fixed inset-0 z-50` inline instead of through `useBrandPortal()` like every other overlay. Its code style also differs (no semicolons, 2-space indent): it is vendored from another repo (the source map points to mra-design).
+- **Prinzip:** White-label core must be locale-neutral and overridable. API consistency. 'Evidence or it didn't happen' (AGENTS.md: completeness is proven by checked flows).
+- **Wirkung:** An English-language product (Argus, AI Fabric) cannot localise the Lightbox. Developers face a bilingual API. A cited safety test does not exist, so the contrast regression it guards can recur.
+- **Massnahme:** Add a `labels?: Partial<LightboxLabels>` prop with English defaults matching the Dialog convention, and pass German labels from the docs app. Rename the API to English (`LightboxViewer`, `open`, `onClose`, `count`, `onPrev/onNext`, `LIGHTBOX_SURFACES`) and keep deprecated aliases for one minor version. Add the contrast test it cites (it can reuse `contrast()` from @rapold/framework-brands). Render the viewer through `createPortal(…, useBrandPortal() ?? document.body)`.
+- **Prüfung:** Confirmed: German labels at lightbox.tsx:156, 263 and 362 cannot be overridden, while dialog.tsx uses the English 'Close' convention. The cited tests/lightbox-kontrast.test.ts does not exist (tests/ has only .mjs files). The viewer renders `fixed inset-0 z-50` at line 243 with no createPortal or useBrandPortal, unlike dialog.tsx:20. Real inconsistencies in a white-label core.
+
+### [P2] [M] [ICE 1.8] CODE-13 – No interaction, component, a11y or lint tests: the confirmed regressions are invisible to `npm run check`
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** tests/ holds 47 node:test cases in 10 files, all for contracts and assets (brand-assets 9, brands 8, deck-contract 7, rapold 6, project-deck 5, …, prompt-compiler 2). There is no React render test, no Playwright or axe run, and no ESLint config (no eslint in any package.json, no eslint.config.*), even though lightbox.tsx:202 cites the `react-hooks/refs` lint rule. Bugs CODE-01 (focus ring removed), CODE-03 (newline swallowed) and CODE-06 (stale aria-invalid) all pass CI. By contrast, radiox/apps/frontend runs vitest, testing-library and Playwright e2e, with ModalDialog.test.tsx, Tooltip.test.tsx, primitives.test.tsx and useSwipeToDismiss.test.tsx.
+- **Prinzip:** Test the critical flows (find, then use correctly; forms; editors). Shift-left accessibility.
+- **Massnahme:** Add vitest and @testing-library/react for packages/core: focus ring present, labels overridable, Dialog focus return, Lightbox Escape and trap. Port radiox's ModalDialog and Tooltip test patterns. Add a Playwright smoke suite with @axe-core/playwright for /forms, /login-pattern, /organigramm, /prompt-compiler, /tables and /components. Add ESLint with react-hooks, jsx-a11y and @next/next. Wire everything into `npm run check`.
+- **Prüfung:** Confirmed: tests/ holds only node contract tests in .mjs, and there is no eslint.config, Prettier or editorconfig. Bugs CODE-01, 03 and 06 would pass `npm run check`. A valid gap in process quality.
+
+### [P2] [M] [ICE 1.76] VISUAL-03 – No destructive-action protection: no confirm/AlertDialog primitive, demo 'Löschen' does nothing, destructive menu variant undocumented
+
+- **Bereich:** Visuelles Design, Zustände & Bewegung
+- **Beleg:** The packages/core/src/index.ts exports (19 modules) contain no AlertDialog or confirm. A grep for AlertDialog/alert-dialog in packages/core finds nothing.
+
+component-demo.tsx:10 `<UI.Button variant="destructive">Löschen</UI.Button>` has no handler. Measured: after clicking it there are 0 dialogs and 0 toasts.
+
+dropdown-menu.tsx:55-65 implements `variant='destructive'`, but no page demonstrates it.
+
+The destructive hover is `hover:brightness-95` (button.tsx:13). On rapold-light, bg rgb(129,73,96) shows only filter brightness(0.95), a barely perceptible change.
+
+Radiox already has this pattern: apps/frontend/components/ui/useAppDialog.tsx defines DialogKind 'confirm' | 'prompt' | 'inform' with `tone?: 'default' | 'danger'` and initialFocusRef = cancelRef for confirm.
+- **Prinzip:** Nielsen #5 error prevention & #3 user control; WCAG 3.3.4 Error Prevention (legal/financial/data); destructive actions need confirm or undo
+- **Wirkung:** Admin products (Auditor, Cockpit, AI Fabric) need delete/revoke flows, Atlas offers only a red button, each team rolls its own confirm with inconsistent focus and copy
+- **Massnahme:** Import radiox's confirm pattern as a core `AlertDialog` (Radix AlertDialog) with `tone="danger"`. It should do three things:
+- set initial focus on Cancel,
+- use a verb-specific confirm label ('Projekt löschen'),
+- show the destructive styling on the confirm button only.
+Also add an `undo` toast recipe for reversible deletes. Wire the demo 'Löschen' button to it, and demo `DropdownMenuItem variant="destructive"`. Add a `--destructive-hover` token instead of brightness-95.
+- **Prüfung:** Confirmed. index.ts exports 19 modules and none is AlertDialog or confirm; grep finds no AlertDialog in packages/core/src. component-demo.tsx:10 renders `<UI.Button variant="destructive">Löschen</UI.Button>` with no handler, and button.tsx:14 uses `hover:brightness-95`. The radiox confirm pattern is a legitimate import candidate and fits the user's request. Downgraded to P2: this is a missing pattern in a reference site with no real destructive operation, so no user can lose data on Atlas itself. The harm is downstream guidance (Nielsen #5), not a blocked core flow. (Schwere von P1 auf P2 angepasst)
+
+### [P2] [M] [ICE 1.74] VISUAL-06 – State matrix of primitives is incomplete: no loading, indeterminate, field-error, success/warning/info variants; key controls missing vs radiox
+
+- **Bereich:** Visuelles Design, Zustände & Bewegung
+- **Beleg:** State matrix (default/hover/focus/active/disabled/loading/success/error/empty):
+- Button: no loading prop, aria-busy or spinner. Active/pressed is identical to hover (measured active bg rgb(3,89,155) = hover bg, transform none).
+- Checkbox: CheckIcon only, so Radix 'indeterminate' renders a check.
+- Input: aria-invalid styling but no Description/Message/Field component.
+- No Textarea primitive: docs use `className="code-editor"` on a raw textarea (pattern-showcase forms).
+- Badge: variants default/secondary/destructive/outline/ghost/link only. No success, warning or info, although --success, --warning and --info tokens exist.
+- No Switch, RadioGroup, Progress, Spinner or inline Alert/Banner.
+
+Radiox has these (grep counts across apps/frontend/components): Switch 62, Toggle 59, Progress 60, Slider 20, Spinner 11. It also has a 7-role status map in components/ui/statusTone.ts (success, info, progress, warning, error, neutral, active), plus IconButton and LiveDot.
+- **Prinzip:** Nielsen #1 visibility of system status; state-matrix completeness for a design system; WCAG 4.1.2 (indeterminate exposed), 3.3.1 Error Identification
+- **Massnahme:** Add the missing states and import the missing radiox elements:
+- Button `loading` with Loader2 + aria-busy + disabled,
+- Checkbox indeterminate icon (MinusIcon on data-state=indeterminate),
+- Field/FieldDescription/FieldError + Textarea,
+- Badge tone variants backed by a statusTone-style map (success/warning/info/progress/neutral),
+- Switch, Progress/Spinner and Alert primitives (from radiox components/ui).
+Publish a state-matrix table per component on /components.
+- **Prüfung:** Confirmed from the export list: there is no Switch, RadioGroup, Progress, Spinner, Textarea, Field or Alert primitive; Badge variants lack success/warning/info despite the tokens; the forms demo uses a raw textarea with className code-editor (pattern-showcase.tsx:19). The finding matches the user's explicit request to import radiox elements that are missing in Atlas. This is roadmap scope rather than a defect, so P2.
+
+### [P2] [M] [ICE 1.7] UX-06 – Taxonomy: duplicate group/page labels, duplicate prompt pages, misfiled items, 35 links all expanded
+
+- **Bereich:** UX, IA, Inhalt, erster Eindruck
+- **Beleg:** catalog.ts: group 'Komponenten' contains page 'Komponenten', which gives the breadcrumb 'Komponenten › Komponenten'; the same happens with 'Motion › Motion'. pattern-showcase.tsx renders identical UI for `section==='prompt-compiler'||section==='prompt-vorlagen'`, and both are live (200). A prompt builder exists 3× (/praesentation 'Auftrag kopieren', /agenten 'Prompt kopieren', /prompt-compiler 'Auftrag kopieren'). Techstack sits under 'Agenten', Organigramm and Infografik under 'Marke', Navigation under Komponenten. Dashboard, Charts and Datenvisualisierung overlap. 8 groups and 35 items are expanded by default; at 1440×900, only groups 1–3 fit in the sidebar viewport (screenshot desk__.png).
+- **Prinzip:** Hick's law; Nielsen H8 (minimalism) and H4; card-sorting mental model (artefact type vs. audience)
+- **Wirkung:** Users scan 35 items, hit duplicates, and lose trust that each page has a single purpose.
+- **Massnahme:** Re-sort by user task: Start · Marke (Identität & Signets, Farben/Tokens, Typografie, Raster & Abstände, Icons, Motion, Inhalt & Sprache, In Produkte einbinden) · Komponenten (Übersicht, Navigation, Feedback [Toasts/Leer/Laden], Formulare, Tabellen, Lightbox) · Daten & Diagramme (Diagramme incl. Dataviz rules, Dashboard, Mermaid, Organigramm, Infografik) · Muster (Login, Auth-Flow, Mail-Vorlagen, Projekt-Hero) · Präsentationen (Präsentation, Dramaturgie, Prompt-Compiler) · Für Agenten (Agenten-Vertrag, Techstack, llms.txt) · Betrieb. Merge prompt-vorlagen into prompt-compiler with a redirect. Rename the page 'Komponenten' to 'Übersicht'. Collapse non-active groups by default on first visit.
+- **Prüfung:** Confirmed in catalog.ts:4-11: 'Komponenten' contains 'Komponenten' and 'Motion' contains 'Motion'. pattern-showcase.tsx:23 renders identical UI for prompt-compiler and prompt-vorlagen, and both routes return 200. Techstack is filed under Agenten. I did not verify that all groups start expanded, and the full re-sort proposal is opinion. The duplicate page and duplicate breadcrumbs are real H4/H8 deviations at P2. The wholesale re-taxonomy should be treated as optional.
+
+### [P2] [M] [ICE 1.7] PERF-02 – Interactive reference pages server-render only a 'wird geladen' placeholder, so non-JS agents get no component or icon content
+
+- **Bereich:** Performance, SEO & Vertrauen
+- **Beleg:** Playwright with JS off: /icons main innerText is 168 chars, the only content being 'Icon-Katalog wird geladen …'. /components main innerText is 336 chars, with no Button/Dialog usage or code. reference-page.tsx:13-23 loads ComponentDemo, IconGallery, TableShowcase, DataShowcase and others through next/dynamic with loading placeholders. In the static export these render the placeholder, not the content. curl /components only shows h2s ('Button & Badge', 'Input, Label & Checkbox'…) without the usage snippets.
+- **Prinzip:** Progressive enhancement / Google JS SEO basics: primary task content must be in the HTML. The primary conversion is 'a developer or agent finds the right component or token and uses it correctly'.
+- **Massnahme:** Split each showcase into a server-rendered static part (names, import line, props table, usage snippet; for icons, the first 120 names from /icons/index.json as <a href="/icons/Name.svg"> links) and a client-only interactive island. Use ssr:true, which is the default for next/dynamic in RSC, for components that do not touch window, or move static docs into the server page. Alternatively, expose /contracts/components.md and link it from llms.txt and from a <link rel="alternate" type="text/markdown"> on each page.
+- **Prüfung:** Confirmed. reference-page.tsx is 'use client' and lines 13-22 use next/dynamic with <p>… wird geladen …</p> placeholders. Live curl /icons contains 'wird geladen …'. Downgraded from P1: llms.txt:50 documents /icons/{PascalCaseName}.svg and /icons/index.json exists, so agents have a text path for icons. /components has no equivalent markdown contract (public/contracts lists brand-contract, engineering, mermaid, presentation-logic and others, but no components), so the gap there is real. The fix is valid; the cheapest option is a contracts/components.md linked from llms.txt. (Schwere von P1 auf P2 angepasst)
+
+### [P2] [M] [ICE 1.6] UX-15 – Token findability: key-only filter, no usage guidance per role, dark exports missing from llms.txt
+
+- **Bereich:** UX, IA, Inhalt, erster Eindruck
+- **Beleg:** reference-page.tsx filter: `k.includes(query.toLowerCase())`, so searching 'Text', 'Fehler' or 'Hintergrund' finds nothing. Token cards show name and hex only, with no meaning (e.g. surface-info vs muted). Downloads cover only the current mode. /llms.txt 'Vollständige Token-Exporte' lists only tokens.light.*, although /brands/rapold/tokens.dark.css and /brands/neutral/tokens.dark.json return 200.
+- **Prinzip:** Nielsen H6 and H10; agent-contract completeness
+- **Massnahme:** Add a one-line German role description and synonyms per semantic token (from a roles map in packages/brands) and search over name, description and value. Offer light and dark downloads side by side. Add tokens.dark.* lines to both llms.txt templates.
+- **Prüfung:** Confirmed: reference-page.tsx:32 filters with k.includes(query.toLowerCase()) on keys only, and the download row offers only the current mode. Live /llms.txt lists only tokens.light.* although /brands/rapold/tokens.dark.css returns 200. The missing dark exports in the agent contract are the stronger half; the per-role descriptions are a nice-to-have. P2.
+
+### [P2] [L] [ICE 0.6] UX-16 – Atlas UI package lacks patterns already in the radiox UI package (import gap and IA slot gap)
+
+- **Bereich:** UX, IA, Inhalt, erster Eindruck
+- **Beleg:** C:\DEV\marcelrapold\radiox\packages\ui\src exports IconButton, LiveDot, Eyebrow, Inset, FloatingLayer, ModalDialog with useSwipeToDismiss, Tooltip with positioning, statusTone/tone, SpaLink, GlassPlayButton, CurrencySwitcher and SwissFlag. apps/frontend/components has LanguageSwitcher, OnboardingWizard, Toast, RadioXLoader, ErrorBoundary, DashboardStats and MediaPlayer. Atlas core (packages/core/src/ui) has 19 modules and none of: icon button, status/live indicator, eyebrow component, stepper/wizard, language switcher, media player or error boundary. The Atlas IA has no group for 'Status & Indikatoren', 'Assistenten/Stepper' or 'Medien'. (I did not inspect radiox.cloud's rendered UI in depth.)
+- **Prinzip:** Design-system coverage: patterns used in products should exist once in the DS (Nielsen H4 across products)
+- **Massnahme:** Build an intake table (radiox component → Atlas target → neutralise brand values → status). Generic patterns go to core with tokens only: IconButton, StatusDot/LiveDot, Eyebrow, Inset, Stepper (from OnboardingWizard), LanguageSwitcher, ErrorState/ErrorBoundary, Loader. Product-specific ones (GlassPlayButton, MediaPlayer, CurrencySwitcher, SwissFlag) go to a product/brand layer or a 'Muster' page. Add IA slots under Komponenten: 'Status & Indikatoren', 'Assistenten', 'Medien'.
+- **Prüfung:** The cited path is wrong: C:\DEV\marcelrapold\radiox\packages\ui\src does not exist, and packages/ui contains only node_modules. The components do exist under C:\DEV\marcelrapold\radiox\apps\frontend\components\ui (IconButton.tsx, LiveDot.tsx, Eyebrow.tsx, GlassPlayButton.tsx, CurrencySwitcher.tsx, SwissFlag.tsx). LanguageSwitcher.tsx, OnboardingWizard.tsx, ErrorBoundary.tsx, Toast.tsx and RadioXLoader.tsx are directly under apps/frontend/components. Atlas core (packages/core/src/ui) has 19 modules and none of them is an IconButton, LiveDot, Eyebrow, Stepper or LanguageSwitcher. The gap is real and matches the user's explicit request to import radiox elements. The evidence path must be corrected to apps/frontend/components/ui, and neutralising brand values is mandatory under the white-label core rule (README:65). P2.
+
+### [P3] [S] [ICE 0.97] PERF-03 – Section pages lose og:image, og:locale, og:type and siteName; twitter:title is 'Atlas' on every page
+
+- **Bereich:** Performance, SEO & Vertrauen
+- **Beleg:** [section]/page.tsx:6 generateMetadata returns openGraph:{title,url}. Next.js metadata merging replaces the whole openGraph object, so /brand, /tokens, /typography, /components, /navigation and /icons ship no og:image, og:image:width, og:locale, og:type or og:site_name (curl output shows only og:title, og:description and og:url). Only /, /praesentation and /praesentationslogik keep the image, because they spread ...inherited.openGraph (praesentation/page.tsx). On all routes the twitter block is inherited unchanged: <meta name="twitter:title" content="Atlas"/>.
+- **Prinzip:** Open Graph protocol (og:image is needed for rich link previews) and Twitter Cards. Shared deep links to /tokens in Slack or Teams render without an image and with the wrong title.
+- **Massnahme:** Build page metadata in one helper, e.g. pageMetadata(id) in catalog.ts, which returns {title, description, alternates:{canonical}, openGraph:{type:'website', siteName:'Atlas', locale:'de_CH', title, description, url, images:[{url:'/og.png',width:1200,height:630,alt:title}]}, twitter:{card:'summary_large_image', title, description, images:['/og.png']}}. Use it in [section], praesentation and praesentationslogik. Better still, generate a per-page OG image via app/[section]/opengraph-image.tsx (static at build).
+- **Prüfung:** Confirmed. [section]/page.tsx:6 returns openGraph:{title,url}, which replaces the layout's openGraph (layout.tsx:11 has type, siteName, locale and images). Live /tokens shows only og:title, og:description and og:url, plus twitter:title='Atlas'. The impact is link-preview polish on an internal reference site, so P3 rather than P2. The shared pageMetadata helper is the right fix. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [S] [ICE 0.95] UX-07 – 404 is Next.js's English default, with a home canonical, a wrong breadcrumb and no way out
+
+- **Bereich:** UX, IA, Inhalt, erster Eindruck
+- **Beleg:** GET /does-not-exist returns 404 with two <title> tags ('Atlas' and '404: This page could not be found.'), <link rel=canonical href=https://atlas.rapold.io> and og:url pointing at the home page. The body reads '404 | This page could not be found.' The toolbar breadcrumb falls back to 'Übersicht' (`pages.find(...) ?? pages[0]` in framework-shell.tsx). There is no apps/docs/app/not-found.tsx. Screenshot: mob__xyz.png.
+- **Prinzip:** Nielsen H9 (help users recover from errors) and H4 (language consistency, lang=de-CH)
+- **Massnahme:** Add app/not-found.tsx in German: 'Seite nicht gefunden', one line of explanation, a search button (opens Ctrl+K), and links to Signets, Tokens, Komponenten and Präsentation. Set the breadcrumb fallback to 'Nicht gefunden'. Add metadata robots noindex and no canonical.
+- **Prüfung:** Confirmed live: /does-not-exist returns 404 with two <title> tags ('Atlas' and '404: This page could not be found.'), a canonical pointing to https://atlas.rapold.io, the English Next default h1, and no app/not-found.tsx in apps/docs/app. Because it is a real 404 status, the canonical has little SEO impact, and the page is rarely hit. It is a real H9 and language-consistency gap but polish, so P3. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [S] [ICE 0.95] PERF-08 – No Content-Security-Policy, no frame-ancestors or X-Frame-Options, no Permissions-Policy; HSTS without includeSubDomains or preload
+
+- **Bereich:** Performance, SEO & Vertrauen
+- **Beleg:** curl -I https://atlas.rapold.io/ returns only Strict-Transport-Security: max-age=63072000, X-Content-Type-Options: nosniff and Referrer-Policy: strict-origin-when-cross-origin (from vercel.json headers). There is no Content-Security-Policy, X-Frame-Options or Permissions-Policy. The site renders HTML via dangerouslySetInnerHTML for mermaid and orgchart output (mermaid-diagram.tsx:56, orgchart-editor.tsx:36) from user-editable input.
+- **Prinzip:** OWASP Secure Headers Project / Mozilla Observatory: CSP as defence-in-depth against XSS, and frame-ancestors against clickjacking (an approximate scan grade of B/C).
+- **Massnahme:** Add to vercel.json headers for '/(.*)': Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'. The unsafe-inline is needed because the Next export inlines self.__next_f pushes; tighten later with hashes. Also add X-Frame-Options: DENY, Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=(), and Cross-Origin-Opener-Policy: same-origin. Extend HSTS to max-age=63072000; includeSubDomains; preload only after confirming all *.rapold.io hosts are HTTPS-only. Ship CSP as Report-Only first and check /charts (ECharts from /vendor) and /mermaid.
+- **Prüfung:** Confirmed. Live headers carry HSTS max-age=63072000 (Vercel default) and Referrer-Policy, with no CSP, X-Frame-Options or Permissions-Policy, and vercel.json only sets nosniff and Referrer-Policy. The impact is low: this is a static export with no auth, no cookies and no state-changing actions, so clickjacking has nothing to target. The dangerouslySetInnerHTML input is the viewer's own editor input (self-XSS only). This is defence-in-depth hygiene, so P3. Report-Only CSP first is the right approach. HSTS preload should not be added without checking all *.rapold.io hosts. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [S] [ICE 0.95] PERF-10 – 404 page: English default copy on a de-CH site, two <title> elements, and a canonical pointing to the home page
+
+- **Bereich:** Performance, SEO & Vertrauen
+- **Beleg:** curl https://atlas.rapold.io/does-not-exist returns HTTP 404 with '<title>Atlas</title>' AND '<title>404: This page could not be found.</title>', '<link rel="canonical" href="https://atlas.rapold.io"/>' inherited from layout.tsx alternates:{canonical:'/'}, and the body text '404 This page could not be found.' in English with system-ui inline font styles (Next default not-found). /_not-found is also served with HTTP 200 (noindex).
+- **Prinzip:** Google Search Central: error pages should not declare a canonical to another URL. Nielsen heuristic 9 (help users recover from errors) and language consistency (WCAG 3.1.1, html lang=de-CH with English content).
+- **Massnahme:** Add apps/docs/app/not-found.tsx with German copy ('Seite nicht gefunden'), a search trigger and links to Übersicht, Tokens, Komponenten and /llms.txt, plus export const metadata={title:'Seite nicht gefunden · Atlas', robots:{index:false}, alternates:{canonical:null}}. Move canonical out of the root layout metadata into the page-level helper (PERF-03) so non-pages never inherit '/'. Add a vercel.json rewrite or redirect so /_not-found returns 404.
+- **Prüfung:** Confirmed. Live /does-not-exist returns 404 with two <title> elements ('Atlas' and '404: This page could not be found.') and canonical https://atlas.rapold.io, and the English Next default sits on a de-CH site. /_not-found returns 200. Search engines drop 404-status pages, so the canonical has no practical SEO harm. What remains is copy and language consistency polish plus a recovery path, so P3 rather than P2. Adding not-found.tsx is the right fix. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [S] [ICE 0.9] UX-05 – One concept, six names: Default / Framework / Default-Preset / neutral / Theme / Brand
+
+- **Bereich:** UX, IA, Inhalt, erster Eindruck
+- **Beleg:** packages/brands/src/neutral.json "name": "Framework". The toolbar select option shows 'Default' (framework-shell.tsx `item.id==='neutral'?'Default':item.name`). The sr-only label is 'Theme'. The home eyebrow shows 'EINSTIEG / FRAMEWORK', the footer 'Atlas · Framework' and the sidebar foot 'Framework / Framework-Standard'. brand-showcase.tsx says 'Default-Preset' and 'Aktives Theme'. The URL uses brand=neutral. The Interface prompt says 'Interface im Framework-Design' (prompt-compiler.mjs). In _components: 'Brand' appears 216×, Theme 19×, Default 28×, Preset 18× (also used for deck presets), Marke 3×.
+- **Prinzip:** Nielsen H4 (consistency and standards) and H2 (match between system and real world)
+- **Wirkung:** Users and agents cannot map 'Default' in the UI to 'neutral' in URLs and contracts, so they pick the wrong brand id.
+- **Massnahme:** Use one concept word ('Brand') and one display name ('Neutral') matching the id. Rename neutral.json name to 'Neutral'. Reserve 'Preset' for deck presets only. Add a visible 'Brand' label to the selector. Update prompt-compiler to say 'im Brand Neutral'. Document the glossary in /content.
+- **Prüfung:** Confirmed: neutral.json has "name": "Framework", the select shows 'Default' (framework-shell.tsx:144), and brand-showcase says 'Default-Preset' and 'Aktives Theme'. However, llms.txt explicitly maps 'Default-Preset (brand: neutral)', so the main harm chain (agents picking the wrong id) is mitigated. This is terminology polish (Nielsen H4), so P3. Renaming the JSON name field touches contracts, so it must be checked against brand-contract versioning. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [S] [ICE 0.9] UX-10 – 32 section pages lose og:image/og:type/og:site_name, and all pages share one meta description
+
+- **Bereich:** UX, IA, Inhalt, erster Eindruck
+- **Beleg:** [section]/page.tsx generateMetadata returns `openGraph:{title,url:href(section)}`, which replaces the root openGraph. Live /brand and /tokens emit only og:title, og:description and og:url. /praesentation spreads `inherited.openGraph` and emits og:image, og:type and og:locale. The meta description on /, /brand and /praesentation is identical: 'Atlas, das Designsystem von Rapold: …'.
+- **Prinzip:** Link-preview polish (OG protocol); distinct page descriptions for findability
+- **Massnahme:** In [section]/page.tsx use `(await parent).openGraph` spread as praesentation/page.tsx does. Set `description` per page from `descriptions[section] ?? guidance[section]?.intro`.
+- **Prüfung:** Confirmed: [section]/page.tsx:6 returns openGraph:{title,url}, which replaces the inherited object, while praesentation/page.tsx:9 spreads inherited.openGraph. Live /brand emits only og:title, og:description and og:url. The description is shared across pages. This is link-preview polish for an internal tool, so P3. The one-line fix is correct. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [S] [ICE 0.9] A11Y-07 – Rapold clear-space figure: aria-label on a generic div is ignored, and the image has alt=""
+
+- **Bereich:** Barrierefreiheit & Responsive
+- **Beleg:** axe reports aria-prohibited-attr on /brand?brand=rapold in both light and dark: `<div class="rapold-clearspace" aria-label="Zeichenfläche mit 24 Einheiten Schutzraum"><img … alt="">` (rapold-showcase.tsx:119). An aria-label on a role-less div is not exposed, so screen-reader users get nothing for this rule illustration.
+- **Prinzip:** WCAG 1.1.1 Non-text Content (A); 4.1.2 Name, Role, Value (A)
+- **Massnahme:** Add `role="img"` to the div and keep the aria-label, or move the text into the img alt and drop the div label.
+- **Prüfung:** Confirmed. rapold-showcase.tsx has a div.rapold-clearspace with aria-label and no role, wrapping an img with alt="", so the label is not exposed. The adjacent h3 and paragraph already state the 24-unit clear-space rule in text, so screen-reader users lose little information. It is still an ARIA misuse, with a one-attribute fix. P3. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [S] [ICE 0.9] PERF-13 – Long-lived static assets outside /_next are not cacheable (max-age=0): ECharts at 373 KB br, Geist fonts, signets and slide PNGs
+
+- **Bereich:** Performance, SEO & Vertrauen
+- **Beleg:** curl -I /vendor/echarts-6.0.0.min.js returns Cache-Control: public, max-age=0, must-revalidate (373,218 bytes br, 1,117,939 raw, version in the filename). Same for /og.png and /brands/** (Geist-Variable.woff2, GeistMono-Variable.woff2, reference PNGs, about 15 MB folder). vercel.json only sets immutable for /_next/static/(.*). /brand?brand=rapold made 73 requests in the lab run, each needing revalidation on repeat views.
+- **Prinzip:** HTTP caching (RFC 9111; web.dev 'Serve static assets with an efficient cache policy').
+- **Massnahme:** In vercel.json add {source:'/vendor/(.*)', headers:[{key:'Cache-Control', value:'public, max-age=31536000, immutable'}]}, since the filename is versioned. For /brands/(.*)\.(woff2|png|svg|pdf|pptx) and /icons/(.*)\.svg, use 'public, max-age=86400, stale-while-revalidate=604800', or fingerprint the file names at build and go immutable. Keep JSON/MD contracts and llms.txt at max-age=0 so agents always see the current contract.
+
+### [P3] [S] [ICE 0.9] CODE-16 – The docs app bypasses package exports with deep relative imports into packages/brands/src
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** Eight imports like `../../../../packages/brands/src/orgchart.mjs`, `…/prompt-compiler.mjs`, `…/presentation.mjs`, `…/mermaid-theme.mjs` and `…/slide-scene.mjs`, in orgchart-editor.tsx:5, pattern-showcase.tsx:7, presentation-page.tsx:5,7, reference-page.tsx:8,10, mermaid-diagram.tsx:5, mermaid-examples.ts:2, mermaid-showcase.tsx:4 and slide-preview.tsx:2,4. packages/brands/package.json exports only '.', './presentation' and './mermaid', so './orgchart', './prompt-compiler' and './slide-scene' are not public API, yet the docs (the reference consumers copy from) depend on them.
+- **Prinzip:** Package boundaries: consumers use the public exports, so the docs prove the API products will get.
+- **Massnahme:** Add subpath exports (`./orgchart`, `./prompt-compiler`, `./slide-scene`) with their .d.mts. Switch every import to `@rapold/framework-brands/…`, and add a lint rule (no-restricted-imports for `**/packages/*/src/**`).
+- **Prüfung:** 13 deep `packages/brands/src` imports confirmed. packages/brands/package.json exports only '.', './presentation' and './mermaid'. The docs consume non-public API, a boundary violation inside the monorepo. P3. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [S] [ICE 0.88] VISUAL-12 – Brand and dark-mode flash on every load: static HTML is neutral/light until hydration
+
+- **Bereich:** Visuelles Design, Zustände & Bewegung
+- **Beleg:** curl of / shows `data-brand="neutral" data-mode="light"` with no inline pre-paint script. framework-shell.tsx reads localStorage 'framework-preferences' and matchMedia inside useEffect (line 44-55).
+
+Measured with stored prefs {brand:'rapold',mode:'system'} and OS dark: at DOMContentLoaded (68ms) the page is neutral/light, and it switches to rapold/dark at 118ms. On slower networks the window is longer.
+
+With no JS (nojs-dark.png) the background is rgb(246,247,249), light, even for an OS-dark user.
+- **Prinzip:** Dark-mode integrity / perceived stability (Nielsen #1); avoid flash of incorrect theme
+- **Massnahme:** Inline a tiny blocking script in <head> (layout.tsx) that reads 'framework-preferences' (wrapped in try/catch), resolves 'system' via matchMedia, and sets data-brand/data-mode on .framework-scope before first paint. Also add a `@media (prefers-color-scheme: dark)` fallback for the neutral default so no-JS users get dark.
+- **Prüfung:** Confirmed: framework-shell.tsx reads localStorage 'framework-preferences' inside a useEffect, and there is no pre-paint script in layout.tsx (grep for <script found none), so the static HTML always paints neutral/light first. The flash is real but lasts about 50ms on first load of a static docs site. The no-JS dark fallback is an edge case. Theme flicker is polish rather than friction in the core flow, so P3. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [S] [ICE 0.88] CODE-11 – Three number-formatting conventions and hand-rolled date formatting, with no shared Intl formatter
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** Manual decimal comma: atlas-slide-content.mjs:44 `((now/prev-1)*100).toFixed(1).replace('.',',').replace('-','−')+' %'`, :47 the same, slide-preview.tsx:16 `v.toFixed(2).replace('.',',')`. Intl de-CH, which yields a decimal point and ’ grouping: rapold-showcase.tsx:23 `new Intl.NumberFormat('de-CH',…).format(bytes/1024)+' KB'`, giving '12.3 KB'. Straight apostrophe thousands: deck-foundation.json:266-267 "4'207", "86'341" (Intl de-CH uses U+2019 ’). Contrast ratios: reference-page.tsx:32 `.toFixed(2)` gives '4.50:1' with a point. Dates: table-showcase.tsx:21 `split('-').reverse().join('.')`. In total this is the only Intl call in the codebase.
+- **Prinzip:** Locale-aware formatting via Intl (ECMA-402). Consistency (Nielsen #4).
+- **Wirkung:** The same figure appears as '4,8 %' on a slide, '12.3 KB' on the brand page and "4'207" in deck data. Agents generating decks copy whichever convention they see.
+- **Massnahme:** Add `packages/brands/src/format.mjs` exporting `formatNumber`, `formatPercent`, `formatBytes` and `formatDate`, built on `Intl.NumberFormat`/`Intl.DateTimeFormat` with the brand locale (default 'de-CH'). Document the decimal policy in presentation-logic.md (Intl de-CH uses '.'; if decks deliberately use a comma, encode that as a formatter option rather than `.replace`). Use `formatToParts` for the minus sign. Replace all manual formatting and add unit tests.
+- **Prüfung:** The mixed conventions are real (slide-preview.tsx:16 `.replace('.',',')` against rapold-showcase.tsx:23 Intl de-CH). The claim that this is the 'only Intl call' is wrong: atlas-slide-content.mjs:44 and :47 use toLocaleString('de-CH'). The decimal comma in decks is deliberate (docs/project-decks.md:67). A shared formatter is still worthwhile, at polish level. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [S] [ICE 0.87] CODE-12 – Prompt compiler is keyed on German display labels and typed `format: string`, although it throws at runtime
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** prompt-compiler.mjs:4 `if (format === 'Präsentation')` and :10-23 the variants keyed 'Interface' and 'Management-Briefing'. :25 `throw new Error('Unbekanntes Ergebnisformat.')`. prompt-compiler.d.mts types `format:string`. pattern-showcase.tsx renders `<option>Präsentation</option>` without value attributes, so translating the label changes the logic key. Empty-input handling is inconsistent: Präsentation falls back to 'Analysiere das Repository owner/repo.', while Interface and Briefing emit an empty 'AUFTRAG\n\n' section. The textarea has no required, hint or validation. compilePrompt is also called on every PatternShowcase render for unrelated sections (toasts, skeletons, …).
+- **Prinzip:** Separate ids from labels (i18n). Make illegal states unrepresentable (TypeScript). WCAG 3.3.2 Labels or Instructions.
+- **Massnahme:** Use ids `'presentation'|'interface'|'briefing'` with a typed union in the .d.mts and a label map in the UI. Give every format the same empty-idea behaviour (block copy and show an inline error such as 'Bitte einen Auftrag eingeben'). Call compilePrompt only in the prompt-compiler branch, or in a dedicated component.
+- **Prüfung:** Confirmed: prompt-compiler.d.mts:1 types `format:string`, and the logic is keyed on German display labels. A minor typing and robustness issue on a secondary tool. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [S] [ICE 0.85] UX-08 – Home fails the 5-second test: H1 'Übersicht', vanity metrics, no task entry points
+
+- **Bereich:** UX, IA, Inhalt, erster Eindruck
+- **Beleg:** Live home main text: 'EINSTIEG / FRAMEWORK · Übersicht · Die Referenz für Interfaces, Präsentationen und markenfähige Anwendungen. · 19 UI-Module · 41 Farbrollen pro Modus · 18 Folientypen · 5 Deck-Presets'. The words 'Designsystem' and 'Rapold' do not appear in the visible hero; they are only in the meta description. The entry cards are Design-Tokens, Iconografie, Techstack, Präsentation, Agenten-Vertrag and Komponenten. Signets/brand and the integration guide are missing. On mobile, no Atlas name is visible at all (mob__.png).
+- **Prinzip:** 5-second test / value proposition clarity; peak-end (the first impression sets expectations); Jakob's law (DS homepages lead with 'Get started' tasks)
+- **Massnahme:** H1 'Atlas – das Designsystem von Rapold'. Subline: 'Tokens, Komponenten, Signets und Management-Decks aus einer Quelle – für Menschen und Agenten.' Replace the metric row with 4 task cards: 'Signet & Favicon holen', 'Token finden', 'Komponente einbauen', 'Management-Deck erzeugen', plus an 'Für Agenten: llms.txt' card. Move the metrics below the cards or drop them. Show the brand switch explanation in one sentence.
+- **Prüfung:** Confirmed live: the h1 is 'Übersicht', the hero subline does not name Rapold, and the entry grid omits brand (reference-page.tsx:31). The meta description and sidebar identity do carry 'Atlas', and the audience is internal (Marcel, his agents, teams), so the 5-second-test stakes are lower. The overlap with UX-02 about the missing brand entry is the substantive part. P3. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [S] [ICE 0.85] A11Y-09 – EmptyState hard-codes <h3>, which forces heading skips in consumers
+
+- **Bereich:** Barrierefreiheit & Responsive
+- **Beleg:** packages/core/src/ui/empty-state.tsx:28 renders `<h3 className="text-sm font-semibold">{title}</h3>`. On /empty-states the outline jumps h1→h3 ('Noch keine Projekte'). axe heading-order fires in all 6 brand/mode combinations and at 375.
+- **Prinzip:** WCAG 1.3.1 Info and Relationships (A); 2.4.6 Headings and Labels (AA); heading-order best practice
+- **Massnahme:** Add a `headingLevel` (2–6) or `asChild` prop defaulting to h2, or render the title as `<p>` plus `aria-labelledby` when the empty state sits inside an already-headed region. Document the prop in the component contract.
+- **Prüfung:** Confirmed: empty-state.tsx renders a hard-coded `<h3>`. Heading-order skips are an axe best-practice rule, not a strict WCAG 1.3.1 failure. A design-system primitive should still let the consumer set the heading level. P3 polish; a headingLevel prop is the right fix. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [S] [ICE 0.85] VISUAL-11 – Prose measure 96–105 characters per line and body copy demoted to muted color
+
+- **Bereich:** Visuelles Design, Zustände & Bewegung
+- **Beleg:** On /accessibility?brand=rapold at 1440px, measured with canvas glyph width:
+- `.page-heading>p` is 780px wide, about 96 characters per line,
+- `.doc-section>p` is 850px wide, about 105 characters per line,
+- both at 16px in color rgb(70,97,126) = --muted-foreground.
+The token layout.reading = 720px is unused.
+
+globals.css: `.doc-section>p{max-width:850px;font-size:15px}` is later overridden to 16px by another rule, so dead declarations exist.
+
+Heading scale: h1 36px, h2 20px, no h3 in main. The h2/body ratio of 1.25 is a weak step next to the h1/h2 ratio of 1.8.
+- **Prinzip:** Typographic measure 45–75 cpl (Bringhurst); WCAG 1.4.8 (AAA, <=80 chars); visual hierarchy: body text should be foreground, muted for secondary
+- **Massnahme:** Set `max-width: min(var(--layout-reading), 68ch)` on doc paragraphs and lists. Use --foreground for body copy and keep muted for intros and meta only. Introduce an h2 of 24px (font-size-2xl) and an h3 of 18–20px from the scale. Delete the duplicated 15px/16px rule.
+- **Prüfung:** The measure of about 96-105 characters per line follows from the max-width of 780-850px at 16px, and layout.reading (720px) is unused. Body copy in muted-foreground is a stylistic choice that still passes contrast. WCAG 1.4.8 is AAA only. It is a readability improvement, not a defect in the core flow, so P3. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [S] [ICE 0.85] PERF-06 – CLS above the 0.1 threshold on /icons (0.165) and /components (0.118); LCP 3.8 s on /icons
+
+- **Bereich:** Performance, SEO & Vertrauen
+- **Beleg:** Lab run (Playwright, 4x CPU, 1.6 Mbps, 150 ms RTT, 1366x850), identical in light and dark. /icons: CLS 0.1653 from three 0.0551 shifts on FOOTER at about 1.7 s, 2.8 s and 3.8 s; LCP 3,808-3,840 ms on DIV.notice ('Lucide ist der neutrale Icon-Satz…'). /components: CLS 0.1183 from three FOOTER shifts (0.0403, 0.0403, 0.0376); LCP 2,420 ms. Cause: next/dynamic loading placeholders in reference-page.tsx:13-23 are one-line <p> elements, then a large grid mounts and pushes the footer. IconGallery also pulls the whole lucide set (import * as Lucide, icon-gallery.tsx:3) into chunk 1lsedwbkmu_wn.js at 617 KB raw / 119 KB br, which delays LCP.
+- **Prinzip:** Core Web Vitals: CLS good ≤0.1, LCP good ≤2.5 s (web.dev thresholds, p75).
+- **Massnahme:** Give each dynamic placeholder a reserved block size equal to the typical rendered height, e.g. <div style={{minHeight: 720}} aria-busy="true"> for IconGallery and ComponentDemo. Better, server-render the static part (PERF-02). For icons, drop import * as Lucide: render the first 120 entries from public/icons/index.json as <img src="/icons/Name.svg" width=24 height=24 loading="lazy"> and load the lucide component only in the detail dialog for code copy. The notice text then paints at FCP (~1.5 s).
+- **Prüfung:** Partly verified. icon-gallery.tsx:3 'import * as Lucide' is confirmed, and so are the one-line <p> placeholders (reference-page.tsx:13-22), which make footer shifts plausible. The CLS 0.165 and LCP 3.8 s figures are a single heavily throttled lab run (4x CPU, 1.6 Mbps) that I did not reproduce. They are not p75 field data, so CWV thresholds are not shown to be failed for real users of a developer reference. Reserving min-height and dropping the namespace import are cheap fixes worth doing, but the severity is P3. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [S] [ICE 0.85] PERF-12 – Navigation links all carry ?brand=neutral, so crawlers see 36 parameterised duplicate URLs per page
+
+- **Bereich:** Performance, SEO & Vertrauen
+- **Beleg:** framework-shell.tsx:102 themedHref = `${href(id)}?brand=${brand.id}`. Home HTML contains 36 links like href="/brand?brand=neutral" and href="/?brand=neutral". The canonicals point to the clean URL, but the sitemap URLs are never linked internally in their canonical form.
+- **Prinzip:** Google: link internally to canonical URLs; inconsistent signals waste crawl budget and dilute canonical consolidation.
+- **Massnahme:** Omit the query when brand is the default: themedHref = id => brand.id==='neutral' ? href(id) : `${href(id)}?brand=${brand.id}`. Once PERF-01 lands, use path-based brand URLs instead.
+
+### [P3] [S] [ICE 0.85] PERF-15 – No structured data, no sitemap lastmod, and llms.txt is not linked from HTML
+
+- **Bereich:** Performance, SEO & Vertrauen
+- **Beleg:** grep -c application/ld+json is 0 on all sampled routes. The sitemap has only <changefreq>weekly</changefreq><priority>, with no <lastmod> (sitemap.ts). The home page <head> has no reference to /llms.txt; the footer links only /brands/neutral/llms.txt. There is no theme-color, manifest or apple-touch-icon (only icon.svg).
+- **Prinzip:** Google sitemap guidance (lastmod is used when it is accurate, changefreq and priority are ignored). schema.org WebSite/TechArticle helps entity understanding. The llms.txt convention favours discoverability from the site root.
+- **Massnahme:** sitemap.ts: add lastModified from build-info builtAt (or the git commit date per contract file) and drop priority and changeFrequency. layout.tsx: add JSON-LD WebSite {name:'Atlas', url, publisher:{@type:'Person', name:'Marcel Rapold'}, inLanguage:'de-CH', version:'0.7.1'} and per-page TechArticle with dateModified. Add <link rel="alternate" type="text/plain" title="LLM index" href="/llms.txt"> and a footer link to /llms.txt and /build-info.json. Add themeColor via metadata viewport export.
+
+### [P3] [S] [ICE 0.85] CODE-08 – Hardcoded colours outside token sources, plus a stale reference to a third-party organisation
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** packages/brands/src/orgchart.mjs:39-46 has a fixed `DEPT_ACCENTS` palette (#be4f17, #007d86, …) applied to every brand. orgchart.mjs:214,401 fall back to '#16181d', a copy of neutral.json foreground. globals.css: `.brand-choice-mark{background:#fff;color:#16181d}`, `.org-preview{background:white}`, `.identity.identity-brand{background:#fff}`. orgchart.mjs:27 comment refers to 'VBZ-Linienfarben, docs/01-identity.md'. That file does not exist (docs/ lists brand-contract.md, engineering.md, …), and VBZ is an unrelated transit operator.
+- **Prinzip:** Design-token single source of truth. AGENTS.md: no third-party company information; canonical values live in packages/brands/src/*.json.
+- **Wirkung:** With the Dominicano Express or Rapold themes, organigrams use a palette unrelated to the brand. Dark-mode white plates are fixed rather than brand-decided. A third-party company name leaks into a published package.
+- **Massnahme:** Read the department accents from brand tokens (`chart-1…5` plus `chart-previous`), with the current list as the neutral default in neutral.json. Import the text fallback from the neutral brand rather than hardcoding '#16181d'. Replace the #fff and white logo plates with a semantic token such as `--logo-plate` defined per brand. Delete the VBZ and 01-identity reference.
+- **Prüfung:** orgchart.mjs:27 refers to 'VBZ-Linienfarben, docs/01-identity.md', but docs/ has no such file, so it is a dead reference. The fixed DEPT_ACCENTS palette at line 39 bypasses brand tokens. The claimed AGENTS.md 'no third-party company info' rule was not found (the grep turned up only the licence line). Hygiene and token drift, P3. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [S] [ICE 0.85] CODE-20 – Hardcoded inventory counts will drift from the source
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** reference-page.tsx:31 overview metrics `<strong>19</strong>UI-Module`, `<strong>18</strong>Folientypen`, `<strong>5</strong>Deck-Presets` are literals. reference-page.tsx:24 descriptions say 'Alle 19 exportierten UI-Module' and '18 Folientypen, fünf Deck-Presets'. component-demo.tsx:19 says 'alle 18 Muster'. presentation-page.tsx computes `slides.length` and `presets.length` for the same facts.
+- **Prinzip:** Single source of truth. Agents treat these numbers as contract facts.
+- **Massnahme:** Derive them from `componentNames.length`, `slides.length` and `presets.length`, format with Intl.PluralRules or number words, and add a test asserting index.ts export count equals componentNames.length.
+
+### [P3] [S] [ICE 0.8] UX-13 – Mobile header has no identity, no direct search and ambiguous bare selects; 30 px targets
+
+- **Bereich:** UX, IA, Inhalt, erster Eindruck
+- **Beleg:** globals.css @media(max-width:767px): `.sidebar{display:none}`. The toolbar shows the PanelLeft icon, the breadcrumb, selects 'Default'/'System' (max-width 102px) and an ExternalLink icon for GitHub (mob__.png). Search needs 2 taps (open sheet, then 'Referenzseiten durchsuchen'). `.icon-button{width:30px;height:30px}`.
+- **Prinzip:** Fitts's law; WCAG 2.2 SC 2.5.8 (24 px minimum met) and SC 2.5.5 / Apple HIG 44 pt; Nielsen H6
+- **Massnahme:** In the mobile toolbar show the Atlas mark plus a search icon button. Give the selects visible micro-labels or icons ('Brand', sun/moon). Use a GitHub glyph or the label 'Quellcode'. Raise touch targets to 44×44.
+- **Prüfung:** Partly confirmed: globals.css sets .icon-button{width:30px;height:30px}, which passes WCAG 2.5.8 (24px) but falls short of the 44pt HIG and 2.5.5 AAA. docs/apple-design-audit.md A01/A07 shows mobile search was deliberately routed through the sheet, so 'two taps' is a known, accepted trade-off rather than an omission. I did not verify the missing mobile identity myself. Internal audience and mostly desktop use, so P3. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [S] [ICE 0.8] UX-17 – Prompt repository field is prefilled with a value, not a placeholder; no validation
+
+- **Bereich:** UX, IA, Inhalt, erster Eindruck
+- **Beleg:** presentation-page.tsx `useState('owner/repo')` and reference-page.tsx (agenten) `useState('owner/repo')`. The copy button is enabled and copies 'Analysiere das Repository owner/repo.' unchanged.
+- **Prinzip:** Nielsen H5 (error prevention); Tesler's law (the system should carry obvious defaults, not require clearing)
+- **Massnahme:** Use an empty value with placeholder 'owner/repo oder GitHub-URL'. Validate the pattern, normalise URLs to owner/repo and show an inline hint. Keep the copy enabled but warn if it still holds the placeholder.
+
+### [P3] [S] [ICE 0.8] UX-18 – Content inconsistencies: 4 vs 10 signets, 'CI-Entwurf' next to 'Freigegeben', version drift
+
+- **Bereich:** UX, IA, Inhalt, erster Eindruck
+- **Beleg:** presentation-page.tsx brandFaqs.rapold: 'Die Produktzeichen für AI Fabric, Argus, ÆON Learn und EdgePortal stehen im Rapold-Assetkatalog', while identity.json has 10 approved. The Rapold page header shows status 'CI-Entwurf' directly above 'Freigegebene Signets' with no explanation of what is draft. README says 'Stand: 0.7.0' while live build-info and the sidebar show 0.7.1.
+- **Prinzip:** Nielsen H4 and H2; content principle 'identische Begriffe für identische Sachverhalte' (catalog.ts content guidance)
+- **Massnahme:** Generate the FAQ list from identity.json (all 10). Change the status chip to 'UI-Adapter: Entwurf · Signets: freigegeben' with a tooltip or link to HANDOFF. Bump the README Stand at release.
+
+### [P3] [S] [ICE 0.8] A11Y-12 – Touch targets under 44px on touch devices (2.5.8 passes on spacing; HIG/2.5.5 gap)
+
+- **Bereich:** Barrierefreiheit & Responsive
+- **Beleg:** Measured at 375/768 with hasTouch/isMobile:
+- tab triggers 63–126 x 29px (tabs.tsx h-9 list)
+- Checkbox 16x16 (#demo-confirm, the 3 organigramm option checkboxes; checkbox.tsx size-4)
+- table sort buttons 68–84 x 19px (/tables)
+- page-meta 'Vertrag als JSON' 114x19 (33 routes)
+- footer 'Agenten-Einstieg' 90x18 (35 routes)
+- core Input 36px tall (input.tsx h-9)
+- page-size select 54x34
+- mermaid and table pagination buttons 32px
+
+All of these are isolated enough to meet the 24px spacing exception of 2.5.8. The pointer:coarse block in accessibility.css:15-18 only covers .icon-button, toolbar selects, nav links and group labels.
+- **Prinzip:** WCAG 2.5.5 Target Size (Enhanced, AAA) / Apple HIG 44pt; 2.5.8 (AA) passes
+- **Massnahme:** Extend the `@media (pointer: coarse)` block: `[data-slot=tabs-list]{height:auto}` with `[data-slot=tabs-trigger]{min-height:44px}`; `[data-slot=input],select{min-height:44px}`; `.page-meta a, footer a, th button{min-height:44px; display:inline-flex; align-items:center}`; give Checkbox a 44px hit area via a ::after pseudo-element. Put these into core for consumers.
+
+### [P3] [S] [ICE 0.8] VISUAL-14 – /motion demonstrates only one curve; easing, exit, instant and deliberate are text-only; no feedback under reduced motion
+
+- **Bereich:** Visuelles Design, Zustände & Bewegung
+- **Beleg:** reference-page.tsx (section==='motion') animates three squares, all with `animation: enter var(--duration-normal) var(--easing-enter)` and only the duration changed (fast, normal, slow). Easing curves 'standard', 'enter' and 'exit' appear as strings only. instant (0ms) and deliberate (500ms) are not shown.
+
+Under prefers-reduced-motion, all samples compute to 1e-05s, and 'Beispiele abspielen' produces no visible result and no explanatory message. Each sample is labeled with an <h2> ('fast'), which inflates the heading outline.
+- **Prinzip:** Show, don't tell (design-system reference); WCAG 2.3.3 / reduced-motion alternatives; heading semantics 1.3.1
+- **Massnahme:** Render a duration x easing grid (enter/exit/standard) with a curve plot (SVG cubic-bezier), plus a per-token 'use for' column (e.g. fast = hover/press, normal = popover, slow = sheet, deliberate = page). Under reduce, show a static notice that animations are suppressed and show end states. Replace the h2 elements with <figcaption> or <p>.
+
+### [P3] [S] [ICE 0.8] VISUAL-15 – No pressed/active state, and a weak destructive hover
+
+- **Bereich:** Visuelles Design, Zustände & Bewegung
+- **Beleg:** Measured on Primäraktion: hover bg rgb(3,89,155), and mouse-down bg is the same rgb(3,89,155) with transform none. No `active:` utilities exist in button.tsx.
+
+The destructive hover is `hover:brightness-95`, about a 5% luminance shift, while primary has a dedicated --primary-hover token.
+
+Transition duration is 0.15s (`transition-all`, not token-referenced).
+- **Prinzip:** Direct-manipulation feedback within 100ms (Nielsen response-time limits); state distinguishability
+- **Massnahme:** Add `active:` styles (e.g. bg --primary-active or translate-y-px) and a `--destructive-hover` token. Use `transition-[background-color,box-shadow] duration-(--duration-fast) ease-(--easing-standard)` instead of transition-all.
+
+### [P3] [S] [ICE 0.8] PERF-09 – No imprint and no privacy notice reachable from the site
+
+- **Bereich:** Performance, SEO & Vertrauen
+- **Beleg:** The home page footer is only '<footer><span>Atlas · Framework</span><a href="/brands/neutral/llms.txt">Agenten-Einstieg</a></footer>'. grep for impressum, datenschutz, privacy or imprint in the home HTML gives 0 hits. /impressum and /datenschutz return 404. The site is publicly indexable (robots.txt 'Allow: /'), is run by a named person (license 'Alle Rechte vorbehalten, Marcel Rapold' per CHANGELOG 0.7.0), stores preferences in localStorage, and Vercel processes visitor IPs in its logs.
+- **Prinzip:** Trust and credibility (Stanford Web Credibility guidelines: show a real owner and contact). Swiss revDSG Art. 19 duty to inform when personal data such as server-log IPs is processed. EU visitors: TMG/DDG-style imprint expectations.
+- **Massnahme:** Add a minimal /impressum (owner, contact e-mail, location) and /datenschutz (hosting by Vercel incl. log processing and retention, localStorage key 'framework-preferences' as functional only with no tracking, no cookies). Link both from the footer and add them to the catalog under 'Betrieb' so the sitemap includes them. No consent banner is needed while there are no cookies or trackers.
+- **Prüfung:** Confirmed. The live footer has only 'Atlas · Framework' and 'Agenten-Einstieg', with no impressum or datenschutz link anywhere in the home HTML. The legal exposure is weak: in CH there is no general imprint duty for a non-commercial personal site, and the revDSG duty to inform about hosting logs is real but low-risk. No doc decides against it. A minimal privacy note in the footer is cheap. The trust gain matters only if the site is shared beyond the internal audience. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [S] [ICE 0.8] PERF-18 – Trailing-slash variants return 200 (duplicate URLs)
+
+- **Bereich:** Performance, SEO & Vertrauen
+- **Beleg:** curl -I https://atlas.rapold.io/tokens/ returns HTTP/1.1 200 OK; /tokens.html returns 308. The canonical tag mitigates this, but both URLs resolve.
+- **Prinzip:** URL canonicalisation: one URL per resource, with redirects for the variants.
+- **Massnahme:** Set "trailingSlash": false in vercel.json so Vercel 308-redirects /tokens/ to /tokens.
+
+### [P3] [S] [ICE 0.8] CODE-19 – Duplicated download and clipboard helpers; one copy revokes the blob URL before the download starts
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** pattern-showcase.tsx:8 `a.click();URL.revokeObjectURL(url);` (synchronous revoke) versus orgchart-editor.tsx:19 `a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);`. The clipboard try/catch is reimplemented with different messages in reference-page.tsx:27, pattern-showcase.tsx:12, orgchart-editor.tsx:32, icon-gallery.tsx:11, mermaid-diagram.tsx:52, presentation-page.tsx:36 and rapold-showcase.tsx:66, each with different stale-message handling (only presentation-page and rapold-showcase guard against races).
+- **Prinzip:** DRY. Firefox and Safari can cancel downloads whose object URL is revoked synchronously.
+- **Massnahme:** Create `apps/docs/app/_lib/download.ts` (deferred revoke, appended anchor) and a `useCopy()` hook with attempt-version guarding and one message set, then use them everywhere.
+
+### [P3] [S] [ICE 0.8] CODE-24 – Organigram editor: silent maxLength truncation, no limits shown, and destructive removal without undo
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** orgchart-editor.tsx:39-40 set maxLength 75, 45, 30, 36, 32 and 36 on the inputs with no hint, counter or aria-describedby, so typing past the limit is silently dropped. The 'Entfernen' button deletes the selected department immediately (`filter((_,i)=>i!==selected)`) with no confirmation or undo toast, although the sonner Toaster is mounted. The department `<option key={i}>` uses the index as key.
+- **Prinzip:** WCAG 3.3.2 Labels or Instructions. Nielsen #3 user control and #5 error prevention.
+- **Massnahme:** Add hint text ('max. 32 Zeichen') with aria-describedby and a live counter near the limit. Show `toast('Abteilung entfernt',{action:{label:'Rückgängig',onClick:restore}})`. Use stable ids for departments.
+
+### [P3] [S] [ICE 0.75] UX-19 – Mixed forms of address and avoidable English labels
+
+- **Bereich:** UX, IA, Inhalt, erster Eindruck
+- **Beleg:** du-form: 'Versuche einen anderen Suchbegriff' (search empty), 'In dein Produkt einbauen', 'Wähle eine andere Kategorie', 'Dein Projekt steht zur Prüfung bereit'. Infinitive imperative: 'Text direkt markieren und kopieren', 'Auftrag direkt markieren und kopieren'. Nav labels: 'Toasts', 'Charts' (next to 'Datenvisualisierung'), 'Dashboard', 'Mail-Templates', 'Auth-Flow', 'Motion', 'Techstack'; toolbar sr-label 'Theme'; button variants 'Outline', 'Ghost'.
+- **Prinzip:** Nielsen H2 and H4; Atlas' own content rule (catalog.ts 'identische Begriffe für identische Sachverhalte')
+- **Massnahme:** Pick one address form in the /content page: du for UI microcopy, infinitive for instructions. Use German labels where idiomatic ('Benachrichtigungen', 'Diagramme', 'Mail-Vorlagen', 'Anmeldeablauf', 'Bewegung'), and keep code identifiers (variant names) in <code>.
+
+### [P3] [S] [ICE 0.75] A11Y-06 – Accessible names don't contain the visible label (identity link and search trigger)
+
+- **Bereich:** Barrierefreiheit & Responsive
+- **Beleg:** framework-shell.tsx:130: the identity link has `aria-label={`${brand.name} · Startseite`}`. For the neutral brand, brand.name is 'Framework', but the visible text is 'Atlas 0.7.1'. The measured accessible name is 'Framework · Startseite'.
+
+framework-shell.tsx:133: the search trigger shows 'Suchen' but its aria-label 'Seiten durchsuchen' overrides that, and the word 'Suchen' never appears as a word in the name.
+- **Prinzip:** WCAG 2.5.3 Label in Name, A. Speech-input users say what they see.
+- **Massnahme:** Identity: use `aria-label={`Atlas · Startseite`}` for neutral, or drop the aria-label and add `<span class=sr-only> · Startseite</span>` after the visible text. Search: drop the aria-label when expanded, since the visible 'Suchen' plus aria-haspopup is enough. In rail mode use 'Suchen'.
+- **Prüfung:** Confirmed in framework-shell.tsx. The identity link's aria-label is `${brand.name} · Startseite`, while the visible text is 'Atlas <version>', so for the neutral brand the visible 'Atlas' is missing from the name. The search trigger's aria-label 'Seiten durchsuchen' overrides the visible 'Suchen'. This is a technical 2.5.3 failure, but the impact is limited: 'durchsuchen' contains the visible verb, and speech users rarely target these two controls. P3. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [S] [ICE 0.75] A11Y-14 – Mobile toolbar selects are clipped to 90px at 12px font
+
+- **Bereich:** Barrierefreiheit & Responsive
+- **Beleg:** accessibility.css:23 sets `.toolbar select {max-width: 90px; font-size: 12px;}` below 768px, which truncates 'Dominicano Express' in the brand select. A 12px font on a form control also triggers iOS Safari auto-zoom on focus, which shifts the layout. The selects themselves are 90x44 (good).
+- **Prinzip:** WCAG 1.4.4 Resize Text / 1.4.10 Reflow (legibility); iOS input-zoom heuristic
+- **Massnahme:** Use 16px font on mobile selects. Either move brand and mode into the mobile Sheet as full-width labelled selects, or show a short visible label ('Marke', 'Modus') with an icon.
+
+### [P3] [S] [ICE 0.75] PERF-16 – Changelog and release history are only on GitHub; no on-site changelog route
+
+- **Bereich:** Performance, SEO & Vertrauen
+- **Beleg:** /changelog and /CHANGELOG.md return 404. The only link is on /engineering (reference-page.tsx:47 → https://github.com/marcelrapold/mra-atlas/blob/main/CHANGELOG.md). /health-status links /build-info.json and GitHub Actions (pattern-showcase.tsx:24). The CHANGELOG records breaking renames (e.g. 0.7.0 renamed the system to Atlas and removed /contracts/atlas-reference.md) that agents consuming contracts need to see.
+- **Prinzip:** Perceived permanence and trust: versioned, dated release notes reachable from the product. Agent contract hygiene: consumers need a stable changelog URL next to the contracts.
+- **Massnahme:** Copy CHANGELOG.md into public/contracts/changelog.md during the contracts build (scripts/build-contracts.mjs). Render it at /changelog as a catalog page under 'Betrieb', list it in /llms.txt, and show 'v0.7.1 · 12.10.2026 · Changelog' in the footer, read from build-info.
+
+### [P3] [S] [ICE 0.75] CODE-23 – Search fields duplicate the clear affordance and over-announce
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** table-showcase.tsx:44 has `<Input type="search">` plus a custom X button, and Chromium and WebKit render their own cancel button as well, so there are two clear controls. On /tables two live regions update on every keystroke: `<p role="status">{filtered} von 250 Bausteinen</p>` and `<span role="status">Seite … von …</span>` (line 52). icon-gallery.tsx has `role="status" aria-live="polite"` on the count, and its copy snippet differs from the displayed snippet (aria-hidden appears only in the copied version, line 11 vs the pre). Neither search field has `enterKeyHint`, and both rely on placeholder examples.
+- **Prinzip:** WCAG 4.1.3 Status Messages, used sparingly. Nielsen #8 minimalist design.
+- **Massnahme:** Hide the native cancel button (`::-webkit-search-cancel-button{display:none}`) or drop the custom one. Merge the counts into one debounced (about 400 ms) live region. Make the pre block show exactly what is copied.
+
+### [P3] [S] [ICE 0.75] CODE-25 – Mermaid editor errors are raw English library messages not associated with the textarea
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** mermaid-diagram.tsx:41 `setError(e instanceof Error?e.message:'…')` surfaces mermaid's English parser text. The #diagram-code textarea (mermaid-showcase.tsx) has no aria-invalid and no aria-describedby pointing to the error or the 'Änderungen noch nicht gerendert.' status.
+- **Prinzip:** WCAG 3.3.1 Error Identification and 1.3.1 Info and Relationships; i18n.
+- **Massnahme:** Wrap the message: 'Die Definition enthält einen Fehler (Zeile N):' plus a `<code>` with the raw detail inside `lang="en"`. Pass an error id up so the editor textarea gets aria-invalid and aria-describedby.
+
+### [P3] [S] [ICE 0.7] A11Y-11 – Organigramm previews are scroll containers that keyboard users can't reach at narrow widths
+
+- **Bereich:** Barrierefreiheit & Responsive
+- **Beleg:** axe scrollable-region-focusable (2 nodes) on /organigramm at 375: `.org-preview` scrollWidth 744 / clientWidth 282 and `.governance-preview` 564 / 282. Neither has tabIndex or focusable content (globals.css:235 sets min-width 720/540 on the SVG).
+
+The Lightbox overlay button covers both (orgchart-editor.tsx:36, lightbox.tsx:363, `absolute inset-0`), so a tap or keypress opens fullscreen instead of scrolling. That fullscreen view is the mitigation, so this is rated P3.
+- **Prinzip:** WCAG 2.1.1 Keyboard (A); 1.4.10 Reflow (exception for 2D content)
+- **Massnahme:** Render the SVG with a viewBox and `width:100%` so it scales into the column. Alternatively, keep the lightbox as the documented route and state it in the visible caption ('Vollbild öffnen zum Lesen'), and remove the inner min-width so nothing is clipped.
+
+### [P3] [S] [ICE 0.7] A11Y-13 – Brand switcher is labelled 'Theme' (English), and its option names don't match the rest of the UI
+
+- **Bereich:** Barrierefreiheit & Responsive
+- **Beleg:** framework-shell.tsx:143-144 uses `<label class=sr-only for=brand-choice>Theme</label>`, and its options read 'Default' / 'Dominicano Express' / 'Rapold'. Elsewhere the same entity is called 'Marke' (nav group), 'Framework' (sidebar foot, identity aria-label 'Framework · Startseite') and 'Aktives Theme' (brand-showcase.tsx:11). The page is lang=de-CH, so an English 'Theme' is read with German phonetics.
+- **Prinzip:** WCAG 3.2.4 Consistent Identification (AA); 2.4.6 Headings and Labels (AA); 3.1.2 Language of Parts
+- **Massnahme:** Label it 'Marke', name the neutral option the same everywhere ('Atlas Standard'), and use the same term in the brand-showcase aria-label.
+
+### [P3] [S] [ICE 0.7] A11Y-16 – Landmark and structure nits: aside nested in main, skip link focusable under aria-hidden, pages without subheadings
+
+- **Bereich:** Barrierefreiheit & Responsive
+- **Beleg:** (a) axe landmark-complementary-is-top-level: `<aside class="anti-pattern">` inside main (presentation-page.tsx:49), in all 6 combinations.
+(b) axe aria-hidden-focus on `.skip` when the DropdownMenu 'Aktionen' is open on /components: Radix aria-hides body siblings, but the skip link stays tabbable.
+(c) Only the h1 is visible on /tokens, /dashboard, /charts, /auth-flow, /health-status, /mail-templates, /prompt-compiler and /prompt-vorlagen. Sections there rely on tabs or visual grouping.
+(d) The breadcrumb is a plain div (framework-shell.tsx:141), not `nav[aria-label=Breadcrumb]`.
+- **Prinzip:** WCAG 1.3.1 Info and Relationships (A); 2.4.6 / 2.4.10 Section Headings (AAA); ARIA landmark best practice
+- **Massnahme:** (a) Use `<div role="note">` or `<section aria-labelledby>`.
+(b) Render the skip link inside the element Radix treats as the app root, or set `inert` and `tabindex=-1` on it while a modal layer is open.
+(c) Add h2s to tab panels and major blocks.
+(d) Wrap the breadcrumb in `<nav aria-label="Brotkrumen"><ol>`.
+
+### [P3] [S] [ICE 0.7] VISUAL-16 – Small or variable hit targets in core controls
+
+- **Bereich:** Visuelles Design, Zustände & Bewegung
+- **Beleg:** Measured:
+- checkbox 16x16px (the label htmlFor mitigates),
+- tabs-trigger 29px tall,
+- dialog close size-8 = 32px on fine pointers (44px only via pointer-coarse),
+- the triggers in VISUAL-04 are 36px while plain buttons are 44px.
+The brand contract says buttonMinHeight 44px for all three brands.
+- **Prinzip:** WCAG 2.5.8 Target Size (Minimum) 24px (passes); brand contract 44px / Apple HIG 44pt
+- **Massnahme:** Give Checkbox an invisible 24px+ hit area (before:absolute inset-[-4px]). Size tabs triggers to min-h 36/44 per density. Document density tiers (compact 32 / default 44) as tokens.
+
+### [P3] [S] [ICE 0.7] CODE-26 – Physical CSS properties instead of logical ones in the shell and core
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** globals.css: `.notice{border-left:3px solid var(--primary)}`, margin-left ×6, margin-right ×5, padding-left ×3, left: ×3, `text-align:left` (token-card, token-table, table). Core: dropdown-menu.tsx:65,83,140,186 `pl-8` with an indicator at `left-2`; select.tsx:104 `pl-2 pr-8`; sheet and dialog close `right-3`.
+- **Prinzip:** CSS Logical Properties (writing-mode independent), i18n readiness for future locales.
+- **Massnahme:** Mechanical swap: border-inline-start, margin-inline-start/end, padding-inline-start, text-align:start, and Tailwind `ps-`, `pe-`, `start-`, `end-`. Low priority while no RTL locale is planned, but cheap to do in the core, which products inherit.
+
+### [P3] [S] [ICE 0.7] CODE-27 – Ad-hoc Markdown renderer for a binding contract page
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** praesentationslogik/page.tsx:15-16 splits docs/presentation-logic.md on '\n\n' and maps '## ' to h2, '- ' to ul and `/^\d\. /` to ol, with everything else as plain <p>. This drops inline code, bold and links. It fails on items 10 and above, '### ' headings and a heading followed by text in the same block. The current file happens to avoid all of these (verified by grep), so any future edit can silently break the rendered contract.
+- **Prinzip:** Robustness of contract rendering.
+- **Massnahme:** Render at build time with remark/rehype (no client cost, since this is a server component), or add a test asserting the markdown uses only the supported subset.
+
+### [P3] [S] [ICE 0.7] CODE-28 – Dead or orphaned code in the shell context and the CSS hacks
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** framework-shell.tsx:14 BrandContext exposes `setBrand`, but no consumer calls it (grep: only the definition and provider). `useBrand` in core has no consumer in the repo. globals.css `.mermaid-surface .cursor-zoom-in{z-index:1}` targets an internal Tailwind class of the core Lightbox trigger. The vendored lightbox comment cites 'patterns/lightbox.md (upstream showcase)', which is not in this repo.
+- **Prinzip:** Dead code removal; no selector coupling to implementation details.
+- **Massnahme:** Remove setBrand from the context, or use it in the brand page. Expose `data-slot="lightbox-trigger"` from core and target that. Fix or remove the dangling doc references.
+
+### [P3] [S] [ICE 0.6] A11Y-15 – Command palette input has no visible focus indicator
+
+- **Bereich:** Barrierefreiheit & Responsive
+- **Beleg:** With Ctrl+K the focused element is `INPUT[role=combobox]` with class `outline-hidden`, computed outline none and box-shadow none. Only the caret shows focus. Everything else in the palette is good: aria-activedescendant tracks the selected option, the list is a labelled listbox ('Referenzseiten'), and Escape returns focus to its origin.
+- **Prinzip:** WCAG 2.4.7 Focus Visible (AA). Low risk because it is the only field in a modal and has the caret.
+- **Massnahme:** Add a `focus-within` ring or bottom border in --ring to the `[cmdk-input-wrapper]` in command.tsx.
+
+### [P3] [S] [ICE 0.6] PERF-17 – Third-party draft brand (Dominicano Express) is publicly indexable and shipped in the core JS of every page
+
+- **Bereich:** Performance, SEO & Vertrauen
+- **Beleg:** robots.txt is 'User-Agent: * Allow: /'. /brands/index.json lists dominicano-express with status 'draft'. The string 'Dominicano Express' appears 3x in the initial chunk 0kh83j3ewd-mm.js loaded on every route, and in the brand switcher of every page's HTML ('Theme Default Dominicano Express Rapold').
+- **Prinzip:** Trust and client confidentiality: unapproved CI drafts of a third-party brand should not be publicly crawlable.
+- **Massnahme:** If the brand is not cleared for publication, add an X-Robots-Tag: noindex header in vercel.json for /brands/dominicano-express/(.*), hide it from the public switcher unless status !== 'draft', and lazy-load brand registries by id (see PERF-11). If it is cleared, record the approval in the brand's provenance file.
+
+### [P3] [M] [ICE 0.46] CODE-15 – Minified source CSS and TSX with duplicate and overriding rules, and no formatter
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** globals.css is 35,474 bytes on 51 lines. Line 21 is 13,761 characters, line 26 5,360, line 37 2,523. TSX lines reach 2,309 characters (icon-gallery.tsx) and 2,117 (reference-page.tsx, 12 lines over 200). There is no .prettierrc or .editorconfig. Duplicates and overrides: `.download-row a` styled on line 21 and again on line 26; `.doc-section>p` font-size 15px (line 21), then 16px (line 30); `.rail .nav-link` twice (lines 21 and 30); `.breadcrumb` redefined in globals lines 21, 31 and accessibility.css:3; the prefers-reduced-motion block duplicated in core styles.css and globals.css:24. 5 `!important` in globals (reduced motion ×3, plus `.type-row>span{font-size:min(7vw,36px)!important}` and `.deck-type-scale span{font-size:22px!important}`, both fighting inline styles).
+- **Prinzip:** Maintainability: reviewable diffs, single definition per selector, specificity budget.
+- **Massnahme:** Add Prettier (it formats TSX and CSS) and stylelint (no-duplicate-selectors, declaration-no-important except under prefers-reduced-motion). Split globals.css into layered partials (shell.css, doc.css, deck.css, tables.css, mermaid.css) imported into `@layer components`. Replace the !important overrides by moving the inline font-size into a CSS variable (`style={{'--sample-size':…}}` with `font-size:min(7vw,var(--sample-size))`).
+- **Prüfung:** Confirmed: globals.css is 35,474 bytes on 51 lines, with line 21 at 13,761 characters and three different h2 rule sets, and there is no formatter configuration. This is about maintainability, with no direct user impact. P3. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [M] [ICE 0.44] CODE-07 – Brand-specific branching is spread across docs app files, contrary to the defineBrand/registry contract
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** framework-shell.tsx:104 `brand.id === 'rapold' ? {'--font-mono': '"Geist Mono"…'}`. brand-showcase.tsx:9 `if(brand.id==='rapold')return <RapoldShowcase/>`. catalog.ts:31,36 guidance per brandId. presentation-page.tsx:14-20 FAQ map keyed 'dominicano-express' and 'rapold'. changelog-infographic.tsx:81 `brand.id==='dominicano-express'?dominicanoChangelog:…`. rapold-worlds.tsx:13 `pulseColors={brand:'#0072ce',…}` duplicates brands/rapold/worlds.json:82. globals.css:16-18 imports brands/rapold/theme.css, wordmarks.css and worlds.css (about 600 lines) for every brand, including neutral. AGENTS.md: 'Neue Brands über defineBrand und Registry hinzufügen.'
+- **Prinzip:** Open/closed principle. The repo's own contract (AGENTS.md, docs/brand-contract.md).
+- **Wirkung:** Adding a fourth brand (e.g. a product world) requires editing at least five app files. Brand CSS, fonts and @font-face rules for Rapold ship to every brand's visitors, and data drifts (#0072ce is copied).
+- **Massnahme:** Add the missing fields to the brand schema and manifest: `typography.monoFamily`, `docs.guidance`, `docs.faq`, `docs.sampleChangelog`, `docs.showcase` (component key), `docs.stylesheets[]`. Read them generically in the shell and pages. Load brand CSS through the registry (a `<link>` per active brand, or `@layer brand-rapold` scoped by `[data-brand=rapold]`). Import pulse colours from worlds.json rather than copying the hex values.
+- **Prüfung:** Seven `brand.id===` branches in apps/docs/app/_components, against AGENTS.md's defineBrand/registry intent. It is the docs app, which may showcase brands specially, so the risk to maintainability is limited. P3. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [M] [ICE 0.41] VISUAL-10 – Semantic color roles collapse or drift: info == primary everywhere; Rapold danger/warning change hue family between modes
+
+- **Bereich:** Visuelles Design, Zustände & Bewegung
+- **Beleg:** In all 6 brand-modes --info equals --primary:
+- rapold #0066B3 / #38B8FF
+- neutral #263b70 / #adc4ff
+- dominicano #146FE8 / #69ADFF
+
+Rapold destructive is light #814960 (desaturated plum) vs dark #FB7185 (rose). Warning is light #816F31 (olive) vs dark #FBBF24 (amber).
+
+The aria-invalid ring `ring-destructive/20` blends to 1.30–1.54:1 against the background.
+
+By contrast, radiox statusTone.ts pins 'info→cyan, progress→sky, active→violet, error→rose' as distinct roles.
+- **Prinzip:** Color carries a role (Atlas /dataviz copy: 'Farbe trägt eine Rolle'); WCAG 1.4.1 Use of Color; recognition over recall across modes
+- **Massnahme:** Give info its own hue distinct from primary in every brand. Keep danger in the red family in both Rapold modes (e.g. light ~#B42339 at >=4.5:1 on #F4FAFF) and warning in the amber family. Import radiox's statusTone role set (success/info/progress/warning/error/neutral/active) into brand.schema.json as required roles with surface tints (the surface-info, surface-success etc. tokens already exist).
+- **Prüfung:** Confirmed: --info equals --primary in all published token files (e.g. rapold dark both #38B8FF; neutral light both #263b70). rapold.json:34/61 has destructive #814960 in light vs #FB7185 in dark, and warning #816F31 vs #FBBF24. The light values look like deliberate contrast-driven darkening rather than a random hue change, and info==primary may be an intentional simplification. Neither is documented as a decision, but no WCAG failure is demonstrated beyond the ring/20 halo already covered by VISUAL-01/05. Downgraded to P3 (semantic polish, worth aligning with radiox statusTone). (Schwere von P2 auf P3 angepasst)
+
+### [P3] [M] [ICE 0.4] A11Y-10 – Collapsed rail: nav labels are only available as hover tooltips (title)
+
+- **Bereich:** Barrierefreiheit & Responsive
+- **Beleg:** framework-shell.tsx:111 renders rail group names as `<div className="rail-group" title={group.title}>` with sr-only text. framework-shell.tsx:117 gives rail links `title={rail ? title : undefined}` plus aria-label. Native title tooltips appear only on mouse hover, never on keyboard focus or touch.
+
+Measured rail links are 47x36 icon-only (e.g. 'Marken & Identität'). A sighted keyboard user tabbing through 35 icons sees no label.
+- **Prinzip:** WCAG 1.4.13 Content on Hover or Focus (intent), 2.4.6 Headings and Labels; Nielsen: recognition rather than recall. The info is hover-only.
+- **Massnahme:** Wrap rail links and group markers in the core Tooltip (Radix shows on focus, dismisses on Escape, stays when hovered) with side='right', and remove `title`. Optionally widen the rail on focus-within.
+- **Prüfung:** Confirmed: rail links use `title` plus `aria-label`, and the group marker uses `title` plus sr-only text, so assistive tech gets the names. The WCAG citation is wrong: 1.4.13 governs extra content shown on hover or focus, not missing tooltips, and icon-only controls with accessible names pass 2.4.6 and 4.1.2. What remains is a usability point (recognition rather than recall for sighted keyboard users of the collapsed rail), which is optional. P3 with effort M. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [M] [ICE 0.4] CODE-14 – Contract logic is untyped JS with hand-written declarations, and the strictness gaps hide index errors
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** tsconfig.json include covers only `**/*.ts, **/*.tsx`. There is no allowJs or checkJs, so packages/brands/src/*.mjs (orgchart 21.8 KB, deck-validation, index 7.8 KB, presentation) and packages/presentation/src/*.mjs are never type-checked. Six hand-maintained .d.ts/.d.mts files describe them and can drift (e.g. CODE-12 `format:string`; orgchart.d.mts `renderZustaendigkeiten(data:object…)`). `noUncheckedIndexedAccess` is off, hiding cases like orgchart-editor.tsx:24 `data.departments[selected]` (undefined after a delete race) and data-showcase.tsx:7 `brand.modes[mode]!` (non-null assertion). `tsc --noEmit` passes with 0 any or ts-ignore.
+- **Prinzip:** TypeScript strictness at the contract boundary; types generated from source.
+- **Massnahme:** Enable `allowJs` and `checkJs` for packages/** with JSDoc types, or convert the .mjs files to .ts and emit .d.ts. Turn on `noUncheckedIndexedAccess` and `exactOptionalPropertyTypes` and fix the fallout. Generate types for brand.schema.json and deck-input.schema.json (json-schema-to-typescript) instead of writing them by hand.
+- **Prüfung:** Confirmed: the tsconfig.json include covers only .ts and .tsx, with no allowJs, checkJs or noUncheckedIndexedAccess. The contract .mjs files are not type-checked, and the hand-written .d.mts files can drift. No concrete user-facing failure is shown, so P3. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [M] [ICE 0.4] CODE-21 – Two chart libraries, a vendored 1.1 MB ECharts in git, and minor dependency lag
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** apps/docs/public/vendor/echarts-6.0.0.min.js (1,117,939 bytes, git-tracked) is loaded with next/script in echarts-showcase.tsx:50, while recharts ^3.10.1 is also a dependency (data-showcase, reference-page charts tabs). `npm outdated`: next 16.3.5→16.4.0, radix-ui 1.6.7→1.8.0, lucide-react 1.45→1.55, react/react-dom 19.2.7→19.3.0, mermaid 12.0→12.1, tailwind-merge 3.6→3.7, @tanstack/react-table 8.21.3→9.2.8 (major). Mixed pinning: exact for next and react, caret for mermaid and lucide. icon-gallery.tsx:3 `import * as Lucide` bundles the full icon set even though /icons/index.json and per-icon SVGs are already published.
+- **Prinzip:** Dependency health and supply-chain hygiene; bundle budget.
+- **Massnahme:** Install echarts from npm and dynamic-import `echarts/core` with only the needed charts (tree-shaken). The vendor checksum process then becomes the lockfile. Decide whether Atlas recommends one chart library or both, and document why. Add Renovate grouped weekly with exact pins. Drive the icon gallery from /icons/index.json and lazy SVGs.
+
+### [P3] [M] [ICE 0.4] CODE-22 – The docs app does not use the core Select: about 12 raw selects, styled by a global rule, with mixed labelling
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** Raw `<select>` appears in the framework-shell toolbar (×2), prompt compiler, table page size, orgchart-editor, mermaid-showcase, data-showcase, rapold-showcase (×4), rapold-worlds and presentation-page. They are styled by unlayered `select{…}` in globals.css:21, while core exports a Radix Select used only in component-demo. The labelling technique varies: `<label>` wrapping (prompt compiler, presentation-page), htmlFor (orgchart, mermaid), sr-only label (shell), and `<label>Zeilen<select aria-label="Zeilen pro Seite">` (table-showcase.tsx:52), where aria-label overrides the visible label text.
+- **Prinzip:** Use your own components; consistent form-control patterns. WCAG 2.5.3 Label in Name: the accessible name must contain the visible label.
+- **Massnahme:** Add a `NativeSelect` primitive to core (a styled native select, which is better on mobile than Radix for simple choices) and use it everywhere in docs. Standardise on `<Label htmlFor>`. Remove the conflicting aria-label, or make it start with 'Zeilen'.
+
+### [P3] [M] [ICE 0.38] UX-14 – Rapold brand page is 9.5k px (12.9k mobile); the download path is buried behind the marketing 'Produktwelten'
+
+- **Bereich:** UX, IA, Inhalt, erster Eindruck
+- **Beleg:** Playwright: /brand?brand=rapold documentElement.scrollHeight = 9539 (1440w) and 12919 (375w). Order in rapold-showcase.tsx: intro → product cards → matrix → RapoldWorlds (marketing) → variants → formats → colours → Downloads → Einbindung. Selecting a product card only updates a status line and does not reveal its assets. The in-page nav (.rapold-section-links) is not sticky.
+- **Prinzip:** Fitts's law and cognitive load; progressive disclosure; peak-end
+- **Massnahme:** After the selection status line, add 'Assets für {product} → ZIP / Einzeldateien' (jump to #rapold-downloads). Move Downloads and Einbindung directly after the matrix, and move Produktwelten to the end or its own page. Make the section nav sticky.
+- **Prüfung:** The section order is confirmed in rapold-showcase.tsx: #rapold-all-signets at line 99 (with per-signet SVG downloads and the text 'Ein Klick lädt das jeweilige SVG'), RapoldWorlds at 111, then signets, formats and colours, with downloads at 141 and usage at 149. Because the all-signets grid near the top already gives one-click SVG downloads, 'the download path is buried' is overstated. I did not re-measure the scrollHeight values. The remaining point (ZIP and integration below the marketing worlds, non-sticky section nav) is polish, so P3. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [M] [ICE 0.38] VISUAL-13 – Elevation is not tokenized and ignores brand/mode
+
+- **Bereich:** Visuelles Design, Zustände & Bewegung
+- **Beleg:** Brand shadows are rapold 'none', neutral 'none' and dominicano '0 1px 3px #00000014' in both light and dark. The Dialog still renders Tailwind shadow-lg ('0 10px 15px -3px rgba(0,0,0,.1)…', measured in all 6 brand-modes). Card's shadow-sm is replaced by brand-shadow, triggers keep shadow-xs and tabs keep shadow-sm.
+
+In dark mode a black 10% shadow on #050B19 is invisible, so overlay separation relies only on the border (border/background 1.54:1 in rapold-dark).
+- **Prinzip:** Consistent elevation model (Material elevation / Apple materials); dark-mode surfaces need lighter tonal elevation instead of shadows
+- **Massnahme:** Add elevation tokens per brand and mode (--elevation-0..3 or --shadow-raised/--shadow-overlay). In dark mode, express elevation via lighter surface tokens (card → popover → dialog). Map shadow-xs, shadow-sm and shadow-lg to these in @theme.
+
+### [P3] [M] [ICE 0.35] PERF-14 – Mermaid route ships the full mermaid build (about 900 KB br across chunks, including cytoscape and katex)
+
+- **Bereich:** Performance, SEO & Vertrauen
+- **Beleg:** Largest lazy chunks: 3xpl8lronogk9.js 1,475,188 raw / 331,609 br ('flowchart', 'mermaid'), 2qq7e47gpyc_e.js 655,708 / 114,000 (mermaid), 411-m6wb1xycs.js 430,028 / 113,440 (cytoscape), 3l6bwn061vy22.js 263,870 / 63,044 (katex), 2_i6kysvgofuu.js 241,685 / 29,019. The showcase renders five diagram types (mermaid-examples.ts).
+- **Prinzip:** Performance budget / code-splitting: ship only the diagram types used.
+- **Massnahme:** Pre-render the five reference diagrams to static SVG at build time (scripts/ with @mermaid-js/mermaid-cli or a headless render) and show those immediately. Load mermaid only when the user opens the editor ('Eigenen Code rendern'). Optionally use @mermaid-js/tiny or register only the needed diagram types.
+
+### [P3] [L] [ICE 0.23] VISUAL-08 – Docs site ignores its own spacing/type/z-index tokens; heavy off-scale values
+
+- **Bereich:** Visuelles Design, Zustände & Bewegung
+- **Beleg:** In apps/docs/app/globals.css (520 rules) the token references are:
+- var(--spacing-*): 0
+- var(--font-size-*): 0
+- var(--line-height-*): 0
+- var(--z-index-*): 0
+- var(--layout-reading): 0
+
+Spacing values that are off the 4px scale (4/8/12/16/20/24/32…): 10px x27, 18px x21, 14px x14, 6px x12, 28px x12, 9px x9, 22px x9, 7px x7, 5px x7, 3px x5, 30px x5, plus 26, 34, 35, 38 and 42px. That is about 150 of about 420 declarations.
+
+Font sizes: 13px x27, 11px x11, 10px x2, 15px x8, plus 22, 25, 27 and 29px. The scale is 12/14/16/18/20/24/30/36/48(56).
+
+Line-heights: 13 distinct values against 4 tokens.
+
+z-index: 1, 10, 20 and 100, against tokens 20/30/40/50/60/70. Core primitives also hard-code z-50 for tooltip, select and dropdown, while the tokens say tooltip 70 and dropdown 30.
+- **Prinzip:** Design-token single source of truth (Atlas /engineering: 'Eine Quelle pro Entscheidung'); Gestalt rhythm; 8-pt grid consistency
+- **Massnahme:** Refactor globals.css to `var(--spacing-N)`, `var(--font-size-*)` and `var(--line-height-*)`. Snap off-scale values to the nearest step and raise 10–11px labels to 12px (font-size-xs). Map z-index utilities to tokens via @theme (`--z-tooltip: var(--z-index-tooltip)`). Add a stylelint rule that rejects raw px in spacing and font-size properties in apps/docs.
+- **Prüfung:** Confirmed: globals.css has 0 occurrences each of var(--spacing-*) and var(--font-size-*), and core hard-codes z-50 in dialog, dropdown, popover, select, sheet, tooltip and lightbox. However, globals.css is the docs site's own chrome, not the consumable contract, and an effort-L refactor of about 150 declarations has low user impact. The z-index token mismatch in core is the only consumer-relevant part. Downgraded to P3. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [L] [ICE 0.21] CODE-10 – No i18n layer: all copy is inlined, core defaults are a mix of English and German, slugs and labels mix languages
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** There is no messages module, t() or locale context anywhere in apps/docs or packages/core. All copy is inline JSX across 20 components, including whole paragraphs in reference-page.tsx (13 inline descriptions in a `descriptions` object at line 24) and catalog.ts. Core defaults: 'Close' (dialog, sheet, command) versus German-only lightbox strings. On the de-CH page, English UI labels: framework-shell.tsx:143 `<label …>Theme</label>`, :144 option 'Default', :159 `aria-label="Mobile Navigation"`. Route slugs mix languages: /forms, /tables, /charts, /components alongside /organigramm, /praesentation, /formulare→404. The mail template uses `<html lang="de">` (pattern-showcase.tsx:22) while the site is de-CH. radiox already has the resolution chain Atlas lacks: apps/frontend/services/locale.ts (user locale, then navigator.language, then 'de-CH', with SUPPORTED_LOCALES).
+- **Prinzip:** i18n readiness: externalised strings and locale-aware formatting. WCAG 3.1.1/3.1.2 (language of page and parts).
+- **Wirkung:** Rapold products with English or French audiences cannot reuse core components without forking, and machine translation of the site is impossible without touching every component.
+- **Massnahme:** Introduce `apps/docs/app/_i18n/de-CH.ts` (typed message object) and import strings from it, starting with the shell, forms and patterns. For core, standardise a `labels` prop or a `<CoreLocaleProvider labels={…}>` with English defaults, and supply de-CH from the docs app. Import radiox's `services/locale.ts` pattern into @rapold/framework-core as `resolveLocale()`. Label the selector 'Brand' consistently in German (e.g. 'Marke'). Decide the slug language and add redirects for the other variant. Emit `lang="de-CH"` in the mail template.
+- **Prüfung:** English strings on the de-CH site are confirmed (framework-shell.tsx:143 'Theme', :159 'Mobile Navigation'), and there is no i18n layer. Atlas is documented as German-Swiss (README.md:17), so a full i18n layer is speculative for the docs app. The core-locale part overlaps CODE-09. P3. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [L] [ICE 0.2] PERF-11 – Initial JS of about 267 KB br / 823 KB raw on mostly static documentation pages; the whole shell and all page content are client components
+
+- **Bereich:** Performance, SEO & Vertrauen
+- **Beleg:** Home page scripts (brotli/raw bytes, measured): 26swit4g4lpuz.js 72,696/228,084 (react-dom), 2s4mrsztopiw2.js 46,638/172,201, 0wymy5fz8r9ns.js 23,282/62,195 (contains presentationTheme, compilePrompt, echarts/mermaid references), 0kh83j3ewd-mm.js 18,640/47,950 (cmdk, all brand registries incl. 'Dominicano Express'), 44r8hm6_kwaka.js, 14ygvkdw6jsfl.js, 136-qpyufe0np.js and others. That totals about 267 KB br excluding the noModule polyfill. CSS 3bvtb48uz92n4.css is 26,853 br / 136,756 raw and render-blocking. framework-shell.tsx and reference-page.tsx are both 'use client'. reference-page.tsx statically imports presentation.mjs, prompt-compiler.mjs and contrast utils, plus the whole catalog guidance text (catalog.ts, 12 KB) for every route.
+- **Prinzip:** web.dev JS budget guidance (keep the critical-path JS small; TBT and INP scale with parse and execute work on mid-range mobile). Next.js RSC best practice: keep static content in Server Components.
+- **Massnahme:** Make ReferencePage a Server Component that renders guidance, headings and tables from catalog.ts on the server, and keep only interactive islands (search dialog, brand/mode switch, copy buttons, demos) as client components. Lazy-import presentation.mjs and prompt-compiler.mjs only in the sections that use them (praesentation, prompt-compiler). Load brand registries per brand (dynamic import by id) instead of bundling all three. Track this with a bundle budget in scripts/check-build.mjs, e.g. fail if first-load JS for / exceeds 180 KB br.
+- **Prüfung:** Partly verified. framework-shell.tsx and reference-page.tsx are both 'use client', so all page content ships as client JS. I did not re-measure the per-chunk byte figures. For a developer and agent reference site visited on desktop, about 267 KB br is a best-practice deviation without demonstrated user harm (no INP or TBT data). The L-effort RSC refactor is disproportionate compared with PERF-02 and PERF-05, which partly overlap. A bundle budget in check-build is a reasonable low-cost step, so P3. (Schwere von P2 auf P3 angepasst)
+
+### [P3] [L] [ICE 0.2] CODE-18 – Whole app is client-side, with god components switching over 18 or more sections
+
+- **Bereich:** Codequalität, Formulare & i18n
+- **Beleg:** layout.tsx:15 wraps all children in the 'use client' FrameworkShell. reference-page.tsx is a single 'use client' component branching on 18 section ids (`section==='tokens'`, 'brand' ×2, 'mermaid' ×2, …). It imports presentation.mjs, prompt-compiler.mjs, resolveFoundation and the whole catalog for every route, and holds unrelated state (query, repo, motionKey, selected). pattern-showcase.tsx:10 holds 9 useState hooks for 11 unrelated sections. /brand loads 14 script chunks, the largest 72.7 KB compressed. Static explanatory copy that could ship as server-rendered HTML is hydrated.
+- **Prinzip:** React Server Components boundary: keep static content on the server and hydrate only interactive islands. Single responsibility.
+- **Massnahme:** Turn each section into its own server component file (`sections/tokens.tsx`, …) chosen by a map in [section]/page.tsx. Mark only interactive parts 'use client' (token copy buttons, prompt builder, editors). Give the shell a server layout plus a small client 'BrandControls' island (combine with CODE-04). Split PatternShowcase into one component per pattern.
+- **Prüfung:** layout.tsx:15 wraps everything in the client FrameworkShell. With a static export, client components are still prerendered to HTML, so content stays crawlable. The cost is bundle size and hydration, and no CWV failure was shown. The architectural refactor is valid but low impact: P3. (Schwere von P2 auf P3 angepasst)
+
+## Nicht anfassen
+
+- *UX, IA, Inhalt, erster Eindruck:* Rapold signet matrix and download system (apps/docs/app/_components/rapold-showcase.tsx): a one-click SVG download per product × variant with descriptive aria-labels, a ZIP per product, an asset table driven by the asset manifest with explicit loading, error and retry states, and the usage snippet that explains alt text. Make it easier to find; do not redesign it.
+- *UX, IA, Inhalt, erster Eindruck:* The deck flow on /praesentation (presentation-page.tsx and packages/brands/src/prompt-compiler.mjs): repository and Anlass go into a deterministic short prompt that points at /brands/{id}/management.md. One copy button with a fallback message. The gallery is rendered from the real PPTX (with a hash gate), and the slide dialog explains zones and the typical mistake for each slide. This is the strongest journey on the site.
+- *UX, IA, Inhalt, erster Eindruck:* Brand context through ?brand= plus localStorage persistence, together with machine-readable contracts per brand (/brands/{id}/llms.txt, tokens.{mode}.json|css|dtcg.json, brand.json) and the click-to-copy var(--role) token cards. Keep the URLs and the file names stable. Also keep the precise, Swiss-spelled German writing principles (no ß, «» quotes, no invented numbers).
+- *Barrierefreiheit & Responsive:* Shell focus management in apps/docs/app/_components/framework-shell.tsx:126-167. The skip link targets <main id=main tabIndex=-1>. The command palette's onCloseAutoFocus returns focus to the element that opened it, or to <main> after navigating. The mobile Sheet hands focus to <main> after a link and to the palette after search. Measured: Escape returns focus to the trigger every time, and palette navigation lands on MAIN with the Next route announcer reading the page title. Pages have unique titles such as 'Typografie · Atlas'.
+- *Barrierefreiheit & Responsive:* Motion and input-modality handling. There is a global prefers-reduced-motion reset in core styles.css:53-55 and globals.css. At the JS level: ECharts animation follows matchMedia (echarts-showcase.tsx), Recharts 3.10 uses isAnimationActive='auto', the Rapold product-worlds have pause, reduced-motion and forced-colors states (worlds.css:194,281,287), and the lightbox hint shows on focus and under hover:none. The pointer:coarse 44px block in accessibility.css:15-18 also stays. Do not replace any of these with hover-only or animation-only cues.
+- *Barrierefreiheit & Responsive:* Accessible data alternatives and structure. Every chart has role=img, a summary aria-label and a real <table> with caption. The data table is a focusable, labelled scroll region with aria-sort (table-showcase.tsx:45-48). Every route has exactly one h1. Dark mode passed axe contrast with 0 failures on all 35 routes in all three brands.
+- *Visuelles Design, Zustände & Bewegung:* Contrast-validated semantic role tokens per brand and mode: all 19 text/fill role pairs measure >=4.45:1 (most 5-17:1) in all 6 brand-modes. Examples: rapold-light primary-foreground/primary 5.91:1, muted-foreground/background 6.10:1. Keep the generator and the 'npm run check' contrast gate that produce public/brands/*/tokens.*.css.
+- *Visuelles Design, Zustände & Bewegung:* The global prefers-reduced-motion reset in packages/core/src/styles.css:53 and in apps/docs/app/globals.css. It was verified live: under reduce, the motion-sample and skeleton animation durations compute to 1e-05s. Keep it scoped so brand portals (useBrandPortal) inherit it.
+- *Visuelles Design, Zustände & Bewegung:* One icon language: Lucide everywhere, a single stroke token (svg.lucide{stroke-width:var(--icon-stroke,1.5)}), size-4 defaults in Button, Sonner and menus, and a 44px --brand-button-height on plain Buttons. Plus the Radix primitives that already give Escape, focus trap and focus return in Dialog, Sheet and Popover.
+- *Performance, SEO & Vertrauen:* Fully static export behind Vercel's CDN, with immutable hashed /_next/static assets, a real HTTP 404 status (noindex) for missing pages, HTTPS with HSTS and an http to https 308. Measured TTFB is ~55 ms and FCP/LCP is ~1.5 s on /, /tokens and /praesentation under 4x CPU and slow-network throttling. Do not move to SSR or functions for content that is static.
+- *Performance, SEO & Vertrauen:* The agent-contract surface: /llms.txt, /brands/index.json, /brands/{brand}/llms.txt, /contracts/*.md, token exports, /icons/{Name}.svg and /build-info.json, whose commit fd6bd84 matches repo HEAD. The visible version (Atlas 0.7.1 in the sidebar) plus a dated CHANGELOG are strong permanence and provenance signals for the primary audience (agents).
+- *Performance, SEO & Vertrauen:* Heavy libraries are lazy and kept off the main bundle: mermaid (1.47 MB raw), cytoscape, katex, recharts and ECharts all load through next/dynamic, Radix TabsContent or next/script only on their own route or tab. Mermaid runs with securityLevel:'strict' (mermaid-diagram.tsx:35, mermaid-showcase.tsx:35) and the mail preview iframe is sandbox="". Keep this lazy, sandboxed setup.
+- *Codequalität, Formulare & i18n:* Core stays brand-free: grep for hex, rgb() or oklch(), 'Rapold', 'Geist' and brand names across packages/core/src returns zero hits. BrandProvider (packages/core/src/brand-provider.tsx:11-16) gives Dialog, Select, Popover and DropdownMenu a portal container inside the brand scope (useBrandPortal), so overlays inherit the brand variables. Keep this contract and its AGENTS.md rule.
+- *Codequalität, Formulare & i18n:* Async error and loading discipline in the heavy renderers. mermaid-diagram.tsx:22-47 combines a cancellation flag, a serialised renderQueue, a 30,000-character limit, securityLevel 'strict' and a readable error fallback. rapold-showcase.tsx:52-58 uses an AbortController with a retry state. The ECharts showcase falls back to a data table when the library fails. Keep these patterns when refactoring.
+- *Codequalität, Formulare & i18n:* Text-expansion resilience and de-CH consistency. Pseudo-localised text at +35% (breakable words) at 375px caused zero overflow and zero ellipsis clipping on /, /components, /tables, /praesentation, /tokens and /forms. The site uses lang="de-CH", og:locale de_CH, Swiss 'ss' spelling and «» quotes throughout, and `npm run check` (contract tests, typecheck and build) runs in CI on every push.
+
+## Abdeckung
+
+### UX, IA, Inhalt, erster Eindruck
+
+Sampled live (curl, 2026-10-12): /, /brand, /tokens, /typography, /components, /navigation, /praesentation, /praesentationslogik, /icons, /llms.txt, /brands/rapold/llms.txt, /build-info.json (v0.7.1, commit fd6bd84), /sitemap.xml, /robots.txt, an unknown route (/does-not-exist, /xyz), /manifest.webmanifest, /favicon.ico, /apple-touch-icon.png, /og.png, /contracts/produkte-einbinden.md, /brands/rapold/exports/atlas/*, and the token CSS/JSON exports. I rendered pages with headless Chromium (Playwright from radiox/node_modules) at 1440x900 and 375x812: /, /brand?brand=rapold, /brand (fresh, neutral), /components, /tokens, /praesentation and a 404. I measured the H1s, document heights and horizontal overflow (none) and took screenshots. I also ran 14 queries through the Ctrl+K command palette to measure findability.
+
+I read this source: apps/docs/app/{layout,page,[section]/page,praesentation/page,praesentationslogik/page}.tsx, _components/{catalog.ts, framework-shell, reference-page, brand-showcase, rapold-showcase, presentation-page, pattern-showcase, component-demo, icon-gallery}.tsx, parts of rapold-worlds.tsx, globals.css (shell and media queries), packages/brands/src/prompt-compiler.mjs, packages/brands/src/*.json (names/status), brands/rapold/identity.json (statuses), docs/produkte-einbinden.md, README.md and AGENTS.md.
+
+For radiox, I only listed C:\DEV\marcelrapold\radiox\packages\ui\src and apps/frontend/components to find patterns Atlas does not have. I did not browse radiox.cloud's rendered UI in depth (only checked it returns HTTP 200).
+
+Skipped:
+- The pages I did not render: /layout, /motion, /tables, /forms, /charts, /dashboard, /mermaid, /organigramm, /login-pattern, /auth-flow, /mail-templates, /health-status, /engineering, /accessibility, /content, /infografik, /marketing-hero. I reviewed these from source only.
+- Dark-mode and Dominicano renders.
+- Screen-reader testing.
+- Performance, which belongs to another agent.
+- Actual PPTX file contents.
+- Full contract markdown files beyond headings.
+
+CRO/pricing mandates do not apply: this is not e-commerce. CRO was adapted as friction to "found and used the right asset/token/component".
+
+Dark-pattern sweep found nothing: no forced consent, confirmshaming, pre-checked boxes, nagging, hidden costs or fake urgency. Swiss spelling sweep found no "ß" in the app, core or presentation logic.
+
+Findability test from a fresh visit to /, desktop, counting actions:
+(1) Fabric signet SVG for a dark background: 4 actions plus about 1,200 px of scrolling, and it needs prior knowledge to switch to Rapold. Searching "Signet" returns 0 results.
+(2) Favicon and manifest set for a product: 6 actions, and the integration guide is unlinked.
+(3) CSS variable for the primary colour: 2 (OK).
+(4) Spacing token: the Layout page shows the wrong name; correct after 3.
+(5) Button usage code: fails, no code exists.
+(6) Lucide icon import: 3 (OK).
+(7) Management-deck prompt: 2 plus clearing the prefilled field (OK).
+(8) Sample PPTX: 3 (OK).
+(9) Dark tokens for an agent: missing from llms.txt.
+(10) Product integration guide: not reachable from the site.
+
+Nielsen heuristics, scored 0-10:
+- H1 Visibility of system status: 7
+- H2 Match with the real world: 5 (mixed terms)
+- H3 User control and freedom: 7
+- H4 Consistency: 4
+- H5 Error prevention: 6
+- H6 Recognition rather than recall: 4
+- H7 Flexibility and efficiency: 6
+- H8 Aesthetic and minimalist design: 6
+- H9 Error recovery: 5
+- H10 Help and documentation: 6
+
+ISO 9241-110: suitability for the task is weak for flows (a) signets and (b) components, and good for (c) decks. Self-descriptiveness is hurt by the Brand/Theme/Default/Framework naming. Conformity with expectations is hurt by the English 404 and the wrong "Vertrag als JSON" targets.
+
+### Barrierefreiheit & Responsive
+
+Rendered checks used headless Chromium (Playwright 1.63 from radiox/node_modules) against the live site https://atlas.rapold.io, plus source in C:\DEV\marcelrapold\mra-atlas. Nothing in the repo was edited.
+
+What I sampled:
+(1) axe-core 4.10.2, injected from cdnjs, using tags wcag2a, wcag2aa, wcag21aa, wcag22aa and best-practice. It ran on all 35 sitemap routes in 6 brand/mode combinations (neutral, rapold and dominicano-express, each in light and dark) at 1440x900 with reduced motion, which is 210 runs. It ran again on all 35 routes at 375px with mobile/touch emulation, inside the open mobile Sheet, inside the open command palette, on deck and slide dialogs (/praesentation), on the Lightbox (/lightbox), and with the Dialog, Sheet and DropdownMenu demos open (/components).
+(2) Horizontal overflow, scroll containers and target sizes measured on all 35 routes at 320, 375, 768 (touch), 1024, 1440 and 1920 in neutral light. Rapold and dominicano were also checked in dark at 320, 375, 768 and 1024 on /, /brand and /praesentation.
+(3) Keyboard scripts: tab order on /tokens (60 stops); skip link; Ctrl+K palette (open, arrows, aria-activedescendant, empty state, Enter to navigate, Escape to return focus); focus and announcer after route changes from a sidebar link, a keyboard link and the palette; rail collapse; mobile Sheet open, Escape, navigate and search hand-off; deck, slide and lightbox dialogs (focus in, trap, return); dropdown, dialog and sheet demos.
+(4) Focus Not Obscured (SC 2.4.11): Shift+Tab sweeps on /praesentation, /mermaid, /tokens and /components at 1440 and 375.
+(5) Text-spacing override (SC 1.4.12) on 11 routes at 1440 and 375.
+(6) A spot check in forced-colors mode for the focus state of Input and Checkbox.
+(7) Heading outline, landmarks, iframes and media on all 35 routes.
+(8) Source review of framework-shell.tsx, globals.css, accessibility.css, core styles.css and the tabs, sheet, dialog, input, button, checkbox, lightbox and empty-state primitives, plus the brand JSON token values.
+
+What I skipped:
+- Real screen readers (NVDA, JAWS, VoiceOver) and real iOS/Android devices.
+- Firefox and WebKit engines.
+- Browser zoom itself (reflow was checked as the equivalent CSS widths of 320 and 768).
+- The contents of the mail-template iframe.
+- Keyboard operation inside ECharts and Mermaid SVGs.
+- Accessibility of the PPTX/PDF deck exports.
+- /contracts and llms.txt, which are not HTML UI.
+- Interactive controls of the Rapold product-worlds beyond axe and the reduced-motion code path.
+- A full manual SC 2.5.8 spacing proof. Undersized targets were judged by their isolation, not by geometric circle tests.
+- Overflow at 1024 and above was only checked in neutral; rapold and dominicano were only checked up to 1024.
+
+### Visuelles Design, Zustände & Bewegung
+
+SAMPLED (live = https://atlas.rapold.io, build 0.7.1; the local apps/docs/out CSS hash 3bvtb48uz92n4.css matches the live CSS). Rendered with headless Chromium through Playwright from C:\DEV\marcelrapold\radiox\node_modules, using a fresh context with no user browser.
+(1) /components in all 6 brand x mode combinations (rapold, neutral, dominicano-express, light and dark). Measured computed focus styles by walking Tab through the first ~20 controls, plus hover, active and disabled styles, dialog and select open animation, trigger heights, toast and skeleton.
+(2) /forms error path (typed "ab" and "   ").
+(3) /accessibility prose measure (characters per line) and heading scale.
+(4) /motion under prefers-reduced-motion.
+(5) /skeletons under reduced motion.
+(6) / with colorScheme dark: flash timing of the theme switch, plus a no-JS render.
+(7) Screenshots: home light, components dark, focused primary button (light and dark), focused input.
+Source read: all 19 files in packages/core/src/ui (lightbox and command only grepped), packages/core/src/styles.css, apps/docs/app/globals.css (split into 520 rules and tallied), accessibility.css, component-demo.tsx, pattern-showcase.tsx, reference-page.tsx (motion and layout sections), catalog.ts, packages/brands/src/foundation.json and the 3 brand JSONs, public/brands/*/tokens.{light,dark}.css. A Node script computed WCAG contrast for 19 role pairs x 6 brand-modes, plus ring/50 and destructive/20 blends.
+radiox.cloud comparison (state mandate only): read apps/frontend/components/ui (focusRing.ts, statusTone.ts, useAppDialog.tsx) and grepped for Switch, Progress, Toggle, Slider, Spinner and prefers-reduced-motion. Radiox elements missing in Atlas are listed in VISUAL-03, VISUAL-05, VISUAL-06 and VISUAL-10 as import candidates.
+SKIPPED: deck renderer (packages/presentation), slide visuals on /praesentation and /praesentationslogik, the brand worlds/kit CSS of product-worlds, the lightbox and command internals, and mobile breakpoints (except the token rules). Hover was measured only on Button. The pulse frame-sampling test was inconclusive in headless mode: opacity stayed fixed at 0.96, so there is no flicker claim.
+THE 5 DECISIONS THAT CAP QUALITY:
+(a) The unlayered brand override at styles.css:49 beats Tailwind utilities. It silently deletes the focus rings.
+(b) The animation utilities have no plugin behind them, so all overlay motion is dead code.
+(c) The docs site styles itself with hand-written px values instead of its own tokens.
+(d) Slot/asChild overwrites data-slot, which the brand CSS uses as its styling hook.
+(e) There is no confirm or alert-dialog primitive, so destructive protection is left to each product.
+
+### Performance, SEO & Vertrauen
+
+Live checks against https://atlas.rapold.io on 2026-10-12 (deploy commit fd6bd84, which matches repo HEAD). (1) I ran curl -I on /, /brand?brand=rapold, /tokens, /llms.txt, /build-info.json, /sitemap.xml, /robots.txt, /og.png, /vendor/echarts-6.0.0.min.js, a 404 URL, /_not-found, /brands, http:// (gives a 308 to https) and /tokens/. (2) I pulled the head meta (title, description, canonical, OG, Twitter, robots, H1 count, JSON-LD) for /, /brand, /tokens, /typography, /components, /navigation, /praesentation, /praesentationslogik, /icons and the 404 page. (3) I diffed the sitemap against the exported HTML in apps/docs/out. (4) I measured initial JS and CSS chunk sizes raw and brotli for the home page, and ranked the lazy chunks in out/_next/static/chunks (mermaid, lucide, cytoscape, katex, recharts). (5) Playwright headless Chromium (from radiox/node_modules), throttled to 4x CPU, 1.6 Mbps and 150 ms RTT, 1366x850, light and dark: TTFB, FCP, LCP plus element, CLS plus shift sources and loaded fonts for /, /brand?brand=rapold, /tokens, /components, /praesentation and /icons. I also rendered with JavaScript off to measure SSR content and the first-paint theme. (6) Repo source read: apps/docs/app/layout.tsx, [section]/page.tsx, praesentation/page.tsx, sitemap.ts, robots.ts, _components/framework-shell.tsx, reference-page.tsx, catalog.ts, icon-gallery.tsx, echarts-showcase.tsx, mermaid-diagram.tsx and mermaid-showcase.tsx (securityLevel), globals.css, vercel.json, next.config.mjs, the package.json files, the @fontsource/inter CSS and the CHANGELOG. Skipped: field CWV/CrUX (none available for this host), a real INP trace (I reasoned about it from the code), mobile-viewport measurements, and per-page meta for the other 26 sitemap routes (they share the same generateMetadata code path, so the findings carry over). I did not look at radiox.cloud or the gap-import request; that is outside my mandate (performance, SEO, trust) and belongs to another agent. CRO and pricing do not apply (no commerce). Cookie/consent: there are no cookies and no third-party trackers; only per-viewer localStorage preferences. I made no repo edits.
+
+### Codequalität, Formulare & i18n
+
+Inspected (read-only, nothing edited) in repo C:\DEV\marcelrapold\mra-atlas at fd6bd84:
+- All of packages/core/src: brand-provider.tsx, index.ts, styles.css, and every ui/*.tsx. I read lightbox.tsx, input.tsx, button.tsx and dialog.tsx in full and grepped the rest for hex values, brand names and hardcoded strings.
+- packages/brands/src: orgchart.mjs palette/escaping, prompt-compiler.mjs and .d.mts, mermaid-theme.mjs, atlas-slide-content.mjs number formatting, rapold.json and neutral.json.
+- packages/presentation/src: grepped only, for lang and formatting.
+- apps/docs/app: layout.tsx, [section]/page.tsx, praesentation/page.tsx, praesentationslogik/page.tsx, framework-shell.tsx, component-demo.tsx, pattern-showcase.tsx, orgchart-editor.tsx, table-showcase.tsx, icon-gallery.tsx, mermaid-diagram.tsx and mermaid-showcase.tsx (effect and editor parts), plus the relevant parts of presentation-page.tsx, reference-page.tsx, echarts-showcase.tsx, rapold-worlds.tsx and catalog.ts.
+- CSS: globals.css in full (line lengths, !important, physical properties, duplicate rules), accessibility.css, and the head of brands/rapold/theme.css.
+- Config and tooling: tsconfig, all package.json files, .gitignore, CI workflow and vendor README. I ran `tsc --noEmit` (passes, 0 any/ts-ignore) and `npm outdated --workspaces`, and counted the tests (47 node:test cases in 10 files).
+- Live site: curl of /, /tokens, /brand?brand=rapold and /praesentation for html lang, data-brand/data-mode, OG tags and inline style size.
+- Headless Playwright (from radiox/node_modules) against the live site:
+  - Computed styles of the dialog title, the Input focus state and the Button padding.
+  - The newline bug in the organigram editor's team field.
+  - /forms validation timing (input 'ab', then spaces, then a valid value).
+  - Login email attributes.
+  - A +35% pseudo-localisation run (breakable words) at 375px on /, /components, /tables, /praesentation, /tokens and /forms.
+- radiox (only the parts that are candidates to import): apps/frontend/components/ui listing, services/locale.ts, focusRing.ts and the test setup.
+
+Skipped or not deeply read:
+- rapold-showcase.tsx and rapold-worlds.tsx: only the effects and hex values; the animation logic was not read.
+- changelog-infographic, data-showcase and slide-preview: grep only.
+- Remaining core files (command, select, dropdown-menu, sheet and the others): grep and class inspection only.
+- scripts/*.mjs build tooling, the tests' own contents beyond counts, and the generated public/ files.
+- No Lighthouse or bundle analysis beyond the chunk sizes on /brand.
+- I could not test RTL rendering (there are no RTL locales).
+- I did not do a full feature-by-feature inventory of what is on radiox.cloud but missing from Atlas. That belongs to other agents; I only noted radiox items that are directly relevant to my findings (locale.ts, the component tests, focusRing).
+

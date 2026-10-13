@@ -1,11 +1,14 @@
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
+import { Loader2 } from 'lucide-react'
 import { Slot } from 'radix-ui'
 
 import { cn } from '../lib/utils'
 
 const buttonVariants = cva(
-  "inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-all outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  // Fokus über outline statt box-shadow-Ring: bleibt in Forced Colors sichtbar
+  // und wird nicht von Schatten-Varianten überschrieben (Audit P1).
+  "inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 aria-busy:cursor-progress aria-disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 motion-reduce:transition-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
@@ -30,36 +33,82 @@ const buttonVariants = cva(
         'icon-sm': 'size-8',
         'icon-lg': 'size-10',
       },
+      fullWidth: {
+        true: 'w-full',
+        false: '',
+      },
     },
     defaultVariants: {
       variant: 'default',
       size: 'default',
+      fullWidth: false,
     },
   },
 )
+
+type ButtonProps = React.ComponentProps<'button'> &
+  VariantProps<typeof buttonVariants> & {
+    /** Rendert das einzige Kind (z. B. einen Link) mit den Button-Klassen. */
+    asChild?: boolean
+    /**
+     * Ladezustand: zeigt einen Spinner vor dem Inhalt, setzt `aria-busy` und
+     * `aria-disabled` und ignoriert Klicks. Der Button bleibt fokussierbar,
+     * damit der Tastaturfokus beim Laden nicht verloren geht. Mit `asChild`
+     * wird kein Spinner eingefügt (Slot erwartet genau ein Kind).
+     */
+    loading?: boolean
+  }
 
 function Button({
   className,
   variant = 'default',
   size = 'default',
+  fullWidth = false,
   asChild = false,
+  loading = false,
+  disabled,
+  onClick,
+  children,
   ...props
-}: React.ComponentProps<'button'> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean
-  }) {
+}: ButtonProps) {
   const Comp = asChild ? Slot.Root : 'button'
+  // Reine Icon-Buttons tauschen das Icon gegen den Spinner, statt zu wachsen.
+  const iconOnly = typeof size === 'string' && size.startsWith('icon')
 
   return (
     <Comp
       data-slot="button"
       data-variant={variant}
       data-size={size}
-      className={cn(buttonVariants({ variant, size, className }))}
+      data-loading={loading ? '' : undefined}
+      aria-busy={loading || undefined}
+      aria-disabled={loading || undefined}
+      disabled={disabled}
+      onClick={
+        loading
+          ? (event: React.MouseEvent<HTMLButtonElement>) => {
+              // Nicht `disabled` setzen: das würde den Fokus verwerfen.
+              event.preventDefault()
+              event.stopPropagation()
+            }
+          : onClick
+      }
+      className={cn(buttonVariants({ variant, size, fullWidth, className }))}
       {...props}
-    />
+    >
+      {asChild ? (
+        children
+      ) : (
+        <>
+          {loading ? (
+            <Loader2 aria-hidden="true" data-slot="button-spinner" className="motion-safe:animate-spin" />
+          ) : null}
+          {loading && iconOnly ? null : children}
+        </>
+      )}
+    </Comp>
   )
 }
 
 export { Button, buttonVariants }
-
+export type { ButtonProps }

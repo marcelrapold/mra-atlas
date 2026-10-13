@@ -18,6 +18,8 @@ Der Nutzer muss diese Regeln nicht in den Auftrag kopieren.
 
 - /contracts/repo-to-management.md: vollständiger Auftrag vom Repository zur Management-Präsentation
 - /contracts/brand-contract.md: Tokenmodell, Erweiterung und Abnahme
+- /contracts/components.md: alle UI-Komponenten mit Import, Varianten, Barrierefreiheit und Do/Don't
+- /contracts/produkte-einbinden.md: Atlas in Produkten einbinden (Signet, Favicon, Manifest, Tokens, Schrift)
 - /brands/index.json: verfügbare Brands mit Version, Status und Asset-Pfaden
 - /brands/{brand}/llms.txt: Einstieg ausschliesslich für das aktive Theme
 - /brands/{brand}/brand.json: Identität des aktiven Themes

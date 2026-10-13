@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.8.0 — 2026-10-12
+
+- **Frontend-Audit** über 16 Perspektiven mit adversarialer Prüfung: 97 belegte Befunde, 0 × P0, 7 × P1. Bericht, Scorecard und Rohdaten unter `docs/review/audit-2026-10-12/`.
+- **Aus RadioX übernommen** und neutralisiert (nur semantische Tokens, keine Produktlogik): Tonsystem und Status-Töne, StatusDot/LiveDot, Eyebrow, Inset, KI-Kennzeichnung, Button mit Ladezustand und `fullWidth`, IconButton, PlayButton, Toggle/LikeToggle, Switch, RadioGroup, Confirm-/Prompt-/Inform-Dialog, Wischen zum Schliessen für Bottom-Sheets (opt-in), ErrorBoundary, Breadcrumb, PageHeader, Section, BottomNav/BottomStack, Avatar/AvatarGroup, MediaBar, MediaCard/GeneratedCover, Karussell ohne Fremdbibliothek, Audio-Visualisierungen, Alert, Announcer, LogView sowie Hooks (Media Query, reduzierte Bewegung, Elementgrösse, Scrollrichtung, sichtbarkeitsabhängiges Intervall, Dokumenttitel). Atlas-Core wächst von 19 auf 42 UI-Module.
+- Sechs neue Komponentenseiten mit Live-Demos und Verwendungscode; Komponentenliste verlinkt; Komponentenvertrag `/contracts/components.md` für Agenten.
+- **Audit-P1 behoben:** sichtbarer Tastaturfokus in allen Core-Komponenten über `outline` statt `box-shadow` (überlebt Brand-Schatten und Forced Colors); Kontrast inaktiver Tabs; Zeilenumbruch im Organigramm-Editor; Einbindungsanleitung auf der Markenseite und in `llms.txt` verlinkt.
+
 ## 0.7.1 — 2026-10-12
 
 - Die sechs mit 0.7.0 ergänzten Signets (Lotse, Cockpit, Auditor, Rapold Auth, PocketForge, Atlas) sind freigegeben; der Katalog führt alle zehn Zeichen als `approved`. Nachweis in `provenance.json`.

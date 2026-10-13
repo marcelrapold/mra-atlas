@@ -154,7 +154,7 @@ function BlaetterKnopf({
       onClick={onClick}
       disabled={deaktiviert}
       aria-label={zurueck ? 'Vorheriges Motiv' : 'Nächstes Motiv'}
-      className={`absolute top-1/2 z-10 -translate-y-1/2 rounded-full border bg-background/85 p-2 text-muted-foreground backdrop-blur transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-30 ${
+ className={`absolute top-1/2 z-10 -translate-y-1/2 rounded-full border bg-background/85 p-2 text-muted-foreground backdrop-blur transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-30 ${
         zurueck ? 'left-2' : 'right-2'
       }`}
     >
@@ -261,7 +261,7 @@ export function LightboxBetrachter({
           type="button"
           onClick={aufSchliessen}
           aria-label="Vollbild schliessen"
-          className="absolute right-3 top-3 z-10 rounded-full border bg-background/80 p-1.5 text-muted-foreground backdrop-blur hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+ className="absolute right-3 top-3 z-10 rounded-full border bg-background/80 p-1.5 text-muted-foreground backdrop-blur hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
         >
           <X className="h-4 w-4" />
         </button>
@@ -287,7 +287,7 @@ export function LightboxBetrachter({
                   type="button"
                   onClick={navigation.aufSpielen}
                   aria-label={navigation.spielt ? 'Slideshow anhalten' : 'Slideshow starten'}
-                  className="rounded-full p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+ className="rounded-full p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                 >
                   {navigation.spielt ? (
                     <Pause className="h-3.5 w-3.5" />
@@ -360,7 +360,7 @@ export function Lightbox({
         onClick={() => setOffen(true)}
         aria-label={`${label} im Vollbild öffnen`}
         title="Vergrössern"
-        className="absolute inset-0 z-10 cursor-zoom-in rounded-[inherit] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+ className="absolute inset-0 z-10 cursor-zoom-in rounded-[inherit] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
       >
         <span
           aria-hidden="true"

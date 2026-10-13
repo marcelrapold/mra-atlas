@@ -1,0 +1,1012 @@
+{
+ "atlasHas": [
+  "packages/core/src/ui/badge.tsx (Radix Slot, variants default/secondary/destructive/outline/ghost/link; no tone/size/leading-dot)",
+  "packages/core/src/ui/button.tsx (variants default/destructive/outline/secondary/ghost/link; sizes xs/sm/default/lg/icon/icon-xs/icon-sm/icon-lg; asChild; no isLoading/leftIcon/rightIcon)",
+  "packages/core/src/ui/card.tsx",
+  "packages/core/src/ui/checkbox.tsx",
+  "packages/core/src/ui/command.tsx (cmdk)",
+  "packages/core/src/ui/dialog.tsx (Radix Dialog, portal via useBrandPortal)",
+  "packages/core/src/ui/dropdown-menu.tsx (Radix)",
+  "packages/core/src/ui/empty-state.tsx",
+  "packages/core/src/ui/input.tsx",
+  "packages/core/src/ui/label.tsx",
+  "packages/core/src/ui/lightbox.tsx (own focus trap, glass backdrop, gallery paging)",
+  "packages/core/src/ui/popover.tsx (Radix)",
+  "packages/core/src/ui/select.tsx",
+  "packages/core/src/ui/separator.tsx",
+  "packages/core/src/ui/sheet.tsx (Radix Dialog side sheet, no touch swipe-to-dismiss)",
+  "packages/core/src/ui/skeleton.tsx",
+  "packages/core/src/ui/sonner.tsx (toasts)",
+  "packages/core/src/ui/tabs.tsx",
+  "packages/core/src/ui/tooltip.tsx (Radix Tooltip, delay 0)",
+  "packages/core/src/brand-provider.tsx (useBrandPortal)",
+  "packages/core/src/styles.css (semantic color roles incl. success/warning/info/destructive, chart-1..5, sidebar; radius from --brand-radius; reduced-motion rule)",
+  "packages/brands/src/foundation.json (spacing, fontSize xs..5xl, lineHeight, fontWeight, radius none..full, borderWidth, opacity, duration instant..deliberate, easing standard/enter/exit, breakpoint, layout sidebar/rail/header/footer/content/reading, zIndex base..tooltip, icon)",
+  "packages/brands/src/foundation.mjs (derived surface-info/-success/-warning/-danger tints)",
+  "apps/docs/app/_components/framework-shell.tsx + globals.css (docs-only: sidebar/rail nav, toolbar breadcrumb, .eyebrow, .metrics KPI row, .notice, .icon-button, skip link)",
+  "apps/docs/app/_components/pattern-showcase.tsx (toasts, empty-states, skeletons, lightbox, forms, auth-flow, login, mail templates, health-status, marketing-hero)",
+  "apps/docs/app/_components/data-showcase.tsx, echarts-showcase.tsx, table-showcase.tsx (dashboard/charts/tables)",
+  "apps/docs/app/_components/reference-page.tsx section 'motion' (duration/easing demo only)",
+  "tests/brands.test.mjs core-isolation guard (forbids next/, framer-motion, supabase, org names in packages/core/src)"
+ ],
+ "elements": [
+  {
+   "name": "Tone role system (tone.ts: TONE_TEXT/FILL/BORDER/TINT)",
+   "kind": "token",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/ui/tone.ts",
+    "radiox/apps/frontend/index.css (@theme: --color-accent/onair/ai/community/news/dna/danger)"
+   ],
+   "atlasEquivalent": "partial: packages/core/src/styles.css + foundation.mjs (success/warning/info/destructive + surface-* tints only)",
+   "genericValue": "high",
+   "importPlan": "Create packages/core/src/lib/tone.ts with a neutral Tone union: neutral | primary | info | success | warning | danger | highlight | live (+ optional chart-1..5 as 'category' tones). Map RadioX: accent->primary, onair->live, ai->highlight (or chart-4), community->success, news->warning, dna->chart-5/category, danger->destructive. Express classes against Atlas roles (text-success, bg-success/10 or bg-surface-success, border-success/30). Add brand role 'live' (and optional 'highlight') to brand.schema.json colorKeys + neutral.json/rapold.json/dominicano-express.json both modes with contrast checks in tests; keep RadioX-specific meanings (KI, Klang-DNA, News) as a RadioX brand mapping, not core names.",
+   "dependencies": [
+    "clsx/tailwind-merge (already in core)"
+   ],
+   "liveEvidence": "/live: Inset (3), Eyebrow tones ('Tempo','Energie','Länge') rendered via data-component",
+   "risks": "Adding new colorKeys is a brand-contract change (schema required keys, all brands must supply both modes; Atlas schema test enforces). Tailwind needs full class strings, keep literal maps."
+  },
+  {
+   "name": "Status tone helper (statusToneClasses / statusChipClass)",
+   "kind": "token",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/ui/statusTone.ts"
+   ],
+   "atlasEquivalent": "partial: packages/core/src/styles.css (success/warning/info/destructive roles); no status->class mapping helper",
+   "genericValue": "high",
+   "importPlan": "Fold into packages/core/src/lib/tone.ts as statusTone(role) with roles success|info|progress|warning|error|neutral|active, mapped to Atlas semantic roles (success, info, primary, warning, destructive, muted, accent). Drop the 'hex' field (hardcoded #10b981 etc. violates core rule); if canvas/SVG needs a color, read getComputedStyle(var(--success)). Expose a StatusBadge variant instead of raw strings.",
+   "dependencies": [],
+   "liveEvidence": "login-protected admin views (AdminInboxView, RadioPlaylistsView) – code only",
+   "risks": "RadioX distinguishes 'progress' (sky) and 'info' (cyan); Atlas has one info role — needs either a new role or reuse of primary."
+  },
+  {
+   "name": "Focus ring constants (FOCUS_RING / _INSET / _WHITE)",
+   "kind": "token",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/ui/focusRing.ts"
+   ],
+   "atlasEquivalent": "partial: core components use focus-visible:ring-[3px] ring-ring inline; docs globals.css outline 3px var(--ring)",
+   "genericValue": "medium",
+   "importPlan": "Add packages/core/src/lib/focus.ts exporting focusRing ('outline-none focus-visible:ring-[3px] focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background'), focusRingInset (offset-0, for elements on imagery) and focusRingOnMedia (ring-white/80 for colored/photo backgrounds). Replace cyan-400/black with ring/background tokens; use foundation borderWidth.focus.",
+   "dependencies": [],
+   "risks": "Low; mostly a convenience. Keep consistent with existing core 3px ring."
+  },
+  {
+   "name": "Badge (live/ai/aiHost/count/neutral, sizes sm/md, leading dot/icon)",
+   "kind": "primitive",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/ui/Badge.tsx"
+   ],
+   "atlasEquivalent": "partial: packages/core/src/ui/badge.tsx",
+   "genericValue": "high",
+   "importPlan": "Extend Atlas badge.tsx rather than adding a second badge: add `tone` (from lib/tone.ts), `size` (sm 20px / md 24px), `icon` slot with default leading dot, and an `onMedia` variant (scrim background bg-black/70 equivalent -> new token 'scrim' or bg-foreground/... for badges over images). Map: live -> tone='live' with LiveDot; ai -> tone='highlight' onMedia; aiHost -> tone='highlight' tinted; count -> tone='success' + tabular-nums; neutral -> outline. Replace text-micro/tracking-caps with foundation fontSize (add 'micro' 11px, see tokensGap) + letter-spacing token. Keep Atlas data-slot='badge'.",
+   "dependencies": [
+    "class-variance-authority"
+   ],
+   "liveEvidence": "/live AiBadge x12, AiHostLabel; homepage LiveDot inside badge/pill",
+   "risks": "Uppercase micro labels are a RadioX style decision; make uppercase optional (`caps` prop) so brands decide."
+  },
+  {
+   "name": "LiveDot (on-air dot, single motion-safe ping)",
+   "kind": "primitive",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/ui/LiveDot.tsx"
+   ],
+   "atlasEquivalent": "none",
+   "genericValue": "high",
+   "importPlan": "New packages/core/src/ui/live-indicator.tsx exporting LiveDot (and optionally StatusDot with `tone`). Props: pulse, size sm|md, tone (default 'live'). Use motion-safe:animate-ping. Strip useCarMode (RadioX utils/carBrowser) – replace with a `reducedMotion`/`still` prop or rely on prefers-reduced-motion; keep aria-hidden. Color bg-live (new role) or bg-destructive fallback.",
+   "dependencies": [],
+   "liveEvidence": "radiox.cloud / and /library: data-component=LiveDot in header live pill",
+   "risks": "Needs the 'live' color role or documented fallback to destructive."
+  },
+  {
+   "name": "Eyebrow (uppercase micro label with tone)",
+   "kind": "primitive",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/ui/Eyebrow.tsx"
+   ],
+   "atlasEquivalent": "partial: apps/docs/app/globals.css .eyebrow (docs-only CSS, not in core)",
+   "genericValue": "high",
+   "importPlan": "New packages/core/src/ui/eyebrow.tsx: polymorphic `as` (span|p|div|h2|h3|h4|dt|label|legend), `tone` (lib/tone), export EYEBROW_CLASS. Classes: text-xs (or new micro size) font-semibold uppercase tracking-[var(--tracking-caps)] text-muted-foreground. Migrate docs .eyebrow to use it.",
+   "dependencies": [],
+   "liveEvidence": "/live: Eyebrow x3 (Tempo/Energie/Länge in DnaTrackProfile)",
+   "risks": "Muted-foreground at 11px must still reach AA in every brand; add contrast check."
+  },
+  {
+   "name": "Inset (nested inner card surface with tone)",
+   "kind": "primitive",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/ui/Inset.tsx"
+   ],
+   "atlasEquivalent": "none (card.tsx is top-level only)",
+   "genericValue": "high",
+   "importPlan": "New packages/core/src/ui/inset.tsx (or CardInset in card.tsx): polymorphic as (div|section|li|article|figure), padding none|sm|md, tone. Classes: rounded-md border bg-muted/50 (neutral) or bg-surface-<tone> border-<tone>/30. Replace radius-inset 12px with Atlas radius-md/lg.",
+   "dependencies": [],
+   "liveEvidence": "/live: Inset x3",
+   "risks": "Low."
+  },
+  {
+   "name": "Button extras (isLoading spinner, leftIcon/rightIcon, fullWidth, glow primary)",
+   "kind": "primitive",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/ui/Button.tsx"
+   ],
+   "atlasEquivalent": "partial: packages/core/src/ui/button.tsx",
+   "genericValue": "medium",
+   "importPlan": "Do not import the RadioX Button (cyan/glow/white-alpha hardcodes). Add to Atlas button.tsx: `loading` prop (Loader2 + aria-busy + disabled), `fullWidth` (w-full), keep icons as children ([&_svg] rules already exist). Drop cyan glow shadow; if wanted, expose a brand-level --brand-button-glow token in brand JSON, not core.",
+   "dependencies": [
+    "lucide-react Loader2"
+   ],
+   "liveEvidence": "homepage + /library: data-component=Button",
+   "risks": "asChild + loading combination: spinner must not break Slot single-child rule."
+  },
+  {
+   "name": "IconButton (required aria-label, loading, glass variant)",
+   "kind": "primitive",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/ui/IconButton.tsx"
+   ],
+   "atlasEquivalent": "partial: packages/core/src/ui/button.tsx sizes icon/icon-xs/icon-sm/icon-lg",
+   "genericValue": "medium",
+   "importPlan": "Add thin packages/core/src/ui/icon-button.tsx wrapping Button with size icon*, TypeScript-required 'aria-label', loading support, and a `variant='glass'` mapped to bg-background/60 border backdrop-blur (respect a reduced-transparency/flat prop). No white/10 hardcodes.",
+   "dependencies": [],
+   "risks": "Mostly API sugar; avoid duplicating button variants."
+  },
+  {
+   "name": "Card variants (glass/elevated/outline, hover, active) + CardHeader bordered",
+   "kind": "primitive",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/ui/Card.tsx"
+   ],
+   "atlasEquivalent": "full: packages/core/src/ui/card.tsx (structure); partial for variants",
+   "genericValue": "low",
+   "importPlan": "Only port the behaviour flags: `interactive` (hover border-primary, cursor-pointer) and `selected` (border-primary bg-surface-info, aria-current/aria-selected) as cva variants on Atlas Card. Skip slate-900/cyan glow hardcodes.",
+   "dependencies": [],
+   "risks": "Atlas card already applies --brand-shadow; avoid stacking shadows."
+  },
+  {
+   "name": "GlassPlayButton (glass play/pause/loading toggle, sizes sm..xl, flat fallback)",
+   "kind": "primitive",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/ui/GlassPlayButton.tsx",
+    "radiox/apps/frontend/index.css (.rx-glass-play @layer components, lines ~620-715)"
+   ],
+   "atlasEquivalent": "none (lightbox.tsx uses Play/Pause icons for slideshow only)",
+   "genericValue": "high",
+   "importPlan": "New packages/core/src/ui/play-button.tsx `PlayButton` with props playing, loading, label (required), size sm(36)|md(44)|lg(64)|xl(112), pressed, flat, children (underlay slot), iconClassName. Move .rx-glass-play CSS into packages/core/src/styles.css as [data-slot='play-button'] rules using tokens: tint -> color-mix(var(--foreground) / background), glow -> var(--primary) at 35%, focus outline var(--ring), transitions var(--duration-fast)/easing tokens. Keep @supports fallback and reduced-motion. Replace :root[data-drive] with a generic [data-reduced-effects] hook on .framework-scope. Name 'glass' as a `material='glass'|'solid'` prop.",
+   "dependencies": [
+    "lucide-react (Play, Pause, Loader2)"
+   ],
+   "liveEvidence": "homepage: data-glass-play x2 (mini bar PlayPauseOrb); /live: x1",
+   "risks": "backdrop-filter cost on low-end devices; must pass 3:1 non-text contrast on light brands (current tint is dark-only)."
+  },
+  {
+   "name": "FloatingLayer (portal, anchored, flip/shift, close on Esc/outside/scroll-out)",
+   "kind": "primitive",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/ui/FloatingLayer.tsx",
+    "radiox/apps/frontend/components/ui/tooltipPosition.ts"
+   ],
+   "atlasEquivalent": "full: packages/core/src/ui/popover.tsx (Radix Popper does flip/shift/collision + portal via useBrandPortal)",
+   "genericValue": "low",
+   "importPlan": "Do not import; use Atlas Popover (non-modal, PopoverAnchor for custom anchors). Document in Atlas a 'floating info panel' recipe (Popover with modal={false}, onInteractOutside) as replacement. Only port the documentation insight: close when anchor leaves viewport (Radix: hideWhenDetached).",
+   "dependencies": [
+    "radix-ui (present)"
+   ],
+   "liveEvidence": "/live AirProvenanceLine.Reveal (provenance table over cards)",
+   "risks": "RadioX z-index 55 layering (above player z-45/46) must map to foundation zIndex (overlay 40/modal 50) – define a 'floating' level if needed."
+  },
+  {
+   "name": "Tooltip (hoverable bubble, describedby on child, collision measurement, no portal)",
+   "kind": "primitive",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/ui/Tooltip.tsx",
+    "radiox/apps/frontend/components/ui/tooltipPosition.ts"
+   ],
+   "atlasEquivalent": "full: packages/core/src/ui/tooltip.tsx (Radix; WCAG 1.4.13 hoverable, collision handled)",
+   "genericValue": "low",
+   "importPlan": "Keep Atlas Radix tooltip. Port only behaviours as defaults: TooltipProvider delayDuration ~350ms (Atlas default 0), disableHoverableContent false, and the 'tap passes through on touch' note to docs. computeTooltipLayout/clippingBoundary pure functions are not needed.",
+   "dependencies": [],
+   "liveEvidence": "/live: 8 role=tooltip nodes",
+   "risks": "Atlas delay 0 vs RadioX 350ms is a UX decision; document."
+  },
+  {
+   "name": "ModalDialog + ModalGrabber + modal.css (presentation window/drawer/immersive, materials glass/soft/flat, short/tiny heights)",
+   "kind": "pattern",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/ui/ModalDialog.tsx",
+    "radiox/apps/frontend/styles/modal.css"
+   ],
+   "atlasEquivalent": "partial: packages/core/src/ui/dialog.tsx + sheet.tsx (Radix: focus trap, Esc, return focus, scroll lock)",
+   "genericValue": "medium",
+   "importPlan": "Keep Radix Dialog as the engine. Add to dialog.tsx: `presentation` prop ('window'|'drawer'|'immersive') mapping to classes (drawer = bottom sheet on <md, immersive = edge-to-edge full viewport), safe-area padding (env(safe-area-inset-*)), dvh height, and DialogGrabber (pointer: coarse only). Port modal.css geometry as tokenised CSS in styles.css under [data-slot='dialog-content'][data-presentation=...]: radius var(--radius-xl), border var(--border), background var(--popover), shadow from brand. Drop --rx-modal-light cyan/violet hardcodes and data-modal-material glass unless as brand opt-in.",
+   "dependencies": [
+    "radix-ui"
+   ],
+   "liveEvidence": "Share sheet / listener sheet / shortcut sheet on /live (opened on interaction)",
+   "risks": "RadioX custom inert stack (data-modal-exempt to keep toasts live) – Radix uses aria-hidden on siblings; Sonner portal must remain announced (verify)."
+  },
+  {
+   "name": "useModalDialog (stacked focus trap, inert, scroll-lock, exempt elements)",
+   "kind": "hook",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/ui/useModalDialog.ts"
+   ],
+   "atlasEquivalent": "full: Radix Dialog in packages/core/src/ui/dialog.tsx; partial own trap in lightbox.tsx (useFocusTrap)",
+   "genericValue": "low",
+   "importPlan": "Not imported. Optional: replace lightbox.tsx's private useFocusTrap with Radix Dialog primitives so Atlas has one modal engine. Port the regression tests idea (nested dialogs, out-of-order close) as Atlas browser QA cases.",
+   "dependencies": [],
+   "risks": "None if not imported."
+  },
+  {
+   "name": "useSwipeToDismiss (touch drag-down to close, velocity/ratio thresholds, scroll-wins, reduced-motion)",
+   "kind": "hook",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/ui/useSwipeToDismiss.ts",
+    "radiox/apps/frontend/components/ui/useSwipeToDismiss.test.tsx"
+   ],
+   "atlasEquivalent": "none (sheet.tsx has no gesture)",
+   "genericValue": "high",
+   "importPlan": "New packages/core/src/lib/use-swipe-to-dismiss.ts (pure hook: element ref, onDismiss, enabled, ratio=0.25, velocity=0.5px/ms, flickMin=24px, flickWindow=100ms). Keep exported pure helpers releaseVelocity/resolveSwipeSheet for tests. Replace isInTopmostDialog (RadioX stack) with checking Radix data-state=open topmost content or accept an `isTopmost` callback. Wire into Sheet side='bottom' and Dialog presentation='drawer' via `swipeToClose` prop; honour [data-no-swipe-dismiss], inputs/sliders. Port the 556-line test file as node tests or Playwright.",
+   "dependencies": [],
+   "liveEvidence": "Mobile sheets on radiox.cloud (code; gesture not verifiable headless)",
+   "risks": "Uses CSS `translate` property to avoid clobbering Radix animate-in transforms – keep that; test on iOS Safari."
+  },
+  {
+   "name": "useAppDialog (promise-based confirm/prompt/inform replacing window.confirm)",
+   "kind": "hook",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/ui/useAppDialog.tsx"
+   ],
+   "atlasEquivalent": "none",
+   "genericValue": "high",
+   "importPlan": "New packages/core/src/ui/confirm-dialog.tsx: ConfirmDialogProvider + useConfirm()/usePrompt()/useInform() returning Promise<boolean|string|null>, built on Atlas Dialog/Button/Input. Options: title, message, confirmLabel, tone 'default'|'destructive'. Make all strings props/i18n (strip German defaults 'Bestätigen','Eingabe','Hinweis' or provide locale map). Initial focus: cancel for confirm, input for prompt.",
+   "dependencies": [
+    "lucide-react (CircleHelp, TextCursorInput, Info)"
+   ],
+   "risks": "Provider must render inside BrandProvider portal container."
+  },
+  {
+   "name": "SpaLink (real <a href> with client navigation only on plain left click)",
+   "kind": "primitive",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/ui/SpaLink.tsx"
+   ],
+   "atlasEquivalent": "none (docs use next/link; core forbids next/)",
+   "genericValue": "medium",
+   "importPlan": "Optional packages/core/src/lib/is-plain-left-click.ts exporting isPlainLeftClick(event) plus a router-agnostic <NavLink href onNavigate navigate> where `navigate` is injected (no RadioX hooks/usePathname). Document pattern in Navigation docs. Do not import next/link into core.",
+   "dependencies": [],
+   "risks": "Most Atlas consumers use Next.js Link; keep tiny."
+  },
+  {
+   "name": "CurrencySwitcher (segmented control persisted in localStorage)",
+   "kind": "primitive",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/ui/CurrencySwitcher.tsx"
+   ],
+   "atlasEquivalent": "partial: packages/core/src/ui/tabs.tsx (could serve visually); no SegmentedControl/ToggleGroup",
+   "genericValue": "medium",
+   "importPlan": "Extract generic SegmentedControl -> packages/core/src/ui/toggle-group.tsx on Radix ToggleGroup (type='single', roving focus, aria-pressed). Tokens: border, bg-muted, active bg-background text-foreground shadow-xs. Currency context/localStorage key 'radiox_currency' stays in RadioX.",
+   "dependencies": [
+    "radix-ui ToggleGroup (in radix-ui bundle)"
+   ],
+   "risks": "RadioX version lacks aria-pressed/role group – fix on import."
+  },
+  {
+   "name": "SwissFlag / Flag (locale flags via flagcdn)",
+   "kind": "icon",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/ui/SwissFlag.tsx",
+    "radiox/apps/frontend/components/Flag.tsx"
+   ],
+   "atlasEquivalent": "none",
+   "genericValue": "radiox-only",
+   "importPlan": "Do not import into core (country/brand-ish asset, external flagcdn request). If needed, an icon in a brand package asset folder.",
+   "dependencies": [],
+   "risks": "Flag.tsx loads remote images from flagcdn (privacy/CSP)."
+  },
+  {
+   "name": "Breadcrumb (nav aria-label, links via href, last item current)",
+   "kind": "pattern",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/layout/Breadcrumb.tsx"
+   ],
+   "atlasEquivalent": "partial: apps/docs/app/_components/framework-shell.tsx .breadcrumb (docs-only, non-link)",
+   "genericValue": "high",
+   "importPlan": "New packages/core/src/ui/breadcrumb.tsx shadcn-style (Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink asChild, BreadcrumbPage aria-current='page', BreadcrumbSeparator ChevronRight, BreadcrumbEllipsis). Tokens text-muted-foreground/foreground, text-xs. Replace docs toolbar breadcrumb with it. Drop SpaLink coupling (asChild lets consumer pass next/link).",
+   "dependencies": [
+    "radix-ui Slot",
+    "lucide-react"
+   ],
+   "liveEvidence": "/library: data-component=Breadcrumb",
+   "risks": "None."
+  },
+  {
+   "name": "PageHeader (kicker + h1 + subtitle + breadcrumb, mobile hide breadcrumb, accent)",
+   "kind": "layout",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/layout/PageHeader.tsx"
+   ],
+   "atlasEquivalent": "partial: docs .page-heading/.eyebrow in apps/docs/app/globals.css (not exported)",
+   "genericValue": "high",
+   "importPlan": "New packages/core/src/ui/page-header.tsx: props eyebrow, title (h1), description, breadcrumb (ReactNode slot), actions slot, hideBreadcrumbOnMobile (default true). Replace ACCENT_TEXT cyan/purple/pink/green/orange with `tone` from lib/tone. Use foundation fontSize 3xl/4xl and layout.reading for description width.",
+   "dependencies": [
+    "eyebrow.tsx",
+    "breadcrumb.tsx"
+   ],
+   "liveEvidence": "homepage + /library: data-component=PageHeader ('Deine RadioX-Sammlung')",
+   "risks": "Low."
+  },
+  {
+   "name": "Section (title, subtitle, icon, headerRight actions, spacing)",
+   "kind": "layout",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/layout/Section.tsx"
+   ],
+   "atlasEquivalent": "partial: docs .doc-section CSS",
+   "genericValue": "high",
+   "importPlan": "New packages/core/src/ui/section.tsx: <section aria-labelledby>, SectionHeader with title(h2)/description/icon/actions, spacing sm|md|lg mapped to foundation spacing (6/10/16 -> 24/40/64px). No colors beyond foreground/muted-foreground.",
+   "dependencies": [],
+   "liveEvidence": "homepage: data-component=Section ('Heute auf RadioX')",
+   "risks": "Low."
+  },
+  {
+   "name": "PageLayout (variants default/fullscreen/centered, header offset via CSS vars, safe-area, matrix background slot)",
+   "kind": "layout",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/layout/PageLayout.tsx",
+    "radiox/apps/frontend/index.css (--rx-safe-top, --rx-nav-*, --rx-fixed-header-*, --rx-shell-max)"
+   ],
+   "atlasEquivalent": "partial: foundation.json layout (header 48px, content 1200px) + docs framework-shell",
+   "genericValue": "medium",
+   "importPlan": "Extract a router-free packages/core/src/ui/page-layout.tsx: variant default|centered|fullscreen, header/footer slots, max width var(--layout-content), top offset var(--layout-header) + env(safe-area-inset-top). Add foundation tokens for safe-area helpers (CSS vars --safe-top/--safe-bottom). Strip MatrixBackground, useLivePlayer, PerformanceContext, /live special cases.",
+   "dependencies": [],
+   "liveEvidence": "homepage + /live: PageLayout, PageLayoutHeaderBackdrop",
+   "risks": "RadioX's floating nav offsets are product-specific; keep only generic header offset."
+  },
+  {
+   "name": "AppShell (header + optional surface sidebar + main + footer, surface-aware)",
+   "kind": "layout",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/AppShell/AppShell.tsx",
+    "radiox/apps/frontend/components/AppShell/AppShellHeader.tsx",
+    "radiox/apps/frontend/components/AppShell/AppShellSidebar.tsx",
+    "radiox/apps/frontend/components/AppShell/AppShellFooter.tsx",
+    "radiox/apps/frontend/components/AppShell/tabs.ts"
+   ],
+   "atlasEquivalent": "partial: apps/docs/app/_components/framework-shell.tsx (docs app shell with sidebar/rail/toolbar; not exported from core)",
+   "genericValue": "medium",
+   "importPlan": "Promote a generic AppShell to core: packages/core/src/ui/app-shell.tsx with slots header, sidebar (collapsible rail), main, footer, bottomBar; header supports centered primary tabs (desktop) + mobile bottom nav handoff, sticky solid/translucent variant. Sidebar active item uses aria-current + bg-surface-info text-primary (same as docs). Strip useSurface (LISTEN/STUDIO/ADMIN), avatar menu, Live pill, StationLogo, version label. Reuse framework-shell CSS rules to avoid two shells.",
+   "dependencies": [
+    "dropdown-menu.tsx (avatar menu)",
+    "sheet.tsx (mobile drawer)"
+   ],
+   "liveEvidence": "all public pages: data-component=AppShellHeader, nav 'Home/Live/Bibliothek'",
+   "risks": "Large; do after Breadcrumb/PageHeader. framework-shell currently imports next/link – core version must stay router-agnostic."
+  },
+  {
+   "name": "MobileBottomNav (bottom tab bar + floating FAB, safe-area)",
+   "kind": "pattern",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/MediaPlayer/MobileBottomNav.tsx"
+   ],
+   "atlasEquivalent": "none (docs mobile nav is a dialog)",
+   "genericValue": "high",
+   "importPlan": "New packages/core/src/ui/bottom-nav.tsx: items {href,label,icon,active}, optional fab slot, fixed bottom with padding-bottom env(safe-area-inset-bottom), min 44px targets, aria-current. Router-agnostic via asChild links. Strip surface/admin item logic and red Live FAB (consumer passes fab).",
+   "dependencies": [
+    "lucide-react"
+   ],
+   "liveEvidence": "radiox.cloud on narrow viewport: Home/Live/Bibliothek bottom tabs",
+   "risks": "Coordinate z-index with BottomStack/mini player (foundation zIndex.sticky)."
+  },
+  {
+   "name": "BottomStack (single fixed bottom container stacking mini player + nav)",
+   "kind": "layout",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/MediaPlayer/BottomStack.tsx"
+   ],
+   "atlasEquivalent": "none",
+   "genericValue": "medium",
+   "importPlan": "Fold into AppShell as `bottomBar` slot: one fixed container owning safe-area, children stacked (player bar above bottom nav), exposes --bottom-stack-height CSS var for content padding. No RadioX player imports.",
+   "dependencies": [
+    "app-shell.tsx"
+   ],
+   "liveEvidence": "homepage: mini bar + nav at bottom",
+   "risks": "Low."
+  },
+  {
+   "name": "PersistentMiniBar -> generic Media player bar (cover, title/subtitle, transport, timeline, like, more menu)",
+   "kind": "pattern",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/MediaPlayer/PersistentMiniBar.tsx",
+    "radiox/apps/frontend/components/MediaPlayer/WaveTransport.tsx",
+    "radiox/apps/frontend/components/MediaPlayer/PlayAnchor.tsx"
+   ],
+   "atlasEquivalent": "none",
+   "genericValue": "high",
+   "importPlan": "Extract presentational shell packages/core/src/ui/media-bar.tsx: MediaBar, MediaBarArtwork, MediaBarMeta (title/subtitle, live badge slot), MediaBarTransport (PlayButton + prev/next slots), MediaBarTimeline (progress/scrub with role=slider, aria-valuetext times), MediaBarActions. Pure props (playing, progress, duration, onToggle, onSeek); no audio element, no LivePlayer/MediaPlayer contexts, no voting/API, no car mode. 1243-line RadioX file stays product logic. Add docs showcase 'Media' section with mock data.",
+   "dependencies": [
+    "play-button.tsx",
+    "badge.tsx",
+    "dropdown-menu.tsx"
+   ],
+   "liveEvidence": "homepage + /library: PersistentMiniBar.Like/More/OpenStage/PhoneTransport/Timeline, PlayPauseOrb x2",
+   "risks": "Must not import hls.js or Web Audio into core; keep it markup-only."
+  },
+  {
+   "name": "PlayPill (card play affordance mapped to idle/playing/paused/loading state)",
+   "kind": "primitive",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/MediaPlayer/PlayPill.tsx"
+   ],
+   "atlasEquivalent": "none",
+   "genericValue": "medium",
+   "importPlan": "Covered by PlayButton with `state` prop ('idle'|'loading'|'playing'|'paused') + onPlay/onPause; no separate component. Remove ShowPlayState dependency.",
+   "dependencies": [
+    "play-button.tsx"
+   ],
+   "risks": "None."
+  },
+  {
+   "name": "MiniBarMoreMenu (APG menu button portalled above clipped bar)",
+   "kind": "primitive",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/MediaPlayer/MiniBarMoreMenu.tsx"
+   ],
+   "atlasEquivalent": "full: packages/core/src/ui/dropdown-menu.tsx (Radix menu incl. checkbox items, portal)",
+   "genericValue": "low",
+   "importPlan": "Not imported; use DropdownMenu with DropdownMenuCheckboxItem. Mention in MediaBar docs.",
+   "dependencies": [],
+   "risks": "None."
+  },
+  {
+   "name": "Audio visualisers (Waveform bars, RadialWaveform ring, SpeakingRing, VoiceOverHalo, LiveAudioWave) + audioAnalyser/useAudioIntensity",
+   "kind": "pattern",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/MediaPlayer/Waveform.tsx",
+    "radiox/apps/frontend/components/MediaPlayer/RadialWaveform.tsx",
+    "radiox/apps/frontend/components/MediaPlayer/SpeakingRing.tsx",
+    "radiox/apps/frontend/components/MediaPlayer/WaveTransport.tsx (VoiceOverHalo)",
+    "radiox/apps/frontend/components/LivePlayer/LiveAudioWave.tsx",
+    "radiox/apps/frontend/components/MediaPlayer/audioAnalyser.ts",
+    "radiox/apps/frontend/components/MediaPlayer/useAudioIntensity.ts",
+    "radiox/apps/frontend/components/MediaPlayer/waveSignal.ts"
+   ],
+   "atlasEquivalent": "none",
+   "genericValue": "medium",
+   "importPlan": "Extract data-driven, audio-agnostic SVG components into a separate optional package (e.g. packages/media or core/src/ui/audio-visual.tsx): <BarWaveform values={number[]}/>, <RadialBars values/> and <ActivityRing mode='speech'|'music'|'off' intensity/>, colored via currentColor/var(--primary)/var(--chart-*), synthetic envelope fallback, reduced-motion = static. Keep Web Audio analyser hookup (getOrCreateAnalyser WeakMap, iOS/HLS guards) as an optional hook in that package, not core. Strip speaker colors, cyan-pink gradient, performance tiers.",
+   "dependencies": [
+    "none (SVG); Web Audio only in optional hook"
+   ],
+   "liveEvidence": "homepage/library: SpeakingRing x2, VoiceOverHalo x2; /live SpeakingRing x3",
+   "risks": "rAF drawing must avoid React re-render per frame (RadioX already fixed this, keep imperative path). Bundle weight in core."
+  },
+  {
+   "name": "StageShell + StageTabNav (hero + tabbed detail stage, scroll-snap tabs with edge fades)",
+   "kind": "layout",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/MediaPlayer/StageShell.tsx",
+    "radiox/apps/frontend/components/MediaPlayer/StageTabNav.tsx"
+   ],
+   "atlasEquivalent": "partial: packages/core/src/ui/tabs.tsx (no overflow scroll/fade, no hero split layout)",
+   "genericValue": "medium",
+   "importPlan": "Add `scrollable` variant to Atlas TabsList (overflow-x auto, scroll-snap, mask-image edge fades, active scrollIntoView). Provide a docs pattern 'Detail stage' (two-column hero/media + tabs, stacks on mobile) using Card/Tabs instead of a new core component. Strip fixed tab ids (overview/transcript/sources/dna/queue).",
+   "dependencies": [
+    "tabs.tsx"
+   ],
+   "risks": "Low."
+  },
+  {
+   "name": "Toast system (progress toasts, details, actions, max 3, data-modal-exempt live region)",
+   "kind": "pattern",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/Toast.tsx"
+   ],
+   "atlasEquivalent": "full: packages/core/src/ui/sonner.tsx + docs toasts section",
+   "genericValue": "low",
+   "importPlan": "Not imported. Document how to do progress toasts with sonner (toast.custom or toast.loading + id update with progress bar) and a cap (Toaster visibleToasts={3}). The 'show-generating' type and showUrl are RadioX-only.",
+   "dependencies": [
+    "sonner"
+   ],
+   "liveEvidence": "all pages: ToastContainer/ToastLayer",
+   "risks": "Ensure Sonner region stays announced while a Radix Dialog is open."
+  },
+  {
+   "name": "Loaders (RadioXLoader variants mini/inline/card/section/fullscreen/boot, WaveBars, PulsingRadio, SpinningVinyl, MiniMatrix) + SystemBootLoader/BootingCard + runtimeAnimations.css",
+   "kind": "motion",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/RadioXLoader.tsx",
+    "radiox/apps/frontend/components/SystemBootLoader.tsx",
+    "radiox/apps/frontend/styles/runtimeAnimations.css"
+   ],
+   "atlasEquivalent": "partial: packages/core/src/ui/skeleton.tsx (no spinner/inline loader component)",
+   "genericValue": "medium",
+   "importPlan": "Extract only a neutral packages/core/src/ui/spinner.tsx (Loader2 with sizes, role=status, sr-only label) and optionally <LoadingBars/> (3-5 bars keyframe using var(--primary), motion-safe). Leave boot sequence, matrix, vinyl, cyberpunk messages and sounds in RadioX (brand theatre). Keyframes rx-loader-wave/bounce can become core keyframes renamed atlas-loader-*.",
+   "dependencies": [
+    "lucide-react"
+   ],
+   "liveEvidence": "homepage: BootingCard x2",
+   "risks": "Boot loader plays sounds – never in core."
+  },
+  {
+   "name": "MatrixBackground / SpeakerBlobs / LiveBackgroundGlow / CoverAmbient / DotPattern (ambient backgrounds)",
+   "kind": "motion",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/MatrixBackground.tsx",
+    "radiox/apps/frontend/components/SpeakerBlobs.tsx",
+    "radiox/apps/frontend/components/LivePlayer/LiveBackgroundGlow.tsx",
+    "radiox/apps/frontend/components/MediaPlayer/fullscreen/CoverAmbient.tsx",
+    "radiox/apps/frontend/components/StarCraftTheme.tsx (DotPattern)"
+   ],
+   "atlasEquivalent": "none",
+   "genericValue": "low",
+   "importPlan": "Matrix rain and speaker blobs are RadioX identity -> radiox-only. Only DotPattern (CSS radial-gradient grid, color var(--border)) and a cover-derived ambient gradient (consumer passes two colors) are generic enough for a docs pattern; no core component needed.",
+   "dependencies": [],
+   "liveEvidence": "homepage background (PageLayout matrix)",
+   "risks": "Canvas rAF cost; performance-tier coupling."
+  },
+  {
+   "name": "StarCraftTheme (TechBorder, TechButton, EquippedBadge, SectionHeader with step)",
+   "kind": "pattern",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/StarCraftTheme.tsx"
+   ],
+   "atlasEquivalent": "none",
+   "genericValue": "radiox-only",
+   "importPlan": "Brand styling (LCARS/StarCraft corner brackets). Do not put in core; if ever wanted, a 'radiox' brand package variant. The numbered SectionHeader (step + title) is covered by Section + Eyebrow.",
+   "dependencies": [],
+   "liveEvidence": "homepage: TechBorder x4",
+   "risks": "Hardcoded cyan/slate."
+  },
+  {
+   "name": "HeroSlider (Embla carousel, autoplay with progress, pause on hover, Ken Burns, a11y)",
+   "kind": "pattern",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/HeroSlider.tsx",
+    "radiox/apps/frontend/hooks/useSliderEngine.ts"
+   ],
+   "atlasEquivalent": "none (lightbox.tsx has paging but no carousel)",
+   "genericValue": "high",
+   "importPlan": "New packages/core/src/ui/carousel.tsx (shadcn-style Carousel/CarouselContent/CarouselItem/Previous/Next + dots) on embla-carousel-react, plus optional autoplay plugin with visible pause control (WCAG 2.2.2), aria-roledescription='carousel'/'slide', reduced-motion disables autoplay/Ken Burns. Strip LCARS styling and player integration; Ken Burns as optional class.",
+   "dependencies": [
+    "embla-carousel-react",
+    "embla-carousel-autoplay"
+   ],
+   "liveEvidence": "homepage: data-component=HeroSlider ('Zürich - Morning/Afternoon/Midday' slides)",
+   "risks": "New runtime deps in core; core-isolation test allows them but keep versions pinned."
+  },
+  {
+   "name": "Media/content cards (ShowCard, WideContentCard, ShowWideCard, FeaturedSpeakerCard, TopicCard, ContinueListeningRow, GeneratedMiniCover)",
+   "kind": "pattern",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/ShowCard.tsx",
+    "radiox/apps/frontend/components/WideContentCard.tsx",
+    "radiox/apps/frontend/components/ShowWideCard/ShowWideCard.tsx",
+    "radiox/apps/frontend/components/FeaturedSpeakerCard/FeaturedSpeakerCard.tsx",
+    "radiox/apps/frontend/components/MediaPlayer/TopicCard.tsx",
+    "radiox/apps/frontend/components/HomeView/ContinueListeningRow.tsx",
+    "radiox/apps/frontend/components/MediaPlayer/GeneratedMiniCover.tsx"
+   ],
+   "atlasEquivalent": "partial: packages/core/src/ui/card.tsx (generic card only)",
+   "genericValue": "high",
+   "importPlan": "Build from WideContentCard (already prop-driven): packages/core/src/ui/media-card.tsx with variants 'tile' (cover top, 16:9/1:1) and 'wide' (cover left), slots: image (with fallback), eyebrow, title, description, meta top-left/right, overlay tag, primary action (PlayButton or Button), active state; whole-card link via stretched-link pattern so nested buttons stay valid. GeneratedMiniCover -> generic <GeneratedCover seed title/> with initials and gradient from chart-1..5 tokens (drop hardcoded PALETTES hex). Show/Segment types, supabase image helpers, publisher branding stay in RadioX.",
+   "dependencies": [
+    "play-button.tsx",
+    "badge.tsx",
+    "eyebrow.tsx"
+   ],
+   "liveEvidence": "homepage 'Heute auf RadioX' cards and 'Archive' section",
+   "risks": "Nested interactive elements inside clickable card (a11y)."
+  },
+  {
+   "name": "SourceBadge / TrackSourceBadges (publisher/external-source logo chip)",
+   "kind": "primitive",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/LivePlayer/SourceBadge.tsx",
+    "radiox/apps/frontend/components/TrackSourceBadges.tsx",
+    "radiox/apps/frontend/index.css (.rx-source-badge)"
+   ],
+   "atlasEquivalent": "none",
+   "genericValue": "medium",
+   "importPlan": "Generic LogoChip in packages/core/src/ui/logo-chip.tsx: uniform optical frame for third-party logos (fixed height, contain, onError -> text fallback, title). No logo files in core (AGENTS.md forbids company icons); consumers pass src. Per-logo CSS tweaks (tagi.svg, deutschlandfunk.svg) stay in RadioX.",
+   "dependencies": [],
+   "liveEvidence": "/live: .rx-source-badge x14",
+   "risks": "Licensing of third-party logos is consumer responsibility."
+  },
+  {
+   "name": "AiBadge / AiHostLabel (AI-generated content disclosure)",
+   "kind": "primitive",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/LivePlayer/AiBadge.tsx"
+   ],
+   "atlasEquivalent": "none",
+   "genericValue": "high",
+   "importPlan": "Generic <AiDisclosureBadge size> = Badge tone='highlight' onMedia with Sparkles icon and configurable label ('AI-generated'), placed over images; document EU AI Act Art. 50 usage in Atlas content/accessibility guidance. The detection logic (show-covers/ai/ path, utils/aiCover.ts) stays RadioX.",
+   "dependencies": [
+    "badge.tsx",
+    "lucide-react Sparkles"
+   ],
+   "liveEvidence": "/live: AiBadge x12, AiHostLabel x1",
+   "risks": "Label language/i18n."
+  },
+  {
+   "name": "TrackVoteHeart / like toggle",
+   "kind": "primitive",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/TrackVoteHeart.tsx"
+   ],
+   "atlasEquivalent": "none (no Toggle primitive)",
+   "genericValue": "medium",
+   "importPlan": "New packages/core/src/ui/toggle.tsx (Radix Toggle, aria-pressed) and a LikeToggle preset (Heart icon filled when pressed, tone danger/live). Remove castVote/music_library API and auth checks.",
+   "dependencies": [
+    "radix-ui Toggle",
+    "lucide-react Heart"
+   ],
+   "liveEvidence": "PersistentMiniBar.Like on all pages; LiveMobileNative.Heart on /live",
+   "risks": "Optimistic state belongs to consumer."
+  },
+  {
+   "name": "AutoFollowToggle (switch with persisted preference)",
+   "kind": "primitive",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/MediaPlayer/AutoFollowToggle.tsx"
+   ],
+   "atlasEquivalent": "none (checkbox only, no Switch)",
+   "genericValue": "high",
+   "importPlan": "Add packages/core/src/ui/switch.tsx (Radix Switch, tokens bg-input/bg-primary, focus ring). Persistence hook (localStorage 'radiox.player.autoFollow') stays in RadioX.",
+   "dependencies": [
+    "radix-ui Switch"
+   ],
+   "risks": "None."
+  },
+  {
+   "name": "AudioQualityControl (fieldset radio group)",
+   "kind": "primitive",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/MediaPlayer/AudioQualityControl.tsx"
+   ],
+   "atlasEquivalent": "none (no RadioGroup)",
+   "genericValue": "medium",
+   "importPlan": "Add packages/core/src/ui/radio-group.tsx (Radix RadioGroup) or reuse toggle-group segmented; quality logic stays RadioX.",
+   "dependencies": [
+    "radix-ui RadioGroup"
+   ],
+   "risks": "None."
+  },
+  {
+   "name": "SpiderChart / LiveDNASpider / SpiderChartMini (radar chart with overlay series + data table)",
+   "kind": "pattern",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/SpiderChart.tsx",
+    "radiox/apps/frontend/components/SpiderSection.tsx",
+    "radiox/apps/frontend/components/LivePlayer/LiveDNASpider.tsx"
+   ],
+   "atlasEquivalent": "partial: apps/docs/app/_components/data-showcase.tsx / echarts-showcase.tsx (bar/line/area only, no radar)",
+   "genericValue": "medium",
+   "importPlan": "Add a 'Radar' example to docs Charts (Recharts RadarChart or ECharts radar) using chart-1/chart-2 tokens, with accessible companion table (LiveDNASpider.Table pattern). Optional lightweight SVG <RadarChart axes series/> in docs _components, not core. Music-DNA axes/semantics stay RadioX.",
+   "dependencies": [
+    "recharts or echarts (already in docs)"
+   ],
+   "liveEvidence": "/live: LiveDNASpider.Table, DnaTrackProfile",
+   "risks": "None for docs."
+  },
+  {
+   "name": "DashboardStats (compact KPI info row)",
+   "kind": "pattern",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/DashboardStats.tsx"
+   ],
+   "atlasEquivalent": "partial: apps/docs/app/_components/data-showcase.tsx .metrics (docs CSS only)",
+   "genericValue": "medium",
+   "importPlan": "Create packages/core/src/ui/stat.tsx (Stat, StatValue, StatLabel, StatDelta with tone) and use it for docs .metrics; RadioX freshness/hours/new-shows logic stays in app.",
+   "dependencies": [],
+   "risks": "Low."
+  },
+  {
+   "name": "LogConsole / LiveTerminal (streaming log terminal)",
+   "kind": "pattern",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/LogConsole.tsx",
+    "radiox/apps/frontend/components/LivePlayer/LiveTerminal.tsx"
+   ],
+   "atlasEquivalent": "none",
+   "genericValue": "medium",
+   "importPlan": "Extract a presentational <LogView lines={TermLine[]} maxLines follow /> (monospace, columns time/source/message/status, tone per level, auto-scroll with pause on user scroll, role=log aria-live=polite off by default). No WebSocket/xterm in core; LogConsole (xterm) stays RadioX. Put in docs 'Betrieb' section next to health-status.",
+   "dependencies": [
+    "none (xterm only in RadioX)"
+   ],
+   "liveEvidence": "/live: data-component=LiveTerminal",
+   "risks": "Never ship real infrastructure identifiers in examples (AGENTS.md)."
+  },
+  {
+   "name": "ShortcutCheatSheet + useKeyboardShortcuts (? opens shortcut list)",
+   "kind": "pattern",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/LivePlayer/ShortcutCheatSheet.tsx",
+    "radiox/apps/frontend/hooks/useKeyboardShortcuts.ts"
+   ],
+   "atlasEquivalent": "partial: packages/core/src/ui/command.tsx (cmdk, no shortcut registry/help dialog)",
+   "genericValue": "medium",
+   "importPlan": "Add packages/core/src/ui/kbd.tsx (Kbd/KbdGroup) and a docs pattern 'Tastenkürzel' rendering a Dialog with a definition list of shortcuts; useKeyboardShortcuts as optional hook in core/lib (ignores inputs/contenteditable, modifiers). Shortcut list content stays RadioX.",
+   "dependencies": [
+    "dialog.tsx"
+   ],
+   "risks": "Global key handlers conflicting with Radix focus scopes."
+  },
+  {
+   "name": "PlayerSkipLink (skip link to a dynamic focus target)",
+   "kind": "pattern",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/MediaPlayer/PlayerSkipLink.tsx"
+   ],
+   "atlasEquivalent": "partial: apps/docs/app/globals.css .skip (docs-only skip-to-content)",
+   "genericValue": "medium",
+   "importPlan": "New packages/core/src/ui/skip-link.tsx: visually hidden until focus, either href='#id' or `targets` selector list focusing the first visible element. Strip RadioX testids.",
+   "dependencies": [],
+   "liveEvidence": "all pages: data-component=PlayerSkipLink",
+   "risks": "Portal before #root is app-specific; core version renders in place."
+  },
+  {
+   "name": "Live region announcer (LiveNowAnnouncer pattern) + useLiveDocumentTitle",
+   "kind": "hook",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/LivePlayer/LiveNowAnnouncer.tsx",
+    "radiox/apps/frontend/components/LivePlayer/liveDocumentTitle.ts"
+   ],
+   "atlasEquivalent": "none",
+   "genericValue": "medium",
+   "importPlan": "Core lib: <Announcer message politeness settleMs/> (role=status, announces changes only, not initial state, debounce) and useDocumentTitle(title). Track/news specifics stay RadioX.",
+   "dependencies": [],
+   "risks": "Low."
+  },
+  {
+   "name": "Notice/banner patterns (GeoBlockNotice, IdleLiveNotice, SharedArrivalBanner, StationGenerationStatus)",
+   "kind": "pattern",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/LivePlayer/GeoBlockNotice.tsx",
+    "radiox/apps/frontend/components/LivePlayer/IdleLiveNotice.tsx",
+    "radiox/apps/frontend/components/LivePlayer/SharedArrivalBanner.tsx",
+    "radiox/apps/frontend/components/StationGenerationStatus.tsx"
+   ],
+   "atlasEquivalent": "partial: docs .notice CSS (not a component); empty-state.tsx",
+   "genericValue": "high",
+   "importPlan": "New packages/core/src/ui/alert.tsx (Alert, AlertTitle, AlertDescription, AlertAction, dismissible, tone info/success/warning/danger, role=status vs alert, optional autoHideMs) replacing docs .notice. Job-status variant: icon + elapsed time + reason. Content (CH/LI geo-block, station jobs) stays RadioX.",
+   "dependencies": [
+    "lib/tone.ts"
+   ],
+   "risks": "None."
+  },
+  {
+   "name": "ErrorBoundary (scoped, resetKey on navigation, onError hook)",
+   "kind": "primitive",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/ErrorBoundary.tsx"
+   ],
+   "atlasEquivalent": "none",
+   "genericValue": "high",
+   "importPlan": "packages/core/src/ui/error-boundary.tsx: class component with scope, onError, resetKey, fallback render prop defaulting to EmptyState (TriangleAlert) + retry Button. Strip RadioX telemetry/German copy.",
+   "dependencies": [
+    "empty-state.tsx",
+    "button.tsx"
+   ],
+   "risks": "Next.js app router has error.tsx; component still useful for islands."
+  },
+  {
+   "name": "LanguageSwitcher (dropdown with flag emoji)",
+   "kind": "primitive",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/LanguageSwitcher.tsx"
+   ],
+   "atlasEquivalent": "full: packages/core/src/ui/dropdown-menu.tsx / select.tsx",
+   "genericValue": "low",
+   "importPlan": "Not imported (hand-rolled outside-click dropdown). Docs example: DropdownMenuRadioGroup for locale with lang attributes on items.",
+   "dependencies": [],
+   "risks": "None."
+  },
+  {
+   "name": "Lyrics/transcript line viewer (LiveLyrics sliding window, TranscriptHero, TranscriptRow, NewsBulletList, useTranscriptScroll)",
+   "kind": "pattern",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/LivePlayer/LiveLyrics.tsx",
+    "radiox/apps/frontend/components/MediaPlayer/TranscriptHero.tsx",
+    "radiox/apps/frontend/components/ShowDetail/TranscriptRow.tsx",
+    "radiox/apps/frontend/components/ShowDetail/useTranscriptScroll.ts",
+    "radiox/apps/frontend/components/LivePlayer/NewsBulletList.tsx"
+   ],
+   "atlasEquivalent": "none",
+   "genericValue": "medium",
+   "importPlan": "Optional media package: <SyncedTextList lines activeIndex window={5} follow/> with pure helpers (lyricsWindow) and highlight via text-foreground vs muted-foreground, reduced-motion = no scroll animation. Lyrics licensing/timing offsets stay RadioX.",
+   "dependencies": [],
+   "risks": "Low priority for a general DS."
+  },
+  {
+   "name": "Voting/battle widgets (TrackBattle, LiveBallot)",
+   "kind": "pattern",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/LivePlayer/TrackBattle.tsx",
+    "radiox/apps/frontend/components/LivePlayer/LiveBallot.tsx"
+   ],
+   "atlasEquivalent": "none",
+   "genericValue": "radiox-only",
+   "importPlan": "Product feature. Reusable shell at most: a 'Poll options' docs pattern (radiogroup of options with Progress bars and vote counts). Would need packages/core/src/ui/progress.tsx (Radix Progress) which Atlas lacks.",
+   "dependencies": [
+    "radix-ui Progress"
+   ],
+   "liveEvidence": "/live QueueCard.WasKommtSpur",
+   "risks": "Polling/service coupling (services/liveBallotService)."
+  },
+  {
+   "name": "Avatar / SpeakerAvatar / listener pile (image with fallback chain, stacked avatars)",
+   "kind": "primitive",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/LivePlayer/SpeakerAvatar.tsx",
+    "radiox/apps/frontend/utils/avatar.ts",
+    "radiox/apps/frontend/components/LivePlayer/LiveListenerSheet.tsx"
+   ],
+   "atlasEquivalent": "none",
+   "genericValue": "high",
+   "importPlan": "Add packages/core/src/ui/avatar.tsx (Radix Avatar: Image, Fallback with icon/initials) and AvatarGroup (overlap -space-x, +N counter). Supabase transform URL fallbacks stay RadioX (consumer passes src list).",
+   "dependencies": [
+    "radix-ui Avatar"
+   ],
+   "liveEvidence": "/live: SpeakerAvatar x2, LiveListeners.Pile",
+   "risks": "None."
+  },
+  {
+   "name": "Immersive player / lean-back & cover view (NowPlayingFullscreen, LeanBackPlayer, LiveSuperCover, LiveMobileNative, LiveCoverImage crossfade, usePlayerSheetGesture/playerSheetMotion/playerMorph)",
+   "kind": "pattern",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/MediaPlayer/NowPlayingFullscreen.tsx",
+    "radiox/apps/frontend/components/MediaPlayer/fullscreen/LeanBackPlayer.tsx",
+    "radiox/apps/frontend/components/LivePlayer/LiveSuperCover.tsx",
+    "radiox/apps/frontend/components/LivePlayer/LiveMobileNative.tsx",
+    "radiox/apps/frontend/components/LivePlayer/LiveCoverImage.tsx",
+    "radiox/apps/frontend/components/LivePlayer/usePlayerSheetGesture.ts",
+    "radiox/apps/frontend/components/LivePlayer/playerSheetMotion.ts"
+   ],
+   "atlasEquivalent": "partial: packages/core/src/ui/lightbox.tsx (fullscreen artefact viewer)",
+   "genericValue": "radiox-only",
+   "importPlan": "Product surface. Extract two reusable bits: (1) CrossfadeImage (old image overlays new until loaded, no CLS) as core/ui/crossfade-image.tsx; (2) pure spring/rubber-band helpers from playerSheetMotion.ts into the swipe-to-dismiss lib. Fullscreen player itself = Dialog presentation='immersive' + MediaBar parts, documented as a pattern.",
+   "dependencies": [
+    "dialog.tsx",
+    "use-swipe-to-dismiss"
+   ],
+   "liveEvidence": "/live (narrow): LiveMobileNative.* (Cover, Transport, PlayAnchor, Glass, Controls)",
+   "risks": "Heavy coupling to LivePlayerProvider, car mode, HLS."
+  },
+  {
+   "name": "Onboarding wizards (OnboardingWizard 1399 lines, ListenerOnboardingWizard steps, InlineCard)",
+   "kind": "pattern",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/OnboardingWizard.tsx",
+    "radiox/apps/frontend/components/ListenerOnboardingWizard/index.tsx",
+    "radiox/apps/frontend/components/ListenerOnboardingWizard/InlineCard.tsx"
+   ],
+   "atlasEquivalent": "partial: apps/docs/app/_components/pattern-showcase.tsx auth-flow (.step-list)",
+   "genericValue": "medium",
+   "importPlan": "Extract a Stepper/Wizard shell: packages/core/src/ui/stepper.tsx (ol with aria-current='step', completed/upcoming states, tokens primary/muted) + WizardFooter (Back/Next/Skip). Replace docs .step-list. Spotify/profile/avatar steps, voice (useAeonVoice) stay RadioX.",
+   "dependencies": [
+    "button.tsx"
+   ],
+   "liveEvidence": "login-protected (code only)",
+   "risks": "None."
+  },
+  {
+   "name": "Settings panels (PerformanceSettings, TierPreview, PushSettings, AccountLinking)",
+   "kind": "pattern",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/settings/PerformanceSettings.tsx",
+    "radiox/apps/frontend/components/settings/TierPreview.tsx",
+    "radiox/apps/frontend/components/settings/PushSettings.tsx",
+    "radiox/apps/frontend/components/settings/AccountLinking.tsx"
+   ],
+   "atlasEquivalent": "partial: docs forms section",
+   "genericValue": "low",
+   "importPlan": "Docs-only 'Settings row' pattern (label + description + control: Switch/Select/ToggleGroup) once switch/toggle-group exist. Content radiox-only.",
+   "dependencies": [
+    "switch.tsx",
+    "toggle-group.tsx"
+   ],
+   "liveEvidence": "login-protected",
+   "risks": "None."
+  },
+  {
+   "name": "MoodBoardEditor (drag-drop multi image uploader with previews)",
+   "kind": "pattern",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/MoodBoardEditor.tsx"
+   ],
+   "atlasEquivalent": "none",
+   "genericValue": "medium",
+   "importPlan": "Generic Dropzone/FileGrid in core/ui/dropzone.tsx: drag-over state, click-to-pick, keyboard accessible, thumbnails with remove, max files, error per file; upload transport stays consumer. Strip /admin/covers API.",
+   "dependencies": [],
+   "liveEvidence": "login-protected",
+   "risks": "Object URL revocation."
+  },
+  {
+   "name": "Performance/effects tier classes (getBackdropBlur by context) + car/drive mode (data-drive) reduced effects",
+   "kind": "token",
+   "radioxPaths": [
+    "radiox/apps/frontend/styles/performanceClasses.ts",
+    "radiox/apps/frontend/utils/performanceTiers.ts",
+    "radiox/apps/frontend/utils/carBrowser.ts"
+   ],
+   "atlasEquivalent": "partial: packages/core/src/styles.css prefers-reduced-motion rule only",
+   "genericValue": "medium",
+   "importPlan": "Introduce a generic effects contract: .framework-scope[data-effects='full'|'reduced'|'none'] toggling backdrop-filter and ambient animations via CSS (and prefers-reduced-transparency media query). Export a tiny helper blurClass(context) only if needed. Drop tier detection, Tesla UA sniffing, matrix FPS settings (radiox-only).",
+   "dependencies": [],
+   "risks": "Needs consistent use across glass components (play-button, dialog, icon-button glass)."
+  },
+  {
+   "name": "Hover-only scrollbars + no-scrollbar utility",
+   "kind": "token",
+   "radioxPaths": [
+    "radiox/apps/frontend/index.css (lines ~240-300, --rx-scrollbar-thumb)",
+    "radiox/apps/frontend/styles/scrollbars.test.ts"
+   ],
+   "atlasEquivalent": "none",
+   "genericValue": "medium",
+   "importPlan": "Add to packages/core/src/styles.css under .framework-scope: @media (hover:hover) and (pointer:fine) :where(*) scrollbar rules with --scrollbar-thumb: color-mix(var(--muted-foreground) 45%, transparent); utility .no-scrollbar. Port the source-contract test to tests/*.test.mjs.",
+   "dependencies": [],
+   "risks": "Global :where(*) scope must be limited to .framework-scope to not leak into host apps."
+  },
+  {
+   "name": "Generic hooks (useMediaQuery, usePrefersReducedMotion, useVisibilityAwareInterval, useScrollDirection, useElementWidth, keyActivate, haptics)",
+   "kind": "hook",
+   "radioxPaths": [
+    "radiox/apps/frontend/hooks/useMediaQuery.ts",
+    "radiox/apps/frontend/hooks/usePrefersReducedMotion.ts",
+    "radiox/apps/frontend/hooks/useVisibilityAwareInterval.ts",
+    "radiox/apps/frontend/hooks/useScrollDirection.ts",
+    "radiox/apps/frontend/hooks/useElementWidth.ts",
+    "radiox/apps/frontend/utils/keyActivate.ts",
+    "radiox/apps/frontend/utils/haptics.ts"
+   ],
+   "atlasEquivalent": "none",
+   "genericValue": "medium",
+   "importPlan": "Optional packages/core/src/lib/hooks.ts: useMediaQuery, usePrefersReducedMotion, useElementSize (ResizeObserver), useScrollDirection (hide-on-scroll header). useVisibilityAwareInterval is app/data plumbing – better in a separate utils package, not the UI core. keyActivate (Enter/Space on non-button) should be avoided in favour of real buttons.",
+   "dependencies": [],
+   "risks": "Keep SSR-safe (no window at import)."
+  },
+  {
+   "name": "Cover-derived accent (useCoverPalette/useCoverAccent setting CSS vars)",
+   "kind": "hook",
+   "radioxPaths": [
+    "radiox/apps/frontend/hooks/useCoverPalette.ts",
+    "radiox/apps/frontend/hooks/useCoverAccent.ts",
+    "radiox/apps/frontend/components/LivePlayer/LiveBackgroundGlow.tsx"
+   ],
+   "atlasEquivalent": "none",
+   "genericValue": "low",
+   "importPlan": "Dynamic per-artwork theming conflicts with Atlas brand-token model; keep radiox-only. At most document a 'media accent' local CSS var scoped to a component, never overriding brand roles.",
+   "dependencies": [],
+   "risks": "Contrast cannot be guaranteed for arbitrary image colors."
+  },
+  {
+   "name": "Branding & product-only items (RadioXLogo, StationLogo, ServiceLogos, PoweredBySection, GoogleIcon, icons/brands.tsx, PrivacyPolicy, TermsOfService, TeamPage, AeonChatPanel, ShowManager, StationSettings, Admin* LivePlayer controls, CoverMediaSwitch, TrackDownloadButton)",
+   "kind": "pattern",
+   "radioxPaths": [
+    "radiox/apps/frontend/components/RadioXLogo.tsx",
+    "radiox/apps/frontend/components/AppShell/StationLogo.tsx",
+    "radiox/apps/frontend/components/ServiceLogos.tsx",
+    "radiox/apps/frontend/components/PoweredBySection.tsx",
+    "radiox/apps/frontend/components/GoogleIcon.tsx",
+    "radiox/apps/frontend/components/icons/brands.tsx",
+    "radiox/apps/frontend/components/AeonChat/AeonChatPanel.tsx",
+    "radiox/apps/frontend/components/ShowManager.tsx",
+    "radiox/apps/frontend/components/StationSettings.tsx",
+    "radiox/apps/frontend/components/LivePlayer/Admin*.tsx",
+    "radiox/apps/frontend/components/LivePlayer/CoverMediaSwitch.tsx",
+    "radiox/apps/frontend/components/TrackDownloadButton.tsx"
+   ],
+   "atlasEquivalent": "none",
+   "genericValue": "radiox-only",
+   "importPlan": "Do not import (logos/third-party brand icons are forbidden in core by AGENTS.md; admin/station/show logic is product). Reusable fragments already covered elsewhere: logo grid -> LogoChip; chat panel -> Sheet + future chat pattern; download button -> Button loading.",
+   "dependencies": [],
+   "liveEvidence": "homepage: RadioXLogo, PoweredBySection",
+   "risks": "Third-party trademarks."
+  }
+ ],
+ "tokensGap": "RadioX defines its tokens in radiox/apps/frontend/index.css (@theme static block, verified by apps/frontend/styles/tokens.test.ts); there is no packages/ui in the RadioX repo (packages/ui only contains node_modules) and apps/frontend/styles holds modal.css, runtimeAnimations.css, performanceClasses.ts. Not represented in Atlas foundation.json / brand roles: (1) Semantic content-tone roles: --color-onair (live), --color-ai, --color-community, --color-news, --color-dna beyond Atlas success/warning/info/destructive; Atlas would need at least a 'live' and a 'highlight' role (or documented mapping to chart-1..5). (2) Layered surface scale --color-surface-0/-card/-1/-2/-3 and --color-line/--color-line-strong (Atlas has card/muted/border only; foundation.mjs derives surface-info/success/warning/danger tints but no neutral elevation steps). (3) Foreground ramp --color-fg/-fg-2/-fg-3/-fg-4 with an explicit 'smallest label' floor (Atlas: foreground + muted-foreground only). (4) --color-scrim rgb(0 0 0/.7) for text/badges over imagery (no Atlas token). (5) Type roles --text-micro 11px, --text-meta 12px, --text-body 14px, --text-title 16px, --text-h1 24px, --text-hero clamp(28-44px) with paired line-heights (Atlas fontSize starts at xs 12px, no fluid hero clamp, no per-size line-height). (6) --tracking-caps 0.16em letter-spacing (Atlas has no letterSpacing scale). (7) Component radii --radius-chip 6px, --radius-inset 12px, --radius-card 16px, --radius-pill (Atlas: generic sm..xl/full derived from --brand-radius, no role names). (8) z-index roles header 40 / bar 45 / sheet 50 / modal 60 / toast 70 plus FloatingLayer 55 (Atlas zIndex: base/sticky/dropdown/overlay/modal/toast/tooltip, no persistent-bar or sheet level). (9) Shell geometry vars --rx-safe-top/--rx-safe-bottom (safe-area), --rx-nav-top/-height/-gap/-offset (+md), --rx-fixed-header-height/-gap/-offset, --rx-shell-max 1920/2400px, --rx-shell-side-gutter (Atlas layout tokens have no safe-area or wide-shell max). (10) Motion: --ease-out cubic-bezier(0.22,1,0.36,1), durations 150/250/600 ms, modal keyframes rx-modal-arrive (260ms cubic-bezier(0.16,1,0.3,1)) / rx-modal-dim, loader/transition keyframes in runtimeAnimations.css (rx-loader-wave/matrix/bounce, rx-boot-scan, rx-transition-sweep/pill) – Atlas has duration instant..deliberate and easing standard/enter/exit but no named keyframes or spring/sheet curves. (11) Glass material tokens: --gp-tint/--gp-sheen/--gp-glow (.rx-glass-play) and modal materials glass/soft/flat with --rx-modal-light/-secondary/-ink/-muted (Atlas has only --brand-shadow; no blur/material tokens). (12) Scrollbar tokens --rx-scrollbar-thumb/-hover. (13) Brand ramp --color-brand-50..950 (cyan) – belongs in a RadioX brand JSON palette, not core. (14) Selection color ::selection rgba(34,211,238,.35). Recommendation: add to foundation.json 'letterSpacing' {caps}, fontSize 'micro', zIndex 'bar'/'sheet'/'floating', layout 'shellMax', easing 'emphasized' and a 'material' group (blur, glass tint opacity); add brand colorKeys 'live', 'scrim' (and optionally 'highlight') to brand.schema.json with contrast tests; map content-specific tones (ai/news/dna/community) in a RadioX brand file (packages/brands/src/radiox.json) if RadioX should consume Atlas.",
+ "notes": "Method: read RadioX sources (C:\\DEV\\marcelrapold\\radiox, read-only, nothing edited) and Atlas sources (C:\\DEV\\marcelrapold\\mra-atlas, read-only). Live check on https://radiox.cloud with the built-in browser by counting data-component attributes. Static HTML is only a shell, so the SPA had to render. Seen on '/': AppShellHeader, HeroSlider, PageHeader, PageLayout, Section ('Heute auf RadioX'), LiveDot, Button, BootingCard x2, TechBorder x4, PoweredBySection, RadioXLogo, PlayerSkipLink, ToastContainer/ToastLayer, PersistentMiniBar.{Like,More,OpenStage,PhoneTransport,Timeline}, PlayPauseOrb x2, SpeakingRing x2, VoiceOverHalo x2, data-glass-play x2, and nav items Home/Live/Bibliothek. Seen on '/live' (pane rendered the phone layout): LiveMobileNative.* (Cover, Transport, PlayAnchor, Glass, Heart, OnAir, Reasons, ModeChip), AiBadge x12, AiHostLabel, AirProvenanceLine(.Reveal), Inset x3, Eyebrow x3, DnaTrackProfile, LiveDNASpider.Table, LiveTerminal, SpeakerAvatar x2, LiveListeners.Pile, QueueCard.*, .rx-source-badge x14, role=tooltip x8. The ui Badge component did not render on /live. Seen on '/library': Breadcrumb and PageHeader ('Deine RadioX-Sammlung'). I did not check the desktop layout or areas behind login (studio/admin/account/onboarding); those findings come from the code only.\n\nDiscrepancy with the task text: RadioX has no packages/ui directory with styles. modal.css, runtimeAnimations.css, performanceClasses.ts and the scrollbars/tokens tests are in apps/frontend/styles, and the token source of truth is apps/frontend/index.css (@theme static).\n\nConstraints for any import into Atlas core:\n- tests/brands.test.mjs fails if packages/core/src contains next/, framer-motion, supabase or organisation names. RadioX uses neither framer-motion nor next, but SpaLink and LiveDot depend on RadioX hooks (usePathname/navigate, useCarMode), so strip those.\n- AGENTS.md forbids brand hex values, logos and fonts in core. Every RadioX hardcode (cyan-400/500 glows, #050505 ring offset, slate/white-alpha surfaces, the hex field in statusTone, GeneratedMiniCover PALETTES, the SwissFlag colours) has to become a semantic token or brand-package data.\n- Atlas cn uses tailwind-merge. RadioX cn is clsx only, so class conflicts behave differently. Check variant classes after porting.\n- Atlas runs on Radix. Do not port RadioX's own overlay engines (useModalDialog, FloatingLayer, the Tooltip collision code, MiniBarMoreMenu, LanguageSwitcher dropdown). Atlas already covers them (dialog, popover, tooltip, dropdown-menu). Port only the behaviours Radix lacks: touch swipe-to-dismiss, drawer/immersive presentation, safe-area geometry and the promise-based confirm.\n\nPrimitives Atlas is missing that RadioX patterns need: Switch, Toggle/ToggleGroup (segmented control), RadioGroup, Avatar/AvatarGroup, Progress, Alert, Breadcrumb, Carousel, Spinner, Kbd, Stat, Stepper. All except Carousel come from the radix-ui package Atlas already uses. Carousel needs embla-carousel-react and embla-carousel-autoplay.\n\nSuggested order, from highest reuse and lowest risk:\n1. Tokens and tone: lib/tone.ts, brand roles 'live' and 'scrim', foundation micro/caps/zIndex.\n2. Eyebrow, Inset, LiveDot, Badge tone/size extension.\n3. Breadcrumb, PageHeader, Section, SkipLink, Alert, ErrorBoundary.\n4. Switch, ToggleGroup, RadioGroup, Avatar, Progress, Spinner, Kbd, Stat.\n5. useSwipeToDismiss in Sheet and Dialog (drawer presentation), plus useConfirm.\n6. PlayButton (glass material), MediaBar shell, MediaCard, Carousel.\n7. Optional media package with the audio visualisers and synced text list.\n8. Docs patterns: radar chart, log view, shortcut sheet, stepper, dropzone, settings rows, bottom nav / app shell.\n\nLeave in RadioX: station, voting, lyrics licensing, car mode, the matrix/StarCraft theme, boot loaders with sound, admin controls, Supabase/API services and all logos.\n\nThings to verify in Atlas with npm run check and browser QA (not run here):\n- The new brand colorKeys pass the contrast tests in both modes.\n- Glass tint keeps 3:1 contrast on light brands. RadioX is dark-only (index.css says so).\n- The Sonner region still announces while a Radix Dialog is open. RadioX used data-modal-exempt for this."
+}

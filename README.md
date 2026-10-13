@@ -39,7 +39,7 @@ Bei Änderungen an der Brand-Registry entfernt die Generierung nicht mehr regist
 
 | Pfad | Zweck |
 |---|---|
-| `packages/core/src` | Alle 19 UI-Module und BrandProvider |
+| `packages/core/src` | Alle 42 UI-Module (seit 0.8.0 inklusive der aus RadioX übernommenen Komponenten), Hooks und BrandProvider |
 | `packages/brands/src` | Validierter Brand-Vertrag, Registry für Neutral, Dominicano Express und Rapold sowie Präsentationsadapter |
 | `packages/presentation/src` | Datenadapter, Inhaltsprüfung und editierbarer PPTX-Export |
 | `apps/docs` | Next.js-Referenz mit 35 Seiten, statisch exportierbar |
@@ -73,7 +73,7 @@ Die Domain steht in der Metadaten-Konfiguration, in `vercel.json` und im Agenten
 
 ## Erweiterter Stand
 
-- 19 UI-Module und markenfähige Portale.
+- 42 UI-Module und markenfähige Portale, beschrieben im Komponentenvertrag `/contracts/components.md`.
 - Vollständiger neutraler Lucide-Katalog mit SVG- und React-Verwendung.
 - Grundlagen, semantische Rollen, CSS-, JSON- und DTCG-Exporte.
 - 18 Folienrezepte, fünf Presets, vermessene Raster und 13 Typorollen.

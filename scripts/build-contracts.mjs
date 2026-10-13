@@ -74,3 +74,8 @@ await copyFile(new URL('../docs/project-decks.md',import.meta.url),new URL('cont
 await copyFile(new URL('../docs/mermaid.md',import.meta.url),new URL('contracts/mermaid.md',root));
 await copyFile(new URL('../docs/engineering.md',import.meta.url),new URL('contracts/engineering.md',root));
 await copyFile(new URL('../docs/produkte-einbinden.md',import.meta.url),new URL('contracts/produkte-einbinden.md',root));
+// One component contract for agents: import path plus every group spec under docs/components.
+{const dir=new URL('../docs/components/',import.meta.url);const specs=(await readdir(dir)).filter(n=>n.endsWith('.md')).sort();
+ const body=await Promise.all(specs.map(n=>readFile(new URL(n,dir),'utf8')));
+ const intro=['# Atlas-Komponenten','',"Import: `import { Button } from '@rapold/framework-core'` und einmalig `@rapold/framework-core/styles.css`. Alle Komponenten nutzen nur semantische Tokens der aktiven Brand. Showcase: https://atlas.rapold.io/components",''].join('\n');
+ await writeFile(new URL('contracts/components.md',root),intro+'\n'+body.join('\n\n'));}
