@@ -1,4 +1,4 @@
-import { mkdir, writeFile, copyFile, readFile, readdir, access } from 'node:fs/promises';
+import { mkdir, writeFile, copyFile, readFile, readdir, access, cp } from 'node:fs/promises';
 import { brands } from '../packages/brands/src/index.mjs';
 import { mermaidTheme,mermaidThemeCSS,mermaidClassDefs,MERMAID_WRAPPING_WIDTH,MERMAID_NODE_PADDING } from '../packages/brands/src/mermaid-theme.mjs';
 import { presentationTheme } from '../packages/brands/src/presentation.mjs';
@@ -31,6 +31,10 @@ for (const brand of brands) {
     await copyFile(new URL('../'+source,import.meta.url),new URL(name,directory));
   }
   if(brand.sources.length)await copyFile(new URL(`../brands/${brand.id}/README.md`,import.meta.url),new URL('rules.md',directory));
+  // Brand packages with their own static assets (logos, icons) publish them unchanged.
+  // Rapold has a dedicated export pipeline (build-brand-assets.mjs) and is excluded here.
+  const staticAssets=new URL(`../brands/${brand.id}/assets/`,import.meta.url);
+  if(brand.id!=='rapold'&&await access(staticAssets).then(()=>true,()=>false))await cp(staticAssets,new URL('assets/',directory),{recursive:true});
   if(brand.assets?.logo){
     const original=new URL('../'+brand.assets.logo.path,import.meta.url);
     if(await access(original).then(()=>true,()=>false))await copyFile(original,new URL(brand.assets.logo.path,root));
