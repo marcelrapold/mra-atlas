@@ -14,6 +14,7 @@
 @import '@fontsource/inter/latin-ext-700.css';
 @import '@rapold/framework-core/styles.css';
 @import '../../../brands/rapold/theme.css';
+@import '../../../brands/radiox/theme.css';
 @import '../../../brands/rapold/wordmarks.css';
 @import '../../../brands/rapold/worlds.css';
 @import './accessibility.css';

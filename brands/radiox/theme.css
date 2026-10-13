@@ -1,0 +1,37 @@
+/* RadioX brand layer: the radiox.cloud look on top of the neutral core.
+   Colours come from packages/brands/src/radiox.json; this file only adds
+   material (glass, glow, ambient light) and type details. */
+.framework-scope[data-brand='radiox'] { --radiox-glass-blur: 16px; --radiox-tracking-caps: .16em; }
+
+/* Ambient aurora behind the content, dark mode only (radiox.cloud is dark-first). */
+.framework-scope[data-brand='radiox'][data-mode='dark'] {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(1100px 600px at 85% -10%, rgb(34 211 238 / .10), transparent 60%),
+    radial-gradient(900px 520px at -10% 110%, rgb(167 139 250 / .08), transparent 60%);
+  background-attachment: fixed;
+}
+
+/* Glass surfaces: translucent cards and panels with a hairline light border. */
+.framework-scope[data-brand='radiox'][data-mode='dark'] :is([data-slot='card'], .demo-panel, [data-slot='media-card'], [data-slot='media-bar'], [data-slot='alert']) {
+  background-color: rgb(255 255 255 / .03);
+  border-color: rgb(255 255 255 / .10);
+}
+@supports (backdrop-filter: blur(1px)) {
+  .framework-scope[data-brand='radiox'][data-mode='dark'] :is([data-slot='card'], .demo-panel, [data-slot='media-card'], [data-slot='media-bar']) {
+    backdrop-filter: blur(var(--radiox-glass-blur));
+  }
+}
+
+/* Cyan glow on primary actions and the play button; never on focus (focus stays an outline). */
+.framework-scope[data-brand='radiox'][data-mode='dark'] :is([data-slot='button'][data-variant='default'], [data-slot='play-button']) {
+  box-shadow: 0 0 24px -6px rgb(34 211 238 / .55);
+}
+.framework-scope[data-brand='radiox'] [data-slot='button'] { border-radius: 9999px; }
+
+/* Micro labels with RadioX caps tracking. */
+.framework-scope[data-brand='radiox'] [data-slot='eyebrow'] { letter-spacing: var(--radiox-tracking-caps); }
+
+@media (prefers-reduced-transparency: reduce) {
+  .framework-scope[data-brand='radiox'][data-mode='dark'] :is([data-slot='card'], .demo-panel, [data-slot='media-card'], [data-slot='media-bar']) { backdrop-filter: none; background-color: var(--card); }
+}

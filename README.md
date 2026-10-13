@@ -61,6 +61,7 @@ Bei Änderungen an der Brand-Registry entfernt die Generierung nicht mehr regist
 - Neutral: vollständige helle und dunkle Basis.
 - Rapold: gemeinsame Brand für Fabric, Argus, ÆON Learn und EdgePortal sowie Lotse, Cockpit, Auditor, Rapold Auth, PocketForge und Atlas selbst; zehn freigegebene Signets. 50 SVG-Master, lokale Geist-Fonts und 520 reproduzierbare Exporte. Status `draft` für den neuen UI-Adapter. Markenansicht: `/brand?brand=rapold`. [Quellen und Anwendung](brands/rapold/README.md).
 - Dominicano Express: eigenständiges helles und dunkles Preset mit seinem Caja-Inhaltsbeispiel.
+- RadioX: Brand im Look von radiox.cloud (Schwarz, Cyan, Glas, Glow) für die aus RadioX übernommenen Medien-, Status- und Player-Komponenten. [Quellen und Ableitungen](brands/radiox/README.md).
 
 Firmenlogos, interne Vorgaben und lizenzierte Assets sind getrennt vom neutralen Core. Eine künftige freie Code-Lizenz erteilt keine Marken- oder Fontrechte.
 
@@ -82,6 +83,6 @@ Die Domain steht in der Metadaten-Konfiguration, in `vercel.json` und im Agenten
 
 Bekannte Lücken und Abnahmestatus: [HANDOFF.md](HANDOFF.md).
 
-Der Muster-Renderer erzeugt 18 editierbare PPTX-Dateien (drei Brands × sechs Decks). Zusätzlich verarbeitet `@rapold/framework-presentation` echte Projektinhalte mit allen 18 Rezepten. `npm run deck:export -- deck.json --out ./ergebnis --repo-dir ./projekt --pdf` erzeugt PPTX, PDF und Quellenmanifest. Vollständiger Ablauf und Eingabeschema: [Projektdecks](docs/project-decks.md).
+Der Muster-Renderer erzeugt 24 editierbare PPTX-Dateien (vier Brands × sechs Decks). Zusätzlich verarbeitet `@rapold/framework-presentation` echte Projektinhalte mit allen 18 Rezepten. `npm run deck:export -- deck.json --out ./ergebnis --repo-dir ./projekt --pdf` erzeugt PPTX, PDF und Quellenmanifest. Vollständiger Ablauf und Eingabeschema: [Projektdecks](docs/project-decks.md).
 
 Version 0.4 ergänzt den Organigramm-Renderer mit Editor und Exporten, vier lokale ECharts-Beispiele, vollständige Navigationsicons, formatabhängige Prompts und den [Engineering-Vertrag](docs/engineering.md).

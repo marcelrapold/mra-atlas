@@ -32,6 +32,7 @@ export const colorKeys: readonly ColorKey[];
 export function defineBrand(input: unknown): Brand;
 export const neutral: Brand;
 export const dominicanoExpress: Brand;
+export const radiox: Brand;
 export const rapold: Brand;
 export const brands: readonly Brand[];
 export function toCssVariables(brand: Brand, mode?: Mode): Record<string,string | number>;

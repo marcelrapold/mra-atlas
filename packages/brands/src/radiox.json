@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "id": "radiox",
+  "name": "RadioX",
+  "version": "0.1.0",
+  "status": "draft",
+  "palette": {
+    "black": "#050505",
+    "cyan": "#22D3EE",
+    "cyan-deep": "#06B6D4",
+    "onair": "#EF4444",
+    "ai": "#A78BFA",
+    "community": "#34D399",
+    "news": "#FBBF24",
+    "dna": "#F472B6",
+    "danger": "#FB7185",
+    "slate": "#94A3B8"
+  },
+  "modes": {
+    "light": {
+      "background": "#F4FBFD",
+      "foreground": "#071114",
+      "card": "#FFFFFF",
+      "card-foreground": "#071114",
+      "popover": "#FFFFFF",
+      "popover-foreground": "#071114",
+      "primary": "#0E7490",
+      "primary-foreground": "#FFFFFF",
+      "primary-hover": "#155E75",
+      "primary-hover-foreground": "#FFFFFF",
+      "secondary": "#E3F6FA",
+      "secondary-foreground": "#071114",
+      "muted": "#EDF6F8",
+      "muted-foreground": "#475569",
+      "accent": "#CFFAFE",
+      "accent-foreground": "#083344",
+      "destructive": "#BE123C",
+      "destructive-foreground": "#FFFFFF",
+      "success": "#047857",
+      "success-foreground": "#FFFFFF",
+      "warning": "#92400E",
+      "warning-foreground": "#FFFFFF",
+      "border": "#CFE3E8",
+      "input": "#64748B",
+      "ring": "#0E7490"
+    },
+    "dark": {
+      "background": "#050505",
+      "foreground": "#FFFFFF",
+      "card": "#0E1013",
+      "card-foreground": "#FFFFFF",
+      "popover": "#14171B",
+      "popover-foreground": "#FFFFFF",
+      "primary": "#22D3EE",
+      "primary-foreground": "#050505",
+      "primary-hover": "#67E8F9",
+      "primary-hover-foreground": "#050505",
+      "secondary": "#1A1D21",
+      "secondary-foreground": "#FFFFFF",
+      "muted": "#121417",
+      "muted-foreground": "#94A3B8",
+      "accent": "#0B2A33",
+      "accent-foreground": "#A5F3FC",
+      "destructive": "#FB7185",
+      "destructive-foreground": "#050505",
+      "success": "#34D399",
+      "success-foreground": "#050505",
+      "warning": "#FBBF24",
+      "warning-foreground": "#050505",
+      "border": "#25292E",
+      "input": "#64748B",
+      "ring": "#22D3EE"
+    }
+  },
+  "typography": {
+    "family": "Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif",
+    "bodyWeight": 400,
+    "headingWeight": 800
+  },
+  "shape": {
+    "radius": "16px",
+    "shadow": "none",
+    "buttonMinHeight": "44px"
+  },
+  "presentation": {
+    "editorialDarkSurfaces": true,
+    "preferIconsForConcepts": true,
+    "preferMermaidForSystems": true,
+    "logoOnCover": false,
+    "preferredDiagramShare": "2-4 per 12 slides",
+    "preferredGenAiImages": "max 2 per 12 slides"
+  },
+  "sources": [
+    "brands/radiox/README.md"
+  ]
+}

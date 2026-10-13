@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.0 — 2026-10-14
+
+- **Brand RadioX** (`radiox`, Status `draft`): Farben, Signalfarben und Radien aus `marcelrapold/radiox` (`apps/frontend/index.css`), Glasflächen, Aurora-Licht, Cyan-Glow und Pillen-Buttons in `brands/radiox/theme.css`. Der helle Modus ist dokumentiert abgeleitet; alle Kontrastpaare bestehen. Über den Brand-Wechsler zeigen alle Komponenten den Look von radiox.cloud.
+- Die sechs aus RadioX übernommenen Komponentenseiten verlinken direkt auf ihre Ansicht mit der Brand RadioX.
+- Sechs RadioX-Musterdecks; alle Folienvorschauen unter Linux neu gerendert.
+
 ## 0.8.0 — 2026-10-12
 
 - **Frontend-Audit** über 16 Perspektiven mit adversarialer Prüfung: 97 belegte Befunde, 0 × P0, 7 × P1. Bericht, Scorecard und Rohdaten unter `docs/review/audit-2026-10-12/`.
