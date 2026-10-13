@@ -6,7 +6,7 @@ Atlas ist das Designsystem von Rapold: ein neutraler White-Label-Designstandard 
 
 ## Referenz
 
-Atlas ist seine eigene Referenz. Website, Tokens, Icons, Komponenten, Navigation und Präsentationsmuster sind in diesem Repository definiert und unter https://atlas.rapold.io dokumentiert; die jeweilige Brand liefert ihre CI. Die Herkunft übernommener Code-Bestandteile steht in [docs/extraction.md](docs/extraction.md).
+Atlas ist seine eigene Referenz. Website, Tokens, Icons, Komponenten, Navigation und Präsentationsmuster sind in diesem Repository definiert und unter https://atlas.rapold.io dokumentiert; die jeweilige Brand liefert ihre CI. Komponenten Dritter und ihre Lizenzen stehen in [LICENSE](LICENSE).
 
 Rapold-Produkte übernehmen Signet, Favicon, Manifest, Tokens, Geist-Fonts und den Login über auth.rapold.io gemäss [Atlas in Produkten einbinden](docs/produkte-einbinden.md).
 
