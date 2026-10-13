@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "sourceHash": "c611be805d370782fa7f475b53a502f2d6abee08ba63e8ea9d8bfb57cfe41be6",
+  "sourceHash": "315e9c544860203798b1732b5e9af49a90f103915d185f014f100a2127759eac",
   "renderer": "LibreOffice 7.4.7.2 40(Build:2)",
-  "renderedAt": "2026-10-11T21:42:23.105Z",
+  "renderedAt": "2026-10-13T22:20:15.893Z",
   "files": [
     {
       "path": "brands/neutral/reference/agenda.png",
@@ -26,7 +26,7 @@
     },
     {
       "path": "brands/neutral/reference/entscheidungsvorlage.pdf",
-      "sha256": "d409e1507f9200dc7ca21eac709237a0b6ef3bbbf9a4111fb141ef1a0a5411e3",
+      "sha256": "e99d44111312c7b65c6c8f6307b79da15d4d7f1bba710171837242c6a81d6f19",
       "bytes": 25455
     },
     {
@@ -36,7 +36,7 @@
     },
     {
       "path": "brands/neutral/reference/gremien-review.pdf",
-      "sha256": "4c33afe5bcc8f5f2edb134db119fd9a5b2e7baec8fba71243934ce881c6dd6ac",
+      "sha256": "1418fed50ef61fe3ed545d9e467e14e9f49c0ebe1a928ce9f585eb8c5b03fabc",
       "bytes": 46648
     },
     {
@@ -71,7 +71,7 @@
     },
     {
       "path": "brands/neutral/reference/muster-deck.pdf",
-      "sha256": "da05207f392d3f3817312e4cfa8ea34307b29d7904a9b8b272fd80cae852651a",
+      "sha256": "47c0417f4bc80f289c8f73d95ade858bd23cf0fe0201eead80b93452c63c3d11",
       "bytes": 66097
     },
     {
@@ -81,7 +81,7 @@
     },
     {
       "path": "brands/neutral/reference/projekt-kickoff.pdf",
-      "sha256": "bf7ac6ca3c87b3a57d9aa0575756587eaff5049ae8e4ff1361172d916173a254",
+      "sha256": "0d021cf6cd02611d655f65bf8226af2af610b34fc6052d52f9bab2463cb7390d",
       "bytes": 28023
     },
     {
@@ -91,7 +91,7 @@
     },
     {
       "path": "brands/neutral/reference/roadmap-ausblick.pdf",
-      "sha256": "ac02980adcd8d91bf33676d8edd60e80430abe4727abcad20da43634cf83cabe",
+      "sha256": "8120f60f08d4c9ddf73d19e2681a34abcf27aa3c8cd3d0a8d5b8c9f06e875362",
       "bytes": 27125
     },
     {
@@ -116,7 +116,7 @@
     },
     {
       "path": "brands/neutral/reference/zahlenbericht.pdf",
-      "sha256": "13a3f2fe420ad99e48d4c98a5c8edbae6acea52a512b199ef4b7fcd12e2c664a",
+      "sha256": "763c050ea92ac894fecf086de9fb87d85e3f891d58a62b8081e4efe6dd1b7fcf",
       "bytes": 29920
     },
     {
@@ -146,7 +146,7 @@
     },
     {
       "path": "brands/dominicano-express/reference/entscheidungsvorlage.pdf",
-      "sha256": "e9e3f9f9ed8687c3d87b5b0c5c9a4b5c378d40638e52f3630724fd74bf283383",
+      "sha256": "e3f3bf3c22fc63cb7bde535c2b850e88daa1f3c174791c32ebadfcf044052632",
       "bytes": 25648
     },
     {
@@ -156,7 +156,7 @@
     },
     {
       "path": "brands/dominicano-express/reference/gremien-review.pdf",
-      "sha256": "8b3c29f2dbb733d14f8e8923e7d17a38d6041ec76ccb4e57f67c22072de46d9a",
+      "sha256": "a4b1d9f6509822083ce49294bb29b031d6162578014695b53813c84d3e6d4de1",
       "bytes": 46949
     },
     {
@@ -191,7 +191,7 @@
     },
     {
       "path": "brands/dominicano-express/reference/muster-deck.pdf",
-      "sha256": "5d3cc1ab4a12ba6c0f6ccc102468c191722169b0be00654835b555d7da0d1706",
+      "sha256": "83eb01b353771f41754651421864a146a61a8779b82f0cd4f69d4a7dc5f4b06a",
       "bytes": 66580
     },
     {
@@ -201,7 +201,7 @@
     },
     {
       "path": "brands/dominicano-express/reference/projekt-kickoff.pdf",
-      "sha256": "c706a66d957f5b28c5b20de50375a3228e4cd72184016bfb16292bc81a5874eb",
+      "sha256": "722e5a4b137b25d7be32c1ed352899dd702921ebf73d72cce998642bf44f5a00",
       "bytes": 28322
     },
     {
@@ -211,7 +211,7 @@
     },
     {
       "path": "brands/dominicano-express/reference/roadmap-ausblick.pdf",
-      "sha256": "1351241ab16ed9167e76e03137477ad49c17eaa3dc6dabb6dc60ad27c1a3441f",
+      "sha256": "bef5eec14e4a723002c44b4cf3a49de5543c27769246fed3839fd1b26ddfe1fb",
       "bytes": 27439
     },
     {
@@ -236,7 +236,7 @@
     },
     {
       "path": "brands/dominicano-express/reference/zahlenbericht.pdf",
-      "sha256": "0fe20021dcb979f2f800bdb63a8e9dad7a05f055337bb76a9aa215363da223c0",
+      "sha256": "03f2bb745da43712b37f8a931a0f678c70d1f4bb327d9bd5f93896aa7748b228",
       "bytes": 30276
     },
     {
@@ -266,7 +266,7 @@
     },
     {
       "path": "brands/rapold/reference/entscheidungsvorlage.pdf",
-      "sha256": "7e1effaebeef9f66171de99ed862f4e6cd9304b8fe8e8e248daf247aac4b38e0",
+      "sha256": "cc718ee1f55530bf2dadc973c3aba8853f40e54e2f9864238db636dd0eb955b3",
       "bytes": 25001
     },
     {
@@ -276,7 +276,7 @@
     },
     {
       "path": "brands/rapold/reference/gremien-review.pdf",
-      "sha256": "8b6c6975772d25629ae9a624031b530152c1f6125f72f7fce6a478e0778584a5",
+      "sha256": "14991ed193d563ef9ddd8fdda9fdd1c496baf2810b97946f1ec28b37fbae5624",
       "bytes": 46108
     },
     {
@@ -311,7 +311,7 @@
     },
     {
       "path": "brands/rapold/reference/muster-deck.pdf",
-      "sha256": "aad9ece89a2f4b63b5db8ed467987a275b31e8b24612b77f753bff9c20882803",
+      "sha256": "c70397e8c3a6d385ea9e21b32032d8ecafa8c85bc14dd5cad8bf503abb55371a",
       "bytes": 66028
     },
     {
@@ -321,7 +321,7 @@
     },
     {
       "path": "brands/rapold/reference/projekt-kickoff.pdf",
-      "sha256": "717a8a6bb8360db7e0bbddfd63eeffd8d203b7627e35a92ca9eafe3c0085d2b3",
+      "sha256": "20724a17640b846e3706456276f528c2e3fb54384138fa71e31e39b1816a92ac",
       "bytes": 27539
     },
     {
@@ -331,7 +331,7 @@
     },
     {
       "path": "brands/rapold/reference/roadmap-ausblick.pdf",
-      "sha256": "0de22f45c9c48e435d7128a89a38d928e29efac6a336d2e957f3ddf0db4556bd",
+      "sha256": "f8024142fa1653bfef63f7694ed9ac64d813cb37818427a8c97d78bf6d3df8c8",
       "bytes": 26626
     },
     {
@@ -356,13 +356,133 @@
     },
     {
       "path": "brands/rapold/reference/zahlenbericht.pdf",
-      "sha256": "ca7a1f8512d9a92cd182ab98e3a69304a30628edbffcb1244fc3e713ef70c6ac",
+      "sha256": "aa8ffdb667c2b5a5fc6ca94f9a9e24c3d69e6add4a87215bd5c2a1bc74de7b24",
       "bytes": 29352
     },
     {
       "path": "brands/rapold/reference/zwei-grosskarten.png",
       "sha256": "b8f879cc170aafa40307924d3407631b7b0f77c0bce8869c9fd42420cd9f6068",
       "bytes": 77827
+    },
+    {
+      "path": "brands/radiox/reference/agenda.png",
+      "sha256": "ac752610cfc0f4deb21d2a949a950c4f01f197b9de1e22b3ca49aced3360951e",
+      "bytes": 43030
+    },
+    {
+      "path": "brands/radiox/reference/cover-foto.png",
+      "sha256": "18793e1c94fc9c94d172d0b916d3eadb74d84146a0195cd16cfce748c35d1b8a",
+      "bytes": 26651
+    },
+    {
+      "path": "brands/radiox/reference/drei-schritt-beweis.png",
+      "sha256": "d4c643fcf4a5414d5e1041f89aeb92387cbbebc993f745dfbe8127add5900726",
+      "bytes": 74732
+    },
+    {
+      "path": "brands/radiox/reference/entscheid-register.png",
+      "sha256": "9438a295b735d6186ba0efd979ab3dc038e6542eb117478f0159b8c3facef305",
+      "bytes": 65745
+    },
+    {
+      "path": "brands/radiox/reference/entscheidungsvorlage.pdf",
+      "sha256": "05edf0e644dafa48d78641e0e64a8d819b02a1fa63e975fa82f2fafc57a52123",
+      "bytes": 25580
+    },
+    {
+      "path": "brands/radiox/reference/foto-schluss.png",
+      "sha256": "84461610f49e217b9920248efdafe84fe5922cb29900a37df7b5d439a77d92fb",
+      "bytes": 30134
+    },
+    {
+      "path": "brands/radiox/reference/gremien-review.pdf",
+      "sha256": "587c81a4cb7e7a0a9a6d4d906016f420963dc7fda0e3e516ce3da7ba96022ca5",
+      "bytes": 46677
+    },
+    {
+      "path": "brands/radiox/reference/kapitel-trenner.png",
+      "sha256": "73b03e2b1ce778804042aa5bdf5d223684081ef44b2560b82171c1dc11889029",
+      "bytes": 17126
+    },
+    {
+      "path": "brands/radiox/reference/karten-steckbrief.png",
+      "sha256": "0101f6a278d0c3f22117ce97c9c8996744fff08378dfc42b31684477b65e3bf9",
+      "bytes": 70025
+    },
+    {
+      "path": "brands/radiox/reference/kpi-board.png",
+      "sha256": "aa51cd85f0a6e39cd79f8661139afbdef5cd5394ad0fa0359b01c76a04528edb",
+      "bytes": 72888
+    },
+    {
+      "path": "brands/radiox/reference/kpi-timeline.png",
+      "sha256": "cda7194ed8184d9b3125625cdce11e3b01942d570a2d750787dd90adaa183860",
+      "bytes": 40908
+    },
+    {
+      "path": "brands/radiox/reference/management-summary.png",
+      "sha256": "e3545e778dfd7e33d8da70cd9dcf4287c348b3815163a43cb9b54b7bb2cb1b5a",
+      "bytes": 84902
+    },
+    {
+      "path": "brands/radiox/reference/modul-karten-mit-chart.png",
+      "sha256": "0a3d7a19271a4b10971fe09b48c8be6d254c8d19d69baaa64d3c55fe179f14c6",
+      "bytes": 57909
+    },
+    {
+      "path": "brands/radiox/reference/muster-deck.pdf",
+      "sha256": "bdb63d58db21cc766bbb0c9d4d09edd7bdd3061a827e8100318bc06102c804ae",
+      "bytes": 66040
+    },
+    {
+      "path": "brands/radiox/reference/phasen-karten-gate.png",
+      "sha256": "e4650178604373e894a3378f1848b075c76745aa609a2f15f411d7900425e940",
+      "bytes": 72293
+    },
+    {
+      "path": "brands/radiox/reference/projekt-kickoff.pdf",
+      "sha256": "ca01e12e01c84152182ecf74ad901376410cc7d3fe242f3966e1a7e81e5f69e3",
+      "bytes": 28047
+    },
+    {
+      "path": "brands/radiox/reference/quellen-grid.png",
+      "sha256": "181ec971cc011998f120c13426f8beaf611e956cbfef654377dadc80dd8a89b7",
+      "bytes": 87736
+    },
+    {
+      "path": "brands/radiox/reference/roadmap-ausblick.pdf",
+      "sha256": "fe1d8e19600778f0f5bafd990c442b6d3161974a6340dd0cba1ac8fece7ec82e",
+      "bytes": 27140
+    },
+    {
+      "path": "brands/radiox/reference/shape-balkendiagramm.png",
+      "sha256": "3774b11ff88de5a85afeeaf9a6aff253d4d3e114b866391220878cce9a5e15fd",
+      "bytes": 41323
+    },
+    {
+      "path": "brands/radiox/reference/split-tabelle.png",
+      "sha256": "cd3d41ed7624b1b0ed59959b47dcc1e21dd7807c3d971ed47d65977a377f023c",
+      "bytes": 78946
+    },
+    {
+      "path": "brands/radiox/reference/textbox-tabelle.png",
+      "sha256": "7311f1cc59a7c0e8482f632e842685b53a0d3122aa44859161e73a320b2e4752",
+      "bytes": 66114
+    },
+    {
+      "path": "brands/radiox/reference/vollbild-grafik.png",
+      "sha256": "fba7b85eb388873930d7e3be6cf5643589932524d17946ebb8151305f10cda66",
+      "bytes": 38016
+    },
+    {
+      "path": "brands/radiox/reference/zahlenbericht.pdf",
+      "sha256": "bc8b415daf174a316cf2b9ab01e75dc51242fc13988541314fe84ee0ac8fc84f",
+      "bytes": 29956
+    },
+    {
+      "path": "brands/radiox/reference/zwei-grosskarten.png",
+      "sha256": "18c9765f8c2884b87e465b53dbb4851b20fb4d4a20ad878b7001de4d4d6f36f4",
+      "bytes": 77067
     }
   ]
 }

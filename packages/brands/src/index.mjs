@@ -3,6 +3,7 @@ export { foundation, resolveFoundation, semanticTokens, tokenDocument, dtcgToken
 import neutralData from './neutral.json' with { type: 'json' };
 import dominicanoExpressData from './dominicano-express.json' with { type: 'json' };
 import rapoldData from './rapold.json' with { type: 'json' };
+import radioxData from './radiox.json' with { type: 'json' };
 
 export const colorKeys = Object.freeze(Object.keys(neutralData.modes.light));
 const hex = /^#[0-9a-f]{6}$/i;
@@ -67,7 +68,8 @@ export function defineBrand(input) {
 export const neutral = defineBrand(neutralData);
 export const dominicanoExpress = defineBrand(dominicanoExpressData);
 export const rapold = defineBrand(rapoldData);
-export const brands = Object.freeze([neutral, dominicanoExpress, rapold]);
+export const radiox = defineBrand(radioxData);
+export const brands = Object.freeze([neutral, dominicanoExpress, rapold, radiox]);
 
 export function toCssVariables(brand, requestedMode = 'light') {
   const mode = requestedMode === 'dark' && brand.modes.dark ? 'dark' : 'light';

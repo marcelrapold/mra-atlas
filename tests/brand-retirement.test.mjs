@@ -7,7 +7,7 @@ import * as registry from '../packages/brands/src/index.mjs';
 import {canSymlink} from './symlink-support.mjs';
 import {pruneBrandOutputs} from '../scripts/prune-brand-outputs.mjs';
 
-const activeIds=['neutral','dominicano-express','rapold'];
+const activeIds=['neutral','dominicano-express','rapold','radiox'];
 const retiredIds=['goldbach','sygnum'];
 
 test('the actual registry and canonical packages expose only the retained brands',async()=>{
