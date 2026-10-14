@@ -1,4 +1,4 @@
-import { mkdir, writeFile, copyFile, readFile, readdir, access, cp } from 'node:fs/promises';
+import { mkdir, writeFile, copyFile, readFile, readdir, access, cp, stat } from 'node:fs/promises';
 import { brands, deckAssetPaths } from '../packages/brands/src/index.mjs';
 import { mermaidTheme,mermaidThemeCSS,mermaidClassDefs,MERMAID_WRAPPING_WIDTH,MERMAID_NODE_PADDING } from '../packages/brands/src/mermaid-theme.mjs';
 import { presentationTheme } from '../packages/brands/src/presentation.mjs';
@@ -9,14 +9,28 @@ import { buildComponentManifest, INTERNAL_SECTION, SITE } from './build-componen
 const REPOSITORY='https://github.com/marcelrapold/mra-atlas';
 // Repository docs published under /contracts/<name>; everything else links to GitHub.
 const CONTRACT_DOCS=['repo-to-management.md','brand-contract.md','presentation-logic.md','project-decks.md','mermaid.md','engineering.md','produkte-einbinden.md'];
-/** Relative markdown links of a copied repository file become absolute, keeping anchors. */
-function absoluteLinks(markdown,sourcePath){
- return markdown.replace(/\]\(([^)\s]+)\)/g,(all,target)=>{
-  if(/^(?:[a-z][\w+.-]*:|#|\/)/i.test(target))return all;
+const isFile=url=>stat(url).then(s=>s.isFile(),()=>false);
+/**
+ * Relative markdown links of a copied repository file become absolute, keeping anchors.
+ * A file Atlas publishes itself links to its served copy: contracts under /contracts/, the
+ * brand's own sources under /brands/<id>/<name>, its README as rules.md, and every other
+ * file of the brand tree that exists at the same path in the deployable output (logos,
+ * identity.json, licence notices). Only unpublished files link to GitHub.
+ */
+async function absoluteLinks(markdown,sourcePath,brand){
+ const link=/\]\(([^)\s]+)\)/g,links=new Map();
+ for(const [,target] of markdown.matchAll(link)){
+  if(links.has(target)||/^(?:[a-z][\w+.-]*:|#|\/)/i.test(target))continue;
   const [path,hash='']=target.split(/(?=#)/),resolved=decodeURI(new URL(path,new URL(sourcePath,'https://repo.invalid/')).pathname.slice(1));
-  const doc=resolved.match(/^docs\/([^/]+)$/)?.[1];
-  return `](${doc&&CONTRACT_DOCS.includes(doc)?`${SITE}/contracts/${doc}`:`${REPOSITORY}/blob/main/${resolved}`}${hash})`;
- });
+  const doc=resolved.match(/^docs\/([^/]+)$/)?.[1],own=`brands/${brand.id}/`,rest=resolved.startsWith(own)?resolved.slice(own.length):null;
+  let url=`${REPOSITORY}/blob/main/${resolved}`;
+  if(doc&&CONTRACT_DOCS.includes(doc))url=`${SITE}/contracts/${doc}`;
+  else if(rest==='README.md'&&brand.sources.length)url=`${SITE}/brands/${brand.id}/rules.md`;
+  else if(rest&&brand.sources.includes(resolved))url=`${SITE}/brands/${brand.id}/${encodeURI(resolved.split('/').at(-1))}`;
+  else if(rest&&await isFile(new URL(`brands/${brand.id}/${rest}`,root)))url=`${SITE}/brands/${brand.id}/${encodeURI(rest)}`;
+  links.set(target,url+hash);
+ }
+ return markdown.replace(link,(all,target)=>links.has(target)?`](${links.get(target)})`:all);
 }
 // Source assets and their reproducible exports must exist before documentation
 // and presentation contracts reference them.
@@ -27,9 +41,24 @@ const {version}=JSON.parse(await readFile(new URL('../package.json',import.meta.
 const root = new URL('../apps/docs/public/',import.meta.url);
 const sharedAgentGuide = (await readFile(new URL('../llms.txt',import.meta.url),'utf8')).replace(/\r\n/g,'\n');
 const themeLabel=brand=>brand.id==='neutral'?'Default-Preset':brand.name+'-Theme';
-/** Theme entry in llmstxt.org form: own H1, the shared summary, the theme scope, its sources before «Optional». */
+// Repository docs that /llms.txt advertises under /contracts/, read once for the isolation rule.
+const contractSources=new Map(await Promise.all(CONTRACT_DOCS.map(async name=>[name,(await readFile(new URL(`../docs/${name}`,import.meta.url),'utf8')).replace(/\r\n/g,'\n')])));
+/** A contract that addresses another brand's tree is bound to that brand and stays out of this theme. */
+const boundElsewhere=(text,brand)=>brands.some(other=>other.id!==brand.id&&text.replaceAll('{brand}',brand.id).includes(`/brands/${other.id}/`));
+const DEFAULT_LINKS_NOTE='Die Theme-Links unten zeigen das Default-Preset';
+/**
+ * Theme entry in llmstxt.org form: own H1, the shared summary, the theme scope, its sources before
+ * «Optional». The Default-Preset links of /llms.txt point at this theme; the theme-free full
+ * context and contracts bound to another brand are left out, by the same rule as llms-full.txt.
+ */
 function themeGuide(brand){
- const shared=sharedAgentGuide.replaceAll('{brand}',brand.id).replace(/^# .*\n/,`# Atlas · ${themeLabel(brand)}\n`);
+ const keep=line=>{
+  if(line.startsWith('- [')&&line.includes(`](${SITE}/llms-full.txt)`))return false;
+  const contract=line.startsWith('- [')?line.match(/\]\(https:\/\/atlas\.rapold\.io\/contracts\/([^)#]+)\)/)?.[1]:null;
+  return !(contract&&contractSources.has(contract)&&boundElsewhere(contractSources.get(contract),brand));
+ };
+ const shared=sharedAgentGuide.split('\n\n').filter(part=>!part.startsWith(DEFAULT_LINKS_NOTE)).join('\n\n').split('\n').filter(keep).join('\n')
+  .replaceAll(`${SITE}/brands/neutral/`,`${SITE}/brands/${brand.id}/`).replaceAll('{brand}',brand.id).replace(/^# .*\n/,`# Atlas · ${themeLabel(brand)}\n`);
  const scope=`Aktive Brand: ${brand.id} · Status: ${brand.status}\nNur die folgenden Theme-Vorgaben und die gemeinsamen Framework-Regeln verwenden.\n\n`;
  const [head,optional='']=shared.replace(/(^> .*\n\n)/m,`$1${scope}`).split(/(?=^## Optional$)/m);
  const files=[...brand.sources.map(source=>source.split('/').at(-1)),...brand.sources.length?['rules.md']:[]];
@@ -49,15 +78,16 @@ for (const brand of brands) {
   const directory = new URL(`brands/${brand.id}/`,root);
   await mkdir(directory,{recursive:true});
   const sourceNames=new Set();
+  const markdownSources=[];
   for(const source of brand.sources){
     if(!source.startsWith(`brands/${brand.id}/`) || source.split('/').includes('..'))throw new Error(`Invalid brand source path: ${source}`);
     const name=source.split('/').at(-1);
     if(sourceNames.has(name))throw new Error(`Duplicate public source name: ${name}`);
     sourceNames.add(name);
-    if(name.endsWith('.md'))await writeFile(new URL(name,directory),absoluteLinks(await readFile(new URL('../'+source,import.meta.url),'utf8'),source));
+    if(name.endsWith('.md'))markdownSources.push([source,name]);
     else await copyFile(new URL('../'+source,import.meta.url),new URL(name,directory));
   }
-  if(brand.sources.length)await writeFile(new URL('rules.md',directory),absoluteLinks(await readFile(new URL(`../brands/${brand.id}/README.md`,import.meta.url),'utf8'),`brands/${brand.id}/README.md`));
+  if(brand.sources.length)markdownSources.push([`brands/${brand.id}/README.md`,'rules.md']);
   // Brand packages with their own static assets (logos, icons) publish them unchanged.
   // Rapold has a dedicated export pipeline (build-brand-assets.mjs) and is excluded here.
   const staticAssets=new URL(`../brands/${brand.id}/assets/`,import.meta.url);
@@ -68,6 +98,8 @@ for (const brand of brands) {
     const original=new URL('../'+brand.assets.logo.path,import.meta.url);
     if(await access(original).then(()=>true,()=>false))await copyFile(original,new URL(brand.assets.logo.path,root));
   }
+  // Markdown last: its links point at published copies, so every asset of the brand is in place.
+  for(const [source,name] of markdownSources)await writeFile(new URL(name,directory),await absoluteLinks(await readFile(new URL('../'+source,import.meta.url),'utf8'),source,brand));
   const brandSources=brand.sources.map(source=>`- /brands/${brand.id}/${source.split('/').at(-1)}`).join('\n');
   await writeFile(new URL('llms.txt',directory),themeGuide(brand));
   const managementGuide=`# Management-Präsentation · ${brand.id==='neutral'?'Default':brand.name}\n\nAktive Brand: ${brand.id} · Status: ${brand.status} · Framework: ${version}\nDieser verlinkte Einstieg ist die Theme-Wahl des Auftrags. Nur die aktiven Brand-Quellen und Original-Assets verwenden. Explizite abweichende Nutzerangaben haben Vorrang.\n\n${managementContract.replaceAll('{brand}',brand.id)}\n${brandSources?'## Pflichtquellen der aktiven Brand\n'+brandSources+'\n- /brands/'+brand.id+'/rules.md\n':''}${brand.assets?.logo?'\nOriginal-Logo: /'+brand.assets.logo.path+'\n':''}`;
@@ -121,9 +153,8 @@ const withoutInternalSections=markdown=>markdown.replace(/\r\n/g,'\n').split(/(?
 {const docs=['brand-contract.md','components.md','produkte-einbinden.md','engineering.md','mermaid.md','presentation-logic.md'];
  const contracts=await Promise.all(docs.map(async name=>({name,text:(await readFile(new URL(`contracts/${name}`,root),'utf8')).replace(/\r\n/g,'\n').trim()})));
  const full=(entry,brand)=>{
-  const foreign=brand?brands.filter(b=>b.id!==brand.id).map(b=>`/brands/${b.id}/`):[];
   const resolved=contracts.map(c=>({...c,text:brand?c.text.replaceAll('{brand}',brand.id):c.text}));
-  const included=resolved.filter(c=>!foreign.some(path=>c.text.includes(path))),omitted=resolved.filter(c=>!included.includes(c)).map(c=>c.name);
+  const included=resolved.filter(c=>!brand||!boundElsewhere(c.text,brand)),omitted=resolved.filter(c=>!included.includes(c)).map(c=>c.name);
   const index=`## Enthaltene Verträge\n\n${included.map(c=>`- [${c.name}](${SITE}/contracts/${c.name})`).join('\n')}\n${omitted.length?`\nNicht enthalten, weil an eine andere Brand gebunden: ${omitted.join(', ')}.\n`:''}`;
   return `${entry.trimEnd()}\n\n${index}\n${included.map(c=>`---\n\nQuelle: ${SITE}/contracts/${c.name}\n\n${c.text}\n`).join('\n')}`;
  };

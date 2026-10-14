@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import ts from 'typescript';
-import {buildComponentManifest,readSpecs,analyseModule,propRows,propName,namedOptions,optionMentions,slug,SPEC_PAGES} from '../scripts/build-component-manifest.mjs';
+import {buildComponentManifest,readSpecs,analyseModule,propRows,propName,namedOptions,optionMentions,slug,specsRendered,SPEC_PAGES} from '../scripts/build-component-manifest.mjs';
 
 const manifest=await buildComponentManifest();
 const indexFile=fileURLToPath(new URL('../packages/core/src/index.ts',import.meta.url));
@@ -22,6 +22,8 @@ test('every export of the core index appears in the component manifest',()=>{
 });
 
 test('the manifest describes every core module with its contract surface',async()=>{
+ // Anchors only once a docs route renders the spec sections into static HTML (check-build verifies the ids).
+ const anchors=await specsRendered();
  assert.equal(manifest.schemaVersion,1);
  assert.equal(manifest.import,'@rapold/framework-core');
  assert.equal(manifest.stylesheet,'@rapold/framework-core/styles.css');
@@ -39,14 +41,28 @@ test('the manifest describes every core module with its contract surface',async(
     if(v.default!=null)assert.ok(v.options.includes(v.default),`${c.module}.${name}.${key}: default ${v.default} is an option`);
    }
   }
-  if(c.spec)assert.equal(c.docsUrl,`https://atlas.rapold.io/${SPEC_PAGES[c.spec.group]??'components'}#${slug(c.name)}`);
+  if(!c.spec)continue;
+  assert.equal(c.anchor,slug(c.name),`${c.module}: anchor`);
+  assert.equal(c.docsUrl,`https://atlas.rapold.io/${SPEC_PAGES[c.spec.group]??'components'}${anchors?'#'+c.anchor:''}`,`${c.module}: docsUrl`);
+  for(const row of c.spec.propTable)assert.equal(row.name,row.prop?propName(row.prop):null,`${c.module}: row name`);
  }
+ assert.deepEqual(manifest.pages.components,['primitives','overlays'],'Reference page groups in reading order');
+ for(const [page,groups] of Object.entries(manifest.pages))for(const group of groups)assert.equal(SPEC_PAGES[group],page);
  const button=manifest.components.find(c=>c.module==='ui/button');
  assert.deepEqual(button.variants.buttonVariants.variant.options,['default','destructive','outline','secondary','ghost','link']);
  assert.equal(button.variants.buttonVariants.size.default,'default');
  assert.ok(button.slots.includes('button'));
  assert.deepEqual(button.dependencies.external['radix-ui'],['Slot']);
  assert.ok(manifest.components.find(c=>c.module==='ui/command').dependencies.internal.includes('ui/dialog'));
+});
+
+test('every module exported from the core index has a spec section, providers included',()=>{
+ const missing=manifest.components.filter(c=>c.exported&&(!c.spec||c.kind!=='utility'&&!c.spec.purpose)).map(c=>c.module);
+ assert.deepEqual(missing,[],'Exported modules without a section in docs/components/*.md');
+ const provider=manifest.components.find(c=>c.module==='brand-provider');
+ assert.equal(provider.name,'BrandProvider');
+ assert.ok(provider.docsUrl?.startsWith('https://atlas.rapold.io/components'));
+ for(const name of ['brand','useBrand','useBrandPortal'])assert.ok(provider.spec.propTable.some(r=>r.name===name),`BrandProvider spec documents ${name}`);
 });
 
 test('every component module exported from the core index has a spec heading',async()=>{
@@ -84,7 +100,47 @@ test('new spec groups document their props against the real code',()=>{
  for(const group of ['primitives','overlays'])assert.ok(manifest.components.some(c=>c.spec?.group===group),group);
  const tabs=manifest.components.find(c=>c.module==='ui/tabs');
  assert.deepEqual(optionMentions(tabs.spec.props).find(m=>m.prop==='variant').options,tabs.variants.tabsListVariants.variant.options);
- for(const id of ['ui/dialog','ui/sheet','ui/command'])assert.match(manifest.components.find(c=>c.module===id).spec.props,/`closeLabel` \(Standard «Schliessen»\)/,`${id}: close label default`);
+ for(const id of ['ui/dialog','ui/sheet','ui/command'])assert.match(manifest.components.find(c=>c.module===id).spec.props,/`closeLabel` \(Standard «[^»]+»/,`${id}: close label default`);
+});
+
+/** Destructuring defaults of the exported component functions: `{closeLabel='Close'}` → {DialogContent:{closeLabel:'Close'}}. */
+async function parameterDefaults(source){
+ const file=ts.createSourceFile(source,await readFile(new URL('../'+source,import.meta.url),'utf8'),ts.ScriptTarget.Latest,true,ts.ScriptKind.TSX),found={};
+ for(const statement of file.statements){
+  if(!ts.isFunctionDeclaration(statement)||!statement.name)continue;
+  const binding=statement.parameters[0]?.name;
+  if(!binding||!ts.isObjectBindingPattern(binding))continue;
+  for(const el of binding.elements){
+   const init=el.initializer;
+   if(!init||!ts.isIdentifier(el.name))continue;
+   const value=ts.isStringLiteralLike(init)?init.text:init.kind===ts.SyntaxKind.TrueKeyword?'true':init.kind===ts.SyntaxKind.FalseKeyword?'false':undefined;
+   if(value!==undefined)(found[statement.name.text]??={})[el.name.text]=value;
+  }
+ }
+ return found;
+}
+
+test('defaults the overlay specs state match the default parameters in the code',async()=>{
+ // The spec must say what the code does: a changed default in packages/core fails here until the
+ // spec follows, and a spec ahead of the code fails as well.
+ let checked=0;
+ for(const id of ['ui/dialog','ui/sheet','ui/command']){
+  const c=manifest.components.find(entry=>entry.module===id),defaults=await parameterDefaults(c.source);
+  const parts=c.spec.props.split(/\s+·\s+/);
+  for(const [component,props] of Object.entries(defaults)){
+   if(!c.exports.includes(component))continue;
+   const part=parts.find(p=>p.startsWith('`'+component+'`'));
+   for(const [prop,value] of Object.entries(props)){
+    if(!['closeLabel','showCloseButton'].includes(prop))continue;
+    assert.ok(part?.includes('`'+prop+'`'),`${id}: spec of ${component} names ${prop} (code default ${value})`);
+    const stated=part.match(new RegExp('`'+prop+'` \\(Standard (?:«([^»]+)»|`([^`]+)`)'));
+    assert.ok(stated,`${id}: spec of ${component} states the default of ${prop}`);
+    assert.equal(stated[1]??stated[2],value,`${id}: ${component} ${prop} default in spec vs. code`);
+    checked++;
+   }
+  }
+ }
+ assert.ok(checked>=7,`Only ${checked} overlay defaults were compared`);
 });
 
 test('spec sections parse into fields and prop rows',async()=>{

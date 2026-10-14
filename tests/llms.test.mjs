@@ -26,6 +26,15 @@ test('llms.txt has no bare root-relative list items',()=>{
  assert.doesNotMatch(guide,/^\/\S+$/m,'No bare path lines');
 });
 
+test('llms.txt links are literal URLs, templates stay in prose',()=>{
+ // llmstxt.org tools (llms_txt2ctx) fetch every non-optional link as written; a {brand} link would 404.
+ const links=[...guide.matchAll(/\]\(([^)\s]+)\)/g)].map(m=>m[1]);
+ assert.ok(links.length>=30,'Link list is read');
+ for(const link of links)assert.doesNotMatch(link,/[{}<>]/,`Template in a link target: ${link}`);
+ assert.ok(links.filter(l=>l.includes('/brands/')).every(l=>l.startsWith('https://atlas.rapold.io/brands/neutral/')||l.endsWith('/brands/index.json')),'Theme links point at the Default-Preset');
+ assert.match(guide,/^Die Theme-Links unten zeigen das Default-Preset/m,'The prose explains the per-theme path');
+});
+
 test('llms.txt keeps the theme placeholder and its rules',()=>{
  assert.ok(guide.includes('https://atlas.rapold.io/brands/{brand}/management.md'));
  assert.ok(guide.includes('bestimmt `{brand}`;\nohne Theme-Wahl `neutral` verwenden.'));
@@ -38,10 +47,12 @@ test('llms.txt keeps the theme placeholder and its rules',()=>{
 
 test('the advertised entries cover tokens, components and the full context',()=>{
  const body=title=>sections.find(s=>s.title===title).body;
- for(const mode of ['light','dark'])for(const ext of ['json','css','dtcg.json'])assert.ok(body('Aktive Brand').includes(`/brands/{brand}/tokens.${mode}.${ext})`),`tokens.${mode}.${ext}`);
+ for(const mode of ['light','dark'])for(const ext of ['json','css','dtcg.json'])assert.ok(body('Aktive Brand').includes(`/brands/neutral/tokens.${mode}.${ext})`),`tokens.${mode}.${ext}`);
  assert.ok(body('Verträge').includes('/contracts/engineering.md)'));
  assert.ok(body('Komponenten').includes('/contracts/components.md)')&&body('Komponenten').includes('/contracts/components.json)'));
- assert.ok(body('Einstieg für ausführende Agenten').includes('/brands/{brand}/llms-full.txt)'));
+ assert.ok(body('Einstieg für ausführende Agenten').includes('/brands/neutral/llms-full.txt)'));
+ assert.ok(body('Einstieg für ausführende Agenten').includes('](https://atlas.rapold.io/llms-full.txt)'),'The theme-free full context is advertised');
+ for(const mode of ['light','dark'])assert.ok(body('Aktive Brand').includes(`/brands/neutral/mermaid.${mode}.json)`),`mermaid.${mode}.json`);
  for(const target of ['/icons/index.json)','/build-info.json)','https://github.com/marcelrapold/mra-atlas)'])assert.ok(body('Optional').includes(target),target);
 });
 

@@ -25,11 +25,16 @@ Repository-Entsprechungen: docs/repo-to-management.md, docs/brand-contract.md,
 packages/brands/src/{brand}.json (Brand), packages/brands/src/foundation.json (gemeinsame Skalen),
 packages/brands/src/brand.schema.json (Schema) und die Quellen des aktiven Brand-Pakets.
 
+Die Theme-Links unten zeigen das Default-Preset (`/brands/neutral/`). Für ein anderes Theme
+`neutral` im Pfad durch die Brand-ID ersetzen, also `/brands/{brand}/…`; jeder Theme-Einstieg
+verlinkt seine eigenen Dateien.
+
 ## Einstieg für ausführende Agenten
 
-- [Management-Ablauf](https://atlas.rapold.io/brands/{brand}/management.md): vollständiger Auftrag vom Repository zur Management-Präsentation im aktiven Theme
-- [Theme-Einstieg](https://atlas.rapold.io/brands/{brand}/llms.txt): Einstieg ausschliesslich für das aktive Theme
-- [Vollständiger Kontext](https://atlas.rapold.io/brands/{brand}/llms-full.txt): Theme-Einstieg und alle Verträge in einer Datei
+- [Management-Ablauf](https://atlas.rapold.io/brands/neutral/management.md): vollständiger Auftrag vom Repository zur Management-Präsentation im aktiven Theme
+- [Theme-Einstieg](https://atlas.rapold.io/brands/neutral/llms.txt): Einstieg ausschliesslich für das aktive Theme
+- [Vollständiger Kontext](https://atlas.rapold.io/brands/neutral/llms-full.txt): Theme-Einstieg und alle Verträge des Themes in einer Datei
+- [Vollständiger Kontext ohne Theme](https://atlas.rapold.io/llms-full.txt): dieser Einstieg und alle gemeinsamen Verträge in einer Datei
 - [Brand-Verzeichnis](https://atlas.rapold.io/brands/index.json): verfügbare Brands mit Version, Status und Asset-Pfaden
 
 ## Verträge
@@ -43,15 +48,16 @@ packages/brands/src/brand.schema.json (Schema) und die Quellen des aktiven Brand
 
 ## Aktive Brand
 
-- [brand.json](https://atlas.rapold.io/brands/{brand}/brand.json): Identität des aktiven Themes
-- [presentation.json](https://atlas.rapold.io/brands/{brand}/presentation.json): Präsentationsrollen des aktiven Themes
-- [tokens.light.json](https://atlas.rapold.io/brands/{brand}/tokens.light.json): vollständiger Token-Export, hell
-- [tokens.light.css](https://atlas.rapold.io/brands/{brand}/tokens.light.css): CSS Custom Properties, hell
-- [tokens.light.dtcg.json](https://atlas.rapold.io/brands/{brand}/tokens.light.dtcg.json): Design Tokens (DTCG), hell
-- [tokens.dark.json](https://atlas.rapold.io/brands/{brand}/tokens.dark.json): vollständiger Token-Export, dunkel
-- [tokens.dark.css](https://atlas.rapold.io/brands/{brand}/tokens.dark.css): CSS Custom Properties, dunkel
-- [tokens.dark.dtcg.json](https://atlas.rapold.io/brands/{brand}/tokens.dark.dtcg.json): Design Tokens (DTCG), dunkel
-- [mermaid.{mode}.json](https://atlas.rapold.io/brands/{brand}/mermaid.{mode}.json): Mermaid-Theme; `{mode}` ist `light` oder `dark`
+- [brand.json](https://atlas.rapold.io/brands/neutral/brand.json): Identität des aktiven Themes
+- [presentation.json](https://atlas.rapold.io/brands/neutral/presentation.json): Präsentationsrollen des aktiven Themes
+- [tokens.light.json](https://atlas.rapold.io/brands/neutral/tokens.light.json): vollständiger Token-Export, hell
+- [tokens.light.css](https://atlas.rapold.io/brands/neutral/tokens.light.css): CSS Custom Properties, hell
+- [tokens.light.dtcg.json](https://atlas.rapold.io/brands/neutral/tokens.light.dtcg.json): Design Tokens (DTCG), hell
+- [tokens.dark.json](https://atlas.rapold.io/brands/neutral/tokens.dark.json): vollständiger Token-Export, dunkel
+- [tokens.dark.css](https://atlas.rapold.io/brands/neutral/tokens.dark.css): CSS Custom Properties, dunkel
+- [tokens.dark.dtcg.json](https://atlas.rapold.io/brands/neutral/tokens.dark.dtcg.json): Design Tokens (DTCG), dunkel
+- [mermaid.light.json](https://atlas.rapold.io/brands/neutral/mermaid.light.json): Mermaid-Theme, hell
+- [mermaid.dark.json](https://atlas.rapold.io/brands/neutral/mermaid.dark.json): Mermaid-Theme, dunkel
 
 ## Komponenten
 

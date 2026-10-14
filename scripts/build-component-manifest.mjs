@@ -3,18 +3,21 @@
 // section from docs/components. Read with the TypeScript compiler API, never
 // with regular expressions over source code, so the manifest follows the code.
 import {readFile,readdir} from 'node:fs/promises';
+import {sep} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import ts from 'typescript';
 
 const repo=new URL('../',import.meta.url);
 const coreSrc=new URL('packages/core/src/',repo);
 const specDir=new URL('docs/components/',repo);
+const docsApp=new URL('apps/docs/app/',repo);
 export const SITE='https://atlas.rapold.io';
 export const EXTERNAL_PACKAGES=['radix-ui','lucide-react','cmdk','sonner'];
 // Spec group (docs/components/<group>.md) → reference page that renders it.
 export const SPEC_PAGES={tone:'status-tones',controls:'controls',dialogs:'dialogs',layout:'page-structure',media:'media',feedback:'notices',primitives:'components',overlays:'components'};
 // H2 sections that track internal work and never belong in a public contract.
 export const INTERNAL_SECTION=/^(Offen|Offene Punkte)\s*$/i;
+/** Anchor id of a spec section. The docs page reads it from the manifest (`anchor`), never recomputes it. */
 export const slug=value=>value.normalize('NFKD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 
 const parse=(name,text)=>ts.createSourceFile(name,text,ts.ScriptTarget.Latest,true,name.endsWith('.tsx')?ts.ScriptKind.TSX:ts.ScriptKind.TS);
@@ -203,7 +206,7 @@ export async function readSpecs(){
    // Several props blocks (`Props Toggle`, `Props LikeToggle`) keep their label.
    const join=list=>list.length?list.length>1?list.map(c=>`${c.label}: ${c.value}`).join('\n\n'):list[0].value:null;
    const fields=Object.fromEntries(Object.entries(chunks).map(([k,v])=>[k,join(v)]));
-   sections.push({group,file:`docs/components/${file}`,heading:heading.replace(/`/g,''),position,names,headingModules:modulePaths(heading),introModules:modulePaths(intro),...fields,propTable:chunks.props.flatMap(c=>[...chunks.props.length>1?[{prop:'',values:'',note:c.label.replace(/^Props\s+/,'')}]:[],...propRows(c.value)])});
+   sections.push({group,file:`docs/components/${file}`,heading:heading.replace(/`/g,''),position,names,headingModules:modulePaths(heading),introModules:modulePaths(intro),...fields,propTable:chunks.props.flatMap(c=>[...chunks.props.length>1?[{prop:'',values:'',note:c.label.replace(/^Props\s+/,'')}]:[],...propRows(c.value)]).map(row=>({...row,name:row.prop?propName(row.prop):null}))});
   });
  }
  return sections;
@@ -217,6 +220,15 @@ function matchSpec(id,exports,sections){
  }).filter(x=>x.rank).sort((a,b)=>a.rank-b.rank);
  return ranked[0]??null;
 }
+/**
+ * Spec sections reach the static HTML only where a docs route renders `<ComponentSpec>`.
+ * Until then docsUrl names the page without a fragment, so no manifest link points at a missing id.
+ */
+export async function specsRendered(){
+ const files=(await readdir(docsApp,{recursive:true})).filter(n=>/\.tsx$/.test(n)&&!/component-spec\.tsx$/.test(n));
+ for(const file of files)if(/<ComponentSpec\b/.test(await readFile(new URL(file.split(sep).join('/'),docsApp),'utf8')))return true;
+ return false;
+}
 const pascal=id=>id.split('/').at(-1).replace(/(^|-)(\w)/g,(_,__,c)=>c.toUpperCase());
 
 export async function buildComponentManifest({version}={}){
@@ -225,7 +237,7 @@ export async function buildComponentManifest({version}={}){
  const exported=index.reexports.map(s=>s.replace(/^\.\//,''));
  const ui=(await readdir(new URL('ui/',coreSrc))).filter(n=>n.endsWith('.tsx')).map(n=>'ui/'+n.replace(/\.tsx$/,'')).sort();
  const ids=[...exported,...ui.filter(id=>!exported.includes(id))];
- const sections=await readSpecs(),components=[];
+ const sections=await readSpecs(),components=[],anchors=await specsRendered();
  for(const id of ids){
   const file=(await readdir(new URL(id.replace(/[^/]+$/,''),coreSrc))).find(n=>n.replace(/\.tsx?$/,'')===id.split('/').at(-1));
   if(!file)throw new Error(`Core module not found: ${id}`);
@@ -238,10 +250,14 @@ export async function buildComponentManifest({version}={}){
    exported:exported.includes(id),client:facts.client,exports:facts.values,types:facts.types,variants:facts.variants,slots:facts.slots,
    dependencies:facts.dependencies,
    spec:spec?{group:spec.group,file:spec.file,heading:spec.heading,position:spec.position,purpose:spec.purpose,props:spec.props,propTable:spec.propTable,a11y:spec.a11y,do:spec.do,dont:spec.dont}:null,
-   docsUrl:page?`${SITE}/${page}${spec?'#'+slug(name):''}`:null,
+   anchor:spec?slug(name):null,
+   docsUrl:page?`${SITE}/${page}${spec&&anchors?'#'+slug(name):''}`:null,
   });
  }
- return {schemaVersion:1,version,import:'@rapold/framework-core',stylesheet:'@rapold/framework-core/styles.css',specs:`${SITE}/contracts/components.md`,components};
+ // Reference page → spec groups in reading order, so the docs page needs no copy of SPEC_PAGES.
+ const pages={};
+ for(const [group,page] of Object.entries(SPEC_PAGES))(pages[page]??=[]).push(group);
+ return {schemaVersion:1,version,import:'@rapold/framework-core',stylesheet:'@rapold/framework-core/styles.css',specs:`${SITE}/contracts/components.md`,pages,components};
 }
 
 if(import.meta.url===pathToFileURL(process.argv[1]??'').href)process.stdout.write(JSON.stringify(await buildComponentManifest(),null,2)+'\n');

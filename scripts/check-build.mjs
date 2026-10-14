@@ -126,17 +126,41 @@ for(const id of (await readdir(new URL('../packages/core/src/ui/',import.meta.ur
  const entry=manifest.components.find(c=>c.module===id);
  assert.ok(entry,`Component manifest misses ${id}`);
  assert.ok(entry.exports.length&&Array.isArray(entry.slots)&&entry.variants&&entry.dependencies,`Incomplete manifest entry: ${id}`);
- if(entry.exported)assert.ok(entry.spec?.purpose,`Exported module without spec: ${id}`);
  assert.match(entry.docsUrl??'',/^https:\/\/atlas\.rapold\.io\//,`Manifest docs URL: ${id}`);
+}
+// Every module the core index exports (components, providers, utilities) has a spec and a docs page.
+// No exemptions: a new export needs its section in docs/components/*.md; components and providers
+// also need «Zweck» (utilities such as the hooks table document their API as a table).
+for(const entry of manifest.components.filter(c=>c.exported)){
+ assert.ok(entry.spec,`Exported module without spec: ${entry.module}`);
+ if(entry.kind!=='utility')assert.ok(entry.spec.purpose,`Exported ${entry.kind} without «Zweck»: ${entry.module}`);
+ assert.match(entry.docsUrl??'',/^https:\/\/atlas\.rapold\.io\//,`Manifest docs URL: ${entry.module}`);
 }
 assert.ok(manifest.components.some(c=>Object.keys(c.variants).length)&&manifest.components.some(c=>c.slots.length),'Manifest carries variants and slots');
 assert.doesNotMatch(await readFile(new URL('contracts/components.md',out),'utf8'),/^## (Offen|Offene Punkte)\s*$/m,'Internal sections in the public component contract');
-/** A root-relative path resolves like the host does: file, cleanUrls `x.html`, directory index or directory. */
+/** Ids in a static HTML page: what a #fragment can land on before any script runs. */
+const htmlIds=async file=>new Set([...(await readFile(file,'utf8')).matchAll(/\sid="([^"]+)"/g)].map(m=>m[1]));
+/**
+ * A root-relative path resolves like the host does: file, cleanUrls `x.html`, directory index or
+ * directory. A #fragment on an HTML page must name an id in its static HTML.
+ */
 const resolves=async path=>{
- const clean=decodeURIComponent(path.replace(/[?#].*$/,'').replace(/^\//,''));
- for(const candidate of clean===''?['index.html']:[clean,clean+'.html',clean.replace(/\/$/,'')+'/index.html'])if(await readFile(new URL(candidate,out)).then(d=>d.length>0,()=>false))return true;
- return clean.endsWith('/')&&await readdir(new URL(clean,out)).then(()=>true,()=>false);
+ const clean=decodeURIComponent(path.replace(/[?#].*$/,'').replace(/^\//,'')),fragment=decodeURIComponent(path.match(/#(.+)$/)?.[1]??'');
+ for(const candidate of clean===''?['index.html']:[clean,clean+'.html',clean.replace(/\/$/,'')+'/index.html']){
+  const file=new URL(candidate,out);
+  if(!await readFile(file).then(d=>d.length>0,()=>false))continue;
+  return !fragment||!candidate.endsWith('.html')||(await htmlIds(file)).has(fragment);
+ }
+ return clean.endsWith('/')&&!fragment&&await readdir(new URL(clean,out)).then(()=>true,()=>false);
 };
+// Manifest deep links: a docsUrl #anchor exists in the static page, and a page that renders spec
+// sections is linked with the anchor. Both directions, so neither side can drift alone.
+let anchored=0;
+for(const entry of manifest.components.filter(c=>c.spec&&c.docsUrl)){
+ const url=new URL(entry.docsUrl),ids=await htmlIds(new URL(url.pathname.slice(1)+'.html',out));
+ assert.equal(url.hash.slice(1),ids.has(entry.anchor)?entry.anchor:'',`${entry.module}: docsUrl anchor and the static spec section ${entry.anchor} disagree (${entry.docsUrl})`);
+ if(url.hash)anchored++;
+}
 // Root-relative paths count as site links when their first segment is published at the root;
 // `/pfad/deck.json` or a product's own `/atlas/` folder in an example are not site links.
 const siteRoots=new Set((await readdir(out)).map(name=>name.replace(/\.html$/,'')));
@@ -160,9 +184,29 @@ async function verifyLinks(file,brandIds){
 let advertised=0;
 for(const file of ['llms.txt','llms-full.txt'])advertised+=await verifyLinks(file,activeBrandIds);
 for(const brand of brands)for(const file of ['llms.txt','llms-full.txt','management.md'])advertised+=await verifyLinks(`brands/${brand.id}/${file}`,[brand.id]);
-assert.match(await readFile(new URL('llms.txt',out),'utf8'),/^# .+\n\n> .+/,'llms.txt follows llmstxt.org: H1 and blockquote summary');
+const rootEntry=await readFile(new URL('llms.txt',out),'utf8');
+assert.match(rootEntry,/^# .+\n\n> .+/,'llms.txt follows llmstxt.org: H1 and blockquote summary');
+assert.ok(rootEntry.includes('](https://atlas.rapold.io/llms-full.txt)'),'llms.txt advertises the root llms-full.txt');
+/** llmstxt.org tools fetch every list link literally, so a link target never carries a placeholder. */
+const literalLinks=(file,text)=>{for(const m of text.matchAll(/\]\(([^)\s]+)\)/g))assert.doesNotMatch(m[1],/[{}<>]/,`${file}: link target is a template, not a URL: ${m[1]}`);};
+literalLinks('llms.txt',rootEntry);
 for(const brand of brands){
  const entry=(await readFile(new URL(`brands/${brand.id}/llms.txt`,out),'utf8')).trimEnd(),full=await readFile(new URL(`brands/${brand.id}/llms-full.txt`,out),'utf8');
+ literalLinks(`brands/${brand.id}/llms.txt`,entry);
+ // Same isolation rule as llms-full.txt: no linked contract addresses another brand's tree.
+ for(const [,name] of entry.matchAll(/\]\(https:\/\/atlas\.rapold\.io\/contracts\/([^)#]+\.md)\)/g)){
+  const contract=await readFile(new URL(`contracts/${name}`,out),'utf8');
+  for(const other of brands.filter(b=>b.id!==brand.id))assert.ok(!contract.replaceAll('{brand}',brand.id).includes(`/brands/${other.id}/`),`${brand.id}/llms.txt links ${name}, which is bound to ${other.id}`);
+ }
+ assert.ok(!entry.includes('](https://atlas.rapold.io/llms-full.txt)'),`${brand.id}/llms.txt links the theme-free full context`);
+ // Published brand markdown links its own published files on Atlas, not as GitHub pages.
+ for(const name of (await readdir(new URL(`brands/${brand.id}/`,out))).filter(n=>n.endsWith('.md'))){
+  const text=await readFile(new URL(`brands/${brand.id}/${name}`,out),'utf8');
+  for(const [,rest] of text.matchAll(new RegExp(`\\]\\(https://github\\.com/marcelrapold/mra-atlas/blob/main/brands/${brand.id}/([^)#\\s]+)`,'g'))){
+   const published=await readFile(new URL(`brands/${brand.id}/${rest}`,out)).then(()=>true,()=>false)||brand.sources.includes(`brands/${brand.id}/${rest}`);
+   assert.ok(!published,`brands/${brand.id}/${name} links the published ${rest} on GitHub`);
+  }
+ }
  assert.match(entry,/^# .+\n\n> .+/,`${brand.id}: theme entry follows llmstxt.org`);
  assert.ok(full.startsWith(entry),`${brand.id}: llms-full.txt starts with the theme entry`);
  assert.ok(full.includes('# Atlas-Komponenten'),`${brand.id}: llms-full.txt embeds the component contract`);
@@ -174,7 +218,7 @@ for(const brand of brands){
  }
 }
 assert.doesNotMatch(await readFile(new URL('brands/neutral/llms-full.txt',out),'utf8'),/goldbach|sygnum/i,'Corporate default in the neutral full context');
-console.log(`Agent contracts verified: ${manifest.components.length} manifest modules, llms-full.txt per theme and ${advertised} advertised links.`);
+console.log(`Agent contracts verified: ${manifest.components.length} manifest modules (${anchored} docs anchors in static HTML), llms-full.txt per theme and ${advertised} advertised links.`);
 
 // Extension point: every scripts/checks/*.mjs exports `default async function(out)` and
 // throws on failure, so a new build check needs no edit of this shared file.

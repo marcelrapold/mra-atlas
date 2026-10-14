@@ -1,6 +1,6 @@
 # Primitives
 
-Grundbausteine für Flächen, Formulare und Ladezustände. Sie stammen aus dem shadcn-Muster, sind auf semantische Tokens (`card`, `border`, `input`, `ring`, `primary`, `muted-foreground` …) und `data-slot`-Anatomie umgestellt und tragen kein Brand-Wissen. Das Aussehen einer Marke kommt aus dem Brand-Paket.
+Grundbausteine für Flächen, Formulare und Ladezustände. Sie stammen aus dem shadcn-Muster, sind auf semantische Tokens (`card`, `border`, `input`, `ring`, `primary`, `muted-foreground` …) und `data-slot`-Anatomie umgestellt und tragen kein Brand-Wissen. Das Aussehen einer Marke kommt aus dem Brand-Paket; den Brand-Scope setzt der `BrandProvider` (letzter Abschnitt).
 
 Gemeinsame Regeln:
 
@@ -90,3 +90,15 @@ Alle Teile nehmen die Props des jeweiligen `div` entgegen. Ein Kopf mit `classNa
 **A11y:** Der Titel ist ein `<h3>`; die Ebene muss zur Gliederung der Seite passen. Das Icon ist dekorativ (`aria-hidden`). Erscheint der Leerzustand nach einer Suche oder einem Filter, das Ergebnis zusätzlich über eine Live-Region melden.
 
 **Do:** Sagen, warum nichts da ist, und eine Handlung anbieten («Filter zurücksetzen»). **Don't:** Fehler als Leerzustand tarnen; ein Fehler braucht eine Fehlermeldung mit Wiederholen (`ErrorBoundary`, `Alert`).
+
+## BrandProvider
+
+**Zweck:** Setzt den Brand-Scope für alle Komponenten darunter: CSS-Variablen der aktiven Brand, den Modus und einen Portal-Container, in dem Overlays rendern. Der Core kennt keine Brand-Registry; die Werte liefert das Brand-Paket. Datei: `packages/core/src/brand-provider.tsx`.
+
+**Props:** `brand` (Pflicht, `BrandScope` mit `id`, `mode` und `variables`) · `children` · `className` · `useBrand()` liefert den aktiven `BrandScope` und wirft ausserhalb eines `BrandProvider` · `useBrandPortal()` liefert den Portal-Container oder `undefined`.
+
+Der Provider rendert einen `div` mit `data-brand`, `data-mode` und der Klasse `framework-scope` (im dunklen Modus zusätzlich `dark`) sowie am Ende einen leeren `div[data-brand-portals]` für Overlays.
+
+**A11y:** Der Wrapper hat keine Rolle und setzt keine ARIA-Attribute. Overlays im Portal-Container bleiben im Scope und erben Schrift, Farben und Modus; damit gelten die geprüften Kontraste der Brand auch für Dialoge und Menüs. Beim Moduswechsel `mode` mitgeben, sonst gelten die Kontraste des falschen Modus.
+
+**Do:** Ein `BrandProvider` an der Wurzel der Anwendung; ein Brand-Wechsel übergibt neue `brand`-Werte. **Don't:** `useBrand()` ausserhalb eines Providers aufrufen oder Brand-Werte in Komponenten fest einbauen.
