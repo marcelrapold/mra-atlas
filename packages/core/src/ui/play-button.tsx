@@ -4,6 +4,7 @@ import * as React from 'react'
 import { cva } from 'class-variance-authority'
 import { Loader2, Pause, Play } from 'lucide-react'
 
+import { focusRing, focusRingOnMedia } from '../lib/focus'
 import { cn } from '../lib/utils'
 import { Announcer } from './announcer'
 
@@ -14,17 +15,19 @@ type PlayButtonMaterial = 'glass' | 'solid'
 const playButtonVariants = cva(
   [
     'group/play-button relative inline-flex shrink-0 cursor-pointer touch-manipulation items-center justify-center rounded-full select-none',
-    'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
+    focusRing,
     'disabled:cursor-not-allowed disabled:opacity-50 data-[state=loading]:cursor-progress',
     // Bewegung nur ohne «Bewegung reduzieren».
-    'motion-safe:transition-[scale,background-color,box-shadow,opacity] motion-safe:duration-200 motion-safe:enabled:hover:scale-105 motion-safe:enabled:active:scale-95',
+    'motion-safe:transition-[scale,background-color,box-shadow,opacity] motion-safe:duration-(--duration-normal) motion-safe:enabled:hover:scale-105 motion-safe:enabled:active:scale-95',
     "[&_svg]:pointer-events-none [&_svg]:shrink-0",
   ],
   {
     variants: {
       material: {
         // Milchglas: Unschärfe nur wo unterstützt, sonst dichte, deckende Tönung.
+        // Liegt meist auf Bildern: Fokus mit Kontrastrand (`focusRingOnMedia`).
         glass: [
+          focusRingOnMedia,
           'border border-foreground/15 bg-background/85 text-foreground shadow-lg',
           'supports-[backdrop-filter]:bg-background/45 supports-[backdrop-filter]:backdrop-blur-md supports-[backdrop-filter]:backdrop-saturate-150',
           'enabled:hover:bg-background/90 supports-[backdrop-filter]:enabled:hover:bg-background/60',

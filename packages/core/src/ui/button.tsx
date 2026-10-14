@@ -3,12 +3,22 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { Loader2 } from 'lucide-react'
 import { Slot } from 'radix-ui'
 
+import { focusRing } from '../lib/focus'
 import { cn } from '../lib/utils'
+
+/** Höhe und Innenabstand der Standardgrösse; `md` ist ein Alias. */
+const sizeDefault = 'h-9 px-4 py-2 has-[>svg]:px-3'
+
+/**
+ * Taktiles Feedback beim Drücken. `not-disabled` statt `enabled`, damit auch
+ * `asChild`-Links reagieren; nicht im Ladezustand und nicht bei `aria-disabled`.
+ */
+const pressScale = 'motion-safe:not-disabled:not-aria-busy:not-aria-disabled:active:scale-[0.97]'
 
 const buttonVariants = cva(
   // Fokus über outline statt box-shadow-Ring: bleibt in Forced Colors sichtbar
   // und wird nicht von Schatten-Varianten überschrieben (Audit P1).
-  "inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 aria-busy:cursor-progress aria-disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 motion-reduce:transition-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  `inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap transition-[color,background-color,border-color,box-shadow,opacity,scale] ${focusRing} disabled:pointer-events-none disabled:opacity-50 aria-busy:cursor-progress aria-disabled:opacity-50 aria-invalid:border-destructive motion-reduce:transition-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4`,
   {
     variants: {
       variant: {
@@ -24,7 +34,8 @@ const buttonVariants = cva(
         link: 'text-primary underline-offset-4 hover:underline',
       },
       size: {
-        default: 'h-9 px-4 py-2 has-[>svg]:px-3',
+        default: sizeDefault,
+        md: sizeDefault,
         xs: "h-6 gap-1 rounded-md px-2 text-xs has-[>svg]:px-1.5 [&_svg:not([class*='size-'])]:size-3",
         sm: 'h-8 gap-1.5 rounded-md px-3 has-[>svg]:px-2.5',
         lg: 'h-10 rounded-md px-6 has-[>svg]:px-4',
@@ -38,6 +49,8 @@ const buttonVariants = cva(
         false: '',
       },
     },
+    // Text-Links drücken sich nicht ein; alle Flächen-Varianten schon.
+    compoundVariants: [{ variant: ['default', 'destructive', 'outline', 'secondary', 'ghost'], class: pressScale }],
     defaultVariants: {
       variant: 'default',
       size: 'default',
@@ -72,14 +85,16 @@ function Button({
   ...props
 }: ButtonProps) {
   const Comp = asChild ? Slot.Root : 'button'
+  // `md` ist ein Alias: Brand-Regeln und Tests sehen weiterhin `data-size="default"`.
+  const resolvedSize = size === 'md' ? 'default' : size
   // Reine Icon-Buttons tauschen das Icon gegen den Spinner, statt zu wachsen.
-  const iconOnly = typeof size === 'string' && size.startsWith('icon')
+  const iconOnly = typeof resolvedSize === 'string' && resolvedSize.startsWith('icon')
 
   return (
     <Comp
       data-slot="button"
       data-variant={variant}
-      data-size={size}
+      data-size={resolvedSize}
       data-loading={loading ? '' : undefined}
       aria-busy={loading || undefined}
       aria-disabled={loading || undefined}
@@ -93,7 +108,7 @@ function Button({
             }
           : onClick
       }
-      className={cn(buttonVariants({ variant, size, fullWidth, className }))}
+      className={cn(buttonVariants({ variant, size: resolvedSize, fullWidth, className }))}
       {...props}
     >
       {asChild ? (

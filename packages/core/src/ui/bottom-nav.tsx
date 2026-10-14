@@ -4,6 +4,7 @@ import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { Slot } from 'radix-ui'
 
+import { focusRing, focusRingInset } from '../lib/focus'
 import { cn } from '../lib/utils'
 
 /* -------------------------------------------------------------------------- */
@@ -15,7 +16,7 @@ const bottomNavVariants = cva('border-t border-border bg-background/95 text-mute
     position: {
       /** Eigenständig am unteren Rand, inkl. Safe Area (Home-Indikator). */
       fixed:
-        'fixed inset-x-0 bottom-0 z-40 pb-[env(safe-area-inset-bottom,0px)] supports-[backdrop-filter]:bg-background/85 supports-[backdrop-filter]:backdrop-blur-md',
+        'fixed inset-x-0 bottom-0 z-(--z-index-sticky) pb-[env(safe-area-inset-bottom,0px)] supports-[backdrop-filter]:bg-background/85 supports-[backdrop-filter]:backdrop-blur-md',
       /** Im Dokumentfluss, z. B. als Kind von `<BottomStack>`. */
       static: 'relative',
     },
@@ -121,7 +122,7 @@ function BottomNavItem({
           'group/bottom-nav-link relative flex min-h-14 w-full min-w-16 flex-col items-center justify-center gap-1 px-2 py-2 text-xs font-medium transition-colors select-none motion-reduce:transition-none',
           'hover:text-foreground active:bg-muted',
           // Innenliegender Fokusrahmen: die Scroll-Leiste würde einen äusseren abschneiden.
-          'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring',
+          focusRingInset,
           'data-[active]:bg-primary/5 data-[active]:text-primary',
           "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5",
           className,
@@ -133,7 +134,12 @@ function BottomNavItem({
           className="absolute inset-x-4 top-0 h-0.5 rounded-full bg-primary opacity-0 transition-opacity motion-reduce:transition-none group-data-[active]/bottom-nav-link:opacity-100"
         />
         {icon ? (
-          <span aria-hidden="true" className="flex">
+          // Das Icon gibt beim Drücken nach; die Fläche selbst bleibt ruhig.
+          <span
+            aria-hidden="true"
+            data-slot="bottom-nav-icon"
+            className="flex motion-safe:transition-[scale] motion-safe:duration-(--duration-fast) motion-safe:group-active/bottom-nav-link:scale-90"
+          >
             {icon}
           </span>
         ) : null}
@@ -173,8 +179,8 @@ function BottomNavFab({
       aria-label={label}
       type={asChild ? undefined : 'button'}
       className={cn(
-        'relative inline-flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform hover:bg-primary-hover hover:text-primary-hover-foreground motion-safe:active:scale-95',
-        'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
+        'relative inline-flex size-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-[background-color,color,scale] hover:bg-primary-hover hover:text-primary-hover-foreground motion-safe:active:scale-95 motion-reduce:transition-none',
+        focusRing,
         "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-6",
         className,
       )}
@@ -200,7 +206,7 @@ const BOTTOM_STACK_HEIGHT_VAR = '--bottom-stack-height'
 const bottomStackVariants = cva('flex flex-col bg-background', {
   variants: {
     position: {
-      fixed: 'fixed inset-x-0 bottom-0 z-40 pb-[env(safe-area-inset-bottom,0px)]',
+      fixed: 'fixed inset-x-0 bottom-0 z-(--z-index-sticky) pb-[env(safe-area-inset-bottom,0px)]',
       static: 'relative',
     },
   },

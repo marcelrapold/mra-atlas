@@ -5,10 +5,11 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { Heart } from 'lucide-react'
 import { Toggle as TogglePrimitive } from 'radix-ui'
 
+import { focusRing } from '../lib/focus'
 import { cn } from '../lib/utils'
 
 const toggleVariants = cva(
-  "relative inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground motion-safe:transition-[color,background-color,scale] motion-safe:active:scale-95 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  `relative inline-flex shrink-0 items-center justify-center gap-2 rounded-md text-sm font-medium whitespace-nowrap hover:bg-muted hover:text-foreground ${focusRing} disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground motion-safe:transition-[color,background-color,scale] motion-safe:enabled:active:scale-[0.97] [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4`,
   {
     variants: {
       variant: {
@@ -17,6 +18,8 @@ const toggleVariants = cva(
       },
       size: {
         default: 'h-9 min-w-9 px-2',
+        /** Alias von `default`. */
+        md: 'h-9 min-w-9 px-2',
         sm: 'h-8 min-w-8 px-1.5',
         lg: 'h-11 min-w-11 px-2.5',
       },
@@ -32,18 +35,17 @@ const toggleVariants = cva(
 const TOUCH_TARGET =
   "after:absolute after:top-1/2 after:left-1/2 after:size-11 after:-translate-x-1/2 after:-translate-y-1/2 after:content-['']"
 
-function Toggle({
-  className,
-  variant = 'default',
-  size = 'default',
-  ...props
-}: React.ComponentProps<typeof TogglePrimitive.Root> & VariantProps<typeof toggleVariants>) {
+type ToggleProps = React.ComponentProps<typeof TogglePrimitive.Root> & VariantProps<typeof toggleVariants>
+
+function Toggle({ className, variant = 'default', size = 'default', ...props }: ToggleProps) {
+  // `md` ist ein Alias: `data-size` bleibt `default`.
+  const resolvedSize = size === 'md' ? 'default' : size
   return (
     <TogglePrimitive.Root
       data-slot="toggle"
       data-variant={variant}
-      data-size={size}
-      className={cn(toggleVariants({ variant, size }), size !== 'lg' && TOUCH_TARGET, className)}
+      data-size={resolvedSize}
+      className={cn(toggleVariants({ variant, size: resolvedSize }), resolvedSize !== 'lg' && TOUCH_TARGET, className)}
       {...props}
     />
   )
@@ -62,17 +64,19 @@ type LikeToggleProps = Omit<
   showLabel?: boolean
   /** Optionaler Zähler neben dem Herz, z. B. Anzahl Likes. */
   count?: number
-  size?: 'sm' | 'default' | 'lg'
+  /** `md` ist ein Alias von `default`. */
+  size?: 'sm' | 'default' | 'md' | 'lg'
 }
 
 function LikeToggle({
   label = 'Gefällt mir',
   showLabel = false,
   count,
-  size = 'default',
+  size: sizeProp = 'default',
   className,
   ...props
 }: LikeToggleProps) {
+  const size = sizeProp === 'md' ? 'default' : sizeProp
   const iconOnly = !showLabel && count === undefined
   return (
     <TogglePrimitive.Root
@@ -104,4 +108,4 @@ function LikeToggle({
 }
 
 export { Toggle, LikeToggle, toggleVariants }
-export type { LikeToggleProps }
+export type { ToggleProps, LikeToggleProps }
