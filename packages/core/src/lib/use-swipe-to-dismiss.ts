@@ -57,11 +57,11 @@ export interface SwipeSample {
  * still for the whole window the result is 0. `samples` must be sorted by time.
  */
 export function releaseVelocity(samples: readonly SwipeSample[], now: number): number {
-  if (samples.length === 0) return 0
-  const cutoff = now - FLICK_WINDOW_MS
-  const last = samples[samples.length - 1]
-  if (last.t <= cutoff) return 0
+  const last = samples.at(-1)
   let anchor = samples[0]
+  if (!last || !anchor) return 0
+  const cutoff = now - FLICK_WINDOW_MS
+  if (last.t <= cutoff) return 0
   for (const s of samples) {
     if (s.t > cutoff) break
     anchor = s
@@ -107,7 +107,8 @@ export function classifyGestureStart({
 
 /** Keep only samples inside the flick window, plus one anchor before it. */
 export function trimSamples(samples: SwipeSample[], now: number): SwipeSample[] {
-  while (samples.length > 2 && samples[1].t <= now - FLICK_WINDOW_MS) samples.shift()
+  const cutoff = now - FLICK_WINDOW_MS
+  while (samples.length > 2 && (samples[1]?.t ?? Infinity) <= cutoff) samples.shift()
   return samples
 }
 
@@ -243,12 +244,12 @@ export function useSwipeToDismiss(
       gesture = null
       clearTimeout(settleTimer)
       restore()
-      if (e.touches.length !== 1) return
+      const t = e.touches.length === 1 ? e.touches[0] : undefined
+      if (!t) return
       const target = e.target instanceof Element ? e.target : null
       if (!target || !sheet.contains(target)) return
       if (!isTopmostOpenDialog(sheet)) return
       if (target.closest(NO_SWIPE_SELECTOR)) return
-      const t = e.touches[0]
       gesture = {
         target,
         startX: t.clientX,
@@ -267,12 +268,12 @@ export function useSwipeToDismiss(
         restore()
         return
       }
-      if (e.touches.length !== 1) {
+      const t = e.touches.length === 1 ? e.touches[0] : undefined
+      if (!t) {
         gesture = null
         if (g.dragging) springBack()
         return
       }
-      const t = e.touches[0]
       const dx = t.clientX - g.startX
       const dy = t.clientY - g.startY
       if (!g.dragging) {

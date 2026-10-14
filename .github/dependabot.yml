@@ -1,0 +1,45 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      timezone: Europe/Zurich
+    cooldown:
+      default-days: 7
+      semver-major-days: 14
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore(deps)
+    groups:
+      next-react:
+        patterns: [next, react, react-dom, '@types/react', '@types/react-dom']
+      radix-ui-cmdk:
+        patterns: [radix-ui, '@radix-ui/*', cmdk]
+      tooling:
+        patterns: [typescript, '@types/node', '@playwright/test', '@axe-core/playwright', tailwindcss, '@tailwindcss/*']
+      minor-and-patch:
+        patterns: ['*']
+        update-types: [minor, patch]
+    ignore:
+      # Render stack of the hash-locked deck previews (scripts/reference-cache.mjs):
+      # any bump changes PPTX/PDF/PNG output and needs `npm run deck:reference`
+      # plus a reviewed re-render. Update these by hand, never via Dependabot.
+      - dependency-name: pptxgenjs
+      - dependency-name: jszip
+      - dependency-name: sharp
+      - dependency-name: '@fontsource/inter'
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+      timezone: Europe/Zurich
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore(deps)
+    groups:
+      github-actions:
+        patterns: ['*']

@@ -12,6 +12,7 @@ import { Eyebrow } from './eyebrow'
 /* -------------------------------------------------------------------------- */
 
 const CHART_TOKENS = ['--chart-1', '--chart-2', '--chart-3', '--chart-4', '--chart-5'] as const
+type ChartToken = (typeof CHART_TOKENS)[number]
 
 /** Stabiler 32-bit-Hash (Java-String-Hash), deterministisch auf Server und Client. */
 function stableHash(value: string): number {
@@ -21,11 +22,13 @@ function stableHash(value: string): number {
 }
 
 /** Zwei unterschiedliche Chart-Tokens für einen Seed. Rein. */
-function coverPalette(seed: string): [string, string] {
+function coverPalette(seed: string): [ChartToken, ChartToken] {
   const h = stableHash(seed)
-  const a = h % CHART_TOKENS.length
-  const b = (a + 1 + ((h >>> 8) % (CHART_TOKENS.length - 1))) % CHART_TOKENS.length
-  return [CHART_TOKENS[a], CHART_TOKENS[b]]
+  const n = CHART_TOKENS.length
+  const a = h % n
+  const b = (a + 1 + ((h >>> 8) % (n - 1))) % n
+  // Indizes liegen per Modulo immer im Bereich; der Fallback beruhigt nur den Typ.
+  return [CHART_TOKENS[a] ?? CHART_TOKENS[0], CHART_TOKENS[b] ?? CHART_TOKENS[1]]
 }
 
 interface GeneratedCoverProps extends React.ComponentProps<'div'> {
@@ -111,7 +114,7 @@ function GeneratedCover({
 /* -------------------------------------------------------------------------- */
 
 const mediaCardVariants = cva(
-  'group/media-card relative isolate flex overflow-hidden rounded-lg border bg-card text-card-foreground motion-safe:transition-[border-color,background-color,box-shadow] hover:border-foreground/25 data-[active=true]:border-primary data-[active=true]:ring-1 data-[active=true]:ring-primary',
+  'group/media-card relative isolate flex overflow-hidden rounded-lg border bg-card text-card-foreground motion-safe:transition-[border-color,background-color,box-shadow] motion-safe:duration-(--duration-fast) hover:border-foreground/25 data-[active=true]:border-primary data-[active=true]:ring-1 data-[active=true]:ring-primary',
   {
     variants: {
       variant: {
@@ -183,7 +186,7 @@ function MediaCardImage({
           loading="lazy"
           decoding="async"
           onError={() => setFailedSrc(imageSrc ?? null)}
-          className="size-full object-cover motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover/media-card:scale-105"
+          className="size-full object-cover motion-safe:transition-transform motion-safe:duration-(--duration-slow) motion-safe:group-hover/media-card:scale-105"
         />
       ) : (
         (fallback ?? <GeneratedCover title={coverTitle ?? ''} decorative className="size-full" />)
