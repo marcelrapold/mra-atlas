@@ -1,0 +1,24 @@
+/* Docs shell: first paint and view transitions.
+   The boot script sets <html data-rail> before the first paint, while the server HTML still carries the
+   expanded navigation. These rules mirror .framework-app.rail (globals.css) so the collapsed rail has its
+   final geometry on the first frame; labels stay hidden until React renders the icon-only markup. */
+:root[data-rail] .framework-app .sidebar{width:var(--layout-rail)}
+:root[data-rail] .framework-app .identity{justify-content:center;padding:0}
+:root[data-rail] .framework-app .search-trigger{padding:8px;justify-content:center}
+:root[data-rail] .framework-app .nav-link{justify-content:center;padding:9px}
+:root[data-rail] .framework-app:not(.rail) .nav-group-label{justify-content:center;padding:8px}
+:root[data-rail] .framework-app .nav-group+.nav-group{border-top:1px solid var(--border);padding-top:6px}
+:root[data-rail] .framework-app:not(.rail) :is(.identity>span,.search-trigger>span,.search-trigger>kbd,.nav-link>span,.nav-group-label>span,.nav-group-label>svg:last-child,.sidebar-foot>*){display:none}
+:root[data-rail] .framework-app:not(.rail) .identity-brand{height:var(--layout-header);min-height:0;padding:0;background:none}
+:root[data-rail] .framework-app:not(.rail) .identity-brand>img{display:none}
+
+/* View transitions: chrome keeps its own snapshot, so page changes only fade the content. */
+.framework-app .sidebar{view-transition-name:atlas-sidebar}
+.framework-app .toolbar{view-transition-name:atlas-toolbar}
+::view-transition{pointer-events:none}
+::view-transition-group(*){animation-duration:var(--duration-normal);animation-timing-function:var(--easing-standard)}
+::view-transition-old(.atlas-page),::view-transition-new(.atlas-page){animation-duration:var(--duration-fast);animation-timing-function:var(--easing-standard)}
+@media(prefers-reduced-motion:reduce){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}}
+
+/* Search palette: the page a module or section belongs to. */
+.search-hint{margin-left:auto;padding-left:12px;font-size:12px;color:var(--muted-foreground);white-space:nowrap}
