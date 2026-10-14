@@ -45,3 +45,5 @@ export * from './ui/audio-visual';
 export * from './ui/alert';
 export * from './ui/announcer';
 export * from './ui/log-view';
+export * from './ui/field';
+export * from './ui/textarea';
