@@ -283,7 +283,7 @@ function ActivityRing({
   return (
     <span
       data-slot="activity-ring"
-      data-mode={mode}
+      data-activity={mode}
       data-still={reduced ? '' : undefined}
       className={cn('relative inline-grid shrink-0 place-items-center rounded-full', className)}
       style={{ width: diameter, height: diameter, ...style }}

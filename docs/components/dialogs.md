@@ -60,7 +60,31 @@ Group "dialogs" of the RadioX import. All components use semantic tokens only; b
 
 **RadioX origin.** `radiox/apps/frontend/components/ErrorBoundary.tsx`.
 
-## Deviations from RadioX
+## Überlagerungen: Bewegung, Ebenen und Vorgaben (`styles.css`, `ui/dialog.tsx`, `ui/sheet.tsx` …)
+
+**Bewegung.** Atlas bringt eine eigene, API-kompatible Teilmenge der tw-animate-Klassen mit (`animate-in`, `animate-out`, `fade-in-0`, `fade-out-0`, `zoom-in-95`, `zoom-out-95`, `slide-in-from-{top,bottom,left,right}-2`, `slide-in-from-*` und `slide-out-to-*` mit 100 %), ohne zusätzliche Abhängigkeit. Die Klassen setzen nur Variablen; die Keyframes `atlas-enter` und `atlas-exit` lesen sie. Dauer und Kurve kommen aus den Foundation-Tokens der aktiven Brand, `duration-*` und `ease-*` am Element übersteuern sie. Radix Presence erhält weiterhin `animationend`, Exit-Animationen laufen also vollständig.
+
+| Komponente | Einblenden | Ausblenden | Bewegung, Ursprung |
+| --- | --- | --- | --- |
+| Dialog, ConfirmDialog, CommandDialog | `--duration-normal`, `--easing-enter` | `--duration-exit`, `--easing-exit` | Blende und Zoom 95 %, Bildschirmmitte |
+| Dialog-Overlay | `--duration-normal`, `--easing-enter` | `--duration-exit`, `--easing-exit` | nur Blende |
+| Sheet | `--duration-deliberate`, `--easing-drawer` | `--duration-slow`, `--easing-drawer` | Schub um 100 % von der Seite `side`, Overlay im gleichen Takt |
+| Popover, Select, DropdownMenu | `--duration-normal`, `--easing-enter` | `--duration-exit`, `--easing-exit` | Blende, Zoom 95 % und 8 px vom Trigger weg, Ursprung `--radix-*-content-transform-origin` |
+| Tooltip | `--duration-normal`, `--easing-enter` | `--duration-exit`, `--easing-exit` | wie Popover; `instant-open` ohne Animation |
+
+Werte der Brands: neutral 200 ms, Rapold 180 ms, RadioX 250 ms für `--duration-normal`; `--duration-exit` 150 ms, `--easing-drawer` `cubic-bezier(0.32, 0.72, 0, 1)` und `--duration-reduced` 160 ms aus `foundation.json`. `transition`-Utilities ohne Dauer nutzen `--duration-fast` und `--easing-standard`.
+
+**Reduzierte Bewegung.** Unter `prefers-reduced-motion: reduce` entfallen Verschiebung und Zoom (`--atlas-motion: 0`), Überlagerungen blenden nur noch. Alle Dauern sind auf `--duration-reduced` begrenzt. Endlos-Animationen in Core sind an `motion-safe:` gebunden, Spinner stehen dann still und der Status bleibt über `aria-busy` lesbar.
+
+**Ebenen.** `z-overlay` (Overlays), `z-modal` (Dialog- und Sheet-Inhalt), `z-dropdown` (Popover, Select, DropdownMenu), `z-tooltip` (Tooltip). Die Utilities kompilieren zu `var(--z-index-*)`; die Brand-Werte am Scope gewinnen. Popover, Select und Menüs, die aus einem offenen Dialog oder Sheet aufgehen, werden auf Modal-Ebene gehoben. Overlays verwenden `bg-overlay/50` statt `bg-black/50`.
+
+**Vorgaben.** `closeLabel` ist «Schliessen» (DialogContent, DialogFooter, SheetContent, CommandDialog). CommandDialog: Titel «Befehlspalette», Beschreibung «Befehl suchen …». Toaster: `containerAriaLabel` «Benachrichtigungen», Schliessen-Knopf «Meldung schliessen», Lade-Icon nur mit `motion-safe:` animiert. Titel von Dialog, Sheet und ConfirmDialog brechen mit `text-balance`, Beschreibungen mit `text-pretty`. Der Schliessen-Knopf des Dialogs nutzt den gemeinsamen `focusRing`. `SelectTrigger` zeigt `aria-invalid` mit 2 px Rand in `destructive` und rotem Chevron; die `Select*Props`-Typen sind exportiert.
+
+**Darstellungsmodi.** Unter `forced-colors: active` stehen hervorgehobene Menü-, Select- und Command-Einträge, der aktive Tab, `Toggle` im Zustand an, die markierte Checkbox und der eingeschaltete Switch auf `Highlight`/`HighlightText`; der Radio-Punkt und der Switch-Daumen auf `CanvasText`, deaktivierte Elemente auf `GrayText`. Unter `prefers-reduced-transparency: reduce` werden Glas-IconButton, Glas-PlayButton, MediaBar, BottomNav und `[data-slot=lightbox-backdrop]` deckend in `--background`, ohne `backdrop-filter`. Unter `prefers-contrast: more` zeigt `--border` auf `--input` und `--muted-foreground` auf `--foreground`; es ändern sich nur Rollen, keine Farbwerte.
+
+**Kaskade.** Brand-Vorgaben für Core-Komponenten (Schatten, Default-Buttongrösse, Gewichte) liegen in `@layer components` mit Spezifität 0. Die Default-Grösse gilt für alle Elemente mit `[data-variant][data-size=default]` aus Button, auch wenn ein Slot-Trigger (`dialog-trigger` …) das `data-slot` überschreibt. Eigene Utilities in `className` (etwa `px-3`) gewinnen.
+
+## Abweichungen von RadioX
 
 - No telemetry, logger or stale-chunk auto-reload in ErrorBoundary (app/deploy specific); the full-screen dark fallback became a token-based `EmptyState` with one retry action instead of Reload/Reset.
 - ConfirmDialog is a provider plus three hooks instead of one hook returning a `dialog` element; adds `title`, `cancelLabel`, prompt field options and a `destructive` tone name (RadioX: `danger`).
