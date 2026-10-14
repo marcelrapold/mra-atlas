@@ -1,9 +1,8 @@
 import type {Metadata, ResolvingMetadata} from 'next';
 import {readFile} from 'node:fs/promises';
 import path from 'node:path';
-import {articleData,jsonLd,pageDescription,pageMetadata,siteViewport} from '../_seo/seo';
+import {articleData,jsonLd,pageDescription,pageMetadata} from '../_seo/seo';
 const title='Dramaturgie & Logik',intro='Die inhaltliche Konstruktion einer Management-Präsentation, als lesbare Anleitung und prüfbarer Vertrag.',description=pageDescription('praesentationslogik',intro);
-export const viewport=siteViewport;
 export function generateMetadata(_props:unknown,parent:ResolvingMetadata):Promise<Metadata>{return pageMetadata(parent,{title,description,path:'/praesentationslogik'});}
 export default async function Page(){
  const raw=await readFile(path.resolve(process.cwd(),'../../docs/presentation-logic.md'),'utf8');

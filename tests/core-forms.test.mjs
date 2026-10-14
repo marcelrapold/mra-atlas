@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { uniqueFieldErrors } from '../packages/core/src/ui/field-errors.ts';
+import { uniqueFieldErrors } from '../packages/core/src/lib/field-errors.ts';
 
 const read = (path) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 const ui = (name) => read(`packages/core/src/ui/${name}.tsx`);

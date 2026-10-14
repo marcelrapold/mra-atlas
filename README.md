@@ -2,7 +2,7 @@
 
 Atlas ist das Designsystem von Rapold: ein neutraler White-Label-Designstandard mit austauschbaren Brand-Vorgaben für Interfaces und Management-Präsentationen.
 
-**Stand:** Atlas 0.10.0, live auf https://atlas.rapold.io; den ausgelieferten Stand meldet [/build-info.json](https://atlas.rapold.io/build-info.json) mit Version und Commit. Die native Vercel-Git-Verbindung baut jeden Push auf `main` mit `npm run check`. Datierte Rollout- und Browsernachweise stehen im [Deployment](docs/deployment.md). Das Repository `marcelrapold/mra-atlas` ist öffentlich. Lizenz: «Alle Rechte vorbehalten», Marcel Rapold; Drittkomponenten behalten ihre Lizenzen (siehe `LICENSE`).
+**Stand:** Atlas 0.11.0, live auf https://atlas.rapold.io; den ausgelieferten Stand meldet [/build-info.json](https://atlas.rapold.io/build-info.json) mit Version und Commit. Die native Vercel-Git-Verbindung baut jeden Push auf `main` mit `npm run check`. Datierte Rollout- und Browsernachweise stehen im [Deployment](docs/deployment.md). Das Repository `marcelrapold/mra-atlas` ist öffentlich. Lizenz: «Alle Rechte vorbehalten», Marcel Rapold; Drittkomponenten behalten ihre Lizenzen (siehe `LICENSE`).
 
 ## Referenz
 

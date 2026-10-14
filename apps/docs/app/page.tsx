@@ -1,4 +1,3 @@
 import ReferencePage from './_components/reference-page';
-import {jsonLd,siteViewport,websiteData} from './_seo/seo';
-export const viewport=siteViewport;
+import {jsonLd,websiteData} from './_seo/seo';
 export default function Page(){return <>{jsonLd(websiteData())}<ReferencePage/></>;}

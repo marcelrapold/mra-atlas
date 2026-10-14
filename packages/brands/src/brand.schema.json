@@ -312,6 +312,12 @@
             },
             "deliberate": {
               "$ref": "#/$defs/tokenCss"
+            },
+            "exit": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "reduced": {
+              "$ref": "#/$defs/tokenCss"
             }
           }
         },
@@ -326,6 +332,9 @@
               "$ref": "#/$defs/tokenCss"
             },
             "exit": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "drawer": {
               "$ref": "#/$defs/tokenCss"
             }
           }

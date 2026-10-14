@@ -40,7 +40,7 @@ function resample(values: readonly number[], count?: number): number[] {
     const start = Math.floor(i * ratio)
     const end = Math.max(start + 1, Math.floor((i + 1) * ratio))
     let sum = 0
-    for (let j = start; j < end; j += 1) sum += values[Math.min(j, values.length - 1)]
+    for (let j = start; j < end; j += 1) sum += values[Math.min(j, values.length - 1)] ?? 0
     out.push(clamp01(sum / (end - start)))
   }
   return out

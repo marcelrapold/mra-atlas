@@ -52,10 +52,10 @@ function useFocusTrap(containerRef: RefObject<HTMLElement | null>, active: boole
       const activeEl = document.activeElement
       if (e.shiftKey && (activeEl === first || !node.contains(activeEl))) {
         e.preventDefault()
-        last.focus()
+        last?.focus()
       } else if (!e.shiftKey && (activeEl === last || !node.contains(activeEl))) {
         e.preventDefault()
-        first.focus()
+        first?.focus()
       }
     }
 

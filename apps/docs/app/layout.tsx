@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from 'next';
 import {createHash} from 'node:crypto';
-import {brands, neutral, toCssVariables} from '@rapold/framework-brands';
+import {brands, toCssVariables} from '@rapold/framework-brands';
 import './globals.css';
+import {site} from './_seo/seo';
 import FrameworkShell from './_components/framework-shell';
 import {defaultBrand, resolveTheme, themeBootScript, themeStylesheet} from './_components/theme-boot';
 const title='Atlas';
-const description='Atlas, das Designsystem von Rapold: ein Designstandard mit austauschbaren Brands für Interfaces und Management-Präsentationen.';
+const description=site.description;
 export const metadata: Metadata = {
   metadataBase: new URL('https://atlas.rapold.io'),
   title,
@@ -14,8 +15,8 @@ export const metadata: Metadata = {
   openGraph: {type: 'website', siteName: title, locale: 'de_CH', title, description, url: '/', images: [{url: '/og.png', width: 1200, height: 630, alt: title}]},
   twitter: {card: 'summary_large_image', title, description, images: ['/og.png']},
 };
-// Browser chrome follows the toolbar surface of the default brand; no new colours.
-export const viewport: Viewport = {colorScheme: 'light dark', themeColor: (['light', 'dark'] as const).map(mode => ({media: `(prefers-color-scheme: ${mode})`, color: String(toCssVariables(neutral, mode)['--card'])}))};
+// Browser chrome uses the tile colour of app/icon.svg, the same value as manifest theme_color.
+export const viewport: Viewport = {colorScheme: 'light dark', themeColor: site.themeColor};
 
 const bootBrands = brands.map(brand => ({id: brand.id, dark: Boolean(brand.modes.dark)}));
 const bootScript = themeBootScript(bootBrands);

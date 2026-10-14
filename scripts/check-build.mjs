@@ -220,12 +220,11 @@ for(const brand of brands){
 assert.doesNotMatch(await readFile(new URL('brands/neutral/llms-full.txt',out),'utf8'),/goldbach|sygnum/i,'Corporate default in the neutral full context');
 console.log(`Agent contracts verified: ${manifest.components.length} manifest modules (${anchored} docs anchors in static HTML), llms-full.txt per theme and ${advertised} advertised links.`);
 
-// Extension point: every scripts/checks/*.mjs exports `default async function(out)` and
-// throws on failure, so a new build check needs no edit of this shared file.
+// Extension point: a scripts/checks/*.mjs either exports `default async function(out)` that throws on
+// failure or asserts at top level when imported (first-paint.mjs). Helper modules shared by checks and
+// tests (html-head.mjs, vercel-headers.mjs) export neither. A new build check needs no edit of this file.
 const checks=new URL('checks/',import.meta.url);
 for(const name of (await readdir(checks).catch(()=>[])).filter(n=>n.endsWith('.mjs')).sort()){
  const {default:check}=await import(new URL(name,checks));
- assert.equal(typeof check,'function',`scripts/checks/${name} must export a default function`);
- await check(out);
- console.log(`Build check passed: scripts/checks/${name}`);
+ if(typeof check==='function'){await check(out);console.log(`Build check passed: scripts/checks/${name}`);}
 }

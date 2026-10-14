@@ -7,7 +7,7 @@ import {headersFor,loadVercelConfig,sourcePattern} from '../scripts/checks/verce
 
 const config=await loadVercelConfig();
 const csp=path=>directives(headersFor(config,path).get('Content-Security-Policy'));
-const routes=['/','/charts','/mermaid','/praesentation','/404','/llms.txt','/contracts/engineering.md','/brands/rapold/decks/muster-deck.pptx','/vendor/echarts-6.0.0.min.js','/.well-known/security.txt'];
+const routes=['/','/charts','/mermaid','/praesentation','/404','/llms.txt','/contracts/engineering.md','/brands/rapold/decks/muster-deck.pptx','/vendor/echarts-6.0.0.min.js'];
 
 test('every response carries the shared security header baseline',()=>{
  for(const path of routes)assert.deepEqual(securityHeaderProblems(headersFor(config,path)),[],path);
@@ -61,10 +61,10 @@ test('the header resolver refuses route syntax it cannot evaluate',()=>{
  assert.throws(()=>sourcePattern('/:path*'),/Unsupported/);
  for(const rule of config.headers)assert.doesNotThrow(()=>sourcePattern(rule.source),rule.source);
 });
-test('security.txt names a contact and expires within the coming year',async()=>{
- const source=await readFile(new URL('../apps/docs/public/.well-known/security.txt',import.meta.url),'utf8');
- // Fails `npm run check` once the file is stale, so the expiry cannot go unnoticed.
- assert.deepEqual(securityTxtProblems(source),[]);
+test('security.txt validator: contact, https/mailto and an expiry within one year',async()=>{
+ // security.txt is published once a working contact exists (see SECURITY.md); if present it must pass.
+ const source=await readFile(new URL('../apps/docs/public/.well-known/security.txt',import.meta.url),'utf8').catch(()=>null);
+ if(source!==null)assert.deepEqual(securityTxtProblems(source),[]);
  const now=Date.parse('2026-10-14T00:00:00Z'),file=(...lines)=>[...lines,'Canonical: https://atlas.rapold.io/.well-known/security.txt'].join('\n');
  assert.deepEqual(securityTxtProblems(file('Contact: mailto:security@example.org','Contact: https://example.org/report','Expires: 2027-01-01T00:00:00Z'),now),[]);
  assert.match(securityTxtProblems(file('Contact: https://example.org/report','Expires: 2026-10-13T00:00:00Z'),now).join(),/not in the future/);

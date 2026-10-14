@@ -1,7 +1,0 @@
-# Sicherheitskontakt für atlas.rapold.io (RFC 9116)
-# Schwachstellen bitte vertraulich über GitHub melden, nicht als öffentliches Issue.
-Contact: https://github.com/marcelrapold/mra-atlas/security/advisories/new
-Expires: 2027-10-14T00:00:00.000Z
-Preferred-Languages: de, en
-Canonical: https://atlas.rapold.io/.well-known/security.txt
-Policy: https://github.com/marcelrapold/mra-atlas/blob/main/SECURITY.md

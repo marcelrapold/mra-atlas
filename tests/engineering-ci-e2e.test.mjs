@@ -45,8 +45,7 @@ test('package scripts keep the Vercel build contract and pin the e2e stack', asy
   for (const dep of ['@playwright/test', '@axe-core/playwright', 'playwright-core']) assert.match(pkg.devDependencies[dep] ?? '', /^\d+\.\d+\.\d+$/, `${dep} exact pin`);
   assert.equal(pkg.devDependencies['playwright-core'], pkg.devDependencies['@playwright/test'], 'axe and test runner share one playwright-core');
   const core = JSON.parse(await read('packages/core/tsconfig.json'));
-  // noUncheckedIndexedAccess folgt, sobald die Index-Fixes in audio-visual.tsx und lightbox.tsx gemergt sind.
-  for (const flag of ['noImplicitOverride', 'verbatimModuleSyntax', 'noFallthroughCasesInSwitch', 'noImplicitReturns']) assert.equal(core.compilerOptions[flag], true, flag);
+  for (const flag of ['noImplicitOverride', 'verbatimModuleSyntax', 'noFallthroughCasesInSwitch', 'noImplicitReturns', 'noUncheckedIndexedAccess']) assert.equal(core.compilerOptions[flag], true, flag);
 });
 
 test('Dependabot never bumps the hash-locked deck render stack', async () => {

@@ -88,13 +88,21 @@ export async function checkWebMetadata(out=new URL('../../apps/docs/out/',import
   for(const icon of manifest.icons??[])if(!await exists(publicFile(icon.src)))fail('manifest',`icon ${icon.src} is not exported`);
   if(!manifest.icons?.some(icon=>icon.sizes==='any'&&icon.type==='image/svg+xml'))fail('manifest','scalable icon missing');
  }catch(error){fail('manifest',error.message);}
- try{for(const problem of securityTxtProblems(await text('.well-known/security.txt')))fail('security.txt',problem);}
- catch{fail('security.txt','missing from the export');}
+ // Optional until a working contact exists (SECURITY.md); validated whenever it is exported.
+ const securityTxt=await text('.well-known/security.txt').catch(()=>null);
+ if(securityTxt!==null)for(const problem of securityTxtProblems(securityTxt))fail('security.txt',problem);
  return {pages:paths.length,problems};
+}
+
+/** Build-check entry (scripts/check-build.mjs): throws with every problem found. */
+export default async function check(out){
+ const {pages,problems}=await checkWebMetadata(out);
+ if(problems.length)throw new Error(`Web metadata: ${problems.length} problem(s)\n- ${problems.join('\n- ')}`);
+ console.log(`Web metadata verified: ${pages} pages with sharing metadata and structured data, German 404, manifest and icons.`);
 }
 
 if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){
  const {pages,problems}=await checkWebMetadata();
  if(problems.length){console.error(`Web metadata: ${problems.length} problem(s)\n- ${problems.join('\n- ')}`);process.exitCode=1;}
- else console.log(`Web metadata verified: ${pages} pages with sharing metadata and structured data, German 404, manifest, icons and security.txt.`);
+ else console.log(`Web metadata verified: ${pages} pages with sharing metadata and structured data, German 404, manifest and icons.`);
 }

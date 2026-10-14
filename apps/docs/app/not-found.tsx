@@ -1,13 +1,11 @@
 import type {Metadata} from 'next';
 import Link from 'next/link';
 import {ArrowUpRight} from 'lucide-react';
-import {siteViewport} from './_seo/seo';
 // Root not-found also answers every unmatched URL of the static export (404.html).
 // No canonical and no sharing block: an error page must not claim another URL.
 // Next emits <meta name="robots" content="noindex"> for not-found itself; a
 // second robots tag here would only duplicate it (scripts/checks/web-metadata.mjs).
 export const metadata:Metadata={title:'Seite nicht gefunden · Atlas',description:'Die angeforderte Adresse existiert in Atlas nicht.',alternates:null,openGraph:null,twitter:null};
-export const viewport=siteViewport;
 const links=[
  {href:'/',eyebrow:'Einstieg',title:'Übersicht',text:'Aufbau von Atlas, Brands und die wichtigsten Einstiege.'},
  {href:'/components',eyebrow:'Komponenten',title:'Komponenten',text:'Alle UI-Module mit Beispielen, Zuständen und Verträgen.'},

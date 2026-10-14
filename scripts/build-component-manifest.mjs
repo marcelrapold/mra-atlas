@@ -14,7 +14,7 @@ const docsApp=new URL('apps/docs/app/',repo);
 export const SITE='https://atlas.rapold.io';
 export const EXTERNAL_PACKAGES=['radix-ui','lucide-react','cmdk','sonner'];
 // Spec group (docs/components/<group>.md) → reference page that renders it.
-export const SPEC_PAGES={tone:'status-tones',controls:'controls',dialogs:'dialogs',layout:'page-structure',media:'media',feedback:'notices',primitives:'components',overlays:'components'};
+export const SPEC_PAGES={tone:'status-tones',controls:'controls',field:'controls',dialogs:'dialogs',layout:'page-structure',media:'media',feedback:'notices',primitives:'components',overlays:'components'};
 // H2 sections that track internal work and never belong in a public contract.
 export const INTERNAL_SECTION=/^(Offen|Offene Punkte)\s*$/i;
 /** Anchor id of a spec section. The docs page reads it from the manifest (`anchor`), never recomputes it. */

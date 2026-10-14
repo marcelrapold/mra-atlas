@@ -6,14 +6,14 @@ Gemeinsame Regeln:
 
 - Fokus wandert beim Öffnen in die Ebene und kehrt beim Schliessen zum Auslöser zurück.
 - Escape schliesst jede Ebene; modale Ebenen halten den Fokus (Fokusfalle).
-- Die Schliessen-Knöpfe von `Dialog`, `Sheet` und `CommandDialog` sind beschriftet (`closeLabel`, Standard «Close»; deutschsprachige Oberflächen übergeben «Schliessen») und erreichen bei grobem Zeiger 44 × 44 px.
+- Die Schliessen-Knöpfe von `Dialog`, `Sheet` und `CommandDialog` sind beschriftet (`closeLabel`, Standard «Schliessen») und erreichen bei grobem Zeiger 44 × 44 px.
 - Ein- und Ausblenden folgen `data-state`; bei reduzierter Bewegung verkürzt der Brand-Scope jede Animation auf praktisch null.
 
 ## Dialog
 
 **Zweck:** Modaler Dialog für eine abgeschlossene Aufgabe: kurze Formulare, Details, Entscheidungen (Radix Dialog). Für Bestätigen, Eingeben und Informieren als Promise `ConfirmDialog` verwenden.
 
-**Props:** `Dialog` (Radix-Root: `open`, `defaultOpen`, `onOpenChange`, `modal`) · `DialogTrigger` · `DialogContent` mit `showCloseButton` (Standard `true`) und `closeLabel` (Standard «Close», Name des Schliessen-Knopfs für Screenreader) · `DialogHeader` · `DialogTitle` · `DialogDescription` · `DialogFooter` mit `showCloseButton` (Standard `false`) und `closeLabel` (Standard «Close», sichtbarer Text des Knopfs) · `DialogClose` · `DialogOverlay` · `DialogPortal`.
+**Props:** `Dialog` (Radix-Root: `open`, `defaultOpen`, `onOpenChange`, `modal`) · `DialogTrigger` · `DialogContent` mit `showCloseButton` (Standard `true`) und `closeLabel` (Standard «Schliessen», Name des Schliessen-Knopfs für Screenreader) · `DialogHeader` · `DialogTitle` · `DialogDescription` · `DialogFooter` mit `showCloseButton` (Standard `false`) und `closeLabel` (Standard «Schliessen», sichtbarer Text des Knopfs) · `DialogClose` · `DialogOverlay` · `DialogPortal`.
 
 **A11y:** `role="dialog"` mit `aria-modal`, Titel und Beschreibung über `aria-labelledby`/`aria-describedby` durch Radix. `DialogTitle` ist Pflicht; ohne sichtbaren Titel in `sr-only` legen. Ohne Beschreibung `aria-describedby={undefined}` am `DialogContent` setzen. Inhalt scrollt innerhalb von `100dvh − 2rem`, der Schliessen-Knopf bleibt erreichbar.
 
@@ -23,7 +23,7 @@ Gemeinsame Regeln:
 
 **Zweck:** Seitenpaneel vom Bildschirmrand für Navigation, Filter oder Details, ohne den Kontext zu verlassen (Radix Dialog).
 
-**Props:** `Sheet` (Radix-Root) · `SheetTrigger` · `SheetContent` mit `side` top | right (Standard) | bottom | left, `showCloseButton` (Standard `true`), `closeLabel` (Standard «Close»), `swipeToClose` (Standard `false`, nur bei `side="bottom"`) und `showGrabber` (Standard `true`) · `SheetHeader` · `SheetTitle` · `SheetDescription` · `SheetFooter` · `SheetClose`.
+**Props:** `Sheet` (Radix-Root) · `SheetTrigger` · `SheetContent` mit `side` top | right (Standard) | bottom | left, `showCloseButton` (Standard `true`), `closeLabel` (Standard «Schliessen»), `swipeToClose` (Standard `false`, nur bei `side="bottom"`) und `showGrabber` (Standard `true`) · `SheetHeader` · `SheetTitle` · `SheetDescription` · `SheetFooter` · `SheetClose`.
 
 **A11y:** Verhalten wie `Dialog`: modal, Fokusfalle, Escape, `SheetTitle` Pflicht. Wischen zum Schliessen ist eine Ergänzung, nie der einzige Weg; Details im Abschnitt «Swipe-to-dismiss» der Dialog-Spezifikation. `data-side` am Inhalt erlaubt seitenabhängige Overrides.
 
@@ -63,7 +63,7 @@ Gemeinsame Regeln:
 
 **Zweck:** Durchsuchbare Befehlsliste und Befehlspalette (cmdk), auch als Dialog.
 
-**Props:** `Command` (cmdk-Root: `value`, `onValueChange`, `filter`, `shouldFilter`, `loop`) · `CommandDialog` mit `title` und `description` (nur für Screenreader sichtbar; immer deutsch übergeben), `showCloseButton` (Standard `true`), `closeLabel` (Standard «Close»), `contentProps` und den Props von `Dialog` · `CommandInput` · `CommandList` · `CommandEmpty` · `CommandGroup` (`heading`) · `CommandItem` (`value`, `keywords`, `onSelect`, `disabled`) · `CommandSeparator` · `CommandShortcut`.
+**Props:** `Command` (cmdk-Root: `value`, `onValueChange`, `filter`, `shouldFilter`, `loop`) · `CommandDialog` mit `title` und `description` (nur für Screenreader sichtbar; immer deutsch übergeben), `showCloseButton` (Standard `true`), `closeLabel` (Standard «Schliessen»), `contentProps` und den Props von `Dialog` · `CommandInput` · `CommandList` · `CommandEmpty` · `CommandGroup` (`heading`) · `CommandItem` (`value`, `keywords`, `onSelect`, `disabled`) · `CommandSeparator` · `CommandShortcut`.
 
 **A11y:** Combobox mit Listbox durch cmdk: Pfeiltasten bewegen die Auswahl, Enter führt aus, der Fokus bleibt im Suchfeld. `CommandEmpty` meldet leere Ergebnisse. `CommandDialog` erbt Fokusfalle, Escape und Fokusrückgabe von `Dialog`.
 

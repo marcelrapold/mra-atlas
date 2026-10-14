@@ -1,11 +1,11 @@
 # Handover
 
-## Aktueller Stand · Atlas 0.10.0
+## Aktueller Stand · Atlas 0.11.0
 
 Dieses Repository ist **Atlas**, das Designsystem von Rapold, live unter https://atlas.rapold.io. Den ausgelieferten Stand meldet [/build-info.json](https://atlas.rapold.io/build-info.json) mit Version und Commit. Atlas ist seine eigene Referenz: Website, Tokens, Komponenten, Navigation und Präsentationsmuster sind hier definiert. Ein externes System dient nicht als Referenz, Benchmark oder Namensgeber. Die Herkunft übernommenen Codes steht in `LICENSE`; Herkunftsvermerke in Quelldateien bleiben erhalten.
 
 - Website-Identität «Atlas» mit eigenem Signet (gefaltete Karte aus dem Rapold-Produktkatalog) in der Seitenleiste; Titel, Metadaten, Suche und Fusszeile tragen den Namen Atlas.
-- Core-UI-Module und markenfähige Portale, vollständig beschrieben im [Komponentenvertrag](https://atlas.rapold.io/contracts/components.md); die indexierten Referenzseiten listet `/sitemap.xml` (41 im Build von 0.10.0).
+- Core-UI-Module und markenfähige Portale, vollständig beschrieben im [Komponentenvertrag](https://atlas.rapold.io/contracts/components.md); die indexierten Referenzseiten listet `/sitemap.xml` (41 im Build von 0.11.0).
 - Aktive Brands: `neutral`, `dominicano-express`, `rapold` und `radiox`. Die Musterdeck-Vorschauen sind per Hash an ihre Render-Quellen gebunden; ein Build-Gate prüft ihre Aktualität.
 - Rapold: zehn freigegebene Signets; Dachmarke «Der First» als Vorschlag, Freigabe ausstehend. Der UI-Adapter bleibt `draft`.
 - RadioX: Brand nach der Design-DNA aus radiox.cloud und dem RadioX-Code, Status `draft`; die visuelle Abnahme steht aus.
@@ -25,6 +25,7 @@ Release-Prüfung: `npm run check`. Produktion erst mit passendem `build-info.jso
 
 Die vollständigen datierten Nachweise stehen in [Deployment](docs/deployment.md), [Produktwelten](docs/product-worlds.md), [Apple-orientierter Audit](docs/apple-design-audit.md), `docs/review/` und im [Changelog](CHANGELOG.md).
 
+- **0.11.0 · 14.10.2026:** Optimierungsrunde über 13 Fachperspektiven mit externen Referenzen: Foundation-Tokens steuern Core (Ebenen, Bewegung, Kaskaden-Layer), Fokus- und Kontrastmodi, neue Bausteine (Field, Textarea, Accordion, Collapsible, ToggleGroup, Progress, Table, Kbd), Token-Exporte mit Resolver, Komponenten-Manifest für Agenten, First Paint ohne Brand-Flackern, Volltextsuche, Sicherheits-Header, E2E- und Axe-Tests in der CI.
 - **0.10.0 · 14.10.2026:** Deck-Render-Vertrag `deck` für alle Brands, RadioX-Design-DNA mit korrigierter Brand und dunklen Decks, Dachmarken-Vorschlag rapold.io «Der First» mit Rapold-Decks auf Navy-Bühne.
 - **0.9.1 · 14.10.2026:** RadioX-Markenseite mit Matrix-Regen und Aurora, RadioX-Logos und Icon-Sätze, statische Brand-Assets werden beim Build veröffentlicht.
 - **0.9.0 · 14.10.2026:** Brand RadioX (`radiox`, `draft`) mit Glas, Aurora und Glow; sechs RadioX-Musterdecks.

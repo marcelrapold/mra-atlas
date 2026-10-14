@@ -1,11 +1,10 @@
-import type {Metadata, ResolvingMetadata, Viewport} from 'next';
+import type {Metadata, ResolvingMetadata} from 'next';
 import {guidance, href, pages} from '../_components/catalog';
 // One place for sharing, search and structured-data metadata. Pages spread the
 // inherited Open Graph and Twitter blocks (Next merges metadata shallowly), so
 // og:image, site name and locale survive while title, description and url change.
 // description mirrors the root layout; web-metadata.mjs fails the build if they drift.
 export const site={name:'Atlas',description:'Atlas, das Designsystem von Rapold: ein Designstandard mit austauschbaren Brands für Interfaces und Management-Präsentationen.',url:'https://atlas.rapold.io',language:'de-CH',author:'Marcel Rapold',copyright:'Alle Rechte vorbehalten',themeColor:'#263b70'} as const;
-export const siteViewport:Viewport={themeColor:site.themeColor};
 export const descriptionLimit=160;
 export function clampDescription(text:string){const flat=text.replace(/\s+/g,' ').trim();if(flat.length<=descriptionLimit)return flat;const cut=flat.slice(0,descriptionLimit-1);return cut.slice(0,cut.lastIndexOf(' ')).replace(/[\s,;:–-]+$/,'')+'…';}
 export const pageTitle=(title:string)=>`${title} · ${site.name}`;
