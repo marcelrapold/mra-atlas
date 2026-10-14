@@ -1,16 +1,48 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
-import { brands, neutral, dominicanoExpress, defineBrand, contrast, toCssVariables, colorKeys, requiredBrandKeys, optionalBrandKeys } from '../packages/brands/src/index.mjs';
+import { brands, neutral, dominicanoExpress, defineBrand, contrast, toCssVariables, colorKeys, requiredBrandKeys, optionalBrandKeys, contrastPairs, auditBrand, apcaContrast, semanticTokens, derivedColorKeys, foundation } from '../packages/brands/src/index.mjs';
 import brandSchema from '../packages/brands/src/brand.schema.json' with { type: 'json' };
 import { presentationTheme } from '../packages/brands/src/presentation.mjs';
+import known from './fixtures/contrast-exceptions.json' with { type: 'json' };
 
-test('all supported modes meet the text and input contrast contract', () => {
-  const pairs = [['foreground','background'],['card-foreground','card'],['muted-foreground','background'],['muted-foreground','muted'],['primary-foreground','primary'],['primary-hover-foreground','primary-hover'],['secondary-foreground','secondary'],['destructive-foreground','destructive'],['success-foreground','success'],['warning-foreground','warning']];
-  for (const brand of brands) for(const [mode,c] of Object.entries(brand.modes)) {
-    for (const [fg,bg] of pairs) assert.ok(contrast(c[fg],c[bg]) >= 4.5,`${brand.id}/${mode}/${fg}: ${contrast(c[fg],c[bg])}`);
-    for(const role of ['ring','input']) for (const surface of ['background','card']) assert.ok(contrast(c[role],c[surface]) >= 3,`${brand.id}/${mode}/${role}/${surface}`);
+const pairId = r => `${r.brand}/${r.mode}/${r.fg} on ${r.bg}`;
+test('every brand, mode and rendered pair meets WCAG 2.x, derived roles included', () => {
+  const exceptions = new Map(known.exceptions.map(e => [pairId(e), e]));
+  const roles = new Set([...colorKeys, ...derivedColorKeys]);
+  for (const {fg,bg} of contrastPairs) assert.ok(roles.has(fg) && roles.has(bg), `${fg}/${bg} must be semantic roles`);
+  let checked = 0;
+  for (const brand of brands) for (const mode of Object.keys(brand.modes)) for (const {fg,bg,min,use} of contrastPairs) {
+    const c = semanticTokens(brand,mode), ratio = contrast(c[fg],c[bg]), id = pairId({brand:brand.id,mode,fg,bg}), gap = exceptions.get(id);
+    checked++;
+    if (!gap) { assert.ok(ratio >= min, `${id}: ${ratio.toFixed(2)} < ${min} (${use}). Fix the colour with the owner or record it in tests/fixtures/contrast-exceptions.json`); continue; }
+    exceptions.delete(id);
+    assert.ok(ratio < min, `${id} passes now (${ratio.toFixed(2)}); remove the exception`);
+    assert.equal(Number(ratio.toFixed(2)), gap.ratio, `${id}: recorded gap ${gap.ratio} changed to ${ratio.toFixed(2)}`);
+    assert.equal(gap.min, min); assert.equal(gap.use, use);
+    assert.equal(gap.status, 'Owner-Freigabe offen');
   }
+  assert.deepEqual([...exceptions.keys()], [], 'exceptions for pairs that are no longer audited');
+  assert.equal(checked, brands.reduce((n,b) => n + Object.keys(b.modes).length, 0) * contrastPairs.length);
+});
+test('auditBrand reports the same verdicts as the contract test', () => {
+  for (const brand of brands) {
+    const audit = auditBrand(brand);
+    assert.equal(audit.length, Object.keys(brand.modes).length * contrastPairs.length);
+    for (const r of audit) assert.equal(r.pass, r.ratio >= r.min, pairId(r));
+    assert.deepEqual(audit.filter(r => !r.pass).map(pairId), known.exceptions.filter(e => e.brand === brand.id).map(pairId));
+  }
+});
+test('APCA advisory: body-text pairs keep at least Lc 45', t => {
+  // Reference values of APCA 0.0.98G-4g; the sign marks polarity.
+  for (const [fg,bg,lc] of [['#888888','#ffffff',63.056469930209424],['#ffffff','#888888',-68.54146436644962],['#000000','#aaaaaa',58.146262578561334],['#aaaaaa','#000000',-56.24113336839742]]) assert.ok(Math.abs(apcaContrast(fg,bg) - lc) < 1e-9, `${fg} on ${bg}`);
+  assert.equal(apcaContrast('#777777','#777777'), 0);
+  const low = [];
+  for (const brand of brands) for (const r of auditBrand(brand).filter(r => r.use === 'text')) {
+    assert.ok(Math.abs(r.apca) >= 45, `${pairId(r)}: Lc ${r.apca.toFixed(1)}`);
+    if (Math.abs(r.apca) < 60) low.push(`${pairId(r)} Lc ${Math.abs(r.apca).toFixed(1)}`);
+  }
+  if (low.length) t.diagnostic(`APCA below Lc 60 (advisory, WCAG 2.x passes): ${low.join('; ')}`);
 });
 test('brand schema rejects missing colors, unknown roles and CSS injection', () => {
   const missing = structuredClone(neutral);delete missing.modes.light.primary;
@@ -62,4 +94,22 @@ test('the published brand schema cannot drift from the validator it documents', 
   }
   // Runtime acceptance and the published schema must describe the same contract.
   assert.throws(()=>defineBrand({...structuredClone(neutral),unknownBlock:{}}),/invalid keys/);
+});
+test('the schema token groups mirror foundation.json key by key', () => {
+  const tokens = brandSchema.properties.tokens, groups = Object.entries(foundation).filter(([,v]) => typeof v === 'object');
+  assert.equal(tokens.additionalProperties, false);
+  assert.deepEqual(Object.keys(tokens.properties), groups.map(([g]) => g), 'token groups');
+  const css = new RegExp(brandSchema.$defs.tokenCss.pattern);
+  for (const [group,values] of groups) {
+    const schema = tokens.properties[group];
+    assert.equal(schema.additionalProperties, false, group);
+    assert.deepEqual(Object.keys(schema.properties), Object.keys(values), `${group} keys`);
+    for (const [key,value] of Object.entries(values)) {
+      assert.equal(schema.properties[key].$ref, typeof value === 'number' ? '#/$defs/tokenNumber' : '#/$defs/tokenCss', `${group}.${key}`);
+      if (typeof value === 'string') assert.match(value, css, `${group}.${key} baseline must satisfy its own schema`);
+    }
+  }
+  for (const brand of brands) for (const [group,values] of Object.entries(brand.tokens ?? {})) for (const key of Object.keys(values)) assert.ok(tokens.properties[group]?.properties[key], `${brand.id}: tokens.${group}.${key}`);
+  assert.throws(() => defineBrand({...structuredClone(neutral),tokens:{spacing:{7:'28px'}}}), /Invalid token/);
+  assert.throws(() => defineBrand({...structuredClone(neutral),tokens:{notAGroup:{sm:'1px'}}}), /Unknown token group/);
 });
