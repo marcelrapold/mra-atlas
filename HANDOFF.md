@@ -1,28 +1,38 @@
 # Handover
 
-## Aktueller Stand · Atlas 0.7.0
+## Aktueller Stand · Atlas 0.10.0
 
-Dieses Repository ist **Atlas**, das Designsystem von Rapold, adressiert unter https://atlas.rapold.io. Atlas ist seine eigene Referenz: Website, Tokens, Komponenten, Navigation und Präsentationsmuster sind hier definiert. Ein externes System dient nicht mehr als Referenz, Benchmark oder Namensgeber. Die Herkunft übernommenen Codes bleibt in `LICENSE` und [docs/extraction.md](docs/extraction.md) dokumentiert; Herkunftsvermerke in Quelldateien bleiben erhalten.
+Dieses Repository ist **Atlas**, das Designsystem von Rapold, live unter https://atlas.rapold.io. Den ausgelieferten Stand meldet [/build-info.json](https://atlas.rapold.io/build-info.json) mit Version und Commit. Atlas ist seine eigene Referenz: Website, Tokens, Komponenten, Navigation und Präsentationsmuster sind hier definiert. Ein externes System dient nicht als Referenz, Benchmark oder Namensgeber. Die Herkunft übernommenen Codes steht in `LICENSE`; Herkunftsvermerke in Quelldateien bleiben erhalten.
 
 - Website-Identität «Atlas» mit eigenem Signet (gefaltete Karte aus dem Rapold-Produktkatalog) in der Seitenleiste; Titel, Metadaten, Suche und Fusszeile tragen den Namen Atlas.
-- 35 indexierte Referenzseiten. Die frühere Abgleichsseite gegen das Ausgangssystem ist entfernt, ebenso die zugehörigen Referenz- und Abdeckungsdokumente und der Vertrag `/contracts/atlas-reference.md`. `build-info.json` enthält keinen externen Referenz-Commit mehr.
-- Aktive Brands: `neutral`, `dominicano-express` und `rapold`. Rapold mit vier freigegebenen und sechs vorgeschlagenen Signets (Lotse, Cockpit, Auditor, Rapold Auth, PocketForge, Atlas).
+- Core-UI-Module und markenfähige Portale, vollständig beschrieben im [Komponentenvertrag](https://atlas.rapold.io/contracts/components.md); die indexierten Referenzseiten listet `/sitemap.xml` (41 im Build von 0.10.0).
+- Aktive Brands: `neutral`, `dominicano-express`, `rapold` und `radiox`. Die Musterdeck-Vorschauen sind per Hash an ihre Render-Quellen gebunden; ein Build-Gate prüft ihre Aktualität.
+- Rapold: zehn freigegebene Signets; Dachmarke «Der First» als Vorschlag, Freigabe ausstehend. Der UI-Adapter bleibt `draft`.
+- RadioX: Brand nach der Design-DNA aus radiox.cloud und dem RadioX-Code, Status `draft`; die visuelle Abnahme steht aus.
 - Die npm-Paketnamen `@rapold/framework-*` bleiben vorerst unverändert.
 
 ## Offene Schritte
 
-- Domain `atlas.rapold.io` im Vercel-Projekt einrichten und die bisherige Adresse per Redirect darauf führen (siehe [Deployment](docs/deployment.md)). Erst danach den Rollout mit `node scripts/verify-deployment.mjs https://atlas.rapold.io <commit>` belegen.
-- Repository-Umbenennung nach `marcelrapold/mra-atlas` separat ausführen und Repository-Links nachziehen.
-- Rapold-UI-Adapter bleibt `draft`. Physische Mobil-/Touch-Geräte, Assistenztechnik, 200-%-Zoom, Forced Colors und Pixelkontrast sind ungeprüft.
+- Freigabe der Dachmarke «Der First» (Vorschlag) durch Marcel Rapold; bis dahin bleibt `approval.umbrellaSymbol` in `brands/rapold/sources/provenance.json` auf `none`.
+- Rapold- und RadioX-UI-Adapter bleiben `draft`. Physische Mobil-/Touch-Geräte, Assistenztechnik, 200-%-Zoom, Forced Colors und Pixelkontrast sind ungeprüft.
+- Statische Geist-TTF für die PPTX-Einbettung fehlen; ohne installierte Geist fällt PowerPoint auf eine Systemschrift zurück.
 - Corporate-Master-Import, gehostetes Organigramm-Widget, Font-Einbettung, spezialisierte Visualisierungen und anbieterspezifische Integrationsbeispiele bleiben offen.
 - Lizenz seit 0.7.0: «Alle Rechte vorbehalten», Marcel Rapold. Drittlizenzen (Geist, Lucide, ECharts, Learn-Ebenen) bleiben beigelegt.
 
-Release-Prüfung: `npm run check`. Produktion erst mit passendem `build-info.json` auf der Zieldomain als ausgeliefert bezeichnen.
+Release-Prüfung: `npm run check`. Produktion erst mit passendem `build-info.json` auf der Zieldomain als ausgeliefert bezeichnen; Prüfer: `node scripts/verify-deployment.mjs https://atlas.rapold.io <commit>` (siehe [Deployment](docs/deployment.md)).
 
 ## Historie (verdichtet)
 
 Die vollständigen datierten Nachweise stehen in [Deployment](docs/deployment.md), [Produktwelten](docs/product-worlds.md), [Apple-orientierter Audit](docs/apple-design-audit.md), `docs/review/` und im [Changelog](CHANGELOG.md).
 
+- **0.10.0 · 14.10.2026:** Deck-Render-Vertrag `deck` für alle Brands, RadioX-Design-DNA mit korrigierter Brand und dunklen Decks, Dachmarken-Vorschlag rapold.io «Der First» mit Rapold-Decks auf Navy-Bühne.
+- **0.9.1 · 14.10.2026:** RadioX-Markenseite mit Matrix-Regen und Aurora, RadioX-Logos und Icon-Sätze, statische Brand-Assets werden beim Build veröffentlicht.
+- **0.9.0 · 14.10.2026:** Brand RadioX (`radiox`, `draft`) mit Glas, Aurora und Glow; sechs RadioX-Musterdecks.
+- **0.8.0 · 12.10.2026:** Frontend-Audit über 16 Perspektiven (0 × P0, 7 × P1, P1 behoben); aus RadioX übernommene, neutralisierte Komponenten; der Core wächst von 19 auf 42 UI-Module.
+- **0.7.1 · 12.10.2026:** Die sechs mit 0.7.0 vorgeschlagenen Signets sind freigegeben; der Katalog führt alle zehn Zeichen als `approved`.
+- **Repository-Umbenennung · 12.10.2026:** Das Repository heisst `marcelrapold/mra-atlas`; Repository-Links sind nachgezogen.
+- **Domain · 11.10.2026:** `atlas.rapold.io` im Vercel-Projekt `atlas` verifiziert, die frühere Adresse leitet per 308 dorthin um; `build-info.json` meldete 0.7.0.
+- **0.7.0 · 11.10.2026:** Name Atlas, sechs Signet-Vorschläge, Lizenz «Alle Rechte vorbehalten», externer Referenzabgleich entfernt.
 - **0.6.0 · 11.10.2026:** Produktiver Prüfstand auf der damaligen Produktionsadresse mit Anwendungs-Commit `73498ec4b46cb9f431d7ad5d186e88dd6301162b` (10:06–10:07 UTC), 84 Weltressourcen, ZIP mit 44 Dateien, zehn erwartete 404 für entfernte Downloads. Der [Browserbericht](docs/review/production-0.6.0-73498ec4b46c/browser-review.json) um 10:17 UTC dokumentiert 14 bestandene Fälle in Chrome bei 1363 × 936 CSS-px.
 - **Registry-Bereinigung · 11.10.2026:** Goldbach und Sygnum entfernt. Referenzen um 09:42 UTC mit `npm run deck:reference` neu gerendert (18 PDF, 54 PNG); `npm run check` bestand um 09:50–09:51 UTC.
 - **0.5.0 · 11.10.2026:** Erster belegter Produktionsrollout mit Commit `ee5bfc2ef4bd2b034fc2045b5a576d101159c217`.

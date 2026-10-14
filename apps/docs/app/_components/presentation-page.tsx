@@ -18,7 +18,7 @@ const brandFaqs:Record<string,[string,string][]>={
   ['Welche Vorgaben gelten?','Der Dominicano-Express-Adapter ist eine dokumentierte Rekonstruktion des Caja-Stils und bleibt ein CI-Entwurf. Der Abgleich mit der Brand-Seite und den Original-Assets steht aus.']
  ],
  rapold:[
-  ['Sind Bilder und Logos dabei?','Die Produktzeichen für AI Fabric, Argus, ÆON Learn und EdgePortal stehen im Rapold-Assetkatalog. Für das gemeinsame Theme ist kein Dachmarkenlogo festgelegt. Fotografische Motive liefert das Projekt.'],
+  ['Sind Bilder und Logos dabei?','Die zehn freigegebenen Produktzeichen der Raumfalten-Familie stehen im Rapold-Assetkatalog. Ein Dachmarkenlogo ist nicht festgelegt; «Der First» ist ein Vorschlag, die Freigabe steht aus. Fotografische Motive liefert das Projekt.'],
   ['Welche Vorgaben gelten?','Rapold-Farben und Geist ergänzen die vermessenen Layouts. Alle zehn Produktsignets sind freigegeben; der gemeinsame UI-Adapter ist separat als Entwurf dokumentiert.']
  ]
 };

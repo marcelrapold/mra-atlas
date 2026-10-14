@@ -2,7 +2,7 @@
 
 Ein optional wählbares Rapold-Theme für die Produkte AI Fabric, Argus, ÆON Learn und EdgePortal sowie Lotse, Cockpit, Auditor, Rapold Auth, PocketForge und das Designsystem Atlas; alle zehn Signets sind freigegeben. Es liefert eine gemeinsame Farb- und Typografiebasis für das neutrale Atlas-System. Der Atlas-Default bleibt `neutral`.
 
-**Status des UI-Adapters: `draft`, Version 0.2.0.** Marcel Rapold hat am **11.10.2026** die vier Signets der Raumfalten-Familie B freigegeben. Die neue Zuordnung zu vollständigen UI-Rollen und ihre visuelle Abnahme bleiben als separate Integrationsarbeit dokumentiert.
+**Status des UI-Adapters: `draft`, Version 0.2.0.** Marcel Rapold hat am **11.10.2026** die vier Signets der Raumfalten-Familie B (AI Fabric, Argus, ÆON Learn, EdgePortal) und am **12.10.2026** die sechs mit 0.7.0 ergänzten Signets (Lotse, Cockpit, Auditor, Rapold Auth, PocketForge, Atlas) freigegeben. Die Zuordnung zu vollständigen UI-Rollen und ihre visuelle Abnahme bleiben als separate Integrationsarbeit dokumentiert.
 
 **Produktwelten für Framework 0.6.0: produktiv ausgeliefert und gezielt geprüft.** Der produktiv geprüfte Anwendungsstand vom **11.10.2026, 10:06–10:17 UTC**, ist `73498ec4b46cb9f431d7ad5d186e88dd6301162b`; der lokale Check, Vercel-/Main-CI-Lauf, öffentliche Dateiabrufe und 14 Browserfälle sind im [Produktwelten-Prüfstand](../../docs/product-worlds.md#prüfstand-und-dokumentierte-grenzen) belegt. Die Prüfung vom 11.10.2026 umfasst schmale Referenzcontainer, konkrete Bedienpfade und einen verifizierten Browser-ZIP-Download. Vollständige mobile Viewports, Assistenztechnik, Browser-Mediaemulation und Pixelkontrast sind damit nicht abgenommen. Der `draft`-Status des UI-Adapters bleibt bestehen.
 
@@ -18,7 +18,7 @@ Ein optional wählbares Rapold-Theme für die Produkte AI Fabric, Argus, ÆON Le
 | Originale Produktwelt-Assets | Vier unveränderte Learn-Hero-Ebenen samt Apache-2.0-Lizenz | `brands/rapold/assets/worlds/learn/` |
 | Herkunft der Produktwelten | Gepinnte Quellen, Originalbytes, Lizenzen und bewusste Abweichungen | [world-provenance.json](sources/world-provenance.json) |
 
-Es gibt genau einen Rapold-Eintrag in der Brand-Registry. Die Produktkennungen wählen ein Zeichen innerhalb der gemeinsamen Identität. Sie erzeugen keine zusätzlichen Farbpresets. Für die Dachmarke ist kein separates Symbol festgelegt; `assets.logo` bleibt deshalb ungesetzt. Ein Produktsignet wird nur bei ausdrücklicher Produktwahl verwendet.
+Es gibt genau einen Rapold-Eintrag in der Brand-Registry. Die Produktkennungen wählen ein Zeichen innerhalb der gemeinsamen Identität. Sie erzeugen keine zusätzlichen Farbpresets. Für die Dachmarke ist kein Symbol festgelegt; `assets.logo` bleibt deshalb ungesetzt. «Der First» ist ein Vorschlag für die Dachmarke rapold.io, die Freigabe steht aus ([Design-DNA](../rapold-io/DESIGN-DNA.md), [DESIGN.md, Abschnitt 8](DESIGN.md#8-dachmarke-rapoldio-der-first-vorschlag)). Ein Produktsignet wird nur bei ausdrücklicher Produktwahl verwendet.
 
 ## Signets
 
@@ -79,7 +79,7 @@ Die Produktwelten sind begrenzte Referenzcontainer innerhalb des Rapold-Showcase
 | EdgePortal | Neues CI-Anwendungsbeispiel für das freigegebene Portalzeichen. Eine vollständige Übernahme der ursprünglichen App oder ihrer Verbindungszustände wird nicht behauptet. |
 | Facetten und Spektrum | Neue gemeinsame CI-Dekore aus der freigegebenen Faltensprache und dem Rapold-Farbspektrum. Sie sind gestalterische Anwendungen der Identität, keine als Original ausgegebenen App-Assets. |
 
-Alle Referenzen verwenden die neuen Raumfalten-Signets. Bestehende Produktlogos oder Wortmarken werden dafür nicht kopiert. Es bleibt eine gemeinsame Brand `rapold` mit vier Produktkennungen.
+Alle Referenzen verwenden die neuen Raumfalten-Signets. Bestehende Produktlogos oder Wortmarken werden dafür nicht kopiert. Es bleibt eine gemeinsame Brand `rapold` mit zehn Produktkennungen; Produktwelten bestehen für die vier oben genannten.
 
 ### Bewegung und ehrliche Beispiele
 
@@ -126,7 +126,7 @@ Die Ausgaben liegen ausschliesslich unter `~/.local/share/fonts/framework`. Konv
 
 ## Quellen und Abnahme
 
-- Nutzerfreigabe der vier Raumfalten-Signets vom 11.10.2026.
+- Nutzerfreigabe der vier Raumfalten-Signets vom 11.10.2026 und der sechs mit 0.7.0 ergänzten Signets vom 12.10.2026 (Nachweis in [provenance.json](sources/provenance.json)).
 - Geliefertes `rapold-brand-system`, Version 1.0.0: Tokenkopie und SHA-256-Nachweis im Brand-Paket.
 - [Produktwelten-Spezifikation](../../docs/product-worlds.md) und [World-Provenance](sources/world-provenance.json): Originalquellen, unveränderte Dateien, integrierte Anpassungen sowie tatsächliche Produktions-/Browsernachweise und ihre Grenzen für 0.6.0.
 - [Brand-Vertrag](https://atlas.rapold.io/contracts/brand-contract.md) für vollständige Rollen, Kontraste und Quellenstatus; Repository-Quelle: `docs/brand-contract.md`.

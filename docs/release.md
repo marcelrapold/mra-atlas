@@ -6,7 +6,7 @@ Zielrepository: https://github.com/marcelrapold/mra-atlas. Der Benutzer hat dies
 
 ```sh
 git clone https://github.com/marcelrapold/mra-atlas.git
-cd design
+cd mra-atlas
 npm ci
 npm run check
 ```
@@ -23,4 +23,4 @@ Lizenz: «Alle Rechte vorbehalten», Marcel Rapold (`LICENSE`). Drittlizenzen we
 
 Für einen späteren Generator werden Repo-Leserechte und ein Präsentationsrenderer benötigt. Der aktuell implementierte Einstieg `/llms.txt` liefert den Auftrag an den Agenten, kein Backend und keine angebliche PPTX-API.
 
-Der aktuelle Quellstand erzeugt die Muster-PPTX beim Build. Produktionsnachweis: /build-info.json muss den veröffentlichten Commit zeigen. Ein erfolgreicher GitHub-Check allein bestätigt kein Vercel-Deployment.
+Der aktuelle Quellstand erzeugt die Muster-PPTX beim Build. Produktionsnachweis: [/build-info.json](https://atlas.rapold.io/build-info.json) muss Version und Commit des veröffentlichten Stands zeigen; Ablauf und Prüfer im [Deployment](deployment.md). Ein erfolgreicher GitHub-Check allein bestätigt kein Vercel-Deployment.

@@ -2,7 +2,7 @@
 
 Atlas ist das Designsystem von Rapold: ein neutraler White-Label-Designstandard mit austauschbaren Brand-Vorgaben für Interfaces und Management-Präsentationen.
 
-**Stand:** 0.7.0 (Quellstand; der datierte Produktionsnachweis unten betrifft 0.6.0), Quellstand für `marcelrapold/mra-atlas`. Das Repository ist öffentlich. Lizenz: «Alle Rechte vorbehalten», Marcel Rapold; Drittkomponenten behalten ihre Lizenzen (siehe `LICENSE`). Produktionsadresse: https://atlas.rapold.io (seit 11.10.2026 live, Commit `87f27f2`; siehe [Deployment](docs/deployment.md)). Die native Vercel-Git-Verbindung übernimmt Builds bei Pushes auf main. Am **11.10.2026, 10:06–10:17 UTC**, wurden der produktive Anwendungsstand `73498ec4b46cb9f431d7ad5d186e88dd6301162b`, die ausgelieferten Ressourcen und 14 gezielte Browserfälle bestätigt. Dieser datierte Prüfstand ist keine Aussage über den Main-Head späterer Dokumentations-Commits. Die dokumentierten Container-, Bewegungs- und Assistenztechnik-Grenzen bleiben ausdrücklich bestehen. Nachweise: [Deployment](docs/deployment.md) und [Browserbericht](docs/review/production-0.6.0-73498ec4b46c/browser-review.json).
+**Stand:** Atlas 0.10.0, live auf https://atlas.rapold.io; den ausgelieferten Stand meldet [/build-info.json](https://atlas.rapold.io/build-info.json) mit Version und Commit. Die native Vercel-Git-Verbindung baut jeden Push auf `main` mit `npm run check`. Datierte Rollout- und Browsernachweise stehen im [Deployment](docs/deployment.md). Das Repository `marcelrapold/mra-atlas` ist öffentlich. Lizenz: «Alle Rechte vorbehalten», Marcel Rapold; Drittkomponenten behalten ihre Lizenzen (siehe `LICENSE`).
 
 ## Referenz
 
@@ -14,7 +14,7 @@ Rapold-Produkte übernehmen Signet, Favicon, Manifest, Tokens, Geist-Fonts und d
 
 > Analysiere owner/repo und erstelle eine Management-Präsentation. Lies und befolge https://atlas.rapold.io/brands/neutral/management.md.
 
-Für Rapold denselben Auftrag mit https://atlas.rapold.io/brands/rapold/management.md verwenden; für Dominicano Express mit https://atlas.rapold.io/brands/dominicano-express/management.md. Der Einstieg enthält den vollständigen Ablauf: standardmässig acht Folien, Deutsch (Schweiz), 16:9, editierbare PPTX, PDF, Quellenmanifest und deck.json. Explizite Wünsche überschreiben diese Defaults. Auf der [Präsentationsseite](https://atlas.rapold.io/praesentation) und im Prompt-Compiler wird der Kurzauftrag für das aktive Theme erzeugt.
+Für Rapold denselben Auftrag mit https://atlas.rapold.io/brands/rapold/management.md verwenden; für Dominicano Express mit https://atlas.rapold.io/brands/dominicano-express/management.md und für RadioX mit https://atlas.rapold.io/brands/radiox/management.md. Der Einstieg enthält den vollständigen Ablauf: standardmässig acht Folien, Deutsch (Schweiz), 16:9, editierbare PPTX, PDF, Quellenmanifest und deck.json. Explizite Wünsche überschreiben diese Defaults. Auf der [Präsentationsseite](https://atlas.rapold.io/praesentation) und im Prompt-Compiler wird der Kurzauftrag für das aktive Theme erzeugt.
 
 Der Standard liefert Brand-Daten, Präsentationsrollen und einen vollständigen Agenten-Vertrag. Der ausführende Agent braucht Repo-Zugang und einen Renderer. Ein gehosteter Generator ist nicht Teil dieses ersten Schnitts.
 
@@ -39,13 +39,15 @@ Bei Änderungen an der Brand-Registry entfernt die Generierung nicht mehr regist
 
 | Pfad | Zweck |
 |---|---|
-| `packages/core/src` | Alle 42 UI-Module (seit 0.8.0 inklusive der aus RadioX übernommenen Komponenten), Hooks und BrandProvider |
-| `packages/brands/src` | Validierter Brand-Vertrag, Registry für Neutral, Dominicano Express und Rapold sowie Präsentationsadapter |
+| `packages/core/src` | Alle UI-Module (seit 0.8.0 inklusive der aus RadioX übernommenen Komponenten), Hooks und BrandProvider |
+| `packages/brands/src` | Validierter Brand-Vertrag, Registry für Neutral, Dominicano Express, Rapold und RadioX sowie Präsentationsadapter |
 | `packages/presentation/src` | Datenadapter, Inhaltsprüfung und editierbarer PPTX-Export |
-| `apps/docs` | Next.js-Referenz mit 35 Seiten, statisch exportierbar |
+| `apps/docs` | Next.js-Referenz, statisch exportierbar; die indexierten Seiten listet `/sitemap.xml` |
 | `brands/rapold` | Original-Signets, lokale Geist-Fonts, Produktkatalog und dokumentierte UI-Ableitungen |
 | `docs/apple-design-audit.md` | Apple-orientierter Web-Audit mit Befunden und Abnahmegrenzen |
 | `brands/dominicano-express` | Vorgaben und Inhaltsbeispiel für das Dominicano-Preset |
+| `brands/radiox` | Design-DNA, Theme und Logos der Brand RadioX |
+| `brands/rapold-io` | Dachmarke rapold.io «Der First»: Design-DNA, Konzepte und Master (Vorschlag, Freigabe ausstehend) |
 | `docs/brand-contract.md` | Integration und Erweiterung |
 | `docs/produkte-einbinden.md` | Atlas in Produkten einbinden: Signet, Favicon, Manifest, Tokens, Geist und Login über auth.rapold.io (live: https://atlas.rapold.io/contracts/produkte-einbinden.md) |
 | `docs/repo-to-management.md` | Vollständiger Agenten-Auftrag für Management-Decks |
@@ -53,15 +55,17 @@ Bei Änderungen an der Brand-Registry entfernt die Generierung nicht mehr regist
 | `scripts/build-contracts.mjs` | Erzeugt JSON- und Markdown-Endpunkte |
 | `tests` | Vertrag, Kontrast und Core-Isolation |
 | `llms.txt` | Einstieg für Agenten |
-| `AGENTS.md` | Arbeitsregeln für dieses neue Projekt |
+| `AGENTS.md` | Arbeitsvertrag für Agenten |
 | `HANDOFF.md` | Stand, Abnahme und offene Schritte |
 
 ## Ausprägungen
 
-- Neutral: vollständige helle und dunkle Basis.
-- Rapold: gemeinsame Brand für Fabric, Argus, ÆON Learn und EdgePortal sowie Lotse, Cockpit, Auditor, Rapold Auth, PocketForge und Atlas selbst; zehn freigegebene Signets. 50 SVG-Master, lokale Geist-Fonts und 520 reproduzierbare Exporte. Status `draft` für den neuen UI-Adapter. Markenansicht: `/brand?brand=rapold`. [Quellen und Anwendung](brands/rapold/README.md).
-- Dominicano Express: eigenständiges helles und dunkles Preset mit seinem Caja-Inhaltsbeispiel.
-- RadioX: Brand im Look von radiox.cloud (Schwarz, Cyan, Glas, Glow) für die aus RadioX übernommenen Medien-, Status- und Player-Komponenten. [Quellen und Ableitungen](brands/radiox/README.md).
+Die Brand-Registry enthält vier Einträge:
+
+- Neutral (`neutral`): vollständige helle und dunkle Basis und Default.
+- Dominicano Express (`dominicano-express`): eigenständiges helles und dunkles Preset mit seinem Caja-Inhaltsbeispiel.
+- Rapold (`rapold`): gemeinsame Brand für AI Fabric, Argus, ÆON Learn und EdgePortal sowie Lotse, Cockpit, Auditor, Rapold Auth, PocketForge und Atlas selbst; zehn freigegebene Signets. 50 SVG-Master, lokale Geist-Fonts und 520 reproduzierbare Exporte. Status `draft` für den UI-Adapter. Markenansicht: `/brand?brand=rapold`. [Quellen und Anwendung](brands/rapold/README.md). Die Dachmarke rapold.io «Der First» ist ein Vorschlag; die Freigabe steht aus ([Design-DNA](brands/rapold-io/DESIGN-DNA.md)).
+- RadioX (`radiox`): Brand im Look von radiox.cloud (Schwarz, Cyan, Glas, Glow) für die aus RadioX übernommenen Medien-, Status- und Player-Komponenten; Status `draft`. [Design-DNA und Ableitungen](brands/radiox/README.md).
 
 Firmenlogos, interne Vorgaben und lizenzierte Assets sind getrennt vom neutralen Core. Eine künftige freie Code-Lizenz erteilt keine Marken- oder Fontrechte.
 
@@ -70,19 +74,19 @@ Firmenlogos, interne Vorgaben und lizenzierte Assets sind getrennt vom neutralen
 Repository: [marcelrapold/mra-atlas](https://github.com/marcelrapold/mra-atlas).
 Hauptadresse: `atlas.rapold.io`.
 
-Die Domain steht in der Metadaten-Konfiguration, in `vercel.json` und im Agenten-Einstieg. `atlas.rapold.io` ist im Vercel-Projekt `atlas` verifiziert; `design.rapold.io` leitet per 308 dorthin um. Die npm-Paketnamen `@rapold/framework-*` bleiben vorerst unverändert.
+Die Domain steht in der Metadaten-Konfiguration, in `vercel.json` und im Agenten-Einstieg. `atlas.rapold.io` ist im Vercel-Projekt `atlas` verifiziert; die frühere Adresse leitet per 308 dorthin um ([Deployment](docs/deployment.md)). Die npm-Paketnamen `@rapold/framework-*` bleiben vorerst unverändert.
 
 ## Erweiterter Stand
 
-- 42 UI-Module und markenfähige Portale, beschrieben im Komponentenvertrag `/contracts/components.md`.
+- UI-Module und markenfähige Portale, vollständig beschrieben im [Komponentenvertrag](https://atlas.rapold.io/contracts/components.md).
 - Vollständiger neutraler Lucide-Katalog mit SVG- und React-Verwendung.
 - Grundlagen, semantische Rollen, CSS-, JSON- und DTCG-Exporte.
 - 18 Folienrezepte, fünf Presets, vermessene Raster und 13 Typorollen.
 - Editierbare Muster-Decks pro Brand. Die Vorschauen werden aus den exportierten PowerPoints über PDF nach PNG gerendert. Ein Build-Gate prüft ihre Aktualität.
 - Inhaltslogik: docs/presentation-logic.md und scripts/validate-deck.mjs.
 
-Bekannte Lücken und Abnahmestatus: [HANDOFF.md](HANDOFF.md).
+- Organigramm-Renderer mit Editor und Exporten, vier lokale ECharts-Beispiele, Navigationsicons, formatabhängige Prompts und der [Engineering-Vertrag](docs/engineering.md).
 
 Der Muster-Renderer erzeugt 24 editierbare PPTX-Dateien (vier Brands × sechs Decks). Zusätzlich verarbeitet `@rapold/framework-presentation` echte Projektinhalte mit allen 18 Rezepten. `npm run deck:export -- deck.json --out ./ergebnis --repo-dir ./projekt --pdf` erzeugt PPTX, PDF und Quellenmanifest. Vollständiger Ablauf und Eingabeschema: [Projektdecks](docs/project-decks.md).
 
-Version 0.4 ergänzt den Organigramm-Renderer mit Editor und Exporten, vier lokale ECharts-Beispiele, vollständige Navigationsicons, formatabhängige Prompts und den [Engineering-Vertrag](docs/engineering.md).
+Bekannte Lücken und Abnahmestatus: [HANDOFF.md](HANDOFF.md). Änderungen je Version: [CHANGELOG.md](CHANGELOG.md).
