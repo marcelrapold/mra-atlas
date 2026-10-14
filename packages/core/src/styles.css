@@ -1,6 +1,6 @@
-/* Nächster Scope gewinnt: ein heller Scope in einem dunklen bekommt keine dark:-Utilities (zwei Verschachtelungsebenen). */
-@custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *:not([data-mode="light"], [data-mode="light"] *), [data-mode="light"] [data-mode="dark"] *:not([data-mode="light"] [data-mode="dark"] [data-mode="light"], [data-mode="light"] [data-mode="dark"] [data-mode="light"] *)));
-/* Nicht inline: z-modal usw. kompilieren zu var(--z-index-*), Brand-Werte am Scope gewinnen. Defaults = foundation.json. */
+@custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
+/* Nicht inline: Brand-Werte am Scope gewinnen. Defaults = foundation.json. Core nutzt z-(--z-index-*): tailwind-merge erkennt die Klasse,
+   z-50 oder z-[60] in className ersetzen sie. Die benannten z-modal usw. kennt tailwind-merge nicht. */
 @theme {
   --z-index-base: 0;
   --z-index-sticky: 20;
@@ -130,7 +130,7 @@
   .framework-scope[data-mode="dark"] { color-scheme: dark; }
   .framework-scope *, .framework-scope *::before, .framework-scope *::after { border-color: var(--border); }
   /* Reduzierte Bewegung: Überlagerungen blenden nur noch (kein Weg, kein Zoom), Dauern höchstens --duration-reduced.
-     Endlos-Animationen in Core sind motion-safe: gebunden; Spinner bleiben als Status über aria-busy lesbar. */
+     Endlos-Animationen in Core sind motion-safe: gebunden oder werden unten angehalten (Skeleton); Spinner bleiben als Status über aria-busy lesbar. */
   @media (prefers-reduced-motion: reduce) {
     :root, .framework-scope { --atlas-motion: 0; --atlas-duration-cap: var(--duration-reduced, 160ms); scroll-behavior: auto; }
   }
@@ -141,15 +141,17 @@
 }
 
 /* Brand-Vorgaben für Core-Komponenten, Spezifität 0: className-Utilities und Brand-CSS gewinnen.
-   Button-Selektor umfasst Slot-gerenderte Trigger (dialog-trigger, sheet-close …), die data-slot="button" überschreiben. */
+   Button-Selektor umfasst Slot-gerenderte Trigger (dialog-trigger, sheet-close …), die data-slot="button" überschreiben.
+   IconButton als Trigger (erkennbar an after:size-11) bleibt wie das eigenständige IconButton ohne Brand-Schatten. */
 @layer components {
-  :where(.framework-scope) :where([data-slot="button"], :is([data-slot$="-trigger"], [data-slot$="-close"])[data-variant]:not([aria-pressed]), [data-slot="card"], [data-slot="input"]) { box-shadow: var(--brand-shadow); }
+  :where(.framework-scope) :where([data-slot="button"], :is([data-slot$="-trigger"], [data-slot$="-close"])[data-variant]:not([aria-pressed], [class~="after:size-11"]), [data-slot="card"], [data-slot="input"]) { box-shadow: var(--brand-shadow); }
   :where(.framework-scope) :where([data-slot="button"], :is([data-slot$="-trigger"], [data-slot$="-close"]):not([aria-pressed]))[data-variant][data-size="default"] { min-height: var(--brand-button-height); padding: 10px 20px; font-size: 1rem; letter-spacing: .015em; }
   :where(.framework-scope) :where([data-slot="button"], :is([data-slot$="-trigger"], [data-slot$="-close"])[data-variant]:not([aria-pressed]), [data-slot="badge"], [data-slot="label"], [data-slot="card-title"], h1, h2, h3) { font-weight: var(--brand-heading-weight); }
   :where(.framework-scope) :where([data-slot="input"]) { font-weight: var(--brand-body-weight); }
-  /* z-dropdown liegt unter z-modal. Popover, Select und Menü aus einem offenen Dialog oder Sheet landen im selben Portal danach
-     und werden auf Modal-Ebene gehoben; Radix kopiert den z-index inline auf den Wrapper, daher !important. */
-  :where([data-slot="dialog-content"], [data-slot="sheet-content"]) ~ [data-radix-popper-content-wrapper]:not(:has(> [data-slot="tooltip-content"])) { z-index: var(--z-index-modal) !important; }
+  /* --z-index-dropdown liegt unter --z-index-modal. Popover, Select und Menü aus einem offenen Dialog, ConfirmDialog oder Sheet
+     landen danach in body und werden auf Modal-Ebene gehoben. Radix kopiert den z-index inline auf den Wrapper, daher !important.
+     Select mit position="item-aligned" (Default) nutzt einen schlichten fixed-Wrapper ohne data-radix-popper-content-wrapper. */
+  :where([data-slot="dialog-content"], [data-slot="confirm-dialog"], [data-slot="sheet-content"]) ~ :is([data-radix-popper-content-wrapper]:not(:has(> [data-slot="tooltip-content"])), div:has(> [data-slot="select-content"])) { z-index: var(--z-index-modal) !important; }
 }
 
 /* Die cva-Defaults der Komponenten (px-4, text-sm, font-medium, shadow-xs …) sind selbst Utilities und würden die Brand-Vorgaben
@@ -161,8 +163,14 @@
     &.py-2 { padding-block: 10px; }
     &.text-sm { font-size: 1rem; }
   }
-  :where(.framework-scope) :where([data-slot="button"], :is([data-slot$="-trigger"], [data-slot$="-close"])[data-variant]:not([aria-pressed]), [data-slot="card"], [data-slot="input"])[data-slot]:is(.shadow-xs, .shadow-sm) { box-shadow: var(--brand-shadow); }
+  :where(.framework-scope) :where([data-slot="button"], :is([data-slot$="-trigger"], [data-slot$="-close"])[data-variant]:not([aria-pressed], [class~="after:size-11"]), [data-slot="card"], [data-slot="input"])[data-slot]:is(.shadow-xs, .shadow-sm) { box-shadow: var(--brand-shadow); }
   :where(.framework-scope) :where([data-slot="button"], :is([data-slot$="-trigger"], [data-slot$="-close"])[data-variant]:not([aria-pressed]), [data-slot="badge"], [data-slot="label"], [data-slot="card-title"])[data-slot]:is(.font-medium, .font-semibold) { font-weight: var(--brand-heading-weight); }
+  /* Überschriften (DialogTitle, SheetTitle rendern h2 mit font-semibold) behalten das Brand-Gewicht, solange die Default-Klasse steht. */
+  :where(.framework-scope) :is(h1, h2, h3):is(.font-medium, .font-semibold) { font-weight: var(--brand-heading-weight); }
+  /* Skeleton pulsiert endlos (animate-pulse ohne motion-safe:): unter reduzierter Bewegung steht es still. */
+  @media (prefers-reduced-motion: reduce) {
+    [data-slot="skeleton"].animate-pulse { animation: none; }
+  }
 }
 
 /* Erzwungene Farben (Windows-Kontrastdesigns): Zustände, die sonst nur über Hintergrundfarben lesbar sind, auf Systemfarben. */

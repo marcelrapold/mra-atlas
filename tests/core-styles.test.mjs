@@ -79,7 +79,7 @@ test('forced-colors, reduced-transparency and contrast modes cover the owned sta
   for (const keyword of ['Highlight', 'HighlightText', 'CanvasText', 'GrayText']) assert.ok(forced.includes(keyword), keyword);
   // Every data-slot the stylesheet targets exists in a core source file (lightbox-backdrop arrives with core-controls-a11y).
   const slots = new Set([...css.matchAll(/data-slot(?:\$)?="([a-z-]+)"/g)].map(m => m[1]).filter(s => !s.startsWith('-')));
-  const sources = ['radio-group', 'switch', 'checkbox', 'tabs', 'toggle', 'icon-button', 'play-button', 'media-bar', 'bottom-nav', 'button', 'badge', 'label', 'card', 'input', ...owned].map(source).join('\n');
+  const sources = ['radio-group', 'switch', 'checkbox', 'tabs', 'toggle', 'icon-button', 'play-button', 'media-bar', 'bottom-nav', 'button', 'badge', 'label', 'card', 'input', 'skeleton', ...owned].map(source).join('\n');
   for (const slot of slots) if (slot !== 'lightbox-backdrop') assert.ok(sources.includes(`data-slot="${slot}"`), `data-slot ${slot} not found in core`);
   const transparency = css.slice(css.indexOf('@media (prefers-reduced-transparency: reduce)'));
   for (const selector of ['[data-variant="glass"]', '[data-material="glass"]', '[data-slot="media-bar"]', '[data-slot="bottom-nav"]', '[data-slot="lightbox-backdrop"]', 'backdrop-filter: none']) assert.ok(transparency.includes(selector), selector);
@@ -92,10 +92,11 @@ test('overlays use the z-index scale, brand timing and German defaults', () => {
     if (overlays.includes(name)) assert.doesNotMatch(text, /\bz-50\b|\bduration-(?:200|300|500)\b|\bease-in-out\b|bg-black\/50/, `${name}: hard-coded layer, motion or colour`);
     assert.doesNotMatch(text, /'Close'|"Close"|'Command Palette'|focus-visible:outline-hidden/, `${name}: English default or hidden focus`);
   }
-  assert.match(source('dialog'), /z-overlay bg-overlay\/50/); assert.match(source('dialog'), /z-modal/);
-  assert.match(source('sheet'), /z-overlay bg-overlay\/50/); assert.match(source('sheet'), /z-modal[^']*ease-\(--easing-drawer\)[^']*data-\[state=closed\]:duration-\(--duration-slow\)[^']*data-\[state=open\]:duration-\(--duration-deliberate\)/);
-  for (const name of ['popover', 'select', 'dropdown-menu']) assert.match(source(name), /z-dropdown/, name);
-  assert.match(source('tooltip'), /z-tooltip/); assert.match(source('tooltip'), /data-\[state=instant-open\]:animate-none/);
+  assert.match(source('dialog'), /z-\(--z-index-overlay\) bg-overlay\/50/); assert.match(source('dialog'), /z-\(--z-index-modal\)/);
+  assert.match(source('sheet'), /z-\(--z-index-overlay\) bg-overlay\/50/); assert.match(source('sheet'), /z-\(--z-index-modal\)[^']*ease-\(--easing-drawer\)[^']*data-\[state=closed\]:duration-\(--duration-slow\)[^']*data-\[state=open\]:duration-\(--duration-deliberate\)/);
+  for (const name of ['popover', 'select', 'dropdown-menu']) assert.match(source(name), /z-\(--z-index-dropdown\)/, name);
+  assert.match(source('tooltip'), /z-\(--z-index-tooltip\)/);
+  for (const name of overlays) assert.doesNotMatch(source(name), /\bz-(?:overlay|modal|dropdown|tooltip)\b/, `${name}: named z utility is unknown to tailwind-merge`); assert.match(source('tooltip'), /data-\[state=instant-open\]:animate-none/);
   for (const name of ['dialog', 'popover', 'select', 'dropdown-menu', 'tooltip']) assert.match(source(name), /data-\[state=closed\]:duration-\(--duration-exit\)/, name);
   assert.equal((source('dialog').match(/closeLabel = 'Schliessen'/g) ?? []).length, 2);
   assert.match(source('sheet'), /closeLabel = 'Schliessen'/);
@@ -104,5 +105,35 @@ test('overlays use the z-index scale, brand timing and German defaults', () => {
   assert.match(source('dialog'), /dialog-title"[\s\S]*?text-balance/); assert.match(source('dialog'), /dialog-description"[\s\S]*?text-pretty/);
   assert.match(source('sheet'), /sheet-title"[\s\S]*?text-balance/); assert.match(source('sheet'), /sheet-description"[\s\S]*?text-pretty/);
   assert.match(source('select'), /focusRing/); assert.doesNotMatch(source('select'), /aria-invalid:ring-/); assert.match(source('select'), /export type \{[^}]*SelectTriggerProps/);
-  assert.match(source('audio-visual'), /data-activity=\{mode\}/); assert.doesNotMatch(source('audio-visual'), /data-mode=/);
+  assert.match(source('audio-visual'), /data-mode=\{mode\}/, 'ActivityRing keeps its public data-mode attribute'); assert.doesNotMatch(source('audio-visual'), /data-activity=/);
+});
+
+test('className z utilities replace the overlay defaults (tailwind-merge)', async () => {
+  const { twMerge } = await import('tailwind-merge');
+  for (const layer of ['dropdown', 'modal', 'overlay', 'tooltip']) {
+    assert.equal(twMerge(`fixed z-(--z-index-${layer}) w-72`, 'z-50'), 'fixed w-72 z-50', layer);
+    assert.equal(twMerge(`fixed z-(--z-index-${layer})`, 'z-[100]'), 'fixed z-[100]', layer);
+  }
+});
+
+test('overlays opened from a dialog or sheet are lifted to the modal layer, item-aligned Select included', () => {
+  // Radix Select (item-aligned, the default) wraps the content in a plain fixed div that copies its z-index, without the popper attribute.
+  const radix = readFileSync(new URL('../node_modules/@radix-ui/react-select/dist/index.mjs', import.meta.url), 'utf8');
+  assert.match(radix, /ref: setContentWrapper,\s*style: \{[^}]*position: "fixed",\s*zIndex: contentZIndex/);
+  const lift = stripComments(css).split('\n').find(line => line.includes('z-index: var(--z-index-modal) !important'));
+  assert.ok(lift, 'lift rule missing');
+  for (const slot of ['dialog-content', 'confirm-dialog', 'sheet-content']) assert.ok(lift.includes(`[data-slot="${slot}"]`), slot);
+  assert.match(lift, /~ :is\(\[data-radix-popper-content-wrapper\]:not\(:has\(> \[data-slot="tooltip-content"\]\)\), div:has\(> \[data-slot="select-content"\]\)\)/);
+  assert.match(source('select'), /position = 'item-aligned'/);
+});
+
+test('rendered defaults survive the cascade layers: heading weight, skeleton, dark variant, icon-button shadow', () => {
+  const plain = stripComments(css);
+  assert.match(plain, /@layer utilities \{[\s\S]*:is\(h1, h2, h3\):is\(\.font-medium, \.font-semibold\) \{ font-weight: var\(--brand-heading-weight\); \}/);
+  for (const name of ['dialog', 'sheet']) assert.match(source(name), /-title"[\s\S]*?font-semibold/, `${name} title relies on the heading guard`);
+  assert.match(plain, /@media \(prefers-reduced-motion: reduce\) \{\s*\[data-slot="skeleton"\]\.animate-pulse \{ animation: none; \}/);
+  assert.match(read('packages/core/src/ui/skeleton.tsx'), /data-slot="skeleton"[\s\S]*animate-pulse/);
+  assert.match(css, /^@custom-variant dark \(&:where\(\[data-mode="dark"\], \[data-mode="dark"\] \*\)\);$/m);
+  assert.match(read('packages/core/src/ui/icon-button.tsx'), /after:size-11/);
+  for (const line of plain.split('\n').filter(l => l.includes('box-shadow: var(--brand-shadow)'))) assert.ok(line.includes('[class~="after:size-11"]'), `IconButton trigger excluded: ${line.trim().slice(0, 60)}`);
 });
