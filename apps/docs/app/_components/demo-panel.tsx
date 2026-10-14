@@ -34,8 +34,18 @@ export function DemoPanel({title,id,code,description,layout='center',children}:D
   const [tab,setTab]=useState('preview'),[status,setStatus]=useState('');
   const codeRef=useRef<HTMLElement>(null);
   const timer=useRef<ReturnType<typeof setTimeout>|undefined>(undefined);
+  const selectPending=useRef(false);
   useEffect(()=>()=>clearTimeout(timer.current),[]);
   const snippet=code.trim();
+  /** Selects the snippet for a manual copy; reports only what actually happened. */
+  const selectCode=()=>{
+    const node=codeRef.current,selection=window.getSelection();
+    if(!node||!selection){setStatus('Kopieren nicht möglich. Code im Tab «Code» markieren.');return;}
+    const range=document.createRange();range.selectNodeContents(node);selection.removeAllRanges();selection.addRange(range);
+    setStatus('Code markiert. Mit Strg+C oder ⌘C kopieren.');
+  };
+  // Runs after the Code tab is shown; the snippet is force-mounted, so the <code> node exists.
+  useEffect(()=>{if(tab==='code'&&selectPending.current){selectPending.current=false;selectCode();}},[tab]);
   const copy=async(event:MouseEvent<HTMLButtonElement>)=>{
     const trigger=event.currentTarget;
     const ok=await writeClipboard(snippet);
@@ -43,9 +53,8 @@ export function DemoPanel({title,id,code,description,layout='center',children}:D
     clearTimeout(timer.current);
     if(ok){setStatus('Kopiert');timer.current=setTimeout(()=>setStatus(''),2400);return;}
     // No clipboard at all: show the code and select it for a manual copy.
-    setTab('code');
-    requestAnimationFrame(()=>{const node=codeRef.current;const selection=window.getSelection();if(!node||!selection)return;const range=document.createRange();range.selectNodeContents(node);selection.removeAllRanges();selection.addRange(range);});
-    setStatus('Code markiert. Mit Strg+C oder ⌘C kopieren.');
+    if(tab==='code'){selectCode();return;}
+    selectPending.current=true;setTab('code');
   };
   return <section className="demo-panel demo-panel--stage" id={id} aria-labelledby={`${id}-title`}>
     <header className="demo-panel-header"><h2 id={`${id}-title`}>{title}</h2>{typeof description==='string'?<p>{description}</p>:description}</header>
@@ -54,9 +63,9 @@ export function DemoPanel({title,id,code,description,layout='center',children}:D
         <TabsList aria-label={`${title}: Darstellung`}><TabsTrigger value="preview">Vorschau</TabsTrigger><TabsTrigger value="code">Code</TabsTrigger></TabsList>
         <div className="demo-panel-actions"><span role="status" className="demo-copy-status">{status}</span><Button type="button" variant="ghost" size="sm" onClick={copy}>{status==='Kopiert'?<Check aria-hidden="true"/>:<Copy aria-hidden="true"/>}Code kopieren</Button></div>
       </div>
-      {/* Mounted while hidden, so demo state (players, streams, forms) survives a look at the code. */}
+      {/* Both stay mounted while hidden: demo state (players, streams, forms) survives a look at the code, and the snippet can be selected right after the tab switch. */}
       <TabsContent value="preview" forceMount><div className="demo-stage" data-layout={layout}>{children}</div></TabsContent>
-      <TabsContent value="code" className="demo-code"><pre><code ref={codeRef}>{snippet}</code></pre></TabsContent>
+      <TabsContent value="code" forceMount className="demo-code"><pre><code ref={codeRef}>{snippet}</code></pre></TabsContent>
     </Tabs>
   </section>;
 }

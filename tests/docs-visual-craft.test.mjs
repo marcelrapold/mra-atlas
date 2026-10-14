@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile,readdir} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
 
 const read=path=>readFile(new URL(`../${path}`,import.meta.url),'utf8');
 const app='apps/docs/app/';
@@ -62,12 +63,14 @@ test('content grids answer to <main> through container queries',()=>{
 
 test('base layer, focus and motion are declared once',async()=>{
   assert.match(css,/@layer base\{[^@]*a:focus-visible,button:focus-visible,select:focus-visible,summary:focus-visible\{outline:3px solid var\(--ring\)/);
-  assert.doesNotMatch(css,/prefers-reduced-motion/,'core styles.css owns the reduced-motion reset');
+  // Core resets motion inside .framework-scope; html sits outside it and needs its own scroll-behavior reset.
+  assert.match(css,/@media\(prefers-reduced-motion:reduce\)\{html\{scroll-behavior:auto\}\}/);
   assert.match(css,/html\{scroll-padding-top:/);
   assert.match(css,/@supports \(animation-timeline:scroll\(\)\)/);
   assert.match(css,/@supports \(interpolate-size:allow-keywords\)/);
   const a11y=await read(app+'accessibility.css');
-  assert.doesNotMatch(a11y,/tabs-content/,'core TabsContent owns its focus ring');
+  // Tailwind v4 outline-2 without outline-solid leaves TabsContent without a visible ring (WCAG 2.4.7).
+  assert.match(a11y,/\[data-slot='tabs-content'\]\):focus-visible \{outline: 3px solid/,'tabs-content focus patch stays until core sets outline-style');
   assert.match(a11y,/changelog-header \{padding: clamp\(.*\dcqi/);
 });
 
@@ -88,11 +91,21 @@ test('product-world styles ship with the brand page, not the main stylesheet',as
   assert.doesNotMatch(css,/\.rapold-world|\.rw-/);
   const worlds=await read(app+'_components/rapold-worlds.tsx');
   assert.match(worlds,/import '\.\.\/\.\.\/\.\.\/\.\.\/brands\/rapold\/worlds\.css';/);
-  // Monotonic outline: h2 section > h3 world name > h4 details.
-  assert.doesNotMatch(worlds,/<h3>(?:\{world\.title\}|So wird)/);
-  assert.match(worlds,/<h4 className="rw-details-title">/);
-  const sheet=await read('brands/rapold/worlds.css');
-  assert.match(sheet,/\.rw-details \.rw-details-title \{font-size: 19px;/);
+  // worlds.css is a published download: selectors stay stable and the file matches the audited contrast record.
+  assert.match(worlds,/<div className="rw-background-label"><span>\{world\.label\}<\/span><strong>/);
+  assert.match(worlds,/<div className="rw-details"><div><p className="eyebrow">\{world\.sourceLabel\}<\/p><h3>/);
+  const sheet=await readFile(new URL('../brands/rapold/worlds.css',import.meta.url));
+  const audit=JSON.parse(await read('docs/review/product-worlds-contrast.json'));
+  const recorded=audit.sources.find(source=>source.path==='brands/rapold/worlds.css').sha256;
+  assert.equal(createHash('sha256').update(sheet).digest('hex'),recorded,'worlds.css changed: refresh docs/review/product-worlds-contrast.json');
+});
+
+test('demo stage layout rules leave visually hidden children alone',()=>{
+  // A fill stage widening an absolutely positioned .sr-only span caused horizontal scroll on /notices.
+  const rules=[...css.matchAll(/([^{}]*\.demo-stage[^{}]*)\{([^{}]*)\}/g)];
+  const childRules=rules.filter(([,selector,body])=>/\.demo-stage(?:\[[^\]]+\])?>\*/.test(selector)&&/(?:^|;)(?:max-)?(?:width|margin(?:-[a-z]+)?):/.test(body));
+  assert.deepEqual(childRules.map(([,selector])=>selector.trim()),[],'use >:not(.sr-only) for child sizing');
+  assert.match(css,/\.demo-stage\{position:relative;/,'stage contains absolutely positioned children');
 });
 
 test('every demo panel uses DemoPanel with a unique slug and a code snippet',async()=>{

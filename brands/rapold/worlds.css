@@ -174,7 +174,7 @@
 .rw-edge-layout > .rw-demo-note {margin-top: 15px;}
 .rw-background-label {position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; max-width: 360px; padding: 25px; margin: 28px; border-radius: 14px; background: rgb(var(--rw-card-rgb) / .92); border: 1px solid var(--rw-border);}
 .rw-background-label > span {font: 11px/1.5 'Geist Mono', monospace; color: var(--rw-muted);}
-.rw-background-label > .rw-background-title {font-size: 25px; font-weight: 600; letter-spacing: -.04em;}
+.rw-background-label > strong {font-size: 25px; font-weight: 600; letter-spacing: -.04em;}
 .rw-layer-controls {display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; padding: 20px 0 10px;}
 .rw-control-caption {display: block; color: var(--muted-foreground); font-size: 11px; margin-bottom: 8px;}
 .rw-layer-buttons {display: flex; flex-wrap: wrap; gap: 6px;}
@@ -183,7 +183,7 @@
 .rw-view-controls {display: flex; flex-wrap: wrap; align-self: flex-end; gap: 6px;}
 .rw-motion-note {margin: 8px 0 28px; color: var(--muted-foreground); font-size: 12px; line-height: 1.7; max-width: 95ch;}
 .rw-details {display: grid; grid-template-columns: 1fr 1fr; gap: 36px; padding: 30px; border: 1px solid var(--border); border-radius: 16px; background: var(--card);}
-.rw-details .rw-details-title {font-size: 19px; margin: 7px 0 14px;}
+.rw-details h3 {font-size: 19px; margin: 7px 0 14px;}
 .rw-details p {font-size: 13px; line-height: 1.8; color: var(--muted-foreground); margin: 0 0 14px;}
 .rw-details .eyebrow {font-size: 10px;}
 .rw-details .rw-source-note {font-size: 12px;}
