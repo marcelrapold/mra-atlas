@@ -1,6 +1,6 @@
 # Layout-Komponenten
 
-Seitenstruktur und Navigation, übernommen aus RadioX und für Atlas neutralisiert: nur semantische Tokens, keine Brand-Farben, keine App-Logik (Router, Stores, Player). Demo: `apps/docs/app/_components/demos/layout-demo.tsx`.
+Seitenstruktur und Navigation, übernommen aus RadioX und für Atlas neutralisiert: nur semantische Tokens, keine Brand-Farben, keine App-Logik (Router, Stores, Player). Dazu die Atlas-Basisprimitive Accordion, Collapsible, Table und Kbd für Inhaltsstruktur. Demo: `apps/docs/app/_components/demos/layout-demo.tsx`.
 
 ## PageHeader
 
@@ -85,7 +85,71 @@ Seitenstruktur und Navigation, übernommen aus RadioX und für Atlas neutralisie
 
 **Abweichungen:** Die Kandidatenkette von SpeakerAvatar (verkleinerte Variante → Original → Fallback) wird durch das Radix-Laden mit einer Quelle ersetzt; Bildtransformation ist App-Sache. Die Supabase-/Google-/Spotify-Logik aus `avatar.ts` entfällt; übrig bleibt die generische Initialen-Ableitung `getInitials`. Der Gradient-Fallback wird durch `bg-muted` ersetzt. `AvatarGroup` ist neu: RadioX stapelte Zuhörende inline im LivePlayer; das Detail-Sheet (`LiveListenerSheet`) bleibt App-Logik und lässt sich mit `Sheet` aufbauen.
 
+## Accordion, AccordionItem, AccordionTrigger, AccordionContent
+
+`packages/core/src/ui/accordion.tsx` (`'use client'`, Radix Accordion). Atlas-Basisprimitive, kein RadioX-Vorbild.
+
+**Zweck:** Gestapelte Abschnitte, die sich einzeln auf- und zuklappen lassen: FAQ, Einstellungsgruppen, lange Detaillisten.
+
+**Props:**
+- `Accordion`: Radix-Props (`type` `single | multiple`, `collapsible`, `value`, `defaultValue`, `onValueChange`, `disabled`, `orientation`).
+- `AccordionItem`: `value` (Pflicht), `disabled`. Trennlinie unten, beim letzten Eintrag ohne.
+- `AccordionTrigger`: `headingLevel` `2 | 3 | 4 | 5 | 6` (Standard 3) für die umgebende Überschrift; Chevron am Ende der Zeile.
+- `AccordionContent`: `className` gilt für den inneren Inhalt (Abstände), nicht für den animierten Rahmen.
+
+**Verhalten:** Der Inhalt animiert seine Höhe über `--radix-collapsible-content-height` (200 ms, nur `motion-safe:`); der Chevron dreht sich nur `motion-safe`. Die Keyframes liefert die interne Ressource `CoreKeyframes` (`motion-keyframes.tsx`): ein React-19-`<style>` mit `href` und `precedence`, das genau einmal im `<head>` landet, auch beim Server-Render. `styles.css` bleibt dafür unverändert. Radix wartet beim Schliessen auf das Ende der Animation; beim ersten Render offene Einträge animieren nicht.
+
+**A11y:** Jeder Trigger ist ein `<button>` in einer Überschrift, mit `aria-expanded` und `aria-controls`; der Inhalt ist eine Region mit `aria-labelledby`. Pfeiltasten, Pos1 und Ende durch Radix. Trigger mindestens 44 px hoch, Fokus als Outline (`focusRing`). Der Chevron ist `aria-hidden`.
+
+**Do:** Die Überschriftenebene an die Gliederung anpassen (`headingLevel`). Kurze, eindeutige Trigger-Texte.
+**Don't:** Pflichtinformationen zuklappen. Keine interaktiven Elemente in den Trigger legen.
+
+## Collapsible, CollapsibleTrigger, CollapsibleContent
+
+`packages/core/src/ui/collapsible.tsx` (`'use client'`, Radix Collapsible). Atlas-Basisprimitive.
+
+**Zweck:** Ein einzelner auf- und zuklappbarer Bereich ohne eigene Gestaltung, z. B. «Weitere Optionen» unter einem Formular oder Details in einer Karte.
+
+**Props:** `Collapsible`: Radix-Props (`open`, `defaultOpen`, `onOpenChange`, `disabled`). `CollapsibleTrigger`: meist `asChild` mit einem `Button`. `CollapsibleContent`: animiert wie das Accordion (`overflow-hidden`, Höhe über die Radix-Variable, nur `motion-safe`).
+
+**A11y:** Radix setzt `aria-expanded` und `aria-controls` am Trigger. Der Trigger braucht einen sichtbaren, gleichbleibenden Namen; den Zustand nicht zusätzlich in den Namen schreiben, `aria-expanded` trägt ihn bereits.
+
+**Do:** Für einen einzelnen Bereich; für mehrere gleichartige Abschnitte das Accordion verwenden.
+**Don't:** Navigation in einem Collapsible verstecken, die auf grossen Viewports dauerhaft sichtbar sein sollte.
+
+## Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption
+
+`packages/core/src/ui/table.tsx`. Serverfähig, ohne Client-Code. Atlas-Basisprimitive.
+
+**Zweck:** Datentabellen mit semantischem HTML. Sortierung, Filter und Paginierung bleiben App-Logik.
+
+**Props:**
+- `Table`: alle `<table>`-Props plus `scrollLabel` und `containerClassName`. Rendert immer einen `div[data-slot=table-container]` mit `overflow-x-auto` um die Tabelle.
+- `TableRow`: `selected` setzt `data-state="selected"` (Hervorhebung `bg-muted`).
+- `TableHead`: `scope` (Standard `col`; für Zeilenköpfe `scope="row"`), `numeric`.
+- `TableCell`: `numeric`.
+- `TableCaption`: Beschriftung unter der Tabelle (`caption-bottom`).
+
+**Zahlen:** `numeric` an `TableHead` und `TableCell` derselben Spalte setzt `text-end` und `tabular-nums` (gleich breite Ziffern) und markiert die Zelle mit `data-numeric`. Werte vorher mit `Intl.NumberFormat('de-CH')` formatieren.
+
+**A11y:** Mit `scrollLabel` wird der Container eine benannte Region (`role="region"`, `aria-label`) mit `tabIndex=0` und nach innen versetzter Fokus-Outline (`focusRingInset`), damit breite Tabellen per Tastatur horizontal scrollbar sind (WCAG 2.1.1). Ohne `scrollLabel` bleibt der Container neutral; das passt nur, wenn die Tabelle sicher nicht überläuft. Spaltenköpfe tragen `scope="col"`. Eine `TableCaption` oder eine Überschrift mit `aria-labelledby` benennt die Tabelle. `selected` ist nur Darstellung: Die Auswahl gehört in ein Bedienelement der Zeile (Checkbox mit Namen).
+
+**Do:** Für Tabellen, die auf schmalen Viewports überlaufen können, immer `scrollLabel` setzen («Projekte, horizontal scrollbar»). Text am Anfang, Zahlen am Ende der Zelle ausrichten.
+**Don't:** Tabellen für Layout verwenden. Keine klickbaren Zeilen ohne Link oder Button in der Zeile.
+
+## Kbd, KbdGroup
+
+`packages/core/src/ui/kbd.tsx`. Serverfähig. Atlas-Basisprimitive.
+
+**Zweck:** Tastenbezeichnungen in Hilfetexten, Tooltips und Menüs, z. B. `<Kbd>Esc</Kbd>` oder `<KbdGroup><Kbd>⌘</Kbd><Kbd>K</Kbd></KbdGroup>`.
+
+**Darstellung:** `bg-muted`, `text-muted-foreground`, feiner Rahmen in `border` (bleibt in Forced Colors als Kontur sichtbar), `text-xs`, Mindestbreite 20 px. Icons darin werden auf 12 px gesetzt.
+
+**A11y:** Natives `<kbd>`; `KbdGroup` ist ebenfalls ein `<kbd>`, denn verschachtelte `<kbd>` stehen in HTML für eine Tastenkombination. Bei Symboltasten den Namen im umgebenden Text nennen («Befehlstaste ⌘ und K»), weil Screenreader `⌘` nicht überall vorlesen.
+
+**Do:** Plattformgerechte Tasten zeigen (`Strg` unter Windows, `⌘` unter macOS). **Don't:** `Kbd` als Button oder als Badge verwenden.
+
 ## Offen
 
-- Komponenten sind noch nicht in `packages/core/src/index.ts` exportiert (Integration folgt).
+- Komponenten sind noch nicht in `packages/core/src/index.ts` exportiert (Integration folgt). Accordion, Collapsible, Table und Kbd haben noch keine Demo.
 - Visuelle Prüfung im Browser steht aus (Safe Area auf iOS, Scroll-Snap, FAB-Lage im Stack).

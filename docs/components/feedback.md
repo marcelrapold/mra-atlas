@@ -1,6 +1,6 @@
-# Feedback: Alert, Announcer, Hooks, LogView
+# Feedback: Alert, Announcer, Empty, Hooks, LogView
 
-Gruppe «feedback» aus dem RadioX-Import. Alle Komponenten verwenden nur semantische Tokens (`info`, `success`, `warning`, `destructive`, `muted`, `card`, `ring`, `chart-1…5`) und `var(--brand-radius)`. Texte sind deutsch (Schweizer Schreibweise) und per Props überschreibbar. Demo: `apps/docs/app/_components/demos/feedback-demo.tsx`.
+Gruppe «feedback» aus dem RadioX-Import, ergänzt um die Atlas-Anatomie für leere Zustände (`Empty`). Alle Komponenten verwenden nur semantische Tokens (`info`, `success`, `warning`, `destructive`, `muted`, `card`, `ring`, `chart-1…5`) und `var(--brand-radius)`. Texte sind deutsch (Schweizer Schreibweise) und per Props überschreibbar. Demo: `apps/docs/app/_components/demos/feedback-demo.tsx`.
 
 ## Alert
 
@@ -43,6 +43,39 @@ Datei: `packages/core/src/ui/announcer.tsx` · Exporte: `Announcer`, Typen `Anno
 **Don't.** Kein `assertive` für Routinewechsel. Keinen Ticker ansagen.
 
 **RadioX-Herkunft.** `apps/frontend/components/LivePlayer/LiveNowAnnouncer.tsx`.
+
+## Empty und EmptyState
+
+Datei: `packages/core/src/ui/empty-state.tsx` (serverfähig) · Exporte: `Empty`, `EmptyHeader`, `EmptyMedia`, `EmptyTitle`, `EmptyDescription`, `EmptyContent`, `emptyMediaVariants`, `EmptyState`, Typ `EmptyStateProps`.
+
+**Zweck.** Leerer Zustand an der Stelle, an der sonst Inhalt stünde: noch keine Einträge, keine Treffer, Daten nicht verfügbar. Sagt, was fehlt, und bietet den nächsten Schritt an.
+
+**Anatomie.** Alle Teile nehmen `React.ComponentProps<'div'>`, setzen `data-slot` und führen `className` über `cn` zusammen.
+
+| Teil | `data-slot` | Hinweis |
+| --- | --- | --- |
+| `Empty` | `empty` | Rahmen: gestrichelt (`border-border/60`), `bg-card/40`, zentriert, `px-6 py-12` |
+| `EmptyHeader` | `empty-header` | gruppiert Titel und Beschreibung |
+| `EmptyMedia` | `empty-media` | `variant` `default` (Bild, Illustration) \| `icon` (rundes `bg-muted`-Feld, Icon 20 px); `data-variant` |
+| `EmptyTitle` | `empty-title` | ohne `asChild` ein `div`; mit `asChild` die passende Überschrift: `<EmptyTitle asChild><h2>…</h2></EmptyTitle>` |
+| `EmptyDescription` | `empty-description` | `text-xs`, `text-muted-foreground`, höchstens `max-w-sm`; Links darin unterstrichen |
+| `EmptyContent` | `empty-content` | Handlungen und Zusatzinhalt, zentriert gestapelt |
+
+**Preset `EmptyState`.** Komponiert die Anatomie mit unveränderter API, bestehende Aufrufe bleiben gültig und sehen gleich aus.
+
+| Prop | Typ | Standard | Hinweis |
+| --- | --- | --- | --- |
+| `icon` | `LucideIcon` | – | in `EmptyMedia variant="icon"`, `aria-hidden` |
+| `title` | `ReactNode` | – | Pflicht, als Überschrift gerendert |
+| `description` | `ReactNode` | – | |
+| `actions` | `ReactNode` | – | in `EmptyContent` |
+| `headingLevel` | `2 \| 3 \| 4` | `3` | an die Gliederung der Seite anpassen |
+| `className`, `...rest` | `div`-Props | – | landen auf `Empty` (z. B. `id`, `aria-*`, `role`) |
+
+**A11y.** Der Titel ist eine echte Überschrift, damit der Zustand in der Überschriftennavigation auftaucht; die Ebene muss zur Gliederung passen (`headingLevel`). Icons und Illustrationen sind dekorativ (`aria-hidden`). Erscheint der leere Zustand erst nach einer Suche oder einem Filter, den Wechsel zusätzlich über einen `Announcer` melden («Keine Treffer»); `Empty` selbst ist keine Live-Region. Für Fehler mit Wiederholen `role="alert"` auf einen umgebenden Container legen (siehe `ErrorBoundary`).
+
+**Do.** Titel als Feststellung («Noch keine Projekte»), Beschreibung mit dem nächsten Schritt, eine primäre Handlung. Für eigene Layouts die Anatomie direkt komponieren statt das Preset per `className` umzubauen.
+**Don't.** Keine Schuldzuweisung («Sie haben noch nichts angelegt»). Keine Skeletons und keinen leeren Zustand gleichzeitig zeigen. Keine Brandfarben auf die Fläche legen.
 
 ## Hooks
 
