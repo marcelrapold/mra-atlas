@@ -1,10 +1,27 @@
-@custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
+/* Nächster Scope gewinnt: ein heller Scope in einem dunklen bekommt keine dark:-Utilities (zwei Verschachtelungsebenen). */
+@custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *:not([data-mode="light"], [data-mode="light"] *), [data-mode="light"] [data-mode="dark"] *:not([data-mode="light"] [data-mode="dark"] [data-mode="light"], [data-mode="light"] [data-mode="dark"] [data-mode="light"] *)));
+/* Nicht inline: z-modal usw. kompilieren zu var(--z-index-*), Brand-Werte am Scope gewinnen. Defaults = foundation.json. */
+@theme {
+  --z-index-base: 0;
+  --z-index-sticky: 20;
+  --z-index-dropdown: 30;
+  --z-index-overlay: 40;
+  --z-index-modal: 50;
+  --z-index-toast: 60;
+  --z-index-tooltip: 70;
+}
 @theme inline {
   --color-info: var(--info);
   --color-info-foreground: var(--info-foreground);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-overlay: var(--overlay);
+  --color-surface-info: var(--surface-info);
+  --color-surface-success: var(--surface-success);
+  --color-surface-warning: var(--surface-warning);
+  --color-surface-danger: var(--surface-danger);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -40,16 +57,138 @@
   --radius-md: min(var(--brand-radius), 8px);
   --radius-lg: var(--brand-radius);
   --radius-xl: var(--brand-radius);
+  /* Bewegung: duration-normal, ease-enter … lesen die Brand-Tokens; unter reduzierter Bewegung greift --atlas-duration-cap. */
+  --transition-duration-instant: var(--duration-instant);
+  --transition-duration-fast: min(var(--duration-fast), var(--atlas-duration-cap, var(--duration-fast)));
+  --transition-duration-normal: min(var(--duration-normal), var(--atlas-duration-cap, var(--duration-normal)));
+  --transition-duration-slow: min(var(--duration-slow), var(--atlas-duration-cap, var(--duration-slow)));
+  --transition-duration-deliberate: min(var(--duration-deliberate), var(--atlas-duration-cap, var(--duration-deliberate)));
+  --transition-duration-exit: min(var(--duration-exit), var(--atlas-duration-cap, var(--duration-exit)));
+  --transition-duration-reduced: var(--duration-reduced);
+  --ease-standard: var(--easing-standard);
+  --ease-enter: var(--easing-enter);
+  --ease-exit: var(--easing-exit);
+  --ease-drawer: var(--easing-drawer);
+  --default-transition-duration: var(--duration-fast);
+  --default-transition-timing-function: var(--easing-standard);
 }
+
+/* Ein- und Ausblenden: API-kompatible Teilmenge von tw-animate, ohne Abhängigkeit. Utilities setzen nur Variablen;
+   --atlas-motion (0 bei reduzierter Bewegung) skaliert Verschiebung und Zoom, die Deckkraft blendet immer. */
+@keyframes atlas-enter {
+  from {
+    opacity: var(--atlas-enter-opacity, 1);
+    transform: translate3d(calc(var(--atlas-enter-x, 0px) * var(--atlas-motion, 1)), calc(var(--atlas-enter-y, 0px) * var(--atlas-motion, 1)), 0) scale(calc(1 - (1 - var(--atlas-enter-scale, 1)) * var(--atlas-motion, 1)));
+  }
+}
+@keyframes atlas-exit {
+  to {
+    opacity: var(--atlas-exit-opacity, 1);
+    transform: translate3d(calc(var(--atlas-exit-x, 0px) * var(--atlas-motion, 1)), calc(var(--atlas-exit-y, 0px) * var(--atlas-motion, 1)), 0) scale(calc(1 - (1 - var(--atlas-exit-scale, 1)) * var(--atlas-motion, 1)));
+  }
+}
+/* duration-* und ease-* am Element (--tw-duration, --tw-ease) übersteuern die Brand-Vorgaben. */
+@utility animate-in {
+  --atlas-duration: var(--tw-duration, var(--duration-normal, 200ms));
+  animation-name: atlas-enter;
+  animation-duration: min(var(--atlas-duration), var(--atlas-duration-cap, var(--atlas-duration)));
+  animation-timing-function: var(--tw-ease, var(--easing-enter, cubic-bezier(0, 0, 0.2, 1)));
+  animation-fill-mode: backwards;
+}
+@utility animate-out {
+  --atlas-duration: var(--tw-duration, var(--duration-exit, 150ms));
+  animation-name: atlas-exit;
+  animation-duration: min(var(--atlas-duration), var(--atlas-duration-cap, var(--atlas-duration)));
+  animation-timing-function: var(--tw-ease, var(--easing-exit, cubic-bezier(0.4, 0, 1, 1)));
+  animation-fill-mode: forwards;
+}
+@utility fade-in { --atlas-enter-opacity: 0; }
+@utility fade-in-* { --atlas-enter-opacity: calc(--value(integer) / 100); }
+@utility fade-out { --atlas-exit-opacity: 0; }
+@utility fade-out-* { --atlas-exit-opacity: calc(--value(integer) / 100); }
+@utility zoom-in-* { --atlas-enter-scale: calc(--value(integer) / 100); }
+@utility zoom-out-* { --atlas-exit-scale: calc(--value(integer) / 100); }
+@utility slide-in-from-top { --atlas-enter-y: -100%; }
+@utility slide-in-from-bottom { --atlas-enter-y: 100%; }
+@utility slide-in-from-left { --atlas-enter-x: -100%; }
+@utility slide-in-from-right { --atlas-enter-x: 100%; }
+@utility slide-out-to-top { --atlas-exit-y: -100%; }
+@utility slide-out-to-bottom { --atlas-exit-y: 100%; }
+@utility slide-out-to-left { --atlas-exit-x: -100%; }
+@utility slide-out-to-right { --atlas-exit-x: 100%; }
+@utility slide-in-from-top-* { --atlas-enter-y: calc(var(--spacing) * --value(integer) * -1); }
+@utility slide-in-from-bottom-* { --atlas-enter-y: calc(var(--spacing) * --value(integer)); }
+@utility slide-in-from-left-* { --atlas-enter-x: calc(var(--spacing) * --value(integer) * -1); }
+@utility slide-in-from-right-* { --atlas-enter-x: calc(var(--spacing) * --value(integer)); }
+@utility slide-out-to-top-* { --atlas-exit-y: calc(var(--spacing) * --value(integer) * -1); }
+@utility slide-out-to-bottom-* { --atlas-exit-y: calc(var(--spacing) * --value(integer)); }
+@utility slide-out-to-left-* { --atlas-exit-x: calc(var(--spacing) * --value(integer) * -1); }
+@utility slide-out-to-right-* { --atlas-exit-x: calc(var(--spacing) * --value(integer)); }
+
 @layer base {
   .framework-scope { background: var(--background); color: var(--foreground); font-family: var(--brand-font); font-weight: var(--brand-body-weight); color-scheme: light; }
   .framework-scope[data-mode="dark"] { color-scheme: dark; }
   .framework-scope *, .framework-scope *::before, .framework-scope *::after { border-color: var(--border); }
+  /* Reduzierte Bewegung: Überlagerungen blenden nur noch (kein Weg, kein Zoom), Dauern höchstens --duration-reduced.
+     Endlos-Animationen in Core sind motion-safe: gebunden; Spinner bleiben als Status über aria-busy lesbar. */
+  @media (prefers-reduced-motion: reduce) {
+    :root, .framework-scope { --atlas-motion: 0; --atlas-duration-cap: var(--duration-reduced, 160ms); scroll-behavior: auto; }
+  }
+  /* Mehr Kontrast: nur Rollen umhängen, keine Hexwerte. !important schlägt die Brand-Variablen im style-Attribut. */
+  @media (prefers-contrast: more) {
+    :where([data-brand], .framework-scope) { --border: var(--input) !important; --muted-foreground: var(--foreground) !important; }
+  }
 }
-.framework-scope [data-slot="button"], .framework-scope [data-slot="card"], .framework-scope [data-slot="input"] { box-shadow: var(--brand-shadow); }
-.framework-scope [data-slot="button"][data-size="default"] { min-height: var(--brand-button-height); padding: 10px 20px; font-size: 1rem; letter-spacing: .015em; }
-.framework-scope [data-slot="button"], .framework-scope [data-slot="badge"], .framework-scope [data-slot="label"], .framework-scope [data-slot="card-title"], .framework-scope h1, .framework-scope h2, .framework-scope h3 { font-weight: var(--brand-heading-weight); }
-.framework-scope [data-slot="input"] { font-weight: var(--brand-body-weight); }
-@media (prefers-reduced-motion: reduce) {
-  .framework-scope *, .framework-scope *::before, .framework-scope *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+
+/* Brand-Vorgaben für Core-Komponenten, Spezifität 0: className-Utilities und Brand-CSS gewinnen.
+   Button-Selektor umfasst Slot-gerenderte Trigger (dialog-trigger, sheet-close …), die data-slot="button" überschreiben. */
+@layer components {
+  :where(.framework-scope) :where([data-slot="button"], :is([data-slot$="-trigger"], [data-slot$="-close"])[data-variant]:not([aria-pressed]), [data-slot="card"], [data-slot="input"]) { box-shadow: var(--brand-shadow); }
+  :where(.framework-scope) :where([data-slot="button"], :is([data-slot$="-trigger"], [data-slot$="-close"]):not([aria-pressed]))[data-variant][data-size="default"] { min-height: var(--brand-button-height); padding: 10px 20px; font-size: 1rem; letter-spacing: .015em; }
+  :where(.framework-scope) :where([data-slot="button"], :is([data-slot$="-trigger"], [data-slot$="-close"])[data-variant]:not([aria-pressed]), [data-slot="badge"], [data-slot="label"], [data-slot="card-title"], h1, h2, h3) { font-weight: var(--brand-heading-weight); }
+  :where(.framework-scope) :where([data-slot="input"]) { font-weight: var(--brand-body-weight); }
+  /* z-dropdown liegt unter z-modal. Popover, Select und Menü aus einem offenen Dialog oder Sheet landen im selben Portal danach
+     und werden auf Modal-Ebene gehoben; Radix kopiert den z-index inline auf den Wrapper, daher !important. */
+  :where([data-slot="dialog-content"], [data-slot="sheet-content"]) ~ [data-radix-popper-content-wrapper]:not(:has(> [data-slot="tooltip-content"])) { z-index: var(--z-index-modal) !important; }
+}
+
+/* Die cva-Defaults der Komponenten (px-4, text-sm, font-medium, shadow-xs …) sind selbst Utilities und würden die Brand-Vorgaben
+   oben überdecken. Diese Wächter greifen nur, solange die Default-Klasse noch im Element steht: setzt className eigene Werte,
+   entfernt tailwind-merge die Default-Klasse und die Utility des Aufrufers gilt. */
+@layer utilities {
+  :where(.framework-scope) :where([data-slot="button"], :is([data-slot$="-trigger"], [data-slot$="-close"]):not([aria-pressed]))[data-variant][data-size="default"] {
+    &.px-4 { padding-inline: 20px; }
+    &.py-2 { padding-block: 10px; }
+    &.text-sm { font-size: 1rem; }
+  }
+  :where(.framework-scope) :where([data-slot="button"], :is([data-slot$="-trigger"], [data-slot$="-close"])[data-variant]:not([aria-pressed]), [data-slot="card"], [data-slot="input"])[data-slot]:is(.shadow-xs, .shadow-sm) { box-shadow: var(--brand-shadow); }
+  :where(.framework-scope) :where([data-slot="button"], :is([data-slot$="-trigger"], [data-slot$="-close"])[data-variant]:not([aria-pressed]), [data-slot="badge"], [data-slot="label"], [data-slot="card-title"])[data-slot]:is(.font-medium, .font-semibold) { font-weight: var(--brand-heading-weight); }
+}
+
+/* Erzwungene Farben (Windows-Kontrastdesigns): Zustände, die sonst nur über Hintergrundfarben lesbar sind, auf Systemfarben. */
+@layer components {
+  @media (forced-colors: active) {
+    :where(.framework-scope) :is([data-slot="dropdown-menu-item"], [data-slot="dropdown-menu-checkbox-item"], [data-slot="dropdown-menu-radio-item"], [data-slot="dropdown-menu-sub-trigger"], [data-slot="select-item"])[data-highlighted],
+    :where(.framework-scope) [data-slot="command-item"][data-selected="true"] { forced-color-adjust: none; background-color: Highlight !important; color: HighlightText !important; }
+    :where(.framework-scope) :is([data-slot="dropdown-menu-item"], [data-slot="dropdown-menu-checkbox-item"], [data-slot="dropdown-menu-radio-item"], [data-slot="dropdown-menu-sub-trigger"], [data-slot="select-item"])[data-highlighted] *,
+    :where(.framework-scope) [data-slot="command-item"][data-selected="true"] * { color: HighlightText !important; }
+    :where(.framework-scope) [data-slot="radio-group-indicator"] > * { forced-color-adjust: none; background-color: CanvasText !important; }
+    :where(.framework-scope) [data-slot="switch"] { forced-color-adjust: none; background-color: Canvas !important; border-color: CanvasText !important; }
+    :where(.framework-scope) [data-slot="switch"][data-state="checked"] { background-color: Highlight !important; border-color: Highlight !important; }
+    :where(.framework-scope) [data-slot="switch-thumb"] { forced-color-adjust: none; background-color: CanvasText !important; border-color: Canvas !important; }
+    :where(.framework-scope) [data-slot="switch-thumb"][data-state="checked"] { background-color: HighlightText !important; }
+    :where(.framework-scope) [data-slot="checkbox"]:is([data-state="checked"], [data-state="indeterminate"]) { forced-color-adjust: none; background-color: Highlight !important; border-color: Highlight !important; color: HighlightText !important; }
+    :where(.framework-scope) [data-slot="tabs-trigger"][data-state="active"],
+    :where(.framework-scope) [data-slot="toggle"][data-state="on"] { forced-color-adjust: none; background-color: Highlight !important; border-color: Highlight !important; color: HighlightText !important; }
+    :where(.framework-scope) [data-slot="tabs-trigger"][data-state="active"] *,
+    :where(.framework-scope) [data-slot="toggle"][data-state="on"] * { color: HighlightText !important; }
+    :where(.framework-scope) :is(:disabled, [data-disabled]:not([data-disabled="false"]), [aria-disabled="true"]) { color: GrayText !important; border-color: GrayText !important; }
+    :where(.framework-scope) [data-slot="switch"]:disabled, :where(.framework-scope) [data-slot="switch"]:disabled > [data-slot="switch-thumb"] { background-color: Canvas !important; border-color: GrayText !important; }
+    :where(.framework-scope) [data-slot="switch"]:disabled > [data-slot="switch-thumb"] { background-color: GrayText !important; }
+  }
+  /* Weniger Transparenz: Milchglas wird deckend. */
+  @media (prefers-reduced-transparency: reduce) {
+    :where(.framework-scope) :is([data-variant="glass"], [data-slot="play-button"][data-material="glass"], [data-slot="media-bar"], [data-slot="bottom-nav"], [data-slot="lightbox-backdrop"]) { background-color: var(--background) !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+    :where(.framework-scope) [data-variant="glass"]:hover:not(:disabled) { background-color: var(--accent) !important; color: var(--accent-foreground); }
+  }
 }
