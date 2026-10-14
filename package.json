@@ -9,13 +9,15 @@
     "apps/*"
   ],
   "engines": {
-    "node": ">=22"
+    "node": ">=22.18"
   },
   "scripts": {
     "dev": "node scripts/dev.mjs",
     "build": "npm run build --workspace @rapold/framework-docs",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc -p packages/core --noEmit",
     "test": "node --test tests/*.test.mjs",
+    "test:coverage": "node --test --experimental-test-coverage --test-coverage-include=\"packages/**\" --test-coverage-exclude=\"packages/presentation/**\" tests/*.test.mjs",
+    "test:e2e": "playwright test",
     "check": "npm run test && npm run typecheck && npm run build",
     "contracts": "node scripts/build-contracts.mjs",
     "predev": "npm run contracts",
@@ -26,6 +28,8 @@
     "verify:deployment": "node scripts/verify-deployment.mjs"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.63.0",
     "@types/node": "26.0.1",
     "@types/react": "19.2.18",
     "@types/react-dom": "19.2.4",
