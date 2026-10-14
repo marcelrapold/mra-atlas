@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { cva } from 'class-variance-authority'
 
+import { focusRingOnMedia } from '../lib/focus'
 import { cn } from '../lib/utils'
 import { Button, type ButtonProps } from './button'
 
@@ -25,7 +26,8 @@ const iconButtonVariants = cva(
       },
       glass: {
         // Milchglas nur wo backdrop-filter existiert; sonst flache, deckende Fläche.
-        true: 'border border-border bg-background text-foreground hover:bg-accent hover:text-accent-foreground supports-[backdrop-filter]:bg-background/60 supports-[backdrop-filter]:backdrop-blur-md supports-[backdrop-filter]:hover:bg-background/80',
+        // Glas liegt meist auf Bildern: Fokus mit Kontrastrand statt `ring`.
+        true: focusRingOnMedia + ' border border-border bg-background text-foreground hover:bg-accent hover:text-accent-foreground supports-[backdrop-filter]:bg-background/60 supports-[backdrop-filter]:backdrop-blur-md supports-[backdrop-filter]:hover:bg-background/80',
         false: '',
       },
     },
@@ -66,6 +68,8 @@ function IconButton({
       size="icon"
       data-slot="icon-button"
       data-variant={variant}
+      // Gemeinsames Material-Attribut mit PlayButton (Glas-Regeln im Stylesheet).
+      data-material={isGlass ? 'glass' : undefined}
       data-size={size}
       className={cn(iconButtonVariants({ size, shape, glass: isGlass }), className)}
     />

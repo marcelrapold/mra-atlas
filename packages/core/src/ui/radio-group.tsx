@@ -4,6 +4,7 @@ import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { RadioGroup as RadioGroupPrimitive } from 'radix-ui'
 
+import { focusRing } from '../lib/focus'
 import { cn } from '../lib/utils'
 
 function RadioGroup({ className, ...props }: React.ComponentProps<typeof RadioGroupPrimitive.Root>) {
@@ -21,7 +22,10 @@ function RadioGroupItem({ className, ...props }: React.ComponentProps<typeof Rad
     <RadioGroupPrimitive.Item
       data-slot="radio-group-item"
       className={cn(
-        'peer relative aspect-square size-4 shrink-0 cursor-pointer rounded-full border border-muted-foreground/60 bg-background text-primary shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive data-[state=checked]:border-primary motion-safe:transition-colors dark:bg-input/30',
+        // Rand in `input`: dieselbe Rolle wie Checkbox und Eingabefelder, für
+        // jede Brand gegen `background` auf 3:1 geprüft (WCAG 1.4.11).
+        'peer relative aspect-square size-4 shrink-0 cursor-pointer rounded-full border border-input bg-background text-primary shadow-xs disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive data-[state=checked]:border-primary motion-safe:transition-colors dark:bg-input/30',
+        focusRing,
         className,
       )}
       {...props}

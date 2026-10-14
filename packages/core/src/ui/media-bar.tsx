@@ -41,7 +41,7 @@ function spokenMediaTime(seconds: number): string {
 const mediaBarVariants = cva(
   // The bar sizes itself by its own width (container query), not the viewport: it also
   // has to work inside narrow columns and side panels on wide screens.
-  '@container/media-bar z-40 w-full border-t bg-background/95 px-4 py-2 text-foreground supports-[backdrop-filter]:bg-background/80 supports-[backdrop-filter]:backdrop-blur-md',
+  '@container/media-bar z-(--z-index-sticky) w-full border-t bg-background/95 px-4 py-2 text-foreground supports-[backdrop-filter]:bg-background/80 supports-[backdrop-filter]:backdrop-blur-md',
   {
     variants: {
       position: {

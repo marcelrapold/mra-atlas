@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react'
 
+import { focusRing, focusRingInset } from '../lib/focus'
 import { usePrefersReducedMotion } from '../lib/hooks'
 import { cn } from '../lib/utils'
 
@@ -15,6 +16,10 @@ import { cn } from '../lib/utils'
  */
 
 interface CarouselLabels {
+  /** Rollenbeschreibung des Karussells (`aria-roledescription`). */
+  roledescription: string
+  /** Rollenbeschreibung einer Folie (`aria-roledescription`). */
+  slideRoledescription: string
   previous: string
   next: string
   pause: string
@@ -28,6 +33,8 @@ interface CarouselLabels {
 }
 
 const DEFAULT_LABELS: CarouselLabels = {
+  roledescription: 'Karussell',
+  slideRoledescription: 'Folie',
   previous: 'Vorherige Folie',
   next: 'Nächste Folie',
   pause: 'Automatische Wiedergabe anhalten',
@@ -223,7 +230,7 @@ function Carousel({
         <section
           data-slot="carousel"
           data-autoplay={running ? 'running' : autoplayAvailable ? 'paused' : undefined}
-          aria-roledescription="carousel"
+          aria-roledescription={labels.roledescription}
           aria-label={label}
           className={cn('relative', className)}
           onPointerEnter={(e) => {
@@ -290,7 +297,7 @@ function CarouselContent({ className, children, onKeyDown, ...props }: React.Com
       aria-live={running ? 'off' : 'polite'}
       className={cn(
         'flex snap-x snap-mandatory overflow-x-auto overscroll-x-contain rounded-lg [scrollbar-width:none] motion-safe:scroll-smooth [&::-webkit-scrollbar]:hidden',
-        'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
+        focusRing,
         className,
       )}
       onKeyDown={(e) => {
@@ -330,7 +337,7 @@ function CarouselItem({ className, ...props }: React.ComponentProps<'div'>) {
       data-slot="carousel-item"
       data-active={i === index}
       role="group"
-      aria-roledescription="slide"
+      aria-roledescription={labels.slideRoledescription}
       aria-label={labels.slide(i, count)}
       className={cn('min-w-0 shrink-0 grow-0 basis-full snap-start', className)}
       {...props}
@@ -338,8 +345,10 @@ function CarouselItem({ className, ...props }: React.ComponentProps<'div'>) {
   )
 }
 
-const navButtonClass =
-  'inline-flex size-11 shrink-0 items-center justify-center rounded-full border bg-background/90 text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-40 motion-safe:transition-colors [&_svg]:size-5'
+const navButtonClass = cn(
+  'inline-flex size-11 shrink-0 items-center justify-center rounded-full border bg-background/90 text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground disabled:pointer-events-none disabled:opacity-40 motion-safe:transition-[color,background-color,scale] motion-safe:duration-(--duration-fast) motion-safe:enabled:active:scale-95 [&_svg]:size-5',
+  focusRing,
+)
 
 function CarouselPrevious({ className, children, ...props }: React.ComponentProps<'button'>) {
   const { previous, canPrevious, labels, viewportId } = useCarousel()
@@ -400,12 +409,12 @@ function CarouselDots({ className, ...props }: React.ComponentProps<'div'>) {
             aria-current={active ? 'true' : undefined}
             aria-controls={viewportId}
             onClick={() => scrollTo(i)}
-            className="group/dot inline-flex h-11 min-w-8 items-center justify-center rounded-full focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-ring"
+            className={cn('group/dot inline-flex h-11 min-w-8 items-center justify-center rounded-full', focusRingInset)}
           >
             <span
               aria-hidden
               className={cn(
-                'relative block h-1.5 overflow-hidden rounded-full motion-safe:transition-[width,background-color] motion-safe:duration-300',
+                'relative block h-1.5 overflow-hidden rounded-full motion-safe:transition-[width,background-color] motion-safe:duration-(--duration-slow)',
                 active ? 'w-8 bg-primary/25' : 'w-2.5 bg-muted-foreground/40 group-hover/dot:bg-muted-foreground',
               )}
             >

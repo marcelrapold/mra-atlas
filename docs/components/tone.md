@@ -21,6 +21,10 @@ Import aus RadioX (Audit /live, September 2026), auf Atlas-Rollen übertragen. K
 
 **A11y:** Text in `soft`/`outline` nutzt die Rolle selbst (`text-success` …), `solid` nutzt `*-foreground`. Farbe nie als einziges Merkmal: immer Text daneben.
 
+**`data-tone`:** Jede Komponente mit `tone` schreibt die Rolle als `data-tone` ins DOM (Badge, Eyebrow, Inset, Alert). Brand- und App-Regeln zielen auf `[data-slot=alert][data-tone=warning]`, nicht auf Klassen. `variant` bleibt der Form vorbehalten (siehe [api.md](api.md)). Alert schreibt für ein Release zusätzlich das veraltete `data-variant` mit demselben Wert.
+
+**Flächen:** Getönte Hinweisflächen nutzen die Surface-Tokens der Foundation, `bg-(--surface-info|success|warning|danger)`: 8 % der Rolle auf `card`, je Brand und Modus deckend gerechnet. `bg-*/10` hängt dagegen vom Grund darunter ab.
+
 **Do:** Status über `statusToneClasses` abbilden. **Don't:** Produktbedeutungen (z. B. «News», «Klang-DNA») in Core-Töne giessen; die gehören ins Produkt bzw. Brand-Paket.
 
 **Hinweis:** `highlight` liegt auf `accent`, nicht auf `chart-4`: Die Foundation setzt `chart-4 = destructive`, `highlight` wäre sonst von `danger` nicht zu unterscheiden. `info` ist in der Foundation standardmässig gleich `primary`.
@@ -31,7 +35,9 @@ Import aus RadioX (Audit /live, September 2026), auf Atlas-Rollen übertragen. K
 
 **Zweck:** einheitlich sichtbarer Tastaturfokus.
 
-**API:** `focusRing` (Outline 2 px, Abstand 2 px, `ring`), `focusRingInset` (nach innen, für `overflow: hidden`), `focusRingOnMedia` (Outline `background` + innerer Rand `foreground`, für Bilder/Video).
+**API:** `focusRing` (Outline 2 px, Abstand 2 px, `ring`), `focusRingInset` (nach innen, für `overflow: hidden`), `focusRingOnMedia` (Outline `background` + innerer Rand `foreground`, für Bilder/Video, Glas-Varianten von IconButton und PlayButton, Lightbox-Auslöser).
+
+**Regel:** Bedienelemente beziehen den Fokus nur aus diesen Konstanten, nie aus eigenen `focus-visible:outline-*`-Ketten und nie zusammen mit `outline-none`. So zeigt jedes Element in jeder einbindenden App denselben 2-px-Rahmen, auch ohne globale Fokusregeln der App (`tests/a11y-contract.test.mjs`).
 
 **A11y:** Outline statt box-shadow, damit Forced-Colors-Modus und Brand-Schatten den Fokus nicht verschlucken.
 
@@ -65,9 +71,9 @@ Import aus RadioX (Audit /live, September 2026), auf Atlas-Rollen übertragen. K
 
 **Zweck:** Versal-Label über Titeln, Zonen und Kennzahlen.
 
-**Props:** `as?: 'span' | 'p' | 'div' | 'h2'…'h6' | 'dt' | 'label' | 'legend'`, `tone?: Tone`. Export `eyebrowClassName` für Elemente, die kein Eyebrow sein können.
+**Props:** `asChild?: boolean` (rendert das Kind, z. B. `<Eyebrow asChild><h2>…</h2></Eyebrow>`), `tone?: Tone`, veraltet `as?: 'span' | 'p' | 'div' | 'h2'…'h6' | 'dt' | 'label' | 'legend'`. Export `eyebrowClassName` für Elemente, die kein Eyebrow sein können.
 
-**A11y:** 12 px (RadioX: 11 px) mit `muted-foreground`, damit kleine Schrift AA hält. Für Abschnittstitel `as="h2"`/`h3` wählen, damit die Gliederung stimmt.
+**A11y:** 12 px (RadioX: 11 px) mit `muted-foreground`, damit kleine Schrift AA hält. Für Abschnittstitel ein `h2`/`h3` als Kind mit `asChild` wählen, damit die Gliederung stimmt.
 
 **Do:** kurz, ein bis drei Wörter. **Don't:** ganze Sätze in Versalien.
 
@@ -77,9 +83,9 @@ Import aus RadioX (Audit /live, September 2026), auf Atlas-Rollen übertragen. K
 
 **Zweck:** Innenfläche, Karte in einer Karte.
 
-**Props:** `as?: 'div' | 'section' | 'li' | 'article' | 'figure' | 'aside'`, `padding?: 'none' | 'sm' | 'md'`, `tone?: Tone`. Radius `rounded-md` (folgt `--brand-radius`, max. 8 px).
+**Props:** `asChild?: boolean`, `padding?: 'none' | 'sm' | 'md'`, `tone?: Tone`, veraltet `as?: 'div' | 'section' | 'li' | 'article' | 'figure' | 'aside'`. Radius `rounded-md` (folgt `--brand-radius`, max. 8 px).
 
-**A11y:** Ton tönt nur Rahmen und Grund, Schrift bleibt `foreground`. Semantik über `as` (z. B. `li` in Listen).
+**A11y:** Ton tönt nur Rahmen und Grund, Schrift bleibt `foreground`. Semantik über `asChild` (z. B. ein `li` als Kind in Listen).
 
 **Do:** für gruppierte Zusatzinfos innerhalb einer Card. **Don't:** Insets verschachteln oder als Klickfläche ohne Button/Link verwenden.
 

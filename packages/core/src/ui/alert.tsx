@@ -4,6 +4,8 @@ import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { CircleCheckIcon, InfoIcon, OctagonXIcon, TriangleAlertIcon, XIcon, type LucideIcon } from 'lucide-react'
 
+import { focusRing } from '../lib/focus'
+import { useControllableState } from '../lib/hooks'
 import { toneText, type Tone } from '../lib/tone'
 import { cn } from '../lib/utils'
 
@@ -11,12 +13,14 @@ const alertVariants = cva(
   'relative flex w-full items-start gap-3 rounded-[var(--brand-radius)] border px-4 py-3 text-sm text-foreground [&_[data-slot=alert-icon]]:mt-0.5 [&_[data-slot=alert-icon]]:size-4 [&_[data-slot=alert-icon]]:shrink-0',
   {
     variants: {
+      // Gründe aus den Surface-Tokens der Foundation (8 % Ton auf `card`):
+      // deckend und je Brand und Modus gerechnet, statt Alpha über dem Seitengrund.
       tone: {
         neutral: 'border-border bg-card',
-        info: 'border-info/40 bg-info/10',
-        success: 'border-success/40 bg-success/10',
-        warning: 'border-warning/50 bg-warning/10',
-        danger: 'border-destructive/50 bg-destructive/10',
+        info: 'border-info/40 bg-(--surface-info)',
+        success: 'border-success/40 bg-(--surface-success)',
+        warning: 'border-warning/50 bg-(--surface-warning)',
+        danger: 'border-destructive/50 bg-(--surface-danger)',
       },
       size: {
         default: '',
@@ -53,15 +57,23 @@ interface AlertProps extends Omit<React.ComponentProps<'div'>, 'role'>, VariantP
   dismissible?: boolean
   /** Beschriftung des Schliessen-Knopfs. Standard «Meldung schliessen». */
   dismissLabel?: string
-  /** Wird beim Schliessen und nach `autoHideMs` aufgerufen. */
+  /** Kontrollierte Sichtbarkeit. Ohne Angabe verwaltet der Alert sie selbst (`defaultOpen`). */
+  open?: boolean
+  /** Startzustand im unkontrollierten Modus. Standard `true`. */
+  defaultOpen?: boolean
+  /** Meldet jeden Wechsel der Sichtbarkeit (Schliessen-Knopf, `autoHideMs`). */
+  onOpenChange?: (open: boolean) => void
+  /**
+   * Wird beim Schliessen und nach `autoHideMs` aufgerufen, im selben Ablauf
+   * wie `onOpenChange(false)`.
+   * @deprecated `onOpenChange` verwenden.
+   */
   onDismiss?: () => void
   /**
    * Blendet nach dieser Zeit aus. Pausiert, solange Zeiger oder Fokus im
    * Hinweis sind, und beginnt danach von vorn (WCAG 2.2.1). Nicht für `danger`.
    */
   autoHideMs?: number
-  /** Kontrollierte Sichtbarkeit. Ohne Angabe verwaltet der Alert sie selbst. */
-  open?: boolean
 }
 
 /**
@@ -76,9 +88,11 @@ function Alert({
   icon,
   dismissible = false,
   dismissLabel = 'Meldung schliessen',
+  open: openProp,
+  defaultOpen = true,
+  onOpenChange,
   onDismiss,
   autoHideMs,
-  open: openProp,
   children,
   onMouseEnter,
   onMouseLeave,
@@ -87,21 +101,19 @@ function Alert({
   ...props
 }: AlertProps) {
   const resolvedTone: AlertTone = tone ?? 'info'
-  const [openState, setOpenState] = React.useState(true)
-  const open = openProp ?? openState
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen,
+    onChange: (next: boolean) => {
+      onOpenChange?.(next)
+      if (!next) onDismiss?.()
+    },
+  })
   const [hovered, setHovered] = React.useState(false)
   const [focused, setFocused] = React.useState(false)
   const paused = hovered || focused
 
-  const onDismissRef = React.useRef(onDismiss)
-  React.useEffect(() => {
-    onDismissRef.current = onDismiss
-  }, [onDismiss])
-
-  const dismiss = React.useCallback(() => {
-    setOpenState(false)
-    onDismissRef.current?.()
-  }, [])
+  const dismiss = React.useCallback(() => setOpen(false), [setOpen])
 
   React.useEffect(() => {
     if (!open || paused || !autoHideMs || autoHideMs <= 0) return
@@ -123,6 +135,8 @@ function Alert({
   return (
     <div
       data-slot="alert"
+      data-tone={resolvedTone}
+      // Veraltet, entfällt mit dem nächsten Release: `data-tone` verwenden.
       data-variant={resolvedTone}
       data-size={size}
       role={resolvedRole === 'none' ? undefined : resolvedRole}
@@ -155,7 +169,10 @@ function Alert({
           data-slot="alert-dismiss"
           onClick={dismiss}
           aria-label={dismissLabel}
-          className="-my-2.5 -mr-2.5 inline-flex size-11 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:bg-foreground/5 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-safe:transition-colors"
+          className={cn(
+            '-my-2.5 -mr-2.5 inline-flex size-11 shrink-0 items-center justify-center rounded-full text-muted-foreground hover:bg-foreground/5 hover:text-foreground motion-safe:transition-[color,background-color,scale] motion-safe:active:scale-95',
+            focusRing,
+          )}
         >
           <XIcon className="size-4" aria-hidden />
         </button>
@@ -165,14 +182,14 @@ function Alert({
 }
 
 function AlertTitle({ className, ...props }: React.ComponentProps<'p'>) {
-  return <p data-slot="alert-title" className={cn('font-semibold leading-snug', className)} {...props} />
+  return <p data-slot="alert-title" className={cn('font-semibold leading-snug text-balance', className)} {...props} />
 }
 
 function AlertDescription({ className, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot="alert-description"
-      className={cn('text-muted-foreground [&_a]:underline [&_a]:underline-offset-2 [&_p]:leading-relaxed', className)}
+      className={cn('text-muted-foreground text-pretty [&_a]:underline [&_a]:underline-offset-2 [&_p]:leading-relaxed', className)}
       {...props}
     />
   )
