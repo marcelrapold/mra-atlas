@@ -3,7 +3,8 @@ import {guidance, href, pages} from '../_components/catalog';
 // One place for sharing, search and structured-data metadata. Pages spread the
 // inherited Open Graph and Twitter blocks (Next merges metadata shallowly), so
 // og:image, site name and locale survive while title, description and url change.
-export const site={name:'Atlas',url:'https://atlas.rapold.io',language:'de-CH',author:'Marcel Rapold',copyright:'Alle Rechte vorbehalten',themeColor:'#263b70'} as const;
+// description mirrors the root layout; web-metadata.mjs fails the build if they drift.
+export const site={name:'Atlas',description:'Atlas, das Designsystem von Rapold: ein Designstandard mit austauschbaren Brands für Interfaces und Management-Präsentationen.',url:'https://atlas.rapold.io',language:'de-CH',author:'Marcel Rapold',copyright:'Alle Rechte vorbehalten',themeColor:'#263b70'} as const;
 export const siteViewport:Viewport={themeColor:site.themeColor};
 export const descriptionLimit=160;
 export function clampDescription(text:string){const flat=text.replace(/\s+/g,' ').trim();if(flat.length<=descriptionLimit)return flat;const cut=flat.slice(0,descriptionLimit-1);return cut.slice(0,cut.lastIndexOf(' ')).replace(/[\s,;:–-]+$/,'')+'…';}
@@ -15,7 +16,7 @@ export async function pageMetadata(parent:ResolvingMetadata,{title,description,p
 }
 const person={'@type':'Person','@id':`${site.url}/#marcel-rapold`,name:site.author};
 const absolute=(path:string)=>new URL(path,site.url).toString();
-export function websiteData(description:string){
+export function websiteData(description:string=site.description){
  return {'@context':'https://schema.org','@type':'WebSite','@id':`${site.url}/#website`,name:site.name,url:absolute('/'),description,inLanguage:site.language,publisher:person,copyrightHolder:person,copyrightNotice:site.copyright};
 }
 export function articleData(id:string,{title,description}:{title:string;description:string}){

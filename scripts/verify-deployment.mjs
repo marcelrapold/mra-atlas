@@ -3,8 +3,8 @@ import {pathToFileURL} from 'node:url';
 import {readHead} from './checks/html-head.mjs';
 
 // The OWASP-aligned header baseline. vercel.json is tested against this list and
-// the live run asserts it on the production root, so config and edge cannot drift.
-const directives=value=>new Map(value.split(';').map(d=>d.trim().split(/\s+/)).filter(([name])=>name).map(([name,...sources])=>[name.toLowerCase(),sources]));
+// the live run asserts it on every checked route, so config and edge cannot drift.
+export const directives=value=>new Map(value.split(';').map(d=>d.trim().split(/\s+/)).filter(([name])=>name).map(([name,...sources])=>[name.toLowerCase(),sources]));
 const exactly=(map,name,source)=>map.get(name)?.length===1&&map.get(name)[0]===source;
 export const requiredSecurityHeaders=Object.freeze([
   {name:'Content-Security-Policy',check:value=>{
@@ -24,6 +24,10 @@ export function securityHeaderProblems(headers){
   return requiredSecurityHeaders.flatMap(({name,check})=>{const value=headers.get(name);if(value==null)return [`${name} missing`];const problem=check(value.trim());return problem?[`${name}: ${problem}`]:[];});
 }
 
+// The fingerprinted vendor bundle must be cached for a year; HTML must never be.
+export const immutableAsset='/vendor/echarts-6.0.0.min.js';
+const isImmutable=headers=>/\bimmutable\b/i.test(headers.get('Cache-Control')??'');
+
 export async function verifyDeployment({baseUrl,commit,version,fetcher=fetch}) {
   if(!/^[a-f0-9]{40}$/.test(commit??''))throw new Error('A full Git commit SHA is required.');
   const base=new URL(baseUrl);
@@ -41,13 +45,17 @@ export async function verifyDeployment({baseUrl,commit,version,fetcher=fetch}) {
     if(!response.headers.get('content-type')?.includes('text/html'))throw new Error(`${path}: expected HTML.`);
     const html=await response.text();
     if(!html.includes('id="main"'))throw new Error(`${path}: framework page content missing.`);
-    if(path==='/'){const problems=securityHeaderProblems(response.headers);if(problems.length)throw new Error(`/: security headers: ${problems.join('; ')}.`);}
+    const problems=securityHeaderProblems(response.headers);
+    if(problems.length)throw new Error(`${path}: security headers: ${problems.join('; ')}.`);
+    if(isImmutable(response.headers))throw new Error(`${path}: HTML must not be cached as immutable.`);
     if(path==='/charts'){
       const head=readHead(html),image=head.meta('og:image')[0],canonical=head.links('canonical');
       if(!image||new URL(image,base).protocol!=='https:')throw new Error('/charts: og:image missing.');
       if(canonical.length!==1||new URL(canonical[0],base).pathname!=='/charts')throw new Error(`/charts: canonical must point to /charts, found ${canonical.join(', ')||'none'}.`);
     }
   }
+  const asset=await get(immutableAsset),cache=asset.headers.get('Cache-Control')??'';
+  if(!isImmutable(asset.headers)||!/max-age=31536000\b/.test(cache))throw new Error(`${immutableAsset}: expected an immutable one-year Cache-Control, received «${cache||'none'}».`);
   const contract=await(await get('/contracts/engineering.md')).text();
   if(!contract.includes('Engineering'))throw new Error('Engineering contract missing.');
   return {commit,version,routes:routes.length};
@@ -62,7 +70,7 @@ if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href){
   for(let attempt=1;attempt<=attempts;attempt++){
     try{
       const result=await verifyDeployment({baseUrl,commit,version});
-      console.log(`Production verified: ${result.version}, commit ${result.commit}, ${result.routes} routes, security headers, sharing metadata and engineering contract.`);
+      console.log(`Production verified: ${result.version}, commit ${result.commit}, ${result.routes} routes, security headers on every route, cache policy, sharing metadata and engineering contract.`);
       failure=undefined;break;
     }catch(error){
       failure=error;

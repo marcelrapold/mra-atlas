@@ -1,10 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {requiredSecurityHeaders,securityHeaderProblems} from '../scripts/verify-deployment.mjs';
+import {readFile} from 'node:fs/promises';
+import {directives,requiredSecurityHeaders,securityHeaderProblems} from '../scripts/verify-deployment.mjs';
+import {securityTxtProblems} from '../scripts/checks/web-metadata.mjs';
 import {headersFor,loadVercelConfig,sourcePattern} from '../scripts/checks/vercel-headers.mjs';
 
 const config=await loadVercelConfig();
-const csp=path=>new Map(headersFor(config,path).get('Content-Security-Policy').split(';').map(d=>d.trim().split(/\s+/)).map(([name,...sources])=>[name,sources]));
+const csp=path=>directives(headersFor(config,path).get('Content-Security-Policy'));
 const routes=['/','/charts','/mermaid','/praesentation','/404','/llms.txt','/contracts/engineering.md','/brands/rapold/decks/muster-deck.pptx','/vendor/echarts-6.0.0.min.js','/.well-known/security.txt'];
 
 test('every response carries the shared security header baseline',()=>{
@@ -46,7 +48,9 @@ test('only fingerprinted or versioned files are cached as immutable',()=>{
  for(const path of ['/brands/rapold/assets/fonts/geist.woff2','/icons/arrow-up-right.svg'])assert.equal(cache(path),'public, max-age=86400, stale-while-revalidate=604800',path);
  // HTML, contracts and decks change with every release: no rule may extend the
  // platform default «public, max-age=0, must-revalidate».
- for(const path of ['/','/charts','/llms.txt','/contracts/engineering.md','/brands/rapold/brand.json','/brands/rapold/decks/muster-deck.pptx','/praesentation/deck-input.schema.json','/build-info.json'])assert.equal(cache(path),null,path);
+ // Unversioned files next to the vendor bundle (README, licence notices) change in
+ // place, so they must not inherit the bundle's year-long immutable caching either.
+ for(const path of ['/','/charts','/llms.txt','/contracts/engineering.md','/brands/rapold/brand.json','/brands/rapold/decks/muster-deck.pptx','/praesentation/deck-input.schema.json','/build-info.json','/vendor/README.md','/vendor/echarts-LICENSE.txt','/vendor/echarts-NOTICE.txt'])assert.equal(cache(path),null,path);
 });
 test('contracts stay readable cross-origin for agents and tools',()=>{
  assert.equal(headersFor(config,'/contracts/brand.schema.json').get('Access-Control-Allow-Origin'),'*');
@@ -56,4 +60,15 @@ test('the header resolver refuses route syntax it cannot evaluate',()=>{
  assert.ok(!sourcePattern('/vendor/(.*)').test('/vendorx/a.js'));
  assert.throws(()=>sourcePattern('/:path*'),/Unsupported/);
  for(const rule of config.headers)assert.doesNotThrow(()=>sourcePattern(rule.source),rule.source);
+});
+test('security.txt names a contact and expires within the coming year',async()=>{
+ const source=await readFile(new URL('../apps/docs/public/.well-known/security.txt',import.meta.url),'utf8');
+ // Fails `npm run check` once the file is stale, so the expiry cannot go unnoticed.
+ assert.deepEqual(securityTxtProblems(source),[]);
+ const now=Date.parse('2026-10-14T00:00:00Z'),file=(...lines)=>[...lines,'Canonical: https://atlas.rapold.io/.well-known/security.txt'].join('\n');
+ assert.deepEqual(securityTxtProblems(file('Contact: mailto:security@example.org','Contact: https://example.org/report','Expires: 2027-01-01T00:00:00Z'),now),[]);
+ assert.match(securityTxtProblems(file('Contact: https://example.org/report','Expires: 2026-10-13T00:00:00Z'),now).join(),/not in the future/);
+ assert.match(securityTxtProblems(file('Contact: https://example.org/report','Expires: 2028-01-01T00:00:00Z'),now).join(),/at most one year/);
+ assert.match(securityTxtProblems(file('Contact: http://example.org/report','Expires: 2027-01-01T00:00:00Z'),now).join(),/https or mailto/);
+ assert.match(securityTxtProblems(file('Expires: 2027-01-01T00:00:00Z'),now).join(),/Contact missing/);
 });

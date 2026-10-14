@@ -24,4 +24,4 @@ Der maschinenlesbare Kontakt steht unter https://atlas.rapold.io/.well-known/sec
 
 ## Grundlinie der Auslieferung
 
-`vercel.json` setzt für alle Antworten Content-Security-Policy, HSTS mit `includeSubDomains`, `X-Frame-Options`, `Permissions-Policy`, `Cross-Origin-Opener-Policy`, `Referrer-Policy` und `X-Content-Type-Options`. `tests/security-headers.test.mjs` prüft die Konfiguration, `npm run verify:deployment` die ausgelieferten Header auf der Produktionsdomain.
+`vercel.json` setzt für alle Antworten Content-Security-Policy, HSTS mit `includeSubDomains`, `X-Frame-Options`, `Permissions-Policy`, `Cross-Origin-Opener-Policy`, `Referrer-Policy` und `X-Content-Type-Options`. `tests/security-headers.test.mjs` prüft die Konfiguration, `npm run verify:deployment` die ausgelieferten Header aller geprüften Seiten und die Cache-Regel des Vendor-Bundles auf der Produktionsdomain. `tests/security-headers.test.mjs` schlägt zudem fehl, sobald `security.txt` abgelaufen ist.

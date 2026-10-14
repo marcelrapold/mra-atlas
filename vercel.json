@@ -25,7 +25,7 @@
       ]
     },
     {
-      "source": "/vendor/(.*)",
+      "source": "/vendor/echarts-(.*).min.js",
       "headers": [
         {
           "key": "Cache-Control",

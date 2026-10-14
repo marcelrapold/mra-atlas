@@ -9,6 +9,21 @@ const origin='https://atlas.rapold.io';
 const fileFor=path=>path==='/'?'index.html':`${path.slice(1)}.html`;
 const publicFile=href=>new URL(href,origin).pathname.slice(1);
 
+// RFC 9116: at least one working Contact (https or mailto) and an Expires date at
+// most one year ahead; an expired file is worse than none. Also run against the
+// source file by tests/security-headers.test.mjs, so the expiry fails `npm run check`.
+export function securityTxtProblems(security,now=Date.now()){
+ const problems=[],fields=name=>[...security.matchAll(new RegExp(`^${name}:[ \t]*(.+)$`,'gmi'))].map(m=>m[1].trim());
+ const contacts=fields('Contact'),[expiresField]=fields('Expires'),expires=Date.parse(expiresField??'');
+ if(!contacts.length)problems.push('Contact missing');
+ for(const contact of contacts)if(!/^(https:\/\/|mailto:)\S+$/.test(contact))problems.push(`Contact ${contact} must be an https or mailto URI`);
+ if(fields('Expires').length!==1)problems.push('exactly one Expires field required');
+ if(!(expires>now))problems.push(`Expires ${expiresField??'missing'} is not in the future`);
+ else if(expires-now>366*864e5)problems.push('Expires must be at most one year ahead');
+ if(fields('Canonical')[0]!==`${origin}/.well-known/security.txt`)problems.push('Canonical must name the published URL');
+ return problems;
+}
+
 export async function checkWebMetadata(out=new URL('../../apps/docs/out/',import.meta.url)){
  const problems=[],read=path=>readFile(new URL(path,out)),text=async path=>(await read(path)).toString('utf8');
  const fail=(where,message)=>problems.push(`${where}: ${message}`);
@@ -50,6 +65,7 @@ export async function checkWebMetadata(out=new URL('../../apps/docs/out/',import
   if(path==='/'){
    const site=data.find(d=>d['@type']==='WebSite');
    if(!site)fail(where,'WebSite structured data missing');
+   else if(site.description!==rootDescription)fail(where,'WebSite description must equal the root meta description');
    else if(site.inLanguage!=='de-CH'||site.publisher?.['@type']!=='Person'||site.publisher?.name!=='Marcel Rapold'||site.copyrightNotice!=='Alle Rechte vorbehalten')fail(where,'WebSite must name language de-CH, the publisher Marcel Rapold and «Alle Rechte vorbehalten»');
   }else for(const type of ['BreadcrumbList','TechArticle'])if(!found.includes(type))fail(where,`${type} structured data missing`);
  }
@@ -72,15 +88,8 @@ export async function checkWebMetadata(out=new URL('../../apps/docs/out/',import
   for(const icon of manifest.icons??[])if(!await exists(publicFile(icon.src)))fail('manifest',`icon ${icon.src} is not exported`);
   if(!manifest.icons?.some(icon=>icon.sizes==='any'&&icon.type==='image/svg+xml'))fail('manifest','scalable icon missing');
  }catch(error){fail('manifest',error.message);}
- // RFC 9116: Contact and Expires are required; an expired file is worse than none.
- try{
-  const security=await text('.well-known/security.txt'),field=name=>security.match(new RegExp(`^${name}:\\s*(.+)$`,'mi'))?.[1].trim();
-  const expires=Date.parse(field('Expires')??'');
-  if(!field('Contact')?.startsWith('https://'))fail('security.txt','Contact must be an https URL');
-  if(!(expires>Date.now()))fail('security.txt',`Expires ${field('Expires')??'missing'} is not in the future`);
-  else if(expires-Date.now()>366*864e5)fail('security.txt','Expires must be at most one year ahead');
-  if(field('Canonical')!==`${origin}/.well-known/security.txt`)fail('security.txt','Canonical must name the published URL');
- }catch{fail('security.txt','missing from the export');}
+ try{for(const problem of securityTxtProblems(await text('.well-known/security.txt')))fail('security.txt',problem);}
+ catch{fail('security.txt','missing from the export');}
  return {pages:paths.length,problems};
 }
 
