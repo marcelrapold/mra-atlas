@@ -1,0 +1,10 @@
+/* In-page navigation: heading permalinks and the «Auf dieser Seite» bar (base layout: .page-anchors in globals.css). */
+.heading-anchor{margin-left:.4em;padding:0 .15em;font-weight:400;color:var(--muted-foreground);text-decoration:none;border-radius:var(--radius-sm);opacity:0;transition:opacity var(--duration-fast,120ms) ease}
+h2:hover>.heading-anchor,.heading-anchor:focus-visible,:target>h2>.heading-anchor{opacity:1}
+.heading-anchor:hover{color:var(--primary)}
+@media(hover:none){.heading-anchor{opacity:.55}}
+@media(prefers-reduced-motion:reduce){.heading-anchor{transition:none}}
+.doc-section[id],.demo-panel[id]{scroll-margin-top:120px}
+.page-toc a{color:var(--muted-foreground)}
+.page-toc a[aria-current]{color:var(--primary);background:var(--surface-info)}
+@media(forced-colors:active){.page-toc a[aria-current]{outline:2px solid CanvasText;outline-offset:-2px}.heading-anchor{opacity:1}}
