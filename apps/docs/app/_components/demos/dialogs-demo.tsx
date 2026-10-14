@@ -21,6 +21,8 @@ import {
   SheetClose,
 } from '@rapold/framework-core'
 
+import { DemoPanel } from '../demo-panel'
+
 function ConfirmDialogExamples() {
   const confirm = useConfirm()
   const prompt = usePrompt()
@@ -86,15 +88,11 @@ export function DialogsDemo() {
 
   return (
     <ConfirmDialogProvider>
-      <section className="demo-panel">
-        <h2>ConfirmDialog</h2>
-        <p>
-          Bestätigen, Eingabe und Hinweis als Promise. Bei Bestätigungen liegt der Fokus zuerst auf
-          «Abbrechen», bei Eingaben im Feld.
-        </p>
-        <ConfirmDialogExamples />
-        <pre>
-          <code>{`import { ConfirmDialogProvider, useConfirm } from '@rapold/framework-core'
+      <DemoPanel
+        id="confirm-dialog"
+        title="ConfirmDialog"
+        description="Bestätigen, Eingabe und Hinweis als Promise. Bei Bestätigungen liegt der Fokus zuerst auf «Abbrechen», bei Eingaben im Feld."
+        code={`import { ConfirmDialogProvider, useConfirm } from '@rapold/framework-core'
 
 // einmal im Layout
 <ConfirmDialogProvider>{children}</ConfirmDialogProvider>
@@ -103,16 +101,26 @@ export function DialogsDemo() {
 const confirm = useConfirm()
 if (await confirm({ message: 'Projekt löschen?', tone: 'destructive' })) {
   await deleteProject()
-}`}</code>
-        </pre>
-      </section>
+}`}
+      >
+        <ConfirmDialogExamples />
+      </DemoPanel>
 
-      <section className="demo-panel">
-        <h2>Sheet mit Wischen zum Schliessen</h2>
-        <p>
-          Auf Touch-Geräten zeigt das untere Sheet einen Griff und lässt sich nach unten wegwischen.
-          Escape und die Schliessen-Schaltfläche funktionieren weiterhin.
-        </p>
+      <DemoPanel
+        id="sheet-swipe"
+        title="Sheet mit Wischen zum Schliessen"
+        description="Auf Touch-Geräten zeigt das untere Sheet einen Griff und lässt sich nach unten wegwischen. Escape und die Schliessen-Schaltfläche funktionieren weiterhin."
+        code={`import { Sheet, SheetContent, SheetTrigger } from '@rapold/framework-core'
+
+<Sheet>
+  <SheetTrigger asChild><Button>Filter öffnen</Button></SheetTrigger>
+  <SheetContent side="bottom" swipeToClose closeLabel="Filter schliessen">
+    …
+  </SheetContent>
+</Sheet>
+
+// eigenes Element: useSwipeToDismiss(element, { enabled, onDismiss })`}
+      >
         <div className="demo-row">
           <Sheet>
             <SheetTrigger asChild>
@@ -143,23 +151,19 @@ if (await confirm({ message: 'Projekt löschen?', tone: 'destructive' })) {
             </SheetContent>
           </Sheet>
         </div>
-        <pre>
-          <code>{`import { Sheet, SheetContent, SheetTrigger } from '@rapold/framework-core'
+      </DemoPanel>
 
-<Sheet>
-  <SheetTrigger asChild><Button>Filter öffnen</Button></SheetTrigger>
-  <SheetContent side="bottom" swipeToClose closeLabel="Filter schliessen">
-    …
-  </SheetContent>
-</Sheet>
+      <DemoPanel
+        id="error-boundary"
+        title="ErrorBoundary"
+        description="Fängt Renderfehler eines Bereichs ab, statt die ganze Seite zu verlieren."
+        layout="fill"
+        code={`import { ErrorBoundary } from '@rapold/framework-core'
 
-// eigenes Element: useSwipeToDismiss(element, { enabled, onDismiss })`}</code>
-        </pre>
-      </section>
-
-      <section className="demo-panel">
-        <h2>ErrorBoundary</h2>
-        <p>Fängt Renderfehler eines Bereichs ab, statt die ganze Seite zu verlieren.</p>
+<ErrorBoundary scope="kennzahlen" resetKey={pathname} onError={(error) => log(error)}>
+  <Kennzahlen />
+</ErrorBoundary>`}
+      >
         <div className="demo-row">
           <Button variant="outline" onClick={() => setFail(true)} disabled={fail}>
             Fehler auslösen
@@ -168,14 +172,7 @@ if (await confirm({ message: 'Projekt löschen?', tone: 'destructive' })) {
         <ErrorBoundary scope="kennzahlen" onReset={() => setFail(false)}>
           <FailingWidget fail={fail} />
         </ErrorBoundary>
-        <pre>
-          <code>{`import { ErrorBoundary } from '@rapold/framework-core'
-
-<ErrorBoundary scope="kennzahlen" resetKey={pathname} onError={(error) => log(error)}>
-  <Kennzahlen />
-</ErrorBoundary>`}</code>
-        </pre>
-      </section>
+      </DemoPanel>
     </ConfirmDialogProvider>
   )
 }

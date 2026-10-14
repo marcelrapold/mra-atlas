@@ -10,6 +10,8 @@ import { AiDisclosureBadge } from '@rapold/framework-core'
 import { TONES, statusToneClasses, type StatusRole } from '@rapold/framework-core'
 import { focusRing } from '@rapold/framework-core'
 
+import { DemoPanel } from '../demo-panel'
+
 const TONE_LABELS: Record<(typeof TONES)[number], string> = {
   neutral: 'Archiviert',
   primary: 'In Arbeit',
@@ -34,9 +36,17 @@ const STATUS_ROWS: { status: StatusRole; label: string }[] = [
 export function ToneDemo() {
   return (
     <>
-      <section className="demo-panel">
-        <h2>Tonrollen &amp; Status</h2>
-        <p>Acht Tonrollen auf bestehenden Atlas-Rollen. Jede Bedeutung hat genau eine Farbe.</p>
+      <DemoPanel
+        id="tone-status"
+        title="Tonrollen & Status"
+        description="Acht Tonrollen auf bestehenden Atlas-Rollen. Jede Bedeutung hat genau eine Farbe."
+        layout="fill"
+        code={`import { statusToneClasses, toneClasses } from '@rapold/framework-core'
+
+const { chip } = statusToneClasses('warning')
+<span className={\`rounded-full border px-2 \${chip}\`}>Prüfen</span>
+<div className={toneClasses('success', 'solid')}>Freigegeben</div>`}
+      >
         <div className="demo-row">
           {TONES.map((tone) => (
             <Badge key={tone} tone={tone} dot>
@@ -56,17 +66,18 @@ export function ToneDemo() {
             )
           })}
         </ul>
-        <pre>
-          <code>{`import { statusToneClasses, toneClasses } from '@rapold/framework-core'
+      </DemoPanel>
 
-const { chip } = statusToneClasses('warning')
-<span className={\`rounded-full border px-2 \${chip}\`}>Prüfen</span>
-<div className={toneClasses('success', 'solid')}>Freigegeben</div>`}</code>
-        </pre>
-      </section>
+      <DemoPanel
+        id="badge-tones"
+        title="Badge: Tonrollen, Grössen, Zähler"
+        layout="fill"
+        code={`import { Badge } from '@rapold/framework-core'
 
-      <section className="demo-panel">
-        <h2>Badge: Tonrollen, Grössen, Zähler</h2>
+<Badge tone="live" pulse>Live</Badge>
+<Badge tone="info" size="md" numeric dot>128 hören zu</Badge>
+<Badge tone="live" onMedia>Live</Badge>`}
+      >
         <div className="demo-row">
           <Badge tone="success">Soft</Badge>
           <Badge tone="success" appearance="solid">Solid</Badge>
@@ -85,17 +96,16 @@ const { chip } = statusToneClasses('warning')
             <Badge tone="info" onMedia size="md" numeric dot>2 340 Zuschauende</Badge>
           </div>
         </div>
-        <pre>
-          <code>{`import { Badge } from '@rapold/framework-core'
+      </DemoPanel>
 
-<Badge tone="live" pulse>Live</Badge>
-<Badge tone="info" size="md" numeric dot>128 hören zu</Badge>
-<Badge tone="live" onMedia>Live</Badge>`}</code>
-        </pre>
-      </section>
+      <DemoPanel
+        id="livedot-statusdot"
+        title="LiveDot & StatusDot"
+        code={`import { LiveDot, StatusDot } from '@rapold/framework-core'
 
-      <section className="demo-panel">
-        <h2>LiveDot &amp; StatusDot</h2>
+<LiveDot pulse /> Auf Sendung
+<StatusDot tone="success" label="Dienst erreichbar" />`}
+      >
         <div className="demo-row">
           <span className="inline-flex items-center gap-2 text-sm">
             <LiveDot pulse /> Auf Sendung
@@ -111,16 +121,17 @@ const { chip } = statusToneClasses('warning')
             <StatusDot tone="warning" /> Wartung ab 22:00
           </span>
         </div>
-        <pre>
-          <code>{`import { LiveDot, StatusDot } from '@rapold/framework-core'
+      </DemoPanel>
 
-<LiveDot pulse /> Auf Sendung
-<StatusDot tone="success" label="Dienst erreichbar" />`}</code>
-        </pre>
-      </section>
+      <DemoPanel
+        id="eyebrow"
+        title="Eyebrow"
+        layout="fill"
+        code={`import { Eyebrow } from '@rapold/framework-core'
 
-      <section className="demo-panel">
-        <h2>Eyebrow</h2>
+<Eyebrow>Quartalsbericht</Eyebrow>
+<Eyebrow as="h3" tone="primary">Nächste Schritte</Eyebrow>`}
+      >
         <div className="grid gap-4">
           <div>
             <Eyebrow>Quartalsbericht</Eyebrow>
@@ -134,16 +145,17 @@ const { chip } = statusToneClasses('warning')
           </div>
           <Eyebrow tone="danger">Frist überschritten</Eyebrow>
         </div>
-        <pre>
-          <code>{`import { Eyebrow } from '@rapold/framework-core'
+      </DemoPanel>
 
-<Eyebrow>Quartalsbericht</Eyebrow>
-<Eyebrow as="h3" tone="primary">Nächste Schritte</Eyebrow>`}</code>
-        </pre>
-      </section>
+      <DemoPanel
+        id="inset"
+        title="Inset"
+        layout="fill"
+        code={`import { Inset } from '@rapold/framework-core'
 
-      <section className="demo-panel">
-        <h2>Inset</h2>
+<Inset>…</Inset>
+<Inset as="li" tone="success" padding="sm">Variante A</Inset>`}
+      >
         <div className="grid gap-3">
           <Inset>
             <Eyebrow>Notiz</Eyebrow>
@@ -161,16 +173,18 @@ const { chip } = statusToneClasses('warning')
             <p className="m-0 text-sm">Die Daten werden nachts um 02:00 synchronisiert.</p>
           </Inset>
         </div>
-        <pre>
-          <code>{`import { Inset } from '@rapold/framework-core'
+      </DemoPanel>
 
-<Inset>…</Inset>
-<Inset as="li" tone="success" padding="sm">Variante A</Inset>`}</code>
-        </pre>
-      </section>
+      <DemoPanel
+        id="ai-disclosure"
+        title="KI-Kennzeichnung"
+        layout="fill"
+        code={`import { AiDisclosureBadge } from '@rapold/framework-core'
 
-      <section className="demo-panel">
-        <h2>KI-Kennzeichnung</h2>
+<AiDisclosureBadge />
+<AiDisclosureBadge compact />
+<AiDisclosureBadge onMedia decorative className="absolute right-3 bottom-3" />`}
+      >
         <div className="demo-row">
           <AiDisclosureBadge />
           <AiDisclosureBadge size="md" label="Mit KI übersetzt" />
@@ -190,14 +204,7 @@ const { chip } = statusToneClasses('warning')
             Die Angabe steht im zugänglichen Namen des Bildes, das Badge ist darum `decorative`.
           </figcaption>
         </figure>
-        <pre>
-          <code>{`import { AiDisclosureBadge } from '@rapold/framework-core'
-
-<AiDisclosureBadge />
-<AiDisclosureBadge compact />
-<AiDisclosureBadge onMedia decorative className="absolute right-3 bottom-3" />`}</code>
-        </pre>
-      </section>
+      </DemoPanel>
     </>
   )
 }

@@ -19,6 +19,8 @@ import {
 import { GeneratedCover, MediaCard } from '@rapold/framework-core'
 import { PlayButton } from '@rapold/framework-core'
 
+import { DemoPanel } from '../demo-panel'
+
 /** Deterministische Beispiel-Wellenform (keine Zufallswerte → SSR-stabil). */
 function demoWave(count: number, seed = 1): number[] {
   return Array.from({ length: count }, (_, i) => {
@@ -77,12 +79,25 @@ export function MediaDemo() {
 
   return (
     <div className="demo-grid">
-      <section className="demo-panel">
-        <h2>MediaBar</h2>
-        <p>
-          Persistente Wiedergabeleiste: Cover, Titel mit Live-Slot, Transport mit Timeline und Zusatzaktionen. Rein
-          darstellend – Audio steuert die App.
-        </p>
+      <DemoPanel
+        id="media-bar"
+        title="MediaBar"
+        description="Persistente Wiedergabeleiste: Cover, Titel mit Live-Slot, Transport mit Timeline und Zusatzaktionen. Rein darstellend – Audio steuert die App."
+        layout="fill"
+        code={`import { MediaBar, MediaBarInfo, MediaBarArtwork, MediaBarMeta,
+  MediaBarTransport, MediaBarTimeline, MediaBarActions } from '@rapold/framework-core'
+
+<MediaBar position="fixed" status={statusText}>
+  <MediaBarInfo>
+    <MediaBarArtwork src={cover} title="Morgenjournal" />
+    <MediaBarMeta eyebrow="Nachrichten" title="Morgenjournal" subtitle="12 Min." />
+  </MediaBarInfo>
+  <MediaBarTransport playButton={{ label: 'Morgenjournal abspielen', state, onPlay, onPause }}>
+    <MediaBarTimeline value={time} duration={742} onSeek={seek} />
+  </MediaBarTransport>
+  <MediaBarActions>{/* Lautstärke, Queue … */}</MediaBarActions>
+</MediaBar>`}
+      >
         <div className="overflow-hidden rounded-lg border">
           <MediaBar status={playing ? 'Wiedergabe läuft: Morgenjournal' : 'Pausiert'}>
             <MediaBarInfo>
@@ -152,26 +167,25 @@ export function MediaDemo() {
             </MediaBarTransport>
           </MediaBar>
         </div>
-        <pre>
-          <code>{`import { MediaBar, MediaBarInfo, MediaBarArtwork, MediaBarMeta,
-  MediaBarTransport, MediaBarTimeline, MediaBarActions } from '@rapold/framework-core'
+      </DemoPanel>
 
-<MediaBar position="fixed" status={statusText}>
-  <MediaBarInfo>
-    <MediaBarArtwork src={cover} title="Morgenjournal" />
-    <MediaBarMeta eyebrow="Nachrichten" title="Morgenjournal" subtitle="12 Min." />
-  </MediaBarInfo>
-  <MediaBarTransport playButton={{ label: 'Morgenjournal abspielen', state, onPlay, onPause }}>
-    <MediaBarTimeline value={time} duration={742} onSeek={seek} />
-  </MediaBarTransport>
-  <MediaBarActions>{/* Lautstärke, Queue … */}</MediaBarActions>
-</MediaBar>`}</code>
-        </pre>
-      </section>
+      <DemoPanel
+        id="media-card"
+        title="MediaCard"
+        description="Kachel und Breitformat mit Stretched Link, Ersatz-Cover, Overlay-Etikett und eigenständigem Aktions-Slot."
+        layout="fill"
+        code={`import { MediaCard } from '@rapold/framework-core'
 
-      <section className="demo-panel">
-        <h2>MediaCard</h2>
-        <p>Kachel und Breitformat mit Stretched Link, Ersatz-Cover, Overlay-Etikett und eigenständigem Aktions-Slot.</p>
+<MediaCard
+  variant="wide"
+  href="/sendungen/kulturplatz"
+  imageSrc={cover}
+  title="Kulturplatz am Abend"
+  eyebrow="Kultur"
+  meta="So, 11. Okt. · 48 Min."
+  action={<PlayButton label="Kulturplatz abspielen" size="sm" />}
+/>`}
+      >
         <div className="grid gap-4 sm:grid-cols-3">
           {EPISODES.map((ep, i) => (
             <MediaCard
@@ -219,24 +233,17 @@ export function MediaDemo() {
             }
           />
         </div>
-        <pre>
-          <code>{`import { MediaCard } from '@rapold/framework-core'
+      </DemoPanel>
 
-<MediaCard
-  variant="wide"
-  href="/sendungen/kulturplatz"
-  imageSrc={cover}
-  title="Kulturplatz am Abend"
-  eyebrow="Kultur"
-  meta="So, 11. Okt. · 48 Min."
-  action={<PlayButton label="Kulturplatz abspielen" size="sm" />}
-/>`}</code>
-        </pre>
-      </section>
+      <DemoPanel
+        id="generated-cover"
+        title="GeneratedCover"
+        description="Deterministisches Ersatz-Cover aus Titel und Seed. Farben stammen aus den Chart-Tokens der aktiven Brand."
+        layout="fill"
+        code={`import { GeneratedCover } from '@rapold/framework-core'
 
-      <section className="demo-panel">
-        <h2>GeneratedCover</h2>
-        <p>Deterministisches Ersatz-Cover aus Titel und Seed. Farben stammen aus den Chart-Tokens der aktiven Brand.</p>
+<GeneratedCover title="Morgenjournal" eyebrow="Sendung" index={0} />`}
+      >
         <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
           {['Morgenjournal', 'Kulturplatz', 'Wissen kompakt', 'Sport am Wochenende', 'Musikwelle'].map((t, i) => (
             <GeneratedCover
@@ -248,19 +255,22 @@ export function MediaDemo() {
             />
           ))}
         </div>
-        <pre>
-          <code>{`import { GeneratedCover } from '@rapold/framework-core'
+      </DemoPanel>
 
-<GeneratedCover title="Morgenjournal" eyebrow="Sendung" index={0} />`}</code>
-        </pre>
-      </section>
+      <DemoPanel
+        id="carousel"
+        title="Carousel"
+        description="Scroll-Snap ohne Bibliothek. Autoplay mit sichtbarem Pause-Knopf; bei Hover, Fokus und «Bewegung reduzieren» steht es still."
+        layout="fill"
+        code={`import { Carousel, CarouselContent, CarouselItem, CarouselControls } from '@rapold/framework-core'
 
-      <section className="demo-panel">
-        <h2>Carousel</h2>
-        <p>
-          Scroll-Snap ohne Bibliothek. Autoplay mit sichtbarem Pause-Knopf; bei Hover, Fokus und «Bewegung reduzieren»
-          steht es still.
-        </p>
+<Carousel label="Empfohlene Sendungen" autoplay={6000} loop>
+  <CarouselContent>
+    <CarouselItem className="sm:basis-1/2">…</CarouselItem>
+  </CarouselContent>
+  <CarouselControls />
+</Carousel>`}
+      >
         <Carousel label="Empfohlene Sendungen" autoplay={6000} loop>
           <CarouselContent>
             {EPISODES.concat({
@@ -283,24 +293,21 @@ export function MediaDemo() {
           </CarouselContent>
           <CarouselControls />
         </Carousel>
-        <pre>
-          <code>{`import { Carousel, CarouselContent, CarouselItem, CarouselControls } from '@rapold/framework-core'
+      </DemoPanel>
 
-<Carousel label="Empfohlene Sendungen" autoplay={6000} loop>
-  <CarouselContent>
-    <CarouselItem className="sm:basis-1/2">…</CarouselItem>
-  </CarouselContent>
-  <CarouselControls />
-</Carousel>`}</code>
-        </pre>
-      </section>
+      <DemoPanel
+        id="audio-visual"
+        title="Audio-Visualisierungen"
+        description="Datengetriebenes SVG ohne Web Audio im Core. Farben über Tokens, bei «Bewegung reduzieren» eine stehende Hüllkurve."
+        layout="fill"
+        code={`import { BarWaveform, RadialBars, ActivityRing } from '@rapold/framework-core'
 
-      <section className="demo-panel">
-        <h2>Audio-Visualisierungen</h2>
-        <p>
-          Datengetriebenes SVG ohne Web Audio im Core. Farben über Tokens, bei «Bewegung reduzieren» eine stehende
-          Hüllkurve.
-        </p>
+<BarWaveform values={peaks} progress={time / duration} label="Wellenform" />
+<RadialBars values={analyserLevels} live tone="chart-3" />
+<ActivityRing mode="speech" values={levels} intensity={0.6} diameter={56}>
+  <Avatar />
+</ActivityRing>`}
+      >
         <div className="grid gap-6">
           <div>
             <p>BarWaveform mit Fortschritt</p>
@@ -346,16 +353,7 @@ export function MediaDemo() {
             </div>
           </div>
         </div>
-        <pre>
-          <code>{`import { BarWaveform, RadialBars, ActivityRing } from '@rapold/framework-core'
-
-<BarWaveform values={peaks} progress={time / duration} label="Wellenform" />
-<RadialBars values={analyserLevels} live tone="chart-3" />
-<ActivityRing mode="speech" values={levels} intensity={0.6} diameter={56}>
-  <Avatar />
-</ActivityRing>`}</code>
-        </pre>
-      </section>
+      </DemoPanel>
     </div>
   )
 }
