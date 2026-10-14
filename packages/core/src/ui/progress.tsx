@@ -52,7 +52,9 @@ function Progress({
 }: ProgressProps) {
   const safeMax = typeof max === 'number' && max > 0 ? max : 100
   const determinate = typeof value === 'number' && Number.isFinite(value)
-  const percent = determinate ? Math.min(100, Math.max(0, (value / safeMax) * 100)) : 0
+  // Werte ausserhalb 0–max klemmen: Radix verwirft sie sonst als unbestimmt, während der Balken voll oder leer steht.
+  const clamped = determinate ? Math.min(safeMax, Math.max(0, value)) : null
+  const percent = clamped === null ? 0 : (clamped / safeMax) * 100
   return (
     <>
       {determinate ? null : <CoreKeyframes />}
@@ -60,7 +62,7 @@ function Progress({
         data-slot="progress"
         data-size={size ?? 'default'}
         data-tone={tone}
-        value={determinate ? value : null}
+        value={clamped}
         max={safeMax}
         getValueLabel={getValueLabel}
         className={cn(progressVariants({ size }), className)}

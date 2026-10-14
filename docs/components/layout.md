@@ -151,5 +151,6 @@ Seitenstruktur und Navigation, übernommen aus RadioX und für Atlas neutralisie
 
 ## Offen
 
-- Komponenten sind noch nicht in `packages/core/src/index.ts` exportiert (Integration folgt). Accordion, Collapsible, Table und Kbd haben noch keine Demo.
+- Accordion, Collapsible, Table und Kbd sind noch nicht in `packages/core/src/index.ts` exportiert (Integration folgt). Accordion, Collapsible, Table und Kbd haben noch keine Demo.
+- Table-Demo in der Doku einkapseln: `apps/docs/app/globals.css` setzt ungelayerte Regeln für `th`, `td` und `tbody tr:hover` (Padding, `vertical-align`, Schriftgrösse, Hover-Fläche). Sie schlagen die Utilities der Table (`p-2`, `align-middle`, `text-sm`, `hover:bg-muted/50`); ohne Scope zeigt eine Demo die Komponente nicht wie spezifiziert.
 - Visuelle Prüfung im Browser steht aus (Safe Area auf iOS, Scroll-Snap, FAB-Lage im Stack).

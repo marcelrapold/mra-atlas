@@ -64,9 +64,10 @@ function EmptyTitle({ className, asChild = false, ...props }: React.ComponentPro
   return <Comp data-slot="empty-title" className={cn('text-sm font-semibold', className)} {...props} />
 }
 
-function EmptyDescription({ className, ...props }: React.ComponentProps<'div'>) {
+/** Beschreibung als `<p>`, wie im bisherigen `EmptyState`. */
+function EmptyDescription({ className, ...props }: React.ComponentProps<'p'>) {
   return (
-    <div
+    <p
       data-slot="empty-description"
       className={cn(
         'max-w-sm text-xs leading-relaxed text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a:hover]:text-foreground',

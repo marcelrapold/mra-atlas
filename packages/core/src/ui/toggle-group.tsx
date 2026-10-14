@@ -40,14 +40,17 @@ function ToggleGroup({
   variant,
   size,
   spacing = 0,
-  orientation = 'horizontal',
+  orientation,
   style,
   children,
   ...props
 }: ToggleGroupProps) {
+  // Ohne `orientation` bleibt Radix in beiden Achsen (alle vier Pfeiltasten, APG-Radiogruppe);
+  // dargestellt wird die Leiste dann horizontal.
+  const layout: ToggleGroupOrientation = orientation ?? 'horizontal'
   const context = React.useMemo<ToggleGroupContextValue>(
-    () => ({ variant, size, spacing, orientation }),
-    [variant, size, spacing, orientation],
+    () => ({ variant, size, spacing, orientation: layout }),
+    [variant, size, spacing, layout],
   )
   return (
     <ToggleGroupPrimitive.Root
@@ -55,7 +58,7 @@ function ToggleGroup({
       data-variant={variant ?? 'default'}
       data-size={size ?? 'default'}
       data-spacing={spacing}
-      data-orientation={orientation}
+      data-orientation={layout}
       orientation={orientation}
       style={{ '--toggle-group-gap': `calc(var(--spacing) * ${spacing})`, ...style } as React.CSSProperties}
       className={cn(
@@ -81,6 +84,7 @@ const JOINED: Record<ToggleGroupOrientation, string> = {
 /**
  * Unsichtbare Trefferfläche von 44 px. Freistehend als Quadrat; in einer
  * verbundenen Leiste nur quer zur Leiste, damit sich Nachbarn nicht überdecken.
+ * `square` entspricht `TOUCH_TARGET` in `toggle.tsx`; später gemeinsam aus `lib/` exportieren.
  */
 const TOUCH_TARGET = {
   square:

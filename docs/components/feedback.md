@@ -58,7 +58,7 @@ Datei: `packages/core/src/ui/empty-state.tsx` (serverfähig) · Exporte: `Empty`
 | `EmptyHeader` | `empty-header` | gruppiert Titel und Beschreibung |
 | `EmptyMedia` | `empty-media` | `variant` `default` (Bild, Illustration) \| `icon` (rundes `bg-muted`-Feld, Icon 20 px); `data-variant` |
 | `EmptyTitle` | `empty-title` | ohne `asChild` ein `div`; mit `asChild` die passende Überschrift: `<EmptyTitle asChild><h2>…</h2></EmptyTitle>` |
-| `EmptyDescription` | `empty-description` | `text-xs`, `text-muted-foreground`, höchstens `max-w-sm`; Links darin unterstrichen |
+| `EmptyDescription` | `empty-description` | `<p>` wie bisher, `text-xs`, `text-muted-foreground`, höchstens `max-w-sm`; Links darin unterstrichen |
 | `EmptyContent` | `empty-content` | Handlungen und Zusatzinhalt, zentriert gestapelt |
 
 **Preset `EmptyState`.** Komponiert die Anatomie mit unveränderter API, bestehende Aufrufe bleiben gültig und sehen gleich aus.
