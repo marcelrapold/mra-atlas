@@ -1,8 +1,26 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
-import {resolveTheme, applyTheme, themeBootScript, preferencesKey} from '../apps/docs/app/_components/theme-boot.ts';
-import {brands} from '../packages/brands/src/index.mjs';
+import {resolveTheme, applyTheme, themeBootScript, themeStylesheet, docsOverrides, preferencesKey} from '../apps/docs/app/_components/theme-boot.ts';
+import {brands, toCssVariables} from '../packages/brands/src/index.mjs';
+
+// Parses the generated stylesheet into {selector: {property: value}}.
+const parseRules = css => Object.fromEntries([...css.matchAll(/([^{}]+)\{([^}]*)\}/g)].map(([, selector, body]) =>
+  [selector.trim(), Object.fromEntries(body.split(';').filter(Boolean).map(d => [d.slice(0, d.indexOf(':')), d.slice(d.indexOf(':') + 1)]))]));
+
+test('token stylesheet: the :root cascade equals the inline set of every brand x mode', () => {
+  const rules = parseRules(themeStylesheet(brands, toCssVariables));
+  for (const brand of brands) for (const mode of Object.keys(brand.modes)) {
+    const block = rules[`:root[data-brand="${brand.id}"][data-mode="${mode}"]`];
+    assert.ok(block, `${brand.id} x ${mode} block`);
+    assert.equal(block['color-scheme'], mode);
+    const resolved = {...rules[':root'], ...rules[`:root[data-brand="${brand.id}"]`], ...block};
+    const expected = {...toCssVariables(brand, mode), ...docsOverrides[brand.id]};
+    for (const [name, value] of Object.entries(expected)) assert.equal(resolved[name], String(value), `${brand.id} x ${mode} ${name}`);
+    assert.equal(block['background-color'], String(expected['--background']), `${brand.id} x ${mode} canvas`);
+  }
+  assert.equal(rules[':root[data-brand="neutral"][data-mode="dark"]'] !== undefined, Boolean(brands.find(b => b.id === 'neutral').modes.dark));
+});
 
 const list = [{id: 'neutral', dark: true}, {id: 'rapold', dark: true}, {id: 'paper', dark: false}];
 

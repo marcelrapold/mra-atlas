@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from 'next';
+import {createHash} from 'node:crypto';
 import {brands, neutral, toCssVariables} from '@rapold/framework-brands';
 import './globals.css';
 import FrameworkShell from './_components/framework-shell';
-import {defaultBrand, docsOverrides, themeBootScript} from './_components/theme-boot';
+import {defaultBrand, resolveTheme, themeBootScript, themeStylesheet} from './_components/theme-boot';
 const title='Atlas';
 const description='Atlas, das Designsystem von Rapold: ein Designstandard mit austauschbaren Brands für Interfaces und Management-Präsentationen.';
 export const metadata: Metadata = {
@@ -14,32 +15,29 @@ export const metadata: Metadata = {
   twitter: {card: 'summary_large_image', title, description, images: ['/og.png']},
 };
 // Browser chrome follows the toolbar surface of the default brand; no new colours.
-export const viewport: Viewport = {themeColor: (['light', 'dark'] as const).map(mode => ({media: `(prefers-color-scheme: ${mode})`, color: String(toCssVariables(neutral, mode)['--card'])}))};
+export const viewport: Viewport = {colorScheme: 'light dark', themeColor: (['light', 'dark'] as const).map(mode => ({media: `(prefers-color-scheme: ${mode})`, color: String(toCssVariables(neutral, mode)['--card'])}))};
 
-// Build time: every brand x mode as custom properties on <html>, keyed by the attributes the boot script sets.
-// Values shared by all scopes go to :root once, brand-wide values to [data-brand]; the rest per mode.
-// Properties live on <html> so ::view-transition-* and the canvas background resolve them as well.
-type Scope = {brand: string; mode: 'light' | 'dark'; vars: Record<string, string>};
-const scopes: Scope[] = brands.flatMap(brand => (brand.modes.dark ? ['light', 'dark'] as const : ['light'] as const).map(mode => ({brand: brand.id, mode,
-  vars: Object.fromEntries(Object.entries({...toCssVariables(brand, mode), ...docsOverrides[brand.id]}).map(([k, v]) => [k, String(v)]))})));
-const shared = (list: Scope[]) => Object.fromEntries(Object.entries(list[0].vars).filter(([k, v]) => list.every(s => s.vars[k] === v)));
-const declare = (vars: Record<string, string>) => Object.entries(vars).map(([k, v]) => `${k}:${v}`).join(';');
-const without = (vars: Record<string, string>, known: Record<string, string>) => Object.fromEntries(Object.entries(vars).filter(([k, v]) => known[k] !== v));
-const global = shared(scopes);
-const themeStyle = [`:root{${declare(global)}}`, ...brands.flatMap(brand => {
-  const own = scopes.filter(s => s.brand === brand.id), common = without(shared(own), global);
-  return [`:root[data-brand="${brand.id}"]{${declare(common)}}`, ...own.map(s =>
-    `:root[data-brand="${s.brand}"][data-mode="${s.mode}"]{${declare(without(s.vars, {...global, ...common}))};color-scheme:${s.mode};background-color:${s.vars['--background']}}`)];
-}), ':root[data-mode="dark"] body>.framework-scope{color-scheme:dark}'].join('\n').replace(/</g, '\\3c ');
-const bootScript = themeBootScript(brands.map(brand => ({id: brand.id, dark: Boolean(brand.modes.dark)})));
+const bootBrands = brands.map(brand => ({id: brand.id, dark: Boolean(brand.modes.dark)}));
+const bootScript = themeBootScript(bootBrands);
+// Build-time guard: run the serialised script as the browser would. It swallows every error at runtime,
+// so a broken serialisation of the compiled resolver would otherwise only show up as a wrong first paint.
+{
+  const root = {dataset: {} as Record<string, string>, style: {} as Record<string, string>}, stored = {brand: 'neutral', mode: 'dark', collapsed: true};
+  new Function('document', 'location', 'localStorage', 'matchMedia', 'URLSearchParams', bootScript)(
+    {documentElement: root}, {search: ''}, {getItem: () => JSON.stringify(stored)}, () => ({matches: false}), URLSearchParams);
+  const expected = resolveTheme(bootBrands, null, stored, false);
+  if (root.dataset.brand !== expected.brand || root.dataset.mode !== expected.mode || !('rail' in root.dataset) || root.style.colorScheme !== expected.mode)
+    throw new Error(`Theme boot script does not resolve the theme: ${JSON.stringify(root)}`);
+}
+// Token CSS ships as a static stylesheet (app/theme.css); the content hash busts caches on change.
+const themeVersion = createHash('sha256').update(themeStylesheet(brands, toCssVariables)).digest('hex').slice(0, 12);
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   // The boot script rewrites these attributes before the first paint; React must accept the DOM.
   return <html lang="de-CH" data-brand={defaultBrand} data-mode="light" suppressHydrationWarning>
     <head>
-      <meta name="color-scheme" content="light dark"/>
       <script id="theme-boot" dangerouslySetInnerHTML={{__html: bootScript}}/>
-      <style id="theme-tokens" dangerouslySetInnerHTML={{__html: themeStyle}}/>
+      <link id="theme-tokens" rel="stylesheet" href={`/theme.css?v=${themeVersion}`}/>
     </head>
     <body><FrameworkShell>{children}</FrameworkShell></body>
   </html>;

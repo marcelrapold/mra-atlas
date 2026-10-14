@@ -1,40 +1,17 @@
 'use client';
 
 // Cmd+K palette. Loaded on demand by the shell (next/dynamic, ssr:false), so cmdk stays out of the
-// initial route chunks. Index: pages from the catalog, plus component modules and guidance sections
-// once a query is typed.
+// initial route chunks. Index and matching live in search-index.ts; cmdk only renders and handles the keyboard.
 import {useEffect, useMemo, useState} from 'react';
 import {Hash, Layers, type LucideIcon} from 'lucide-react';
-import {CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem} from '@rapold/framework-core';
-import {groups, pages, componentNames, componentPages, guidance, guidanceFor} from './catalog';
+import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem} from '@rapold/framework-core';
+import {groups, componentNames, componentPages, guidance, guidanceFor} from './catalog';
 import {pageIcons} from './navigation-icons';
+import {buildIndex, search, type Entry} from './search-index';
 
-// Same algorithm as the heading ids of the reference pages (docs-ia-navigation).
-export const slug = (s: string) => s.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-// Search folding: case, umlaut spelling (ä = ae) and diacritics do not matter.
-export const fold = (s: string) => s.toLowerCase().replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
-// German and technical terms people type for a page whose title does not contain them.
-export const aliases: Record<string, string[]> = {
-  tokens: ['Farben', 'Variablen', 'CSS', 'Custom Properties', 'Kontrast', 'JSON', 'DTCG'],
-  praesentation: ['PowerPoint', 'PPTX', 'Folien', 'Deck', 'PDF'],
-  praesentationslogik: ['Storyline', 'Folien', 'Deck'],
-  accessibility: ['Kontrast', 'WCAG', 'a11y', 'Fokus', 'Tastatur'],
-  typography: ['Schrift', 'Fonts', 'Schriftgrade'],
-  layout: ['Grid', 'Spacing', 'Breakpoints'],
-  icons: ['Icons', 'Symbole', 'Lucide'],
-  brand: ['Logo', 'Theme', 'CI', 'Corporate Design'],
-  motion: ['Animation', 'Bewegung', 'View Transitions'],
-  dataviz: ['Diagramme', 'Serienfarben'],
-  charts: ['Diagramme', 'ECharts'],
-  forms: ['Eingabe', 'Validierung'],
-  toasts: ['Benachrichtigung', 'Sonner'],
-  navigation: ['Seitenleiste', 'Sidebar', 'Rail'],
-};
-type Entry = {key: string; label: string; hint: string; target: string; page: string; haystack: string; keywords: string[]};
-const keywordsOf = (...parts: string[]) => [...parts, ...parts.map(fold)];
-const pageHaystack = (id: string, title: string, group: string) => fold([id, title, group, ...(aliases[id] ?? [])].join(' '));
-const titleOf = (id: string) => pages.find(p => p.id === id)?.title ?? id;
+const catalog = {groups, componentNames, componentPages, guidance, guidanceFor};
 const icon = (Icon: LucideIcon) => <span className="command-icon"><Icon size={16} aria-hidden="true"/></span>;
+const title = 'Atlas durchsuchen';
 
 export type SearchDialogProps = {
   open: boolean;
@@ -48,36 +25,27 @@ export type SearchDialogProps = {
 export default function SearchDialog({open, onOpenChange, brandId, themedHref, onSelect, onCloseAutoFocus}: SearchDialogProps) {
   const [query, setQuery] = useState('');
   useEffect(() => {if (!open) setQuery('');}, [open]);
-  // Built per brand: guidance sections differ between brands, and anchors must exist on the target page.
-  const index = useMemo(() => {
-    const modules: Entry[] = componentNames.map(name => {
-      const page = componentPages[name] ?? 'components';
-      return {key: `modul-${name}`, label: name, hint: titleOf(page), target: `${themedHref(page)}#${slug(name)}`, page, haystack: fold(`${name} ${titleOf(page)}`), keywords: keywordsOf(titleOf(page), 'Komponente', 'Modul')};
-    });
-    const sections: Entry[] = Object.keys(guidance).flatMap(id => (guidanceFor(id, brandId)?.sections ?? []).map(s => ({
-      key: `abschnitt-${id}-${slug(s.title)}`, label: s.title, hint: titleOf(id), target: `${themedHref(id)}#${slug(s.title)}`, page: id,
-      haystack: fold([s.title, titleOf(id), s.body, ...(s.items ?? [])].join(' ')), keywords: keywordsOf(titleOf(id), s.body, ...(s.items ?? [])),
-    })));
-    return {modules, sections};
-  }, [brandId, themedHref]);
-  // Every typed word must occur in the entry (title, page, aliases or text). cmdk then only ranks:
-  // its fuzzy subsequence match alone lets «Kontrast» hit «Raster & Abstände».
-  const terms = fold(query).split(/\s+/).filter(Boolean);
-  const matches = (haystack: string) => terms.every(term => haystack.includes(term));
-  // Modules carry the icon of their page; sections are anchors within a page.
-  const item = (entry: Entry, Icon?: LucideIcon) => <CommandItem key={entry.key} value={entry.key} keywords={[entry.label, ...entry.keywords]} onSelect={() => onSelect(entry.target)}>
-    {icon(Icon ?? pageIcons[entry.page] ?? Layers)}<span>{entry.label}</span><span className="search-hint">{entry.hint}</span>
+  const index = useMemo(() => buildIndex(catalog, brandId, themedHref), [brandId, themedHref]);
+  const results = useMemo(() => search(index, query), [index, query]);
+  // Pages carry their own icon, modules the icon of their page; sections are text within a page.
+  const item = (entry: Entry) => <CommandItem key={entry.key} value={entry.key} onSelect={() => onSelect(entry.target)}>
+    {icon(entry.kind === 'section' ? Hash : pageIcons[entry.page] ?? Layers)}<span>{entry.label}</span>{entry.kind !== 'page' && <span className="search-hint">{entry.hint}</span>}
   </CommandItem>;
-  const modules = terms.length ? index.modules.filter(e => matches(e.haystack)) : [], sections = terms.length ? index.sections.filter(e => matches(e.haystack)) : [];
 
-  return <CommandDialog open={open} onOpenChange={onOpenChange} title="Atlas durchsuchen" description="Seite, Komponente oder Abschnitt öffnen" closeLabel="Suche schliessen" contentProps={{onCloseAutoFocus}}>
-    <CommandInput placeholder="Tokens, Präsentation, Switch, Kontrast …" value={query} onValueChange={setQuery}/>
-    <CommandList label="Suchergebnisse">
-      <CommandEmpty>Keine Treffer. Versuche einen anderen Suchbegriff.</CommandEmpty>
-      {groups.map(group => <CommandGroup key={group.title} heading={group.title}>{group.items.filter(([id, title]) => matches(pageHaystack(id, title, group.title))).map(([id, title]) =>
-        <CommandItem key={id} value={`${group.title} ${title}`} keywords={keywordsOf(id, ...(aliases[id] ?? []), title, group.title)} onSelect={() => onSelect(themedHref(id))}>{icon(pageIcons[id] ?? Layers)}{title}</CommandItem>)}</CommandGroup>)}
-      {modules.length > 0 && <CommandGroup heading="Komponenten-Module">{modules.map(entry => item(entry))}</CommandGroup>}
-      {sections.length > 0 && <CommandGroup heading="Abschnitte">{sections.map(entry => item(entry, Hash))}</CommandGroup>}
-    </CommandList>
-  </CommandDialog>;
+  // CommandDialog does not forward Command props, so the palette composes Dialog and Command itself:
+  // shouldFilter={false} keeps cmdk's own fuzzy filter from re-filtering the folded results.
+  return <Dialog open={open} onOpenChange={onOpenChange}>
+    <DialogContent onCloseAutoFocus={onCloseAutoFocus} className="overflow-hidden p-0" closeLabel="Suche schliessen">
+      <DialogHeader className="sr-only"><DialogTitle>{title}</DialogTitle><DialogDescription>Seite, Komponente oder Abschnitt öffnen</DialogDescription></DialogHeader>
+      <Command label={title} shouldFilter={false} className="**:data-[slot=command-input-wrapper]:h-12 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]]:px-2 [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
+        <CommandInput placeholder="Tokens, Präsentation, Switch, Kontrast …" value={query} onValueChange={setQuery}/>
+        <CommandList label="Suchergebnisse">
+          <CommandEmpty>Keine Treffer. Versuche einen anderen Suchbegriff.</CommandEmpty>
+          {results.groups.map(group => <CommandGroup key={group.title} heading={group.title}>{group.entries.map(item)}</CommandGroup>)}
+          {results.modules.length > 0 && <CommandGroup heading="Komponenten-Module">{results.modules.map(item)}</CommandGroup>}
+          {results.sections.length > 0 && <CommandGroup heading="Abschnitte">{results.sections.map(item)}</CommandGroup>}
+        </CommandList>
+      </Command>
+    </DialogContent>
+  </Dialog>;
 }

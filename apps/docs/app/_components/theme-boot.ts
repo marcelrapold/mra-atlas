@@ -40,3 +40,23 @@ export function themeBootScript(brands: readonly BootBrand[]) {
     + `try{d=matchMedia('(prefers-color-scheme: dark)').matches}catch(e){}`
     + `apply(document.documentElement,resolve(brands,q,s,d))}catch(e){}})(${resolveTheme.toString()},${applyTheme.toString()},${list})`;
 }
+
+// Build-time token CSS for every brand x mode, keyed on the attributes the boot script sets on <html>.
+// Served as one static, render-blocking stylesheet (app/theme.css), so it is cached once and stays out of
+// every HTML file and RSC payload. Values shared by all scopes go to :root once, brand-wide values to
+// [data-brand], the rest per mode. Properties live on <html> so ::view-transition-* and the canvas resolve them.
+type TokenBrand = {id: string; modes: {dark?: unknown}};
+export function themeStylesheet<B extends TokenBrand>(brands: readonly B[], toCss: (brand: B, mode: 'light' | 'dark') => Record<string, string | number>) {
+  type Scope = {brand: string; mode: 'light' | 'dark'; vars: Record<string, string>};
+  const scopes: Scope[] = brands.flatMap(brand => (brand.modes.dark ? ['light', 'dark'] as const : ['light'] as const).map(mode => ({brand: brand.id, mode,
+    vars: Object.fromEntries(Object.entries({...toCss(brand, mode), ...docsOverrides[brand.id]}).map(([k, v]) => [k, String(v)]))})));
+  const shared = (list: Scope[]) => Object.fromEntries(Object.entries(list[0].vars).filter(([k, v]) => list.every(s => s.vars[k] === v)));
+  const declare = (vars: Record<string, string>) => Object.entries(vars).map(([k, v]) => `${k}:${v}`).join(';');
+  const without = (vars: Record<string, string>, known: Record<string, string>) => Object.fromEntries(Object.entries(vars).filter(([k, v]) => known[k] !== v));
+  const global = shared(scopes);
+  return [`:root{${declare(global)}}`, ...brands.flatMap(brand => {
+    const own = scopes.filter(s => s.brand === brand.id), common = without(shared(own), global);
+    return [`:root[data-brand="${brand.id}"]{${declare(common)}}`, ...own.map(s =>
+      `:root[data-brand="${s.brand}"][data-mode="${s.mode}"]{${declare(without(s.vars, {...global, ...common}))};color-scheme:${s.mode};background-color:${s.vars['--background']}}`)];
+  }), ':root[data-mode="dark"] body>.framework-scope{color-scheme:dark}', ''].join('\n');
+}

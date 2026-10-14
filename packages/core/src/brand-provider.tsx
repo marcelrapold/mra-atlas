@@ -15,7 +15,7 @@ export function useBrandPortal() { return useContext(PortalContext); }
 export function BrandProvider({ brand, children, className = '' }: { brand: BrandScope; children: ReactNode; className?: string }) {
   const [portal, setPortal] = useState<HTMLDivElement | null>(null);
   return <Context.Provider value={brand}>
-    <PortalContext.Provider value={portal ?? undefined}><div data-brand={brand.id} data-mode={brand.mode} className={className ? `framework-scope ${className}` : 'framework-scope'} style={brand.variables as CSSProperties | undefined}>{children}<div ref={setPortal} data-brand-portals="" /></div></PortalContext.Provider>
+    <PortalContext.Provider value={portal ?? undefined}><div data-brand={brand.id} data-mode={brand.mode} className={`framework-scope ${brand.mode === 'dark' ? 'dark' : ''} ${className}`} style={brand.variables as CSSProperties | undefined}>{children}<div ref={setPortal} data-brand-portals="" /></div></PortalContext.Provider>
   </Context.Provider>;
 }
 export function useBrand() {
