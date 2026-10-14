@@ -1,6 +1,6 @@
 'use client';
 import {useRef,useState} from 'react';
-import {Button,Label} from '@rapold/framework-core';
+import {Button,Field,FieldLabel,Textarea} from '@rapold/framework-core';
 import {mermaidPalette} from '../../../../packages/brands/src/mermaid-theme.mjs';
 import {useActiveBrand} from './framework-shell';
 import {mermaidExamples} from './mermaid-examples';
@@ -24,7 +24,7 @@ export default function MermaidShowcase() {
     {examples.map(e=><section className="doc-section" id={e.id} key={e.id}><h2>{e.title}</h2><p>{e.description}</p><MermaidDiagram code={e.code} label={e.title} filename={e.id} onEdit={()=>edit(e.id)}/></section>)}
     <section className="doc-section" id="editor"><h2>Eigene Diagramme</h2><p>Ein Beispiel übernehmen oder eigenen Mermaid-Code eingeben. «Diagramm rendern» übernimmt deine Änderungen in die Vorschau.</p>
       <div className="mermaid-editor-controls"><label htmlFor="mermaid-example">Beispiel</label><select id="mermaid-example" value={selected} onChange={e=>edit(e.target.value)}><option value="">Eigene Definition</option>{examples.map(e=><option value={e.id} key={e.id}>{e.title}</option>)}</select></div>
-      <Label htmlFor="diagram-code">Diagrammdefinition</Label><textarea ref={editor} id="diagram-code" className="code-editor" value={draft} spellCheck={false} onChange={e=>{setDraft(e.target.value);setSelected('');}}/>
+      <Field className="mt-3"><FieldLabel>Diagrammdefinition</FieldLabel><Textarea ref={editor} className="font-mono" value={draft} spellCheck={false} onChange={e=>{setDraft(e.target.value);setSelected('');}}/></Field>
       <div className="demo-row"><Button disabled={!draft.trim()} onClick={()=>setRendered(draft)}>Diagramm rendern</Button><span className="muted" role="status">{draft!==rendered?'Änderungen noch nicht gerendert.':`${brand.name} · ${mode==='dark'?'Dunkel':'Hell'}`}</span></div>
       <MermaidDiagram code={rendered} label="Eigenes Diagramm" filename="diagramm"/>
     </section>
