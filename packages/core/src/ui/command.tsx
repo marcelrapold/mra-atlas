@@ -21,12 +21,12 @@ function Command({ className, ...props }: React.ComponentProps<typeof CommandPri
 }
 
 function CommandDialog({
-  title = 'Command Palette',
-  description = 'Search for a command to run...',
+  title = 'Befehlspalette',
+  description = 'Befehl suchen …',
   children,
   className,
   showCloseButton = true,
-  closeLabel = 'Close',
+  closeLabel = 'Schliessen',
   contentProps,
   ...props
 }: React.ComponentProps<typeof Dialog> & {

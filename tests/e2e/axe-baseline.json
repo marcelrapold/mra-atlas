@@ -1,0 +1,4 @@
+{
+  "$comment": "Serious/critical axe violations tolerated per project and route (rule id: max node count). Shrink only; regenerate with AXE_BASELINE_UPDATE=1 npm run test:e2e and review the diff.",
+  "violations": {}
+}

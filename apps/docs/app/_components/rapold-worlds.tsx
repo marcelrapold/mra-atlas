@@ -5,6 +5,8 @@ import {ArrowUpRight, BookOpen, Check, ChevronRight, Download, Layers, MessageSq
 import identity from '../../../../brands/rapold/identity.json';
 import worlds from '../../../../brands/rapold/worlds.json';
 import {useActiveBrand} from './framework-shell';
+// Product-world styles ship with this component (the /brand chunk), not with the global stylesheet.
+import '../../../../brands/rapold/worlds.css';
 
 type World = typeof worlds.products[number];
 type Layer = {id: string; label: string; kind: string; path?: string; opacity?: number; depth?: number; blend?: string};

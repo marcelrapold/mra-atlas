@@ -1,16 +1,16 @@
 # Rapold · Designvertrag
 
-Version des Adapters: **0.1.0**. Status: **draft**. Ausgangspaket: **rapold.io Brand System 1.0.0**, Nutzerfreigabe der vier Produktsignets am **11.10.2026**.
+Version des Adapters: **0.2.0**. Status: **draft**. Ausgangspaket: **rapold.io Brand System 1.0.0**. Nutzerfreigabe der vier ursprünglichen Produktsignets am **11.10.2026** und der sechs mit 0.7.0 ergänzten am **12.10.2026**.
 
 ## 1. Zuständigkeit
 
-`packages/brands/src/rapold.json` ist die kanonische Framework-Ableitung. Sie ergänzt genau einen optionalen Registry-Eintrag. Die vier Produktzeichen werden separat in `brands/rapold/identity.json` und `brands/rapold/assets/logos/` verwaltet. Diese Grenze gilt auch für neue Anwendungen, Präsentationen und Exporte.
+`packages/brands/src/rapold.json` ist die kanonische Framework-Ableitung. Sie ergänzt genau einen optionalen Registry-Eintrag. Die zehn Produktzeichen werden separat in `brands/rapold/identity.json` und `brands/rapold/assets/logos/` verwaltet. Diese Grenze gilt auch für neue Anwendungen, Präsentationen und Exporte.
 
 Die Marke wird ausdrücklich ausgewählt. Ohne Auswahl gilt die neutrale Basis. Ein fehlendes Rapold-Dachsymbol wird weder erfunden noch durch eines der Produktzeichen ersetzt. Der Adapter setzt deshalb kein `assets.logo` und verlangt kein Logo auf einer allgemeinen Rapold-Titelfolie.
 
 ## 2. Freigabe und Quellen
 
-Die Freigabe betrifft die Formfamilie und die vier gelieferten SVG-Signets ohne sichtbare Schrift. Die vollständige semantische UI-Zuordnung, abgeleitete Hover- und Statuswerte sowie die Funktionskonturen sind dokumentierte Verfeinerungen. Dafür bleibt `status: draft` gesetzt.
+Die Freigabe betrifft die Formfamilie und die zehn SVG-Signets ohne sichtbare Schrift. Die vollständige semantische UI-Zuordnung, abgeleitete Hover- und Statuswerte sowie die Funktionskonturen sind dokumentierte Verfeinerungen. Dafür bleibt `status: draft` gesetzt.
 
 Die unveränderte Tokenquelle liegt unter `sources/brand-tokens.json`. `sources/provenance.json` dokumentiert Datum, Freigabeumfang, SHA-256-Prüfsumme, direkte Rollenabbildungen und jede Farbableitung. Öffentliche Contract-Exporte führen diese Dateien als `brand-tokens.json` und `provenance.json` im jeweiligen Brand-Verzeichnis.
 

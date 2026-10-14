@@ -6,6 +6,8 @@ import {Check, Copy, Download, ExternalLink, RefreshCw} from 'lucide-react';
 import identity from '../../../../brands/rapold/identity.json';
 import umbrella from '../../../../brands/rapold/assets/umbrella/umbrella.json';
 import {useActiveBrand} from './framework-shell';
+// Wordmark treatments load with the Rapold brand page; worlds.css follows via RapoldWorlds.
+import '../../../../brands/rapold/wordmarks.css';
 import RapoldWorlds from './rapold-worlds';
 
 type Product = typeof identity.products[number];

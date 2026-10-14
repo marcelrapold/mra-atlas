@@ -379,3 +379,64 @@ export function useDocumentTitle(
     if (next && document.title !== next) document.title = next
   }, [title])
 }
+
+/* -------------------------------------------------------------------------- */
+/* useControllableState                                                       */
+/* -------------------------------------------------------------------------- */
+
+export interface UseControllableStateOptions<T> {
+  /** Kontrollierter Wert. `undefined` heisst: Die Komponente verwaltet den Wert selbst. */
+  prop?: T | undefined
+  /** Startwert im unkontrollierten Modus. */
+  defaultProp: T
+  /** Wird bei jeder echten Änderung aufgerufen, kontrolliert wie unkontrolliert. */
+  onChange?: ((value: T) => void) | undefined
+}
+
+/**
+ * Zustand, der kontrolliert (`open` + `onOpenChange`) und unkontrolliert
+ * (`defaultOpen`) funktioniert: die Atlas-Konvention `value`/`defaultValue`/
+ * `onValueChange` (siehe docs/components/api.md).
+ *
+ * Der Setter ist stabil und meldet nur echte Änderungen (`Object.is`).
+ * Unkontrolliert vergleicht er mit dem zuletzt gesetzten Wert, damit zwei
+ * Aufrufe im selben Ereignis `onChange` nicht doppelt auslösen; kontrolliert
+ * mit dem gerenderten `prop`, bis der Aufrufer ihn ändert. Ist `T` selbst eine
+ * Funktion, wird sie wie bei `useState` als Updater gelesen.
+ *
+ * @example const [open, setOpen] = useControllableState({ prop: open, defaultProp: true, onChange: onOpenChange })
+ */
+export function useControllableState<T>({
+  prop,
+  defaultProp,
+  onChange,
+}: UseControllableStateOptions<T>): [T, (next: T | ((prev: T) => T)) => void] {
+  const [uncontrolled, setUncontrolled] = React.useState<T>(defaultProp)
+  const controlled = prop !== undefined
+  const value = controlled ? (prop as T) : uncontrolled
+
+  const valueRef = React.useRef(value)
+  const onChangeRef = React.useRef(onChange)
+  // Ohne Abhängigkeitsliste: nach jedem Render den gerenderten Stand übernehmen.
+  useIsomorphicLayoutEffect(() => {
+    valueRef.current = value
+    onChangeRef.current = onChange
+  })
+
+  const setValue = React.useCallback(
+    (next: T | ((prev: T) => T)) => {
+      const resolved = typeof next === 'function' ? (next as (prev: T) => T)(valueRef.current) : next
+      if (Object.is(resolved, valueRef.current)) return
+      // Kontrolliert zählt nur, was der Aufrufer rendert: Lehnt er den Wechsel
+      // ab, meldet der nächste Versuch ihn erneut.
+      if (!controlled) {
+        valueRef.current = resolved
+        setUncontrolled(resolved)
+      }
+      onChangeRef.current?.(resolved)
+    },
+    [controlled],
+  )
+
+  return [value, setValue]
+}

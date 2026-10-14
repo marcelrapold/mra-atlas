@@ -9,8 +9,10 @@
 .framework-scope .page-meta {flex-wrap: wrap;}
 .framework-scope [data-slot='command-list'] {min-height: 0; max-height: min(300px, calc(100dvh - 9rem));}
 .framework-scope [data-slot='command-input'] {min-width: 0;}
+/* Keep until core TabsContent sets outline-style (core-controls-a11y): Tailwind v4 outline-2 alone leaves it at none. */
 .framework-scope :is(.rapold-copy, .rapold-more, .rapold-load-state button, [data-slot='tabs-content']):focus-visible {outline: 3px solid var(--ring); outline-offset: 3px;}
-.framework-scope .changelog-header {padding: clamp(20px, 4vw, 44px);}
+/* cqi: the header scales with the content column (main is the inline-size container), not the viewport. */
+.framework-scope .changelog-header {padding: clamp(var(--spacing-5), 4cqi, var(--spacing-12));}
 .framework-scope .changelog-card-title {min-width: 0; overflow-wrap: anywhere;}
 .framework-scope .changelog-footer-grid {display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 120px), 1fr)); gap: 10px;}
 @media (pointer: coarse) {

@@ -3,6 +3,9 @@
 import { useEffect, useRef, useState, type ReactNode, type RefObject } from 'react'
 import { ChevronLeft, ChevronRight, Maximize2, Pause, Play, X } from 'lucide-react'
 
+import { focusRing, focusRingOnMedia } from '../lib/focus'
+import { cn } from '../lib/utils'
+
 /**
  * Lightbox für nicht-interaktive Artefakte (Diagramme, Grafiken, Bilder):
  * rendert `children` inline und öffnet sie per Klick gross auf einem
@@ -45,13 +48,14 @@ function useFocusTrap(containerRef: RefObject<HTMLElement | null>, active: boole
       if (items.length === 0) return
       const first = items[0]
       const last = items[items.length - 1]
+      if (!first || !last) return
       const activeEl = document.activeElement
       if (e.shiftKey && (activeEl === first || !node.contains(activeEl))) {
         e.preventDefault()
-        last.focus()
+        last?.focus()
       } else if (!e.shiftKey && (activeEl === last || !node.contains(activeEl))) {
         e.preventDefault()
-        first.focus()
+        first?.focus()
       }
     }
 
@@ -151,12 +155,15 @@ function BlaetterKnopf({
   return (
     <button
       type="button"
+      data-slot={zurueck ? 'lightbox-previous' : 'lightbox-next'}
       onClick={onClick}
       disabled={deaktiviert}
       aria-label={zurueck ? 'Vorheriges Motiv' : 'Nächstes Motiv'}
- className={`absolute top-1/2 z-10 -translate-y-1/2 rounded-full border bg-background/85 p-2 text-muted-foreground backdrop-blur transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-30 ${
-        zurueck ? 'left-2' : 'right-2'
-      }`}
+      className={cn(
+        'absolute top-1/2 z-10 -translate-y-1/2 rounded-full border bg-background/85 p-2 text-muted-foreground backdrop-blur transition-colors hover:bg-muted hover:text-foreground disabled:pointer-events-none disabled:opacity-30',
+        focusRing,
+        zurueck ? 'left-2' : 'right-2',
+      )}
     >
       {zurueck ? <ChevronLeft className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
     </button>
@@ -240,6 +247,7 @@ export function LightboxBetrachter({
 
   return (
     <div
+      data-slot="lightbox-backdrop"
       className="fixed inset-0 z-50 flex items-center justify-center bg-background/30 p-6 backdrop-blur-md"
       onClick={(e) => {
         if (e.target === e.currentTarget) aufSchliessen()
@@ -247,6 +255,7 @@ export function LightboxBetrachter({
     >
       <div
         ref={dialogRef}
+        data-slot="lightbox-dialog"
         role="dialog"
         aria-modal="true"
         aria-label={`${label} — Vollbild`}
@@ -259,9 +268,13 @@ export function LightboxBetrachter({
       >
         <button
           type="button"
+          data-slot="lightbox-close"
           onClick={aufSchliessen}
           aria-label="Vollbild schliessen"
- className="absolute right-3 top-3 z-10 rounded-full border bg-background/80 p-1.5 text-muted-foreground backdrop-blur hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+          className={cn(
+            'absolute right-3 top-3 z-10 rounded-full border bg-background/80 p-1.5 text-muted-foreground backdrop-blur hover:bg-muted hover:text-foreground',
+            focusRing,
+          )}
         >
           <X className="h-4 w-4" />
         </button>
@@ -281,13 +294,14 @@ export function LightboxBetrachter({
               onClick={navigation.aufVor}
               deaktiviert={navigation.anzahl < 2}
             />
-            <div className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1 rounded-full border bg-background/85 p-1 text-xs backdrop-blur">
+            <div data-slot="lightbox-navigation" className="absolute bottom-3 left-1/2 z-10 flex -translate-x-1/2 items-center gap-1 rounded-full border bg-background/85 p-1 text-xs backdrop-blur">
               {navigation.aufSpielen ? (
                 <button
                   type="button"
+                  data-slot="lightbox-play"
                   onClick={navigation.aufSpielen}
                   aria-label={navigation.spielt ? 'Slideshow anhalten' : 'Slideshow starten'}
- className="rounded-full p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                  className={cn('rounded-full p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground', focusRing)}
                 >
                   {navigation.spielt ? (
                     <Pause className="h-3.5 w-3.5" />
@@ -340,7 +354,7 @@ export function Lightbox({
   const [offen, setOffen] = useState(false)
 
   return (
-    <div className={`group relative ${className}`}>
+    <div data-slot="lightbox" className={cn('group relative', className)}>
       {children}
       {/*
         Die ganze Fläche ist der Auslöser, nicht das Eck-Symbol: der Zeiger steht
@@ -355,12 +369,15 @@ export function Lightbox({
         Klicks nach innen — das Pattern gilt deshalb nur für nicht-interaktive
         Artefakte (Diagramme, Grafiken, Bilder).
       */}
+      {/* Der Auslöser liegt auf dem Artefakt: Fokus in `background` mit
+          Kontrastrand, damit er auf hellen wie dunklen Motiven sichtbar bleibt. */}
       <button
         type="button"
+        data-slot="lightbox-trigger"
         onClick={() => setOffen(true)}
         aria-label={`${label} im Vollbild öffnen`}
         title="Vergrössern"
- className="absolute inset-0 z-10 cursor-zoom-in rounded-[inherit] focus-visible:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+        className={cn('absolute inset-0 z-10 cursor-zoom-in rounded-[inherit]', focusRingOnMedia)}
       >
         <span
           aria-hidden="true"

@@ -123,14 +123,311 @@
     },
     "tokens": {
       "type": "object",
-      "description": "Foundation overrides. Group and key must already exist in foundation.json and keep the baseline type.",
-      "additionalProperties": {
-        "type": "object",
-        "additionalProperties": {
-          "type": [
-            "string",
-            "number"
-          ]
+      "description": "Foundation overrides. Group and key must already exist in foundation.json and keep the baseline type (string or number).",
+      "additionalProperties": false,
+      "properties": {
+        "spacing": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "0": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "1": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "2": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "3": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "4": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "5": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "6": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "8": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "10": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "12": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "16": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "20": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "24": {
+              "$ref": "#/$defs/tokenCss"
+            }
+          }
+        },
+        "fontSize": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "xs": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "sm": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "base": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "lg": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "xl": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "2xl": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "3xl": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "4xl": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "5xl": {
+              "$ref": "#/$defs/tokenCss"
+            }
+          }
+        },
+        "lineHeight": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "tight": {
+              "$ref": "#/$defs/tokenNumber"
+            },
+            "heading": {
+              "$ref": "#/$defs/tokenNumber"
+            },
+            "body": {
+              "$ref": "#/$defs/tokenNumber"
+            },
+            "code": {
+              "$ref": "#/$defs/tokenNumber"
+            }
+          }
+        },
+        "fontWeight": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "regular": {
+              "$ref": "#/$defs/tokenNumber"
+            },
+            "medium": {
+              "$ref": "#/$defs/tokenNumber"
+            },
+            "semibold": {
+              "$ref": "#/$defs/tokenNumber"
+            },
+            "bold": {
+              "$ref": "#/$defs/tokenNumber"
+            }
+          }
+        },
+        "radius": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "none": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "sm": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "md": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "lg": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "xl": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "full": {
+              "$ref": "#/$defs/tokenCss"
+            }
+          }
+        },
+        "borderWidth": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "thin": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "medium": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "focus": {
+              "$ref": "#/$defs/tokenCss"
+            }
+          }
+        },
+        "opacity": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "disabled": {
+              "$ref": "#/$defs/tokenNumber"
+            },
+            "overlay": {
+              "$ref": "#/$defs/tokenNumber"
+            },
+            "hover": {
+              "$ref": "#/$defs/tokenNumber"
+            }
+          }
+        },
+        "duration": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "instant": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "fast": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "normal": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "slow": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "deliberate": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "exit": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "reduced": {
+              "$ref": "#/$defs/tokenCss"
+            }
+          }
+        },
+        "easing": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "standard": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "enter": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "exit": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "drawer": {
+              "$ref": "#/$defs/tokenCss"
+            }
+          }
+        },
+        "breakpoint": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sm": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "md": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "lg": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "xl": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "2xl": {
+              "$ref": "#/$defs/tokenCss"
+            }
+          }
+        },
+        "layout": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sidebar": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "rail": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "header": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "footer": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "content": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "reading": {
+              "$ref": "#/$defs/tokenCss"
+            }
+          }
+        },
+        "zIndex": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "base": {
+              "$ref": "#/$defs/tokenNumber"
+            },
+            "sticky": {
+              "$ref": "#/$defs/tokenNumber"
+            },
+            "dropdown": {
+              "$ref": "#/$defs/tokenNumber"
+            },
+            "overlay": {
+              "$ref": "#/$defs/tokenNumber"
+            },
+            "modal": {
+              "$ref": "#/$defs/tokenNumber"
+            },
+            "toast": {
+              "$ref": "#/$defs/tokenNumber"
+            },
+            "tooltip": {
+              "$ref": "#/$defs/tokenNumber"
+            }
+          }
+        },
+        "icon": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sm": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "md": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "lg": {
+              "$ref": "#/$defs/tokenCss"
+            },
+            "stroke": {
+              "$ref": "#/$defs/tokenNumber"
+            }
+          }
         }
       }
     },
@@ -836,6 +1133,14 @@
           }
         }
       }
+    },
+    "tokenNumber": {
+      "type": "number",
+      "minimum": 0
+    },
+    "tokenCss": {
+      "type": "string",
+      "pattern": "^(?:[\\d.]+(?:px|rem|ms)|cubic-bezier\\([\\d., -]+\\))$"
     }
   }
 }

@@ -10,6 +10,8 @@ out/
 brands-private/
 apps/docs/public/contracts/
 apps/docs/public/llms.txt
+apps/docs/public/llms-full.txt
+apps/docs/public/brands/*/llms-full.txt
 apps/docs/public/brands/*/brand.json
 apps/docs/public/brands/*/presentation.json
 apps/docs/public/brands/index.json

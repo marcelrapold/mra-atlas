@@ -15,10 +15,10 @@ Konflikte werden festgehalten. Ein Adapter setzt `status: draft`, solange Abweic
 ## Neue Brand
 
 1. Folien, DESIGN.md und Assets getrennt vom Core einordnen. Vertrauliche Quellen bleiben in einem privaten Brand-Repository. Der Ordner `brands-private/` ist ignoriert.
-2. Eine Brand-Datei nach `packages/brands/src/neutral.json` anlegen. `defineBrand()` validiert das vollständige Objekt. Jede Farbe ist ein sechsstelliger Hex-Wert. Keine HTML- oder CSS-Fragmente in Tokenwerten.
+2. `packages/brands/src/<id>.json` anlegen (Vorlage: neutral.json). `defineBrand()` validiert das vollständige Objekt. Jede Farbe ist ein sechsstelliger Hex-Wert. Keine HTML- oder CSS-Fragmente in Tokenwerten. Der Block `deck` ist optional; ohne ihn rendert die Brand die neutralen Atlas-Folien (siehe [Deck-Rendervertrag](#deck-rendervertrag-deck)).
 3. Nur belegte Darstellungsmodi hinzufügen. Licht-/Dunkelwerte sind vollständige Sätze; ein fehlender dunkler Modus wird nicht erfunden.
 4. Den Eintrag in `packages/brands/src/index.mjs` registrieren. Bei wachsendem Bestand kann die Registry in einen eigenen Brand-Loader wandern; Core-Komponenten brauchen keine Änderung.
-5. Anpassungen in einer README begründen. Textkontrast mindestens 4.5:1, funktionaler Fokus und Eingabekontur mindestens 3:1. Ganze Oberflächen zusätzlich visuell und mit Tastatur testen.
+5. Anpassungen in einer README begründen. Textkontrast mindestens 4,5:1, funktionaler Fokus und Eingabekontur mindestens 3:1. Ganze Oberflächen zusätzlich visuell und mit Tastatur testen.
 6. `npm run check` ausführen. `npm run contracts` erzeugt die maschinenlesbaren Zugänge für Web und Präsentation.
 
 ## Integration

@@ -1,2 +1,3 @@
 import ReferencePage from './_components/reference-page';
-export default function Page(){return <ReferencePage/>;}
+import {jsonLd,websiteData} from './_seo/seo';
+export default function Page(){return <>{jsonLd(websiteData())}<ReferencePage/></>;}

@@ -16,6 +16,8 @@ import {
   useVisibilityAwareInterval,
 } from '@rapold/framework-core'
 
+import { DemoPanel } from '../demo-panel'
+
 /* -------------------------------------------------------------------------- */
 /* Alert                                                                      */
 /* -------------------------------------------------------------------------- */
@@ -115,8 +117,18 @@ function JobStatusAlert() {
 function AlertSection() {
   const [shareVisible, setShareVisible] = React.useState(true)
   return (
-    <section className="demo-panel">
-      <h2>Alert</h2>
+    <DemoPanel
+      id="alert"
+      title="Alert"
+      layout="fill"
+      code={`import { Alert, AlertTitle, AlertDescription, AlertActions } from '@rapold/framework-core'
+
+<Alert tone="warning" dismissible onDismiss={() => setOpen(false)}>
+  <AlertTitle>Wartung am Samstag</AlertTitle>
+  <AlertDescription>Exporte sind von 06:00–08:00 nicht möglich.</AlertDescription>
+  <AlertActions><Button size="sm">Details</Button></AlertActions>
+</Alert>`}
+    >
       <div className="grid gap-3">
         <Alert tone="info" role="none">
           <AlertTitle>Nur in der Schweiz und in Liechtenstein verfügbar</AlertTitle>
@@ -150,16 +162,7 @@ function AlertSection() {
         <h3>Job-Status</h3>
         <JobStatusAlert />
       </div>
-      <pre>
-        <code>{`import { Alert, AlertTitle, AlertDescription, AlertActions } from '@rapold/framework-core'
-
-<Alert tone="warning" dismissible onDismiss={() => setOpen(false)}>
-  <AlertTitle>Wartung am Samstag</AlertTitle>
-  <AlertDescription>Exporte sind von 06:00–08:00 nicht möglich.</AlertDescription>
-  <AlertActions><Button size="sm">Details</Button></AlertActions>
-</Alert>`}</code>
-      </pre>
-    </section>
+    </DemoPanel>
   )
 }
 
@@ -186,8 +189,16 @@ function AnnouncerSection() {
   const tabTitle = `${playing ? '▶ ' : ''}${track.title} · ${track.artist} – Atlas`
 
   return (
-    <section className="demo-panel">
-      <h2>Announcer & useDocumentTitle</h2>
+    <DemoPanel
+      id="announcer"
+      title="Announcer & useDocumentTitle"
+      layout="fill"
+      code={`import { Announcer, useDocumentTitle } from '@rapold/framework-core'
+
+<Announcer message={\`Jetzt läuft: \${title}\`} announceKey={trackId} settleMs={5000} />
+
+useDocumentTitle(playing ? \`▶ \${title} – Atlas\` : 'Atlas')`}
+    >
       <p>
         Jetzt: <strong>{track.title}</strong> · {track.artist}. Der Screenreader hört den Wechsel erst, wenn der neue
         Titel 1,5 s hält; der Stand beim Laden bleibt still.
@@ -211,14 +222,7 @@ function AnnouncerSection() {
         settleMs={1500}
       />
       {syncTitle && <TitleSync title={tabTitle} />}
-      <pre>
-        <code>{`import { Announcer, useDocumentTitle } from '@rapold/framework-core'
-
-<Announcer message={\`Jetzt läuft: \${title}\`} announceKey={trackId} settleMs={5000} />
-
-useDocumentTitle(playing ? \`▶ \${title} – Atlas\` : 'Atlas')`}</code>
-      </pre>
-    </section>
+    </DemoPanel>
   )
 }
 
@@ -237,8 +241,18 @@ function HooksSection() {
   useVisibilityAwareInterval({ interval: 2000, onTick: () => setTicks((t) => t + 1) })
 
   return (
-    <section className="demo-panel">
-      <h2>Hooks</h2>
+    <DemoPanel
+      id="hooks"
+      title="Hooks"
+      layout="fill"
+      code={`import { useMediaQuery, usePrefersReducedMotion, useElementSize,
+  useScrollDirection, useVisibilityAwareInterval } from '@rapold/framework-core'
+
+const wide = useMediaQuery('(min-width: 48rem)')
+const size = useElementSize(ref)            // { width, height } | null
+const dir = useScrollDirection({ container: ref })
+useVisibilityAwareInterval({ interval: 5000, onTick: () => fetchStatus() })`}
+    >
       <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm">
         <dt>useMediaQuery(≥ 48rem)</dt>
         <dd>{wide ? 'breit' : 'schmal'}</dd>
@@ -275,16 +289,7 @@ function HooksSection() {
           </p>
         ))}
       </div>
-      <pre>
-        <code>{`import { useMediaQuery, usePrefersReducedMotion, useElementSize,
-  useScrollDirection, useVisibilityAwareInterval } from '@rapold/framework-core'
-
-const wide = useMediaQuery('(min-width: 48rem)')
-const size = useElementSize(ref)            // { width, height } | null
-const dir = useScrollDirection({ container: ref })
-useVisibilityAwareInterval({ interval: 5000, onTick: () => fetchStatus() })`}</code>
-      </pre>
-    </section>
+    </DemoPanel>
   )
 }
 
@@ -325,9 +330,19 @@ function LogViewSection() {
   })
 
   return (
-    <section className="demo-panel">
-      <h2>LogView</h2>
-      <p>Hochscrollen pausiert das Folgen; der Knopf zählt neue Einträge und springt zurück.</p>
+    <DemoPanel
+      id="log-view"
+      title="LogView"
+      description="Hochscrollen pausiert das Folgen; der Knopf zählt neue Einträge und springt zurück."
+      layout="fill"
+      code={`import { LogView } from '@rapold/framework-core'
+
+<LogView
+  lines={[{ id: 1, time: new Date(), source: 'api', message: 'GET /projekte 200', level: 'info' }]}
+  maxLines={500}
+  viewportClassName="h-96"
+/>`}
+    >
       <div className="demo-row">
         <Button size="sm" variant="outline" aria-pressed={running} onClick={() => setRunning((r) => !r)}>
           {running ? 'Stream anhalten' : 'Stream fortsetzen'}
@@ -347,16 +362,7 @@ function LogViewSection() {
         labels={{ log: 'Systemprotokoll, neueste Einträge unten' }}
         sourceClassName={(s) => (s === 'db' ? 'text-chart-1' : s === 'worker' ? 'text-chart-2' : undefined)}
       />
-      <pre>
-        <code>{`import { LogView } from '@rapold/framework-core'
-
-<LogView
-  lines={[{ id: 1, time: new Date(), source: 'api', message: 'GET /projekte 200', level: 'info' }]}
-  maxLines={500}
-  viewportClassName="h-96"
-/>`}</code>
-      </pre>
-    </section>
+    </DemoPanel>
   )
 }
 

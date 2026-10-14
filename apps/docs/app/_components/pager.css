@@ -1,0 +1,17 @@
+/* Previous / next page cards at the end of every reference page. */
+.pager{margin-top:56px;padding-top:28px;border-top:1px solid var(--border)}
+.pager-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.pager-card{display:flex;flex-direction:column;gap:4px;min-width:0;padding:16px 20px;border:1px solid var(--border);border-radius:var(--brand-radius);background:var(--card);text-decoration:none;transition:border-color var(--duration-fast,120ms) ease}
+.pager-card:hover{border-color:var(--primary)}
+.pager-next{grid-column:2;align-items:flex-end;text-align:right}
+.pager-label{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--muted-foreground)}
+.pager-card strong{font-size:16px;font-weight:var(--brand-heading-weight,600);line-height:1.35;overflow-wrap:anywhere}
+.pager-card:hover strong{color:var(--primary)}
+.pager-card small{font-size:12px;color:var(--muted-foreground)}
+.pager-source{margin:20px 0 0;font-size:12px;color:var(--muted-foreground)}
+.pager-source a{color:inherit;text-underline-offset:3px}
+.pager-source a:hover{color:var(--primary)}
+@media(max-width:767px){.pager{margin-top:40px}.pager-links{grid-template-columns:1fr;gap:10px}.pager-next{grid-column:auto}}
+@media(prefers-reduced-motion:reduce){.pager-card{transition:none}}
+/* While a lazily loaded block above still shows its placeholder, the pager is hidden: it then appears in its final place instead of moving (layout shift). Without scripting it stays visible. */
+@media(scripting:enabled){main:has(.lazy-loading) .pager{visibility:hidden}}

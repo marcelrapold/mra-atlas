@@ -2,6 +2,7 @@ import * as React from 'react'
 import { ChevronRightIcon, MoreHorizontalIcon } from 'lucide-react'
 import { Slot } from 'radix-ui'
 
+import { focusRing } from '../lib/focus'
 import { cn } from '../lib/utils'
 
 /**
@@ -49,7 +50,8 @@ function BreadcrumbLink({
     <Comp
       data-slot="breadcrumb-link"
       className={cn(
-        'inline-flex items-center rounded-xs underline-offset-4 transition-colors hover:text-foreground hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring motion-reduce:transition-none pointer-coarse:min-h-11',
+        'inline-flex items-center rounded-xs underline-offset-4 transition-colors hover:text-foreground hover:underline motion-reduce:transition-none pointer-coarse:min-h-11',
+        focusRing,
         className,
       )}
       {...props}

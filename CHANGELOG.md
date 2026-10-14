@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.11.0 — 2026-10-14
+
+Optimierungsrunde: 13 Fachperspektiven (Tokens, Komponenten-API, Barrierefreiheit, Performance, modernes CSS, Bewegung, Doku und DX, KI-Agenten, Theming, visuelles Handwerk, Engineering, Sicherheit und SEO, Sprache) haben Atlas gegen aktuelle externe Referenzen geprüft (W3C DTCG, shadcn/ui, Radix, React Aria, WAI-ARIA APG, WCAG 2.2, Vercel Geist, Primer, Polaris u. a.). Daraus entstanden 12 Arbeitspakete, jedes umgesetzt, adversarial geprüft und nachgebessert.
+
+- **Core-Fundament:** Foundation-Tokens für Ebenen (`z-*`), Dauer und Easing steuern die Core-Komponenten über `@theme`; echte Ein- und Ausblendungen der Overlays im Timing der Brand; Brand-Regeln in `@layer components`, damit Utilities wieder gewinnen; Select, Popover und Menüs in Dialogen liegen auf Modal-Ebene. Forced Colors, `prefers-contrast: more`, reduzierte Transparenz und reduzierte Bewegung (160-ms-Überblendung statt Sprung).
+- **Barrierefreiheit der Steuerelemente:** sichtbare Fokusringe statt `outline-none`, deutsche Standardtexte («Schliessen»), Zielgrössen nach WCAG 2.5.8, kontrollierbare Zustände über `useControllableState`, Drück-Feedback auch für Links.
+- **Neue Bausteine:** Field (Label, Beschreibung, Fehler, automatische Verdrahtung), Textarea mit `field-sizing`, Accordion, Collapsible, ToggleGroup, Progress, Table, Kbd; EmptyState als zusammensetzbare Anatomie.
+- **Token-Exporte:** pro Brand `tokens.css` mit `light-dark()`, DTCG-Resolver-Dokument, Foundation- und Farb-Sets, Kontrast-Audit der abgeleiteten Paare; Schema spiegelt die Foundation Schlüssel für Schlüssel.
+- **Für Agenten:** maschinenlesbares Komponenten-Manifest `/contracts/components.json` (Exporte, Varianten, Slots, Abhängigkeiten, Spezifikation, Deep Links), Spezifikationsabschnitte direkt auf den Referenzseiten, `llms-full.txt` pro Theme, Linkprüfung aller beworbenen Adressen, absolute Links in veröffentlichten Brand-Regeln.
+- **Doku-Website:** First Paint in der richtigen Brand und im richtigen Modus (Boot-Skript, statische `theme.css`), Volltextsuche über Seiten, Komponenten und Abschnitte, Ankerüberschriften, Inhaltsverzeichnis, Weiter/Zurück-Navigation, Typo- und Abstandsskala aus Tokens, schlankere Icons- und Mermaid-Seiten.
+- **Vertrauen und Betrieb:** Sicherheits-Header (CSP, HSTS mit `includeSubDomains`, Permissions-Policy, COOP), Metadaten und strukturierte Daten auf allen Seiten, deutsche 404-Seite, Web-Manifest, `SECURITY.md`; CI mit getrennten Jobs, Playwright-Smoke- und Axe-Tests über 42 Routen in Hell und Dunkel, strikter Core-Typecheck (`noUncheckedIndexedAccess`), Dependabot ohne den hash-gesperrten Deck-Stack.
+- **Sprache und Inhalt:** Schweizer Rechtschreibung, einheitliche Begriffe, veraltete Namen und Links bereinigt, Inhaltstest im Check.
+- Deck-Ausgabe, Brand-Farben und Logos sind unverändert; «Der First» bleibt Vorschlag.
+
 ## 0.10.0 — 2026-10-14
 
 - **Deck-Render-Vertrag `deck`** für alle Brands: Modus, Flächen und Hintergrundbilder pro Folientyp (Cover, Kapitel, Inhalt, Abschluss), Glas-Materialien (Füllung und Kontur mit Deckkraft, Radius, Lichtkante), Glow, Akzentrollen und Diagrammserien aus der Palette, Schriftrollen mit Versalien-Laufweite und Display-Grösse, Logo-Varianten nach Flächenhelligkeit, Supergrafiken, Schlusszeichen. SVG-Quellen werden beim Build zu PNG gerastert. Brands ohne `deck` bleiben byteidentisch (Snapshot-Test); der Vorschau-Digest umfasst alle referenzierten Bilder.

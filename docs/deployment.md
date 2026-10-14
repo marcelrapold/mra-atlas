@@ -2,7 +2,9 @@
 
 ## Automatischer Ablauf
 
-Das GitHub-Repository [`marcelrapold/mra-atlas`](https://github.com/marcelrapold/mra-atlas) (bis 11.10.2026 `mra-design`) ist mit dem bestehenden Vercel-Projekt **`atlas`** (bis 11.10.2026 `design`) im Scope `marcelrapold` verbunden. Jeder Push auf `main` löst den nativen Vercel-Build aus. In `vercel.json` ist `main` ausdrücklich aktiviert; andere Branches lösen durch diese Konfiguration keine Vercel-Deployments aus. Die tatsächlichen Produktionsrollouts 0.5.0 und 0.6.0 vom 11.10.2026 sind unten separat dokumentiert.
+Das GitHub-Repository [`marcelrapold/mra-atlas`](https://github.com/marcelrapold/mra-atlas) (bis 12.10.2026 `mra-design`) ist mit dem bestehenden Vercel-Projekt **`atlas`** (bis 11.10.2026 `design`) im Scope `marcelrapold` verbunden. Jeder Push auf `main` löst den nativen Vercel-Build aus. In `vercel.json` ist `main` ausdrücklich aktiviert; andere Branches lösen durch diese Konfiguration keine Vercel-Deployments aus.
+
+Den aktuell ausgelieferten Stand meldet [`build-info.json`](https://atlas.rapold.io/build-info.json) mit Version und Commit; massgeblich ist diese Datei, nicht ein Datum in diesem Dokument. Die Abschnitte zu 0.5.0 und 0.6.0 weiter unten sind historische Nachweise vom 11.10.2026 und beschreiben nicht den aktuellen Stand.
 
 Vercel führt `npm ci` und danach `npm run check` aus. Dieser Befehl umfasst Tests, TypeScript, den statischen Produktionsbuild sowie die Prüfung der Präsentationsdateien. Erst ein erfolgreicher Build kann veröffentlicht werden. Das Ausgabe-Verzeichnis ist `apps/docs/out`.
 
@@ -15,7 +17,7 @@ Grundlage: [Vercel für GitHub](https://vercel.com/docs/git/vercel-for-github) u
 | Einstellung | Wert |
 |---|---|
 | Git-Repository | `marcelrapold/mra-atlas` |
-| Vercel-Projekt | `design`, Scope `marcelrapold` |
+| Vercel-Projekt | `atlas`, Scope `marcelrapold` |
 | Produktionsbranch | `main` |
 | Root Directory | Repository-Wurzel (`.`), da npm-Workspaces verwendet werden |
 | Framework Preset | Other (`framework: null`); Next.js erzeugt einen statischen Export |
@@ -26,7 +28,7 @@ Grundlage: [Vercel für GitHub](https://vercel.com/docs/git/vercel-for-github) u
 | Clean URLs | `true` |
 | Produktionsdomain | `atlas.rapold.io` |
 
-**Domainwechsel:** Seit 0.7.0 heisst das System Atlas und ist unter `atlas.rapold.io` adressiert (`vercel.json`, Metadaten, Verträge). Am **11.10.2026, 21:52 UTC**, wurde `atlas.rapold.io` im Vercel-Projekt `atlas` per TXT-Eintrag `_vercel.rapold.io` (Cloudflare) verifiziert. Die bisherige Adresse `design.rapold.io` leitet per **308** auf `atlas.rapold.io` um, Pfad und Query bleiben erhalten. Produktionsnachweis: `https://atlas.rapold.io/build-info.json` meldete Version 0.7.0, Commit `87f27f2f6569bbdfdf58d51fff67d83014be98c9`.
+**Domainwechsel:** Seit 0.7.0 heisst das System Atlas und ist unter `atlas.rapold.io` adressiert (`vercel.json`, Metadaten, Verträge). Am **11.10.2026, 21:52 UTC**, wurde `atlas.rapold.io` im Vercel-Projekt `atlas` per TXT-Eintrag `_vercel.rapold.io` (Cloudflare) verifiziert. Die bisherige Adresse `design.rapold.io` leitet per **308** auf `atlas.rapold.io` um, Pfad und Query bleiben erhalten. Nachweis vom selben Tag: `https://atlas.rapold.io/build-info.json` meldete Version 0.7.0, Commit `87f27f2f6569bbdfdf58d51fff67d83014be98c9`.
 
 Build- und Routingwerte stehen in `vercel.json`. Die erfolgreiche Veröffentlichung des gemergten `main`-Commits auf der Produktionsdomain ist im Nachtrag unten belegt. Die vollständigen Projekteinstellungen wurden über den eingeschränkten Connector nicht unabhängig ausgelesen; der beobachtete Rollout ersetzt diese Einsicht nicht.
 
@@ -44,7 +46,7 @@ Der Prüfer kontrolliert Version und Commit, die Kernrouten `/`, `/praesentation
 
 ## Belegter erster Produktionsrollout · 11.10.2026
 
-Dieser Nachtrag dokumentiert den ersten Rollout nach [PR #5](https://github.com/marcelrapold/mra-design/pull/5), Framework **0.5.0**, Commit [`ee5bfc2ef4bd2b034fc2045b5a576d101159c217`](https://github.com/marcelrapold/mra-design/commit/ee5bfc2ef4bd2b034fc2045b5a576d101159c217). Er ist keine finale Vollabnahme späterer Korrekturen oder gestalterischer Ergänzungen.
+**Historischer Nachweis.** Dieser Nachtrag dokumentiert den ersten Rollout nach [PR #5](https://github.com/marcelrapold/mra-design/pull/5), Framework **0.5.0**, Commit [`ee5bfc2ef4bd2b034fc2045b5a576d101159c217`](https://github.com/marcelrapold/mra-design/commit/ee5bfc2ef4bd2b034fc2045b5a576d101159c217). Er ist keine finale Vollabnahme späterer Korrekturen oder gestalterischer Ergänzungen.
 
 | Nachweis | Ergebnis |
 |---|---|
@@ -64,7 +66,7 @@ Die Arbeitsprotokolle dieses Rollouts sind unter `production-verification-ee5bfc
 
 ## Belegter Produktionsrollout 0.6.0 · 11.10.2026
 
-Nach [PR #6](https://github.com/marcelrapold/mra-design/pull/6) wurde Framework **0.6.0** am **11.10.2026, 10:06–10:07 UTC**, auf der damaligen Produktionsadresse produktiv bestätigt. Die [Produktwelten](product-worlds.md) ergänzen AI-Aurora, Netz und Glas, vier unveränderte Learn-Hero-Dateien mit Partikeln, Terminal und Parallax sowie gemeinsame Geist-Typografie, neue Raumfaltenzeichen und Facetten/Spektrum. Argus und EdgePortal bleiben CI-Anwendungsbeispiele ohne Original-App-Paritätsclaim. Die aktive Brand-Auswahl enthält genau `neutral`, `dominicano-express` und `rapold`. Der folgende Commitbeleg gilt für diesen datierten Anwendungsstand. Ein anschliessender reiner Dokumentations-/Nachweis-Commit hat eine neue Main- und Build-ID; dadurch werden die hier abgeschlossenen UI-Abläufe nicht als erneut geprüft ausgegeben.
+**Historischer Nachweis.** Nach [PR #6](https://github.com/marcelrapold/mra-design/pull/6) wurde Framework **0.6.0** am **11.10.2026, 10:06–10:07 UTC**, auf der damaligen Produktionsadresse produktiv bestätigt. Die [Produktwelten](product-worlds.md) ergänzen AI-Aurora, Netz und Glas, vier unveränderte Learn-Hero-Dateien mit Partikeln, Terminal und Parallax sowie gemeinsame Geist-Typografie, neue Raumfaltenzeichen und Facetten/Spektrum. Argus und EdgePortal bleiben CI-Anwendungsbeispiele ohne Original-App-Paritätsclaim. Die aktive Brand-Auswahl enthält genau `neutral`, `dominicano-express` und `rapold`. Der folgende Commitbeleg gilt für diesen datierten Anwendungsstand. Ein anschliessender reiner Dokumentations-/Nachweis-Commit hat eine neue Main- und Build-ID; dadurch werden die hier abgeschlossenen UI-Abläufe nicht als erneut geprüft ausgegeben.
 
 | Nachweis | Tatsächliches Ergebnis |
 |---|---|

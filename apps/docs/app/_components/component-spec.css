@@ -1,0 +1,23 @@
+/* Spec sections from /contracts/components.json. Semantic tokens only, so every brand and mode applies. */
+.component-spec{scroll-margin-top:120px}
+.component-spec>h2{margin-bottom:6px}
+.component-spec-meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;margin:0 0 18px;font-size:13px;color:var(--muted-foreground)}
+.component-spec-meta code{font-size:12px}
+.component-spec-purpose>p{max-width:850px;font-size:16px;color:var(--foreground)}
+.component-spec code{font-family:var(--font-mono);font-size:.875em;overflow-wrap:anywhere}
+.component-spec-table{width:100%;overflow-x:auto;margin:20px 0;background:var(--card);border:1px solid var(--border);border-radius:var(--brand-radius)}
+.component-spec-table table{min-width:480px}
+.component-spec-table th[scope=col]{white-space:nowrap}
+.component-spec-table th[scope=row]{width:32%;min-width:9rem;font-size:14px;font-weight:500;background:none;white-space:normal}
+.component-spec-table th[scope=row] code{overflow-wrap:normal}
+.component-spec-table td small{display:block;margin-top:4px;font-size:12px;color:var(--muted-foreground)}
+.component-spec-table tbody tr:hover{background:none}
+.component-spec-note td{font-size:13px;color:var(--muted-foreground)}
+.component-spec h3{font-size:14px;margin:20px 0 6px}
+.component-spec-block>p,.component-spec-dos p{max-width:850px;font-size:15px;color:var(--muted-foreground);margin-bottom:8px}
+.component-spec-dos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:20px}
+.component-spec-dos>div{padding:4px 18px 10px;border:1px solid var(--border);border-top-width:3px;border-radius:var(--brand-radius);background:var(--card)}
+.component-spec-dos>[data-kind=do]{border-top-color:var(--success)}
+.component-spec-dos>[data-kind=dont]{border-top-color:var(--destructive)}
+.component-spec-dos h3{margin-top:12px}
+@media (max-width:720px){.component-spec-dos{grid-template-columns:minmax(0,1fr)}.component-spec-table th[scope=row]{width:auto}}
