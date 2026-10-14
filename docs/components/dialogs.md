@@ -1,67 +1,93 @@
-# Dialogs: ConfirmDialog, Swipe-to-dismiss, ErrorBoundary
+# Dialoge: ConfirmDialog, Wischen zum Schliessen, ErrorBoundary
 
-Group "dialogs" of the RadioX import. All components use semantic tokens only; brand looks come from the active brand package.
+Gruppe «dialogs» aus dem RadioX-Import. Alle Komponenten nutzen ausschliesslich semantische Tokens; das Aussehen kommt aus dem aktiven Brand-Paket.
 
 ## ConfirmDialog (`ui/confirm-dialog.tsx`)
 
-**Purpose.** Promise-based replacement for `window.confirm`, `window.prompt` and `window.alert`, built on the existing Atlas `Dialog` exports.
+**Zweck.** Promise-basierter Ersatz für `window.confirm`, `window.prompt` und `window.alert`, gebaut auf den bestehenden Atlas-Exporten von `Dialog`.
 
 **API.**
 
-- `ConfirmDialogProvider` – mount once near the root. Props: `children`, `labels?: Partial<ConfirmDialogLabels>`.
+- `ConfirmDialogProvider` – einmal nahe der Wurzel einbinden. Props: `children`, `labels?: Partial<ConfirmDialogLabels>`.
 - `useConfirm()` → `(string | ConfirmOptions) => Promise<boolean>`
-- `usePrompt()` → `(string | PromptOptions) => Promise<string | null>` (null = cancelled)
+- `usePrompt()` → `(string | PromptOptions) => Promise<string | null>` (null = abgebrochen)
 - `useInform()` → `(string | InformOptions) => Promise<void>`
-- Common options: `title?`, `message` (line breaks kept).
+- Gemeinsame Optionen: `title?`, `message` (Zeilenumbrüche bleiben erhalten).
 - `ConfirmOptions`: `confirmLabel?`, `cancelLabel?`, `tone?: 'default' | 'destructive'`.
 - `PromptOptions`: `defaultValue?`, `inputLabel?`, `placeholder?`, `inputType?`, `required?`, `confirmLabel?`, `cancelLabel?`.
 - `InformOptions`: `confirmLabel?`, `tone?`.
-- Default labels (`defaultConfirmDialogLabels`): Bestätigen, Eingabe, Hinweis, Abbrechen, Übernehmen, Verstanden, Schliessen.
-- Root carries `data-slot="confirm-dialog"`, `data-kind`, `data-tone`.
+- Standardbeschriftungen (`defaultConfirmDialogLabels`): Bestätigen, Eingabe, Hinweis, Abbrechen, Übernehmen, Verstanden, Schliessen.
+- Das Wurzelelement trägt `data-slot="confirm-dialog"`, `data-kind`, `data-tone`.
 
-**Behaviour.** One dialog at a time; a second request while one is shown resolves immediately as cancelled (`false` / `null`), so an on-screen decision is never replaced. The promise resolves after the dialog closed and focus returned to the previously focused element (`onCloseAutoFocus`, 1 s fallback). Escape, overlay click and the close button count as cancel.
+**Verhalten.** Immer nur ein Dialog; eine zweite Anfrage, während einer offen ist, wird sofort als abgebrochen aufgelöst (`false` / `null`), eine angezeigte Entscheidung wird also nie ersetzt. Das Promise löst auf, nachdem der Dialog geschlossen ist und der Fokus zum zuvor fokussierten Element zurückgekehrt ist (`onCloseAutoFocus`, Rückfall nach 1 s). Escape, Klick auf das Overlay und der Schliessen-Knopf gelten als Abbruch.
 
-**Accessibility.** `role="alertdialog"` for confirm and inform, `role="dialog"` for prompt. Title and message wired via Radix `aria-labelledby` / `aria-describedby`. Initial focus: Cancel for confirm (safe default), the field (selected) for prompt, the acknowledge button for inform. Enter submits via a native form. Actions reach 44 px on coarse pointers and show an outline focus ring.
+**Barrierefreiheit.** `role="alertdialog"` für Bestätigen und Hinweis, `role="dialog"` für Eingabe. Titel und Text sind über Radix `aria-labelledby` / `aria-describedby` verknüpft. Anfangsfokus: Abbrechen beim Bestätigen (sichere Vorgabe), das Feld (markiert) bei der Eingabe, der Bestätigungsknopf beim Hinweis. Enter sendet über ein natives Formular. Aktionen erreichen bei groben Zeigern 44 px und zeigen einen Outline-Fokusring.
 
-**Do.** Use `tone: 'destructive'` with a specific verb (“Endgültig löschen”). Keep messages short.
-**Don't.** Stack dialogs, or use it for long forms (use `Dialog` or `Sheet`). Don't rely on it inside server components.
+**Empfohlen.** `tone: 'destructive'` mit einem konkreten Verb («Endgültig löschen»). Texte kurz halten.
+**Vermeiden.** Dialoge stapeln oder lange Formulare damit abbilden (dafür `Dialog` oder `Sheet`). Nicht in Server-Komponenten verwenden.
 
-**RadioX origin.** `radiox/apps/frontend/components/ui/useAppDialog.tsx`.
+**Herkunft RadioX.** `radiox/apps/frontend/components/ui/useAppDialog.tsx`.
 
-## Swipe-to-dismiss (`lib/use-swipe-to-dismiss.ts`, `ui/sheet.tsx`)
+## Wischen zum Schliessen (`lib/use-swipe-to-dismiss.ts`, `ui/sheet.tsx`)
 
-**Purpose.** Drag a bottom sheet down with one finger to close it.
+**Zweck.** Ein Bottom-Sheet mit einem Finger nach unten ziehen und so schliessen.
 
 **API.**
 
-- `SheetContent` new props: `swipeToClose?: boolean` (default `false`, opt-in; only effective for `side="bottom"`), `showGrabber?: boolean` (default `true`). Adds `data-side` and `data-swipe-to-close` on the content; the grabber has `data-slot="sheet-grabber"`.
-- `useSwipeToDismiss(element: HTMLElement | null, { enabled, onDismiss })` for custom surfaces. Pass the element from a callback ref kept in state (portalled content mounts lazily).
-- Pure helpers (tested in `tests/swipe-to-dismiss.test.mjs`): `releaseVelocity`, `shouldDismiss`, `classifyGestureStart`, `trimSamples`, `isTopmostOpenDialog`, constants `SWIPE_DISMISS_RATIO` (0.25), `SWIPE_DISMISS_VELOCITY` (0.5 px/ms), `FLICK_MIN_DISTANCE` (24 px), `FLICK_WINDOW_MS` (100 ms), `SWIPE_SLOP` (8 px), `NO_SWIPE_SELECTOR`.
+- Neue Props von `SheetContent`: `swipeToClose?: boolean` (Standard `false`, Opt-in; wirkt nur bei `side="bottom"`), `showGrabber?: boolean` (Standard `true`). Setzt `data-side` und `data-swipe-to-close` auf den Inhalt; der Griff hat `data-slot="sheet-grabber"`.
+- `useSwipeToDismiss(element: HTMLElement | null, { enabled, onDismiss })` für eigene Flächen. Das Element aus einem Callback-Ref im State übergeben (der Inhalt im Portal wird verzögert gemountet).
+- Reine Hilfsfunktionen (getestet in `tests/swipe-to-dismiss.test.mjs`): `releaseVelocity`, `shouldDismiss`, `classifyGestureStart`, `trimSamples`, `isTopmostOpenDialog`, Konstanten `SWIPE_DISMISS_RATIO` (0.25), `SWIPE_DISMISS_VELOCITY` (0.5 px/ms), `FLICK_MIN_DISTANCE` (24 px), `FLICK_WINDOW_MS` (100 ms), `SWIPE_SLOP` (8 px), `NO_SWIPE_SELECTOR`.
 
-**Behaviour.** Follows the finger downward; closes at 25 % of the height or on a flick measured over the last 100 ms. Scrolling wins (content scrolled away from top, or first move up/sideways). Inputs, textareas, selects, contenteditable, `role="slider"` and `[data-no-swipe-dismiss]` never start a swipe. Only the topmost open Radix dialog (`data-state="open"`) reacts. Closing goes through a hidden `Dialog.Close`, so `onOpenChange` fires exactly as with the close button.
+**Verhalten.** Folgt dem Finger nach unten; schliesst bei 25 % der Höhe oder bei einem schnellen Wisch, gemessen über die letzten 100 ms. Scrollen hat Vorrang (Inhalt nicht ganz oben oder erste Bewegung nach oben bzw. seitwärts). Eingabefelder, Textareas, Selects, contenteditable, `role="slider"` und `[data-no-swipe-dismiss]` starten nie ein Wischen. Nur der oberste offene Radix-Dialog (`data-state="open"`) reagiert. Das Schliessen läuft über ein verborgenes `Dialog.Close`, `onOpenChange` feuert also genau wie beim Schliessen-Knopf.
 
-**Accessibility.** The gesture is an addition, never the only way: Escape and the close button keep working. The grabber is `aria-hidden` and only visible on coarse pointers. With `prefers-reduced-motion: reduce` there is no spring or exit animation; the sheet snaps back or closes immediately.
+**Barrierefreiheit.** Die Geste ist eine Ergänzung, nie der einzige Weg: Escape und der Schliessen-Knopf funktionieren weiter. Der Griff ist `aria-hidden` und nur bei groben Zeigern sichtbar. Unter `prefers-reduced-motion: reduce` gibt es weder Federung noch Ausblend-Animation; das Sheet springt zurück oder schliesst sofort.
 
-**Do.** Give long bottom sheets `max-h-[85dvh] overflow-y-auto`; mark horizontal carousels or canvases with `data-no-swipe-dismiss`.
-**Don't.** Enable it for sheets with unsaved input without confirming first.
+**Empfohlen.** Langen Bottom-Sheets `max-h-[85dvh] overflow-y-auto` geben; horizontale Karussells oder Canvas-Flächen mit `data-no-swipe-dismiss` markieren.
+**Vermeiden.** Für Sheets mit ungespeicherten Eingaben ohne vorherige Rückfrage aktivieren.
 
-**RadioX origin.** `radiox/apps/frontend/components/ui/useSwipeToDismiss.ts` (+ `.test.tsx`).
+**Herkunft RadioX.** `radiox/apps/frontend/components/ui/useSwipeToDismiss.ts` (+ `.test.tsx`).
 
 ## ErrorBoundary (`ui/error-boundary.tsx`)
 
-**Purpose.** Contain render errors of one area and offer a retry instead of a blank page.
+**Zweck.** Renderfehler eines Bereichs eingrenzen und statt einer leeren Seite einen neuen Versuch anbieten.
 
-**API.** Class component `ErrorBoundary` with props `children`, `scope?`, `onError?(error, info, scope)`, `resetKey?` (any value; a change resets a shown error, e.g. pathname), `onReset?`, `fallback?: ReactNode | ({ error, reset, scope }) => ReactNode`, `labels?: Partial<{ title, description, retry }>`, `showDetails?` (shows `error.message`, development only), `className?`. Also exports `ErrorBoundaryFallback` and `defaultErrorBoundaryLabels` (Etwas ist schiefgelaufen / Erneut versuchen).
+**API.** Klassenkomponente `ErrorBoundary` mit den Props `children`, `scope?`, `onError?(error, info, scope)`, `resetKey?` (beliebiger Wert; eine Änderung setzt einen angezeigten Fehler zurück, z. B. der Pfad), `onReset?`, `fallback?: ReactNode | ({ error, reset, scope }) => ReactNode`, `labels?: Partial<{ title, description, retry }>`, `showDetails?` (zeigt `error.message`, nur in der Entwicklung), `className?`. Exportiert ausserdem `ErrorBoundaryFallback` und `defaultErrorBoundaryLabels` (Etwas ist schiefgelaufen / Erneut versuchen).
 
-**Accessibility.** Default fallback is an `EmptyState` inside `role="alert"` (`data-slot="error-boundary"`), so the failure is announced. Retry is a native button with 44 px on coarse pointers.
+**Barrierefreiheit.** Der Standard-Ersatz ist ein `EmptyState` in `role="alert"` (`data-slot="error-boundary"`), der Fehler wird also angesagt. «Erneut versuchen» ist ein nativer Knopf mit 44 px bei groben Zeigern.
 
-**Do.** Wrap independent regions (widgets, routes) and pass `resetKey` for navigation. Report errors through `onError`.
-**Don't.** Expect it to catch errors in event handlers or promises (React limitation).
+**Empfohlen.** Unabhängige Bereiche (Widgets, Routen) einzeln umschliessen und für die Navigation `resetKey` übergeben. Fehler über `onError` melden.
+**Vermeiden.** Erwarten, dass Fehler in Event-Handlern oder Promises abgefangen werden (Einschränkung von React).
 
-**RadioX origin.** `radiox/apps/frontend/components/ErrorBoundary.tsx`.
+**Herkunft RadioX.** `radiox/apps/frontend/components/ErrorBoundary.tsx`.
 
-## Deviations from RadioX
+## Überlagerungen: Bewegung, Ebenen und Vorgaben (`styles.css`, `ui/dialog.tsx`, `ui/sheet.tsx` …)
 
-- No telemetry, logger or stale-chunk auto-reload in ErrorBoundary (app/deploy specific); the full-screen dark fallback became a token-based `EmptyState` with one retry action instead of Reload/Reset.
-- ConfirmDialog is a provider plus three hooks instead of one hook returning a `dialog` element; adds `title`, `cancelLabel`, prompt field options and a `destructive` tone name (RadioX: `danger`).
-- Swipe hook uses Radix `data-state` instead of the RadioX modal stack, moves the content element itself (no `data-modal-sheet` resolution) and fades the sheet instead of a separate backdrop.
+**Bewegung.** Atlas bringt eine eigene, API-kompatible Teilmenge der tw-animate-Klassen mit (`animate-in`, `animate-out`, `fade-in-0`, `fade-out-0`, `zoom-in-95`, `zoom-out-95`, `slide-in-from-{top,bottom,left,right}-2`, `slide-in-from-*` und `slide-out-to-*` mit 100 %), ohne zusätzliche Abhängigkeit. Die Klassen setzen nur Variablen; die Keyframes `atlas-enter` und `atlas-exit` lesen sie. Dauer und Kurve kommen aus den Foundation-Tokens der aktiven Brand, `duration-*` und `ease-*` am Element übersteuern sie. Radix Presence erhält weiterhin `animationend`, Exit-Animationen laufen also vollständig.
+
+| Komponente | Einblenden | Ausblenden | Bewegung, Ursprung |
+| --- | --- | --- | --- |
+| Dialog, ConfirmDialog, CommandDialog | `--duration-normal`, `--easing-enter` | `--duration-exit`, `--easing-exit` | Blende und Zoom 95 %, Bildschirmmitte |
+| Dialog-Overlay | `--duration-normal`, `--easing-enter` | `--duration-exit`, `--easing-exit` | nur Blende |
+| Sheet | `--duration-deliberate`, `--easing-drawer` | `--duration-slow`, `--easing-drawer` | Schub um 100 % von der Seite `side`, Overlay im gleichen Takt |
+| Popover, Select, DropdownMenu | `--duration-normal`, `--easing-enter` | `--duration-exit`, `--easing-exit` | Blende, Zoom 95 % und 8 px vom Trigger weg, Ursprung `--radix-*-content-transform-origin` |
+| Tooltip | `--duration-normal`, `--easing-enter` | `--duration-exit`, `--easing-exit` | wie Popover; `instant-open` ohne Animation |
+
+Werte der Brands: neutral 200 ms, Rapold 180 ms, RadioX 250 ms für `--duration-normal`; `--duration-exit` 150 ms, `--easing-drawer` `cubic-bezier(0.32, 0.72, 0, 1)` und `--duration-reduced` 160 ms aus `foundation.json`. `transition`-Utilities ohne Dauer nutzen `--duration-fast` und `--easing-standard`.
+
+**Reduzierte Bewegung.** Unter `prefers-reduced-motion: reduce` entfallen Verschiebung und Zoom (`--atlas-motion: 0`), Überlagerungen blenden nur noch. Alle Dauern sind auf `--duration-reduced` begrenzt. Endlos-Animationen in Core sind an `motion-safe:` gebunden; das Pulsieren von `Skeleton` hält `styles.css` an. Spinner stehen dann still, der Status bleibt über `aria-busy` lesbar.
+
+**Ebenen.** `--z-index-overlay` (Overlays), `--z-index-modal` (Dialog- und Sheet-Inhalt), `--z-index-dropdown` (Popover, Select, DropdownMenu), `--z-index-tooltip` (Tooltip). Die Komponenten setzen sie als `z-(--z-index-*)`; die Brand-Werte am Scope gewinnen. tailwind-merge erkennt diese Schreibweise, ein `z-50` oder `z-[60]` in `className` ersetzt den Default. Die benannten Utilities (`z-modal` …) gibt es ebenfalls, tailwind-merge kennt sie aber nicht; zum Übersteuern daher `z-(--z-index-*)` oder Zahlenwerte verwenden. Popover, Select (auch mit dem Default `position="item-aligned"`) und Menüs, die aus einem offenen Dialog, ConfirmDialog oder Sheet aufgehen, werden auf Modal-Ebene gehoben. Overlays verwenden `bg-overlay/50` statt `bg-black/50`.
+
+**Bekannte Abweichung.** `BottomNav` und `MediaBar` setzen fest `z-40`. Seit Menüs auf `--z-index-dropdown` (30) statt `z-50` liegen, öffnen Popover, Menüs und Select, die über diese Leisten ragen, darunter. Bis die Leisten auf `--z-index-sticky` wechseln, hilft `className="z-50"` am Inhalt.
+
+**Vorgaben.** `closeLabel` ist «Schliessen» (DialogContent, DialogFooter, SheetContent, CommandDialog). CommandDialog: Titel «Befehlspalette», Beschreibung «Befehl suchen …». Toaster: `containerAriaLabel` «Benachrichtigungen», Schliessen-Knopf «Meldung schliessen», Lade-Icon nur mit `motion-safe:` animiert. Titel von Dialog, Sheet und ConfirmDialog brechen mit `text-balance`, Beschreibungen mit `text-pretty`. Der Schliessen-Knopf des Dialogs nutzt den gemeinsamen `focusRing`. `SelectTrigger` zeigt `aria-invalid` mit 2 px Rand in `destructive` und rotem Chevron; die `Select*Props`-Typen sind exportiert.
+
+**Darstellungsmodi.** Unter `forced-colors: active` stehen hervorgehobene Menü-, Select- und Command-Einträge, der aktive Tab, `Toggle` im Zustand an, die markierte Checkbox und der eingeschaltete Switch auf `Highlight`/`HighlightText`; der Radio-Punkt und der Switch-Daumen auf `CanvasText`, deaktivierte Elemente auf `GrayText`. Unter `prefers-reduced-transparency: reduce` werden Glas-IconButton, Glas-PlayButton, MediaBar, BottomNav und `[data-slot=lightbox-backdrop]` deckend in `--background`, ohne `backdrop-filter`. Unter `prefers-contrast: more` zeigt `--border` auf `--input` und `--muted-foreground` auf `--foreground`; es ändern sich nur Rollen, keine Farbwerte.
+
+**Kaskade.** Brand-Vorgaben für Core-Komponenten (Schatten, Default-Buttongrösse, Gewichte) liegen in `@layer components` mit Spezifität 0. Die Default-Grösse gilt für alle Elemente mit `[data-variant][data-size=default]` aus Button, auch wenn ein Slot-Trigger (`dialog-trigger` …) das `data-slot` überschreibt. Ein IconButton als Trigger bleibt wie das eigenständige IconButton ohne Brand-Schatten. Überschriften `h1` bis `h3` mit der Default-Klasse `font-semibold` (DialogTitle, SheetTitle) behalten das Brand-Gewicht. Eigene Utilities in `className` (etwa `px-3`, `font-bold`) gewinnen.
+
+## Abweichungen von RadioX
+
+- Keine Telemetrie, kein Logger und kein automatisches Neuladen bei veralteten Chunks in ErrorBoundary (app- bzw. deploymentspezifisch); der dunkle Vollbild-Ersatz wurde zu einem tokenbasierten `EmptyState` mit einer Aktion «Erneut versuchen» statt Neu laden/Zurücksetzen.
+- ConfirmDialog ist ein Provider mit drei Hooks statt eines Hooks, der ein `dialog`-Element zurückgibt; neu sind `title`, `cancelLabel`, Optionen für das Eingabefeld und der Tonname `destructive` (RadioX: `danger`).
+- Der Wisch-Hook nutzt Radix `data-state` statt des RadioX-Modal-Stapels, bewegt das Inhaltselement selbst (keine Auflösung über `data-modal-sheet`) und blendet das Sheet aus statt eines separaten Hintergrunds.
