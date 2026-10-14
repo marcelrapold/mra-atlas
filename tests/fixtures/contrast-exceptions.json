@@ -1,0 +1,15 @@
+{
+  "description": "Known WCAG 2.x gaps of brand colour pairs. Colours are not changed without the brand owner; each gap is pinned to its exact ratio (two decimals) so it cannot widen unnoticed. Remove an entry once the pair passes.",
+  "exceptions": [
+    {
+      "brand": "dominicano-express",
+      "mode": "light",
+      "fg": "primary",
+      "bg": "background",
+      "use": "text",
+      "min": 4.5,
+      "ratio": 4.45,
+      "status": "Owner-Freigabe offen"
+    }
+  ]
+}

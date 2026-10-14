@@ -36,20 +36,26 @@ Signets nicht nachzeichnen, umfärben oder neu zusammensetzen. Massgeblich sind 
 
 ## 2. Tokens
 
-| Datei | Pfad |
-|---|---|
-| CSS hell / dunkel | `/brands/rapold/tokens.light.css`, `/brands/rapold/tokens.dark.css` |
-| JSON / DTCG | `/brands/rapold/tokens.light.json`, `tokens.light.dtcg.json` (dunkel analog) |
+| Datei | Pfad | Zweck |
+|---|---|---|
+| **CSS (empfohlen)** | `/brands/rapold/tokens.css` | Ein Stylesheet für hell und dunkel |
+| DTCG-Resolver | `/brands/rapold/tokens.resolver.json` | Einstieg für Token-Werkzeuge (DTCG 2025.10) |
+| DTCG-Quellen | `tokens.foundation.dtcg.json`, `tokens.color.light.dtcg.json`, `tokens.color.dark.dtcg.json` | Vom Resolver referenziert, gleicher Ordner |
+| Bisherige Dateien | `tokens.light.css`, `tokens.dark.css`, `tokens.light.json`, `tokens.light.dtcg.json` (dunkel analog) | Bleiben erhalten |
 
-In den Beispielen liegen Atlas-Dateien im Produkt unter `/atlas/`. Die Variablen greifen nur unter `[data-brand="rapold"][data-mode="light|dark"]`:
+In den Beispielen liegen Atlas-Dateien im Produkt unter `/atlas/`. `tokens.css` greift unter `data-brand` allein und folgt dann dem Farbschema des Systems: Jede Farbrolle ist als `light-dark(hell, dunkel)` hinterlegt, Skalen, Schriften und Identitätsfarben gelten in beiden Modi. `data-mode` ist optional und erzwingt ein Schema, auf demselben Element oder auf einem Abschnitt darin:
 
 ```html
-<html lang="de-CH" data-brand="rapold" data-mode="dark">
-<link rel="stylesheet" href="/atlas/tokens.light.css">
-<link rel="stylesheet" href="/atlas/tokens.dark.css">
+<html lang="de-CH" data-brand="rapold">
+<link rel="stylesheet" href="/atlas/tokens.css">
+<!-- optional: <html data-brand="rapold" data-mode="dark"> oder <section data-mode="light"> -->
 ```
 
-Hell/Dunkel über `data-mode` umschalten (z. B. aus `prefers-color-scheme`). Im Produkt nur Variablen verwenden (`var(--brand-color-azure)`, `var(--spacing-4)` …), keine Hex-Werte kopieren. Regeln: [`/brands/rapold/rules.md`](https://atlas.rapold.io/brands/rapold/rules.md), Agenten-Kurzfassung: [`/brands/rapold/llms.txt`](https://atlas.rapold.io/brands/rapold/llms.txt).
+Die Regeln haben die Spezifität 0 (`:where(…)`), produkteigene Overrides gewinnen deshalb ohne `!important`. `light-dark()` setzt einen aktuellen Browser voraus (seit 2024 in allen grossen Engines); wer ältere Browser unterstützen muss, bindet weiterhin `tokens.light.css` und `tokens.dark.css` mit `data-mode` ein.
+
+Token-Werkzeuge (Style Dictionary, Terrazzo, Figma-Plugins) lesen `tokens.resolver.json` und wählen den Modus über den Modifier `mode` (`light`, `dark`; nur Modi, die die Brand liefert). Abgeleitete Rollen sind dort Aliase (`info` → `{color.primary}`, `chart-1` → `{color.primary}`), `surface-*` stehen aufgelöst mit der Mischregel unter `$extensions`. Die Farbrollen auf oberster Ebene in `tokens.{mode}.dtcg.json` sind als `$deprecated` markiert und entfallen mit 0.12.0; stattdessen `color.<rolle>` verwenden.
+
+Im Produkt nur Variablen verwenden (`var(--brand-color-azure)`, `var(--spacing-4)` …), keine Hex-Werte kopieren. Regeln: [`/brands/rapold/rules.md`](https://atlas.rapold.io/brands/rapold/rules.md), Agenten-Kurzfassung: [`/brands/rapold/llms.txt`](https://atlas.rapold.io/brands/rapold/llms.txt).
 
 ## 3. Geist-Fonts
 
@@ -80,7 +86,7 @@ Auf der Login-Seite des Produkts das eigene Signet (`logos/<produkt>-*.svg`) und
 ## Checkliste
 
 - [ ] `exports/<produkt>/` ins Web-Root übernommen, Favicon/Manifest verlinkt
-- [ ] `tokens.light.css` + `tokens.dark.css` eingebunden, `data-brand="rapold"` und `data-mode` gesetzt
+- [ ] `tokens.css` eingebunden und `data-brand="rapold"` gesetzt (`data-mode` nur zum Erzwingen eines Schemas)
 - [ ] Geist-Ordner inkl. Lizenzdateien kopiert, `fonts.css` eingebunden
 - [ ] OIDC-Client auf auth.rapold.io angelegt, Issuer und Scopes wie oben
 - [ ] Bei Atlas-Updates Dateien neu übernehmen (Version siehe [`/build-info.json`](https://atlas.rapold.io/build-info.json))

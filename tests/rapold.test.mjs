@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
-import { brands, neutral, rapold, contrast, toCssVariables, tokenDocument, dtcgTokens, resolveFoundation } from '../packages/brands/src/index.mjs';
+import { brands, neutral, rapold, contrast, toCssVariables, tokenDocument, dtcgTokens, dtcgFoundation, dtcgColors, toCssText, resolveFoundation } from '../packages/brands/src/index.mjs';
 import source from '../brands/rapold/sources/brand-tokens.json' with { type: 'json' };
 import provenance from '../brands/rapold/sources/provenance.json' with { type: 'json' };
 
@@ -24,6 +24,7 @@ test('the supplied identity palette is preserved across CSS, JSON and DTCG expor
       assert.equal(toCssVariables(rapold, mode)[`--brand-color-${name}`], value);
       assert.equal(tokenDocument(rapold, mode).palette[name], value);
       assert.equal(dtcgTokens(rapold, mode).palette[name].$value.hex, value);
+      assert.equal(dtcgFoundation(rapold).palette[name].$value.hex, value);
     }
   }
   assert.equal(rapold.palette['logo-light-primary'], source.color.lightLogo.primary);
@@ -40,7 +41,15 @@ test('readable UI actions are exported independently from the logo Azure', () =>
     assert.equal(toCssVariables(rapold, mode)['--primary'], colors.primary);
     assert.equal(tokenDocument(rapold, mode).semantic.primary, colors.primary);
     assert.equal(dtcgTokens(rapold, mode).primary.$value.hex, colors.primary);
+    assert.equal(dtcgColors(rapold, mode).color.primary.$value.hex, colors.primary);
+    assert.equal(dtcgColors(rapold, mode).color['chart-1'].$value, '{color.primary}', 'charts follow the readable accent, not the logo Azure');
   }
+  const css = toCssText(rapold);
+  assert.ok(css.includes(`--primary: light-dark(${rapold.modes.light.primary}, ${rapold.modes.dark.primary});`));
+  assert.ok(css.includes(`--brand-color-azure: ${rapold.palette.azure};`), 'identity colours are mode-independent');
+  const font = dtcgFoundation(rapold).font;
+  assert.deepEqual(font.family.brand.$value.slice(0, 1), [source.typography.sans.family]);
+  assert.equal(font.weight.heading.$value, source.typography.scale.heading.weight);
 });
 
 test('Rapold accent, popover and status text remain readable on their actual surfaces', () => {
