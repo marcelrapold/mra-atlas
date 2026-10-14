@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img">
+  <title>rapold.io – Dachmarke «Der First»</title>
+  <desc>Dachmarke rapold.io «Der First»: ein R, einmal um einen senkrechten Grat gefaltet. Links steigt die Ebene, rechts fällt sie, Steigung 1:0,5 wie die zehn Raumfalten-Signets. Oben entsteht ein Satteldach (der First), die Punze wird zum Hausfenster, das Bein steht frei mit offener Fuge. 256er-Raster, 24 Einheiten Schutzraum, keine Schrift. Variante light: Body #0066B3, Facette #2B89B5, für Ice Paper #F4FAFF.</desc>
+  <path data-part="body" fill="#0066B3" fill-rule="evenodd" d="M 43.259 224.296 L 85.63 203.111 L 85.63 133.778 L 120.296 116.444 L 120.296 24 L 43.259 62.519 Z M 85.63 102.963 L 120.296 85.63 L 120.296 56.741 L 85.63 74.074 Z"/><path data-part="facet" fill="#2B89B5" fill-rule="evenodd" d="M 120.296 116.444 L 197.333 154.963 L 197.333 62.519 L 120.296 24 Z M 120.296 85.63 L 156.889 103.926 L 156.889 75.037 L 120.296 56.741 Z M 126.074 132.815 L 176.148 157.852 L 212.741 232 L 162.667 206.963 Z"/>
+</svg>

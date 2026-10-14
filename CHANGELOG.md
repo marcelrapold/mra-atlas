@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.10.0 — 2026-10-14
+
+- **Deck-Render-Vertrag `deck`** für alle Brands: Modus, Flächen und Hintergrundbilder pro Folientyp (Cover, Kapitel, Inhalt, Abschluss), Glas-Materialien (Füllung und Kontur mit Deckkraft, Radius, Lichtkante), Glow, Akzentrollen und Diagrammserien aus der Palette, Schriftrollen mit Versalien-Laufweite und Display-Grösse, Logo-Varianten nach Flächenhelligkeit, Supergrafiken, Schlusszeichen. SVG-Quellen werden beim Build zu PNG gerastert. Brands ohne `deck` bleiben byteidentisch (Snapshot-Test); der Vorschau-Digest umfasst alle referenzierten Bilder.
+- **RadioX Design DNA** (`brands/radiox/DESIGN-DNA.md`, `dna.json`): von acht Spezialisten aus radiox.cloud und dem Code extrahiert und kritisch geprüft. Brand korrigiert (neutrale Flächen, keine Unschärfe auf Karten, Live-Rot getrennt von Fehler-Rose, Aurora-X in der Wortmarke). RadioX-Decks dunkel mit Aurora, Matrix-Regen als Standbild, Glas-Karten, Signalfarben nach Bedeutung, Segoe UI wie radiox.cloud unter Windows.
+- **Dachmarke rapold.io «Der First»** (Vorschlag): R einmal um einen Grat gefaltet, Elternzeichen der Raumfalten-Familie; drei Konzepte, Jury, DNA unter `brands/rapold-io/`. Rapold-Decks mit Navy-Bühne, gläsernem R mit First-Glühen, Rhombus-Schlusspunkt, Geist und Produkt-Signets; Markenseite mit Dachmarken-Bereich.
+- Linux-Referenzrenderer bereitet Inter 600/900 vor und bildet Segoe UI per Fontconfig auf Inter ab.
+- Lokale Pfade aus Prüfnachweisen entfernt.
+
 ## 0.9.1 — 2026-10-14
 
 - **RadioX-Markenseite** mit eigenem Showcase: Hero mit Port des RadioX-Matrix-Regens (fallende, aufleuchtende X in drei Tiefen) über animiertem Aurora-Licht, Pause-Schalter, Standbild bei reduzierter Bewegung, Lauf nur sichtbar und im aktiven Tab.

@@ -23,7 +23,7 @@ GEIST_SOURCES = (
 STYLE_NAMES = {400: "Regular", 500: "Medium", 650: "SemiBold", 700: "Bold"}
 # Fontconfig weights are not OpenType usWeightClass values. 650 lies between
 # Fontconfig's DemiBold (180) and Bold (200).
-FC_WEIGHTS = {300: 50, 400: 80, 500: 100, 650: 190, 700: 200}
+FC_WEIGHTS = {300: 50, 400: 80, 500: 100, 600: 180, 650: 190, 700: 200, 900: 210}
 
 
 def name_static_face(font, family, weight):
@@ -78,7 +78,7 @@ def main():
 
     inter_dir = REPO_ROOT / "node_modules/@fontsource/inter/files"
     geist_dir = REPO_ROOT / "brands/rapold/assets/fonts"
-    required = [inter_dir / f"inter-latin-{weight}-normal.woff" for weight in (300, 400, 700)]
+    required = [inter_dir / f"inter-latin-{weight}-normal.woff" for weight in (300, 400, 600, 700, 900)]
     required += [geist_dir / filename for _, filename, _ in GEIST_SOURCES]
     for source in required:
         if not source.is_file():
@@ -86,7 +86,7 @@ def main():
 
     FONT_CACHE.mkdir(parents=True, exist_ok=True)
     prepared = []
-    for weight in (300, 400, 700):
+    for weight in (300, 400, 600, 700, 900):
         with TTFont(inter_dir / f"inter-latin-{weight}-normal.woff", recalcTimestamp=False) as font:
             destination = FONT_CACHE / f"Inter-{weight}.ttf"
             save_static(font, destination)
@@ -112,6 +112,16 @@ def main():
                 save_static(font, destination)
                 font.close()
                 prepared.append((family, weight, destination))
+
+    # Brands may declare Office system faces for decks (RadioX: Segoe UI, as
+    # radiox.cloud renders on Windows). The Linux reference renderer has no
+    # Segoe, so map it to the metric-close Inter faces prepared above.
+    aliases = (("Segoe UI", "Inter"), ("Segoe UI Semibold", "Inter SemiBold"), ("Segoe UI Black", "Inter Black"))
+    conf_dir = Path.home() / ".config/fontconfig/conf.d"
+    conf_dir.mkdir(parents=True, exist_ok=True)
+    rules = "".join(f"<alias binding=\"same\"><family>{source}</family><prefer><family>{target}</family></prefer></alias>" for source, target in aliases)
+    conf = f'<?xml version="1.0"?><!DOCTYPE fontconfig SYSTEM "fonts.dtd"><fontconfig>{rules}</fontconfig>'
+    (conf_dir / "60-atlas-render-aliases.conf").write_text(conf + "\n", encoding="utf-8")
 
     subprocess.run(["fc-cache", "-f", str(FONT_CACHE)], check=True)
     for family, weight, expected in prepared:

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import {useEffect, useRef, useState} from 'react';
 import {Check, Copy, Download, ExternalLink, RefreshCw} from 'lucide-react';
 import identity from '../../../../brands/rapold/identity.json';
+import umbrella from '../../../../brands/rapold/assets/umbrella/umbrella.json';
 import {useActiveBrand} from './framework-shell';
 import RapoldWorlds from './rapold-worlds';
 
@@ -30,6 +31,71 @@ function readManifest(value: unknown): AssetManifest {
     if (typeof asset.url !== 'string' || !asset.url.startsWith(base + 'exports/') || asset.url.includes('..') || typeof asset.id !== 'string' || typeof asset.path !== 'string' || typeof asset.bytes !== 'number') throw new Error('Invalid asset');
   }
   return document;
+}
+
+
+// Umbrella «Der First»: a proposal pending approval (brands/rapold/sources/provenance.json → umbrellaProposal).
+type UmbrellaFile = keyof typeof umbrella.files;
+const svgUrl = (file: UmbrellaFile) => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(umbrella.files[file]);
+const umbrellaDownloads: {file: UmbrellaFile; label: string; dark: boolean}[] = [
+  {file: 'mark-dark', label: 'Zeichen · dunkle Fläche', dark: true}, {file: 'mark-light', label: 'Zeichen · helle Fläche', dark: false},
+  {file: 'mark-mono-white', label: 'Zeichen · Weiss', dark: true}, {file: 'mark-mono-black', label: 'Zeichen · Schwarz', dark: false},
+  {file: 'lockup-horizontal-dark', label: 'Lockup mit Deskriptor · dunkel', dark: true}, {file: 'lockup-horizontal-light', label: 'Lockup mit Deskriptor · hell', dark: false},
+  {file: 'lockup-compact-dark', label: 'Kompakter Lockup · dunkel', dark: true}, {file: 'lockup-compact-light', label: 'Kompakter Lockup · hell', dark: false},
+  {file: 'wordmark-dark', label: 'Wortmarke · dunkel', dark: true}, {file: 'wordmark-light', label: 'Wortmarke · hell', dark: false},
+];
+const umbrellaColours = [
+  {name: 'Navy', hex: '#050B19', rule: 'Bühne für Cover, Kapitel und Schluss.'},
+  {name: 'Azure', hex: '#009DFF', rule: 'Steigende Ebene, «.io», zweite Titelzeile. Nie weisse Schrift darauf (2,89:1).'},
+  {name: 'Ice', hex: '#A8EDFF', rule: 'Fallende Ebene, Eyebrows auf Navy (15,18:1).'},
+  {name: 'Firstglut', hex: '#FFA36C', rule: 'Einziger warmer Ton: Licht auf dem First und ein Rautenpunkt pro Folie. Nie Fläche, nie Produkte, nie Fliesstext.'},
+  {name: 'Firstglut Light', hex: '#B4511A', rule: 'Rautenpunkt auf Ice Paper (4,83:1).'},
+  {name: 'Ice Paper', hex: '#F4FAFF', rule: 'Helle Bühne für Inhaltsfolien.'},
+  {name: 'Deep Azure', hex: '#0066B3', rule: 'Primärfarbe hell, Kennzahlen (5,62:1 auf Paper).'},
+];
+const deckPreviews = [{id: 'cover-foto', name: 'Cover'}, {id: 'kapitel-trenner', name: 'Kapitel'}, {id: 'kpi-board', name: 'Inhalt mit Karten und Chart'}, {id: 'foto-schluss', name: 'Schluss'}];
+
+function RapoldUmbrella() {
+  const {mode} = useActiveBrand();
+  return <section className="rapold-umbrella" id="rapold-umbrella" aria-labelledby="rapold-umbrella-title">
+    <div className="rapold-umbrella-stage">
+      <div className="rapold-umbrella-copy">
+        <p className="rapold-umbrella-eyebrow"><span className="rapold-umbrella-badge">{umbrella.label}</span>Dachmarke rapold.io / «Der First»</p>
+        <h2 id="rapold-umbrella-title">Systeme, die laufen<span className="rapold-point" aria-hidden="true"/></h2>
+        <p>Ein R, einmal um einen senkrechten Grat gefaltet: oben ein Satteldach, die Punze wird zum Fenster. Dieselbe Faltregel wie die zehn Signets, als ihr Elternzeichen. Das Zeichen ist ein Vorschlag; die Freigabe durch Marcel Rapold steht aus.</p>
+        <img className="rapold-umbrella-lockup" src={svgUrl('lockup-horizontal-dark')} width={529} height={156} alt="rapold.io, Fullstack Digital Operations"/>
+      </div>
+      <div className="rapold-umbrella-mark" aria-hidden="true"><img src={svgUrl('mark-dark')} width={256} height={256} alt=""/></div>
+    </div>
+
+    <div className="rapold-umbrella-grid">
+      <div>
+        <h3>Markenarchitektur</h3>
+        <p>Branded House mit Endorsement. rapold.io steht über den zehn Produkten; jedes Produkt behält sein freigegebenes Signet. Nur der First trägt Licht.</p>
+        <div className="rapold-architecture">
+          <div className="rapold-architecture-root"><img src={svgUrl(mode === 'dark' ? 'lockup-compact-dark' : 'lockup-compact-light')} width={181} height={40} alt="rapold.io"/><span>Dachmarke · Studio</span></div>
+          <ul className="rapold-architecture-products" aria-label="Produkte unter der Dachmarke">{identity.products.map(item => <li key={item.id}><img src={base + item.variants[mode]} width={36} height={36} alt=""/><span>{item.shortName}</span></li>)}</ul>
+          <div className="rapold-architecture-endorsed"><strong>RadioX</strong><span>Eigenständige Produktmarke mit eigener Bildwelt. Endorsement im Footer:</span><em>Ein System von rapold.io</em><Link href="/brand?brand=radiox">RadioX-Brand ansehen</Link></div>
+        </div>
+      </div>
+      <div>
+        <h3>Farbe und Licht</h3>
+        <ul className="rapold-umbrella-colours">{umbrellaColours.map(item => <li key={item.hex}><span style={{background: item.hex}}/><strong>{item.name}</strong><code>{item.hex}</code><small>{item.rule}</small></li>)}</ul>
+      </div>
+    </div>
+
+    <h3>Präsentationen</h3>
+    <p>Navy-Platten mit Glas-First und Firstlicht für Cover, Kapitel und Schluss, Ice Paper für Inhalt. Text bleibt live in Geist; der Rautenpunkt ersetzt den Schlusspunkt des Titels.</p>
+    <div className="rapold-umbrella-decks">{deckPreviews.map(item => <figure key={item.id}><img src={`${base}reference/${item.id}.png`} width={1600} height={900} loading="lazy" alt={`rapold.io Folie: ${item.name}`}/><figcaption>{item.name}</figcaption></figure>)}</div>
+    <div className="download-row"><a href={base + 'decks/muster-deck.pptx'} download>Muster-Deck · PPTX</a><Link href="/praesentation?brand=rapold">Präsentationsreferenz</Link></div>
+
+    <h3>Downloads Dachmarke</h3>
+    <ul className="rapold-umbrella-downloads">{umbrellaDownloads.map(item => <li key={item.file}><a href={svgUrl(item.file)} download={`rapold-io-${item.file}.svg`} data-artwork-mode={item.dark ? 'dark' : 'light'}><img src={svgUrl(item.file)} alt=""/><span><Download size={16} aria-hidden="true"/>{item.label} · SVG</span></a></li>)}
+      <li><a href={base + 'assets/deck/lockup-on-dark.png'} download data-artwork-mode="dark"><img src={base + 'assets/deck/lockup-on-dark.png'} alt=""/><span><Download size={16} aria-hidden="true"/>Kompakter Lockup · dunkel · PNG</span></a></li>
+      <li><a href={base + 'assets/deck/lockup-on-light.png'} download data-artwork-mode="light"><img src={base + 'assets/deck/lockup-on-light.png'} alt=""/><span><Download size={16} aria-hidden="true"/>Kompakter Lockup · hell · PNG</span></a></li>
+    </ul>
+    <p className="muted">Firstlicht gibt es nur als gerendertes Licht in Platten und Hero-Flächen, nie in Logo-Dateien. Quelle: brands/rapold-io/DESIGN-DNA.md.</p>
+  </section>;
 }
 
 export default function RapoldShowcase() {
@@ -74,6 +140,8 @@ export default function RapoldShowcase() {
   const snippet = `<div class="product-identity">\n  <img src="${base + product.variants[mode]}"\n       width="32" height="32" alt="" />\n  <span>${product.name}</span>\n</div>`;
 
   return <div className="rapold-showcase" data-wordmark={wordmarkTreatment}>
+    <RapoldUmbrella/>
+
     <section className="rapold-intro" aria-labelledby="rapold-family-title">
       <div><p className="eyebrow">Rapold / Raumfalten</p><h2 id="rapold-family-title">Eine Familie.<br/><span>Viele Perspektiven.</span></h2><p>Gemeinsame Farbe, Typografie und Geometrie. Jedes Produkt trägt ein eigenes Zeichen.</p></div>
       <div className="rapold-intro-meta"><strong>01—{String(identity.products.length).padStart(2, '0')}</strong><span>Signets als reine Vektoren</span><span>Geist + Geist Mono</span><span>Hell / Dunkel / Monochrom</span></div>
@@ -94,7 +162,7 @@ export default function RapoldShowcase() {
     {product.status === 'proposal' && 'origin' in product && product.origin && <p className="muted">Vorschlag auf Basis des bisherigen Zeichens in {product.origin.repository} ({product.origin.previousMark}). Das Produkt verwendet sein bisheriges Zeichen, bis die Freigabe dokumentiert ist.</p>}
     {'namingNote' in product && <p className="muted">{product.name}: {product.namingNote}.</p>}
 
-    <nav className="rapold-section-links" aria-label="Markenreferenz"><a href="#rapold-all-signets">Alle Zeichen</a><a href="/contracts/produkte-einbinden.md">Einbindungsanleitung</a><a href="#rapold-worlds">Produktwelten</a><a href="#rapold-signets">Signets</a><a href="#rapold-formats">Formate</a><a href="#rapold-colours">Farbe & Schrift</a><a href="#rapold-downloads">Downloads</a><a href="#rapold-usage">Einbindung</a></nav>
+    <nav className="rapold-section-links" aria-label="Markenreferenz"><a href="#rapold-umbrella">Dachmarke</a><a href="#rapold-all-signets">Alle Zeichen</a><a href="/contracts/produkte-einbinden.md">Einbindungsanleitung</a><a href="#rapold-worlds">Produktwelten</a><a href="#rapold-signets">Signets</a><a href="#rapold-formats">Formate</a><a href="#rapold-colours">Farbe & Schrift</a><a href="#rapold-downloads">Downloads</a><a href="#rapold-usage">Einbindung</a></nav>
 
     <section className="doc-section" id="rapold-all-signets" aria-labelledby="rapold-all-signets-title">
       <h2 id="rapold-all-signets-title">Alle Zeichen auf einen Blick</h2><p>{identity.products.length} Signets in allen Varianten. Ein Klick lädt das jeweilige SVG; Produktpakete stehen weiter unten bei den Downloads.</p>

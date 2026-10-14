@@ -31,3 +31,4 @@ apps/docs/public/brands/*/management.md
 # Source-driven assets; retain only the real rendered reference cache.
 apps/docs/public/brands/rapold/*
 !apps/docs/public/brands/rapold/reference/
+apps/docs/public/brands/*/dna.json

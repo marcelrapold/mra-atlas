@@ -2,19 +2,27 @@
   "schemaVersion": 1,
   "id": "radiox",
   "name": "RadioX",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "status": "draft",
   "palette": {
     "black": "#050505",
     "cyan": "#22D3EE",
-    "cyan-deep": "#06B6D4",
+    "cyan-fill": "#06B6D4",
+    "cyan-fill-active": "#0891B2",
+    "cyan-strong": "#67E8F9",
+    "cyan-soft": "#A5F3FC",
     "onair": "#EF4444",
     "ai": "#A78BFA",
     "community": "#34D399",
     "news": "#FBBF24",
     "dna": "#F472B6",
     "danger": "#FB7185",
-    "slate": "#94A3B8"
+    "slate": "#94A3B8",
+    "fg-2": "#CBD5E1",
+    "fg-4": "#64748B",
+    "window": "#10161E",
+    "window-light-a": "#58DDD3",
+    "window-light-b": "#BC9CFA"
   },
   "modes": {
     "light": {
@@ -47,50 +55,167 @@
     "dark": {
       "background": "#050505",
       "foreground": "#FFFFFF",
-      "card": "#0E1013",
+      "card": "#0C0C0C",
       "card-foreground": "#FFFFFF",
-      "popover": "#14171B",
-      "popover-foreground": "#FFFFFF",
-      "primary": "#22D3EE",
-      "primary-foreground": "#050505",
-      "primary-hover": "#67E8F9",
-      "primary-hover-foreground": "#050505",
-      "secondary": "#1A1D21",
+      "popover": "#10161E",
+      "popover-foreground": "#F8FAFC",
+      "primary": "#06B6D4",
+      "primary-foreground": "#000000",
+      "primary-hover": "#22D3EE",
+      "primary-hover-foreground": "#000000",
+      "secondary": "#1E1E1E",
       "secondary-foreground": "#FFFFFF",
-      "muted": "#121417",
+      "muted": "#0C0C0C",
       "muted-foreground": "#94A3B8",
-      "accent": "#0B2A33",
+      "accent": "#141414",
       "accent-foreground": "#A5F3FC",
       "destructive": "#FB7185",
-      "destructive-foreground": "#050505",
+      "destructive-foreground": "#000000",
       "success": "#34D399",
-      "success-foreground": "#050505",
+      "success-foreground": "#000000",
       "warning": "#FBBF24",
-      "warning-foreground": "#050505",
-      "border": "#25292E",
+      "warning-foreground": "#000000",
+      "border": "#1E1E1E",
       "input": "#64748B",
       "ring": "#22D3EE"
     }
   },
   "typography": {
-    "family": "Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif",
+    "family": "-apple-system, BlinkMacSystemFont, \"SF Pro Text\", system-ui, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, Inter, sans-serif",
     "bodyWeight": 400,
-    "headingWeight": 800
+    "headingWeight": 700
   },
   "shape": {
     "radius": "16px",
     "shadow": "none",
     "buttonMinHeight": "44px"
   },
+  "tokens": {
+    "duration": {
+      "normal": "250ms",
+      "slow": "600ms"
+    },
+    "easing": {
+      "standard": "cubic-bezier(0.22, 1, 0.36, 1)"
+    },
+    "zIndex": {
+      "modal": 60,
+      "toast": 70,
+      "tooltip": 80
+    },
+    "layout": {
+      "header": "56px"
+    },
+    "icon": {
+      "stroke": 2
+    }
+  },
   "presentation": {
-    "editorialDarkSurfaces": true,
     "preferIconsForConcepts": true,
     "preferMermaidForSystems": true,
-    "logoOnCover": false,
+    "logoOnCover": true,
     "preferredDiagramShare": "2-4 per 12 slides",
     "preferredGenAiImages": "max 2 per 12 slides"
   },
+  "deck": {
+    "mode": "dark",
+    "surfaces": {
+      "cover": {
+        "fill": "#050505",
+        "backdrop": "brands/radiox/assets/deck/aurora-cover.png",
+        "logo": true
+      },
+      "section": {
+        "fill": "#050505",
+        "backdrop": "brands/radiox/assets/deck/matrix-edges-aurora.png",
+        "logo": {
+          "heightCm": 0.48
+        }
+      },
+      "content": {
+        "fill": "#050505",
+        "backdrop": "brands/radiox/assets/deck/wash-content.png",
+        "logo": {
+          "anchor": "top-right",
+          "heightCm": 0.48
+        }
+      },
+      "closing": {
+        "fill": "#050505",
+        "backdrop": "brands/radiox/assets/deck/aurora-cover.png",
+        "logo": {
+          "anchor": "bottom-center",
+          "heightCm": 1.06
+        }
+      }
+    },
+    "materials": {
+      "panel": {
+        "fill": "#000000",
+        "fillOpacity": 0.25,
+        "border": "#FFFFFF",
+        "borderOpacity": 0.1,
+        "borderPt": 0.75,
+        "radiusCm": 0.423
+      },
+      "panelRaised": {
+        "fill": "#FFFFFF",
+        "fillOpacity": 0.06,
+        "border": "#FFFFFF",
+        "borderOpacity": 0.1,
+        "borderPt": 0.75,
+        "radiusCm": 0.317
+      },
+      "window": {
+        "fill": "#0F151D",
+        "fillOpacity": 0.88,
+        "border": "#E2F1FF",
+        "borderOpacity": 0.18,
+        "borderPt": 0.75,
+        "radiusCm": 0.741,
+        "highlight": {
+          "color": "#FFFFFF",
+          "opacity": 0.12
+        }
+      }
+    },
+    "glow": {
+      "color": "cyan",
+      "opacity": 0.35,
+      "blurPt": 12
+    },
+    "accents": {
+      "primary": "cyan",
+      "signal": "danger",
+      "chart": [
+        "cyan",
+        "ai",
+        "community",
+        "news",
+        "dna"
+      ],
+      "chartPrevious": "slate"
+    },
+    "type": {
+      "headingFace": "Segoe UI",
+      "bodyFace": "Segoe UI",
+      "displayFace": "Segoe UI Black",
+      "labelFace": "Segoe UI Semibold",
+      "headingWeight": 700,
+      "capsTrackingEm": 0.16,
+      "displayScale": 1.6
+    },
+    "logo": {
+      "onDark": "brands/radiox/assets/deck/wordmark-on-dark.png",
+      "onLight": "brands/radiox/assets/deck/wordmark-on-light.png",
+      "aspectRatio": 3.594,
+      "heightCm": 0.74,
+      "anchor": "top-left",
+      "plate": false
+    }
+  },
   "sources": [
-    "brands/radiox/README.md"
+    "brands/radiox/README.md",
+    "brands/radiox/dna.json"
   ]
 }

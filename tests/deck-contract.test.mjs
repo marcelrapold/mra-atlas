@@ -16,10 +16,12 @@ test('brand foundation overrides propagate to CSS and exports; injection rejecte
 test('rendered-preview digest ignores brand metadata that never reaches a slide', async () => {
   const {renderedBrandKeys}=await import('../scripts/reference-cache.mjs');
   for(const key of ['version','status','sources','presentation','genAI'])assert.ok(!renderedBrandKeys.includes(key),`${key} must not invalidate 72 committed renderings`);
-  for(const key of ['id','name','modes','typography','shape','assets'])assert.ok(renderedBrandKeys.includes(key),`${key} reaches the slide and must invalidate renderings`);
+  for(const key of ['id','name','modes','typography','shape','assets','deck'])assert.ok(renderedBrandKeys.includes(key),`${key} reaches the slide and must invalidate renderings`);
   const project=brand=>JSON.stringify(Object.fromEntries(renderedBrandKeys.map(k=>[k,brand[k]??null])));
   const documented={...structuredClone(brands.at(-1)),version:'9.9.9',status:'approved',sources:['brands/x/y.md'],presentation:{logoOnCover:false},genAI:{maxKeyVisualsPer12Slides:1}};
   assert.equal(project(documented),project(brands.at(-1)),'documentation-only edits must not force a re-render');
   const repainted={...structuredClone(brands.at(-1)),modes:{light:{...brands.at(-1).modes.light,primary:'#010203'}}};
   assert.notEqual(project(repainted),project(brands.at(-1)),'a changed colour must force a re-render');
+  const staged={...structuredClone(brands.at(-1)),deck:{mode:'light'}};
+  assert.notEqual(project(staged),project(brands.at(-1)),'a deck render contract must force a re-render');
 });

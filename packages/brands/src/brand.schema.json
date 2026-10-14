@@ -224,6 +224,357 @@
           "type": "boolean"
         }
       }
+    },
+    "deck": {
+      "type": "object",
+      "description": "Deck render contract. Renderers read it: surfaces per slide role, materials, glow, accents, type and raster logos. Image paths are repository-relative inside brands/<id>/ and PNG or JPG only; SVG sources live in brands/<id>/assets/deck-src/ and are rasterised by scripts/build-deck-assets.mjs. Brands without it keep the neutral deck rendering.",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "surfaces",
+        "materials",
+        "glow",
+        "accents",
+        "type",
+        "logo"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "light",
+            "dark"
+          ],
+          "description": "Which modes.* entry drives deck colours."
+        },
+        "surfaces": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "cover",
+            "section",
+            "content"
+          ],
+          "properties": {
+            "cover": {
+              "$ref": "#/$defs/deckSurface"
+            },
+            "section": {
+              "$ref": "#/$defs/deckSurface"
+            },
+            "content": {
+              "$ref": "#/$defs/deckSurface"
+            },
+            "closing": {
+              "$ref": "#/$defs/deckSurface"
+            }
+          }
+        },
+        "materials": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "panel",
+            "panelRaised"
+          ],
+          "properties": {
+            "panel": {
+              "$ref": "#/$defs/deckMaterial"
+            },
+            "panelRaised": {
+              "$ref": "#/$defs/deckMaterial"
+            },
+            "window": {
+              "$ref": "#/$defs/deckMaterial"
+            }
+          }
+        },
+        "glow": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "color",
+            "opacity",
+            "blurPt"
+          ],
+          "properties": {
+            "color": {
+              "$ref": "#/$defs/colorRef"
+            },
+            "opacity": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "blurPt": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 72
+            }
+          }
+        },
+        "accents": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "chart"
+          ],
+          "properties": {
+            "primary": {
+              "$ref": "#/$defs/colorRef"
+            },
+            "signal": {
+              "$ref": "#/$defs/colorRef"
+            },
+            "chart": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 8,
+              "items": {
+                "$ref": "#/$defs/colorRef"
+              }
+            },
+            "chartPrevious": {
+              "$ref": "#/$defs/colorRef"
+            }
+          }
+        },
+        "type": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "headingFace",
+            "bodyFace",
+            "capsTrackingEm"
+          ],
+          "properties": {
+            "headingFace": {
+              "$ref": "#/$defs/fontFace"
+            },
+            "bodyFace": {
+              "$ref": "#/$defs/fontFace"
+            },
+            "displayFace": {
+              "$ref": "#/$defs/fontFace"
+            },
+            "labelFace": {
+              "$ref": "#/$defs/fontFace"
+            },
+            "headingWeight": {
+              "$ref": "#/$defs/fontWeight"
+            },
+            "capsTrackingEm": {
+              "type": "number",
+              "minimum": -0.1,
+              "maximum": 0.5
+            },
+            "displayScale": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 3
+            }
+          }
+        },
+        "logo": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "onDark",
+            "onLight",
+            "aspectRatio",
+            "heightCm",
+            "anchor",
+            "plate"
+          ],
+          "properties": {
+            "onDark": {
+              "$ref": "#/$defs/deckImage"
+            },
+            "onLight": {
+              "$ref": "#/$defs/deckImage"
+            },
+            "aspectRatio": {
+              "type": "number",
+              "minimum": 0.1,
+              "maximum": 100
+            },
+            "heightCm": {
+              "type": "number",
+              "minimum": 0.2,
+              "maximum": 5
+            },
+            "anchor": {
+              "$ref": "#/$defs/deckAnchor"
+            },
+            "plate": {
+              "const": false
+            },
+            "marginCm": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 5
+            }
+          }
+        },
+        "supergraphic": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "cover": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "path",
+                "x",
+                "y",
+                "w",
+                "h"
+              ],
+              "properties": {
+                "path": {
+                  "$ref": "#/$defs/deckImage"
+                },
+                "x": {
+                  "type": "number",
+                  "minimum": -34,
+                  "maximum": 68
+                },
+                "y": {
+                  "type": "number",
+                  "minimum": -19,
+                  "maximum": 38
+                },
+                "w": {
+                  "type": "number",
+                  "minimum": 0.1,
+                  "maximum": 102
+                },
+                "h": {
+                  "type": "number",
+                  "minimum": 0.1,
+                  "maximum": 57
+                },
+                "opacity": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            },
+            "section": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "path",
+                "x",
+                "y",
+                "w",
+                "h"
+              ],
+              "properties": {
+                "path": {
+                  "$ref": "#/$defs/deckImage"
+                },
+                "x": {
+                  "type": "number",
+                  "minimum": -34,
+                  "maximum": 68
+                },
+                "y": {
+                  "type": "number",
+                  "minimum": -19,
+                  "maximum": 38
+                },
+                "w": {
+                  "type": "number",
+                  "minimum": 0.1,
+                  "maximum": 102
+                },
+                "h": {
+                  "type": "number",
+                  "minimum": 0.1,
+                  "maximum": 57
+                },
+                "opacity": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            },
+            "closing": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "path",
+                "x",
+                "y",
+                "w",
+                "h"
+              ],
+              "properties": {
+                "path": {
+                  "$ref": "#/$defs/deckImage"
+                },
+                "x": {
+                  "type": "number",
+                  "minimum": -34,
+                  "maximum": 68
+                },
+                "y": {
+                  "type": "number",
+                  "minimum": -19,
+                  "maximum": 38
+                },
+                "w": {
+                  "type": "number",
+                  "minimum": 0.1,
+                  "maximum": 102
+                },
+                "h": {
+                  "type": "number",
+                  "minimum": 0.1,
+                  "maximum": 57
+                },
+                "opacity": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              }
+            }
+          }
+        },
+        "punctuation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "glyph",
+            "onDark",
+            "onLight"
+          ],
+          "description": "Brand full stop: replaces a title-final period (or is appended) with a coloured glyph.",
+          "properties": {
+            "glyph": {
+              "type": "string",
+              "pattern": "^[.\\u25A0-\\u25FF]$"
+            },
+            "onDark": {
+              "$ref": "#/$defs/colorRef"
+            },
+            "onLight": {
+              "$ref": "#/$defs/colorRef"
+            },
+            "scale": {
+              "type": "number",
+              "minimum": 0.1,
+              "maximum": 1
+            },
+            "append": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
     }
   },
   "$defs": {
@@ -355,6 +706,136 @@
     "guidance": {
       "type": "string",
       "pattern": "^[A-Za-z0-9][A-Za-z0-9 ,.\\u2013-]{0,63}$"
+    },
+    "colorRef": {
+      "type": "string",
+      "description": "Hex colour or a key of palette.",
+      "pattern": "^(#[0-9a-fA-F]{6}|[a-z][a-z0-9-]{0,31})$"
+    },
+    "fontFace": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9 '-]{0,63}$"
+    },
+    "deckImage": {
+      "type": "string",
+      "pattern": "^brands/[a-z][a-z0-9-]*/[-A-Za-z0-9_/.]+\\.(png|jpe?g|PNG|JPE?G)$"
+    },
+    "deckAnchor": {
+      "enum": [
+        "top-left",
+        "top-right",
+        "bottom-left",
+        "bottom-right",
+        "top-center",
+        "bottom-center"
+      ]
+    },
+    "deckSurface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fill"
+      ],
+      "properties": {
+        "fill": {
+          "$ref": "#/$defs/hex"
+        },
+        "backdrop": {
+          "$ref": "#/$defs/deckImage"
+        },
+        "logo": {
+          "oneOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "anchor": {
+                  "$ref": "#/$defs/deckAnchor"
+                },
+                "heightCm": {
+                  "type": "number",
+                  "minimum": 0.2,
+                  "maximum": 5
+                }
+              }
+            }
+          ]
+        },
+        "mode": {
+          "enum": [
+            "light",
+            "dark"
+          ],
+          "description": "Defaults to the fill luminance (dark below 0.4)."
+        },
+        "textWidthCm": {
+          "type": "number",
+          "minimum": 10,
+          "maximum": 32,
+          "description": "Cover, section and closing: maximum text column width from the left margin, keeping titles off a supergraphic baked into the backdrop."
+        }
+      }
+    },
+    "deckMaterial": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fill",
+        "fillOpacity",
+        "border",
+        "borderOpacity",
+        "borderPt",
+        "radiusCm"
+      ],
+      "properties": {
+        "fill": {
+          "$ref": "#/$defs/hex"
+        },
+        "fillOpacity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "border": {
+          "$ref": "#/$defs/hex"
+        },
+        "borderOpacity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "borderPt": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 6
+        },
+        "radiusCm": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "highlight": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "color",
+            "opacity"
+          ],
+          "properties": {
+            "color": {
+              "$ref": "#/$defs/hex"
+            },
+            "opacity": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        }
+      }
     }
   }
 }

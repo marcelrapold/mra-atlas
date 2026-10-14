@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img">
+  <title>rapold.io – Dachmarke «Lichtfalte», Licht-Variante</title>
+  <desc>Die Marke als Licht: Glasfalte mit Azure-Körper, spektral belichteter Seitenfläche und leuchtendem Punkt, Bloom auf Ice Paper.</desc>
+  <rect width="256" height="256" fill="#F4FAFF"/>
+  <defs>
+    <linearGradient id="mstem" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#1A7BC4"/>
+      <stop offset="0.55" stop-color="#0066B3"/>
+      <stop offset="1" stop-color="#004A86"/>
+    </linearGradient>
+    <linearGradient id="marm" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#7FD3F0"/>
+      <stop offset="0.35" stop-color="#3FA3D1"/>
+      <stop offset="0.75" stop-color="#006C85"/>
+      <stop offset="1" stop-color="#6844B8"/>
+    </linearGradient>
+    <linearGradient id="mdot" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#2B89B5"/>
+      <stop offset="1" stop-color="#0095E0"/>
+    </linearGradient>
+    <linearGradient id="mrim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="mglow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="10.00"/>
+    </filter>
+    <filter id="mbloom" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="26.00"/>
+    </filter>
+  </defs>
+  <ellipse cx="106.0" cy="105.5" rx="96.0" ry="80.0" fill="#009DFF" opacity="0.22" filter="url(#mbloom)"/>
+  <path d="M 162.00 155.50 L 196.00 138.50 L 196.00 172.50 L 162.00 189.50 Z" fill="#A8EDFF" opacity="0.5" filter="url(#mglow)"/>
+  <path d="M 106.00 83.50 L 196.00 38.50 L 196.00 82.50 L 106.00 127.50 Z" fill="#42D6EC" opacity="0.25" filter="url(#mglow)"/>
+  <path data-part="body" d="M 60.00 60.50 L 106.00 83.50 L 106.00 217.50 L 60.00 194.50 Z" fill="url(#mstem)"/>
+  <path data-part="facet-1" d="M 106.00 83.50 L 196.00 38.50 L 196.00 82.50 L 106.00 127.50 Z" fill="url(#marm)"/>
+  <path data-part="facet-2" d="M 162.00 155.50 L 196.00 138.50 L 196.00 172.50 L 162.00 189.50 Z" fill="url(#mdot)"/>
+  <path d="M 106.00 83.50 L 106.00 123.10" stroke="url(#mrim)" stroke-width="1.60" stroke-linecap="round"/>
+  <path d="M 60.00 60.50 L 106.00 83.50" stroke="#FFFFFF" stroke-opacity="0.35" stroke-width="1.20"/>
+</svg>

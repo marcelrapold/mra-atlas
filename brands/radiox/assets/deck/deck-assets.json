@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "generator": "scripts/build-deck-assets.mjs",
+  "files": [
+    {
+      "source": "deck-src/aurora-cover.svg",
+      "sourceSha256": "a3f03b114a7be4ea1c1e8922d6990c57358fb6199519af071191312bb4308475",
+      "output": "deck/aurora-cover.png",
+      "width": 2400,
+      "height": 1350,
+      "sha256": "c60ed8740d345ab40d3e8586d3e041b48d7dd606a92ab0ae29a06966727c0236"
+    },
+    {
+      "source": "deck-src/matrix-edges-aurora.svg",
+      "sourceSha256": "71c38f1e020d6984f49735ef08068e98d0c287cccf67f6f6dad721f1888b4941",
+      "output": "deck/matrix-edges-aurora.png",
+      "width": 2400,
+      "height": 1350,
+      "sha256": "7860d4b1ad93b842cf549d451008497504bcf9d91cbc48e24e622d6f173b085c"
+    },
+    {
+      "source": "deck-src/wash-content.svg",
+      "sourceSha256": "215238f93f581861733cf544761ccd9bf46416e99a3e10f65afea0a66e0e3085",
+      "output": "deck/wash-content.png",
+      "width": 2400,
+      "height": 1350,
+      "sha256": "b2747393cfaad1615d731ff0c8af6ab74bbcd69cd04e3f65b1ee815dd9b314b4"
+    },
+    {
+      "source": "deck-src/wordmark-on-dark@1600w.svg",
+      "sourceSha256": "af0e82c7b101c8e3ff1d9eec4e32fa67b3f59e7d8580f86ec730e4f13e8d8429",
+      "output": "deck/wordmark-on-dark.png",
+      "width": 1600,
+      "height": 445,
+      "sha256": "d1f31980cdbae320c513832a1b9d0f5e4a597ffd587265fe6c6e5d52259c3743"
+    },
+    {
+      "source": "deck-src/wordmark-on-light@1600w.svg",
+      "sourceSha256": "215240bf02a65e1b4524b0a21425e988f217ec2f93937a0bf7260b28632e4a47",
+      "output": "deck/wordmark-on-light.png",
+      "width": 1600,
+      "height": 445,
+      "sha256": "845965a90d211bd4f0e6cae27b953773ff29824131eee90676324130af47d6dd"
+    }
+  ]
+}
