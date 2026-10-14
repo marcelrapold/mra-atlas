@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import {ArrowLeft,ArrowRight} from 'lucide-react';
-import {pages,href,componentPages} from './catalog';
+import {neighbours,href,componentPages} from './catalog';
 import {version} from '../../../../package.json';
 import './pager.css';
 
@@ -10,9 +10,9 @@ const componentSections=new Set(['components','feedback','toasts','empty-states'
 const CHANGELOG='https://github.com/marcelrapold/mra-atlas/blob/main/CHANGELOG.md';
 
 export function Pager({section,brandId}:{section:string;brandId:string}){
- const index=pages.findIndex(p=>p.id===section);
- if(index<0)return null;
- const prev=pages[index-1],next=pages[index+1];
+ const around=neighbours(section);
+ if(!around)return null;
+ const {prev,next}=around;
  const themed=(id:string)=>`${href(id)}?brand=${encodeURIComponent(brandId)}`;
  return <nav className="pager" aria-label="Seitenwechsel">
   <div className="pager-links">

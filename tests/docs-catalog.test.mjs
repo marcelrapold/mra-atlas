@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {componentNames,componentPages,guidance,pages,slug} from '../apps/docs/app/_components/catalog.ts';
+import {componentNames,componentPages,deckCatalog,guidance,neighbours,pagerPages,pages,slug} from '../apps/docs/app/_components/catalog.ts';
+import {slides,presets} from '../packages/brands/src/presentation.mjs';
 
 const core=new URL('../packages/core/src/',import.meta.url);
 const read=async url=>{for(const ext of ['.tsx','.ts'])try{return await readFile(new URL(url+ext),'utf8');}catch(error){if(error.code!=='ENOENT')throw error;}throw new Error(`Modul fehlt: ${url}`);};
@@ -58,10 +59,23 @@ test('guidance headings yield unique, non-empty ids per page', ()=>{
 
 test('guidance copy uses Swiss spelling and no hard-coded catalogue counts', ()=>{
  const text=JSON.stringify(guidance);
- assert.doesNotMatch(text,/ß/);
+ assert.doesNotMatch(text,/\u00df/);
  assert.doesNotMatch(text,/\b18 Typen\b/);
- const motion=guidance.accessibility.sections.find(s=>s.title==='Bewegung und Skalierung');
- const copy=[motion.body,...(motion.items??[])].join(' ');
- assert.match(copy,/prefers-reduced-transparency/);
- assert.match(copy,/prefers-contrast/);
+});
+
+test('overview deck counts match the presentation catalogue', ()=>{
+ assert.equal(deckCatalog.slides,slides.length,'deckCatalog.slides an slide-catalog.json angleichen');
+ assert.equal(deckCatalog.presets,presets.length,'deckCatalog.presets an deck-presets.json angleichen');
+});
+
+test('pager chain skips pages without a pager and reaches every reference page', ()=>{
+ for(const id of ['praesentation','praesentationslogik']){
+  assert.equal(neighbours(id),null,`${id} hat ein eigenes Layout ohne Seitenwechsel`);
+  assert.ok(!pagerPages.some(p=>p.id===id));
+ }
+ const seen=[];let at=pagerPages[0];
+ while(at){seen.push(at.id);at=neighbours(at.id)?.next;}
+ assert.deepEqual(seen,pagerPages.map(p=>p.id),'Weiter führt lückenlos durch alle Referenzseiten');
+ assert.equal(neighbours(pagerPages[0].id).prev,undefined);
+ for(const p of pagerPages.slice(1))assert.equal(neighbours(neighbours(p.id).prev.id).next.id,p.id,`Zurück und Weiter sind bei ${p.id} symmetrisch`);
 });

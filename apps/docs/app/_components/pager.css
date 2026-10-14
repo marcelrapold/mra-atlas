@@ -13,3 +13,5 @@
 .pager-source a:hover{color:var(--primary)}
 @media(max-width:767px){.pager{margin-top:40px}.pager-links{grid-template-columns:1fr;gap:10px}.pager-next{grid-column:auto}}
 @media(prefers-reduced-motion:reduce){.pager-card{transition:none}}
+/* While a lazily loaded block above still shows its placeholder, the pager is hidden: it then appears in its final place instead of moving (layout shift). Without scripting it stays visible. */
+@media(scripting:enabled){main:has(.lazy-loading) .pager{visibility:hidden}}
