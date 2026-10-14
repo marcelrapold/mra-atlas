@@ -82,21 +82,33 @@ Herkunft: `radiox/apps/frontend/components/HeroSlider.tsx`, `hooks/useSliderEngi
 
 | Teil | Props |
 | --- | --- |
-| `Carousel` | `label` (Pflicht), `autoplay?: boolean \| number` (ms, `true` = 6000), `loop`, `defaultIndex`, `onIndexChange`, `labels` (Texte, einzeln überschreibbar) |
+| `Carousel` | `label` (Pflicht), `autoplay?: boolean \| number` (ms, `true` = 6000), `loop`, `defaultIndex`, `onIndexChange`, `labels` (Texte, einzeln überschreibbar, siehe unten) |
 | `CarouselContent` | Scroll-Snap-Viewport, fokussierbar; ←/→/Pos1/Ende |
 | `CarouselItem` | Folie; Breite über `className` (z. B. `sm:basis-1/2`) |
-| `CarouselPrevious` / `CarouselNext` | 44-px-Knöpfe, `aria-controls` |
+| `CarouselPrevious` / `CarouselNext` | 44-px-Knöpfe, `aria-controls`, geben beim Drücken nach (`scale-95`, nur `motion-safe`) |
 | `CarouselDots` | Punkte mit `aria-current`; aktive Marke zeigt Autoplay-Fortschritt |
 | `CarouselAutoplayToggle` | Pause/Play, nur bei aktivem Autoplay |
 | `CarouselControls` | Zurück · Punkte · Pause · Weiter in einer Reihe |
 | `useCarousel()` | Zugriff auf Index, Anzahl, `scrollTo` |
 
-**A11y.** `section` mit `aria-roledescription="carousel"`, Folien `role="group"` + `aria-roledescription="slide"` + «2 von 5». Viewport `aria-live="polite"` bei manuellem Wechsel, `off` während Autoplay. Autoplay stoppt bei Hover, Fokus im Karussell und verdecktem Tab; bei `prefers-reduced-motion` startet es nicht (und Scrollen ist sofort statt weich). Sichtbarer Pause-Knopf erfüllt WCAG 2.2.2. Punkte sind Knöpfe mit `aria-current` statt `role="tab"` (keine Tabpanels).
+**Texte (`CarouselLabels`).** Deutsche Standardwerte, jeder einzeln über `labels` überschreibbar:
+
+| Schlüssel | Standard | Verwendung |
+| --- | --- | --- |
+| `roledescription` | «Karussell» | `aria-roledescription` des Karussells |
+| `slideRoledescription` | «Folie» | `aria-roledescription` jeder Folie |
+| `previous` / `next` | «Vorherige Folie» / «Nächste Folie» | Name der Pfeilknöpfe |
+| `pause` / `play` | «Automatische Wiedergabe anhalten» / «… starten» | Name des Autoplay-Knopfs |
+| `slide(i, n)` | «2 von 5» | Name einer Folie |
+| `goTo(i, n)` | «Folie 2 von 5 anzeigen» | Name eines Punkts |
+| `dots` | «Folie wählen» | Name der Punktgruppe |
+
+**A11y.** `section` mit `aria-roledescription` «Karussell», Folien `role="group"` + `aria-roledescription` «Folie» + «2 von 5». Die Rollenbeschreibung wird vorgelesen und folgt deshalb der Sprache der Seite; für anderssprachige Seiten `labels.roledescription` und `labels.slideRoledescription` setzen. Fokus über `focusRing` (Viewport, Knöpfe) bzw. `focusRingInset` (Punkte). Viewport `aria-live="polite"` bei manuellem Wechsel, `off` während Autoplay. Autoplay stoppt bei Hover, Fokus im Karussell und verdecktem Tab; bei `prefers-reduced-motion` startet es nicht (und Scrollen ist sofort statt weich). Sichtbarer Pause-Knopf erfüllt WCAG 2.2.2. Punkte sind Knöpfe mit `aria-current` statt `role="tab"` (keine Tabpanels).
 
 **Do.** Bei `autoplay` immer `CarouselControls` oder `CarouselAutoplayToggle` rendern. Mindestens 5 s Intervall.
 **Don't.** Keine wichtigen Inhalte nur im Karussell. Kein Autoplay für Folien mit Formularen.
 
-**Abweichungen von RadioX.** Embla + Autoplay-Plugin ersetzt durch CSS Scroll-Snap, IntersectionObserver und einen 100-ms-Takt. Ken-Burns-Zoom, LCARS-Formen und Show-spezifische CTAs entfernt (Brand bzw. App). RadioX nutzte `role="tablist"` für Punkte ohne Tabpanels – hier `aria-current`.
+**Abweichungen von RadioX.** Englische Rollenbeschreibungen («carousel», «slide») durch deutsche Standardtexte ersetzt. Embla + Autoplay-Plugin ersetzt durch CSS Scroll-Snap, IntersectionObserver und einen 100-ms-Takt. Ken-Burns-Zoom, LCARS-Formen und Show-spezifische CTAs entfernt (Brand bzw. App). RadioX nutzte `role="tablist"` für Punkte ohne Tabpanels – hier `aria-current`.
 
 ---
 
