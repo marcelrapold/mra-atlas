@@ -28,7 +28,7 @@ test('new brands require no core changes and unsupported dark mode falls back', 
 test('presentation and UI derive their identity from the same source', () => {
   for(const brand of brands) {
     const deck = presentationTheme(brand);
-    assert.equal(deck.colors.accent,brand.modes.light.primary);
+    assert.equal(deck.colors.accent,deck.deck?.accents.primary??brand.modes[brand.deck?.mode??'light'].primary);
     assert.equal(deck.typography.bodyWeight,brand.typography.bodyWeight);
     assert.equal(deck.evidence.required,true);
   }

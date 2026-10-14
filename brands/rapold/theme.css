@@ -155,3 +155,49 @@
   .rapold-family, .rapold-variant-grid, .rapold-family[data-status='proposal'], .rapold-family[data-status='approved'] {grid-template-columns: 1fr;}
   .rapold-product {align-items: center;}
 }
+
+/* Dachmarke rapold.io «Der First» (Vorschlag). Licht-Rezepte: brands/rapold-io/dna.json. */
+.rapold-umbrella {padding: 8px 0 48px; border-bottom: 1px solid var(--border); scroll-margin-top: 110px;}
+.rapold-umbrella h3 {margin: 40px 0 8px;}
+.rapold-umbrella-stage {position: relative; overflow: hidden; display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); align-items: center; gap: 24px; padding: clamp(28px, 5vw, 64px); border-radius: 16px; color: #EDF5FF;
+  background: radial-gradient(18% 30% at 76% 12%, rgba(255,163,108,.22), rgba(255,163,108,0)), radial-gradient(62% 62% at 74% 40%, rgba(0,157,255,.30), rgba(0,157,255,.07) 45%, rgba(0,157,255,0)), linear-gradient(180deg, #050B19, #02060F);}
+.rapold-umbrella-stage::before {content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .055;
+  background: repeating-linear-gradient(26.565deg, #A8EDFF 0 1px, transparent 1px 50px), repeating-linear-gradient(-26.565deg, #A8EDFF 0 1px, transparent 1px 50px);
+  mask-image: radial-gradient(60% 70% at 72% 40%, #000, transparent);}
+.rapold-umbrella-copy {position: relative; min-width: 0;}
+.rapold-umbrella-eyebrow {display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 0; color: #A8EDFF; font: 12px/1.4 var(--font-mono); letter-spacing: .2em; text-transform: uppercase;}
+.rapold-umbrella-badge {padding: 4px 10px; border: 1px solid rgba(255,163,108,.6); border-radius: 999px; color: #FFA36C; letter-spacing: .12em;}
+.rapold-umbrella-stage h2 {margin: 20px 0 16px; font-size: clamp(44px, 7vw, 104px); font-weight: 600; line-height: 1.02; letter-spacing: -.05em; color: #EDF5FF;}
+.rapold-umbrella-stage p {max-width: 560px; color: #9AADC7;}
+.rapold-point {display: inline-block; width: .17em; height: .17em; margin-left: .06em; background: #FFA36C; clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);}
+.rapold-umbrella-lockup {display: block; width: min(100%, 360px); height: auto; margin-top: 28px;}
+.rapold-umbrella-mark {position: relative; display: flex; justify-content: center;}
+.rapold-umbrella-mark img {width: min(100%, 320px); height: auto; filter: drop-shadow(0 0 48px rgba(0,157,255,.35));}
+.rapold-umbrella-grid {display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px;}
+.rapold-architecture {display: grid; gap: 12px; margin-top: 16px;}
+.rapold-architecture-root {display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); font: 12px var(--font-mono); color: var(--muted-foreground); text-transform: uppercase; letter-spacing: .2em;}
+.rapold-architecture-products {display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin: 0; padding: 0; list-style: none;}
+.rapold-architecture-products li {display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 4px; border: 1px solid var(--border); border-radius: 8px; font-size: 12px; text-align: center; overflow-wrap: anywhere;}
+.rapold-architecture-endorsed {display: grid; gap: 4px; padding: 16px; border: 1px dashed var(--border); border-radius: 16px;}
+.rapold-architecture-endorsed span {color: var(--muted-foreground); font-size: 14px;}
+.rapold-architecture-endorsed em {font: 12px var(--font-mono); font-style: normal; letter-spacing: .2em; text-transform: uppercase;}
+.rapold-umbrella-colours {display: grid; gap: 8px; margin: 16px 0 0; padding: 0; list-style: none;}
+.rapold-umbrella-colours li {display: grid; grid-template-columns: 40px minmax(0, 7em) auto; grid-template-rows: auto auto; column-gap: 12px; align-items: center;}
+.rapold-umbrella-colours li > span {grid-row: span 2; width: 40px; height: 40px; border-radius: 8px; border: 1px solid var(--border);}
+.rapold-umbrella-colours code {font: 12px var(--font-mono); color: var(--muted-foreground);}
+.rapold-umbrella-colours small {grid-column: 2 / -1; color: var(--muted-foreground);}
+.rapold-umbrella-decks {display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 16px 0;}
+.rapold-umbrella-decks img {display: block; width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--border);}
+.rapold-umbrella-decks figcaption {margin-top: 6px; font: 12px var(--font-mono); color: var(--muted-foreground);}
+.rapold-umbrella-downloads {display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin: 16px 0; padding: 0; list-style: none;}
+.rapold-umbrella-downloads a {display: grid; gap: 10px; height: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; text-decoration: none; color: var(--foreground); background: var(--card); font-size: 13px;}
+.rapold-umbrella-downloads a:hover {border-color: var(--primary);}
+.rapold-umbrella-downloads img {width: 100%; height: 72px; object-fit: contain; padding: 10px; border-radius: 6px;}
+.rapold-umbrella-downloads a[data-artwork-mode='dark'] img {background: #050B19;}
+.rapold-umbrella-downloads a[data-artwork-mode='light'] img {background: #F4FAFF;}
+.rapold-umbrella-downloads span {display: flex; align-items: center; gap: 6px;}
+@media (max-width: 760px) {
+  .rapold-umbrella-stage, .rapold-umbrella-grid, .rapold-umbrella-decks {grid-template-columns: minmax(0, 1fr);}
+  .rapold-umbrella-mark img {width: 180px;}
+  .rapold-architecture-products {grid-template-columns: repeat(2, minmax(0, 1fr));}
+}

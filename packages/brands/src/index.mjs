@@ -20,7 +20,81 @@ const rule = /^[A-Za-z0-9][A-Za-z0-9 ,.\u2013-]{0,63}$/;
 const slug = /^[a-z][a-z0-9-]{0,47}$/;
 const docPath = /^[-A-Za-z0-9_/]+\.md$/;
 export const requiredBrandKeys = Object.freeze(['schemaVersion','id','name','version','status','modes','typography','shape','sources']);
-export const optionalBrandKeys = Object.freeze(['palette','tokens','assets','presentation','genAI']);
+export const optionalBrandKeys = Object.freeze(['palette','tokens','assets','presentation','genAI','deck']);
+// Deck render contract: everything a renderer needs to stage a brand's slides.
+// Image paths are repository-relative inside brands/<id>/ and PNG/JPG only.
+export const deckLayouts=Object.freeze(['cover','section','content','closing']);
+export const deckAnchors=Object.freeze(['top-left','top-right','bottom-left','bottom-right','top-center','bottom-center']);
+const face=/^[A-Za-z0-9][A-Za-z0-9 '-]{0,63}$/;
+const range=(v,min,max)=>typeof v==='number'&&Number.isFinite(v)&&v>=min&&v<=max;
+export const surfaceMode=surface=>surface.mode??(relativeLuminance(surface.fill)<.4?'dark':'light');
+/** Every image file a brand's deck contract references (repository-relative, sorted). */
+export function deckAssetPaths(brand){
+  const d=brand.deck;
+  return d?[...new Set([...Object.values(d.surfaces).map(s=>s.backdrop),d.logo.onDark,d.logo.onLight,...Object.values(d.supergraphic??{}).map(g=>g.path)].filter(Boolean))].sort():[];
+}
+function checkDeck(brand){
+  const d=brand.deck,fail=path=>{throw new Error(`Invalid deck contract: ${path}`);};
+  const image=(v,path)=>{
+    if(typeof v==='string'&&/\.svg$/i.test(v))throw new Error(`Invalid deck contract: ${path} is SVG. Decks need PNG or JPG; put the SVG into brands/${brand.id}/assets/deck-src/ and run node scripts/build-deck-assets.mjs`);
+    if(typeof v!=='string'||!v.startsWith(`brands/${brand.id}/`)||!/^[-A-Za-z0-9_/.]+\.(png|jpe?g)$/i.test(v)||v.split('/').some(s=>!s||s==='.'||s==='..'))fail(path);
+  };
+  const color=(v,path,refs=false)=>{if(typeof v!=='string'||!(hex.test(v)||refs&&brand.palette&&Object.hasOwn(brand.palette,v)))fail(path);};
+  optionalKeys(d,['mode','surfaces','materials','glow','accents','type','logo','supergraphic','punctuation'],'deck');
+  for(const key of ['mode','surfaces','materials','glow','accents','type','logo'])if(!(key in d))fail(key);
+  if(!['light','dark'].includes(d.mode)||!brand.modes[d.mode])fail('mode');
+  optionalKeys(d.surfaces,deckLayouts,'deck.surfaces');
+  for(const key of ['cover','section','content'])if(!d.surfaces[key])fail(`surfaces.${key}`);
+  for(const [key,s] of Object.entries(d.surfaces)){
+    optionalKeys(s,['fill','backdrop','logo','mode','textWidthCm'],`deck.surfaces.${key}`);color(s.fill,`surfaces.${key}.fill`);
+    if(s.backdrop!==undefined)image(s.backdrop,`surfaces.${key}.backdrop`);
+    if(s.logo!==undefined&&typeof s.logo!=='boolean'){
+      optionalKeys(s.logo,['anchor','heightCm'],`deck.surfaces.${key}.logo`);
+      if(s.logo.anchor!==undefined&&!deckAnchors.includes(s.logo.anchor)||s.logo.heightCm!==undefined&&!range(s.logo.heightCm,.2,5))fail(`surfaces.${key}.logo`);
+    }
+    if(s.mode!==undefined&&!['light','dark'].includes(s.mode))fail(`surfaces.${key}.mode`);
+    if(s.textWidthCm!==undefined&&!range(s.textWidthCm,10,32))fail(`surfaces.${key}.textWidthCm`);
+    // Content slides keep the Atlas title zone top left; the logo must not sit on it.
+    if(key==='content'&&s.logo&&['top-left','top-center'].includes(s.logo.anchor??d.logo?.anchor))fail(`surfaces.content.logo collides with the title zone; anchor it top-right or at the bottom`);
+    if(!brand.modes[surfaceMode(s)])fail(`surfaces.${key} is ${surfaceMode(s)} but modes.${surfaceMode(s)} is missing`);
+  }
+  optionalKeys(d.materials,['panel','panelRaised','window'],'deck.materials');
+  for(const key of ['panel','panelRaised'])if(!d.materials[key])fail(`materials.${key}`);
+  for(const [key,m] of Object.entries(d.materials)){
+    optionalKeys(m,['fill','fillOpacity','border','borderOpacity','borderPt','radiusCm','highlight'],`deck.materials.${key}`);
+    color(m.fill,`materials.${key}.fill`);color(m.border,`materials.${key}.border`);
+    if(!range(m.fillOpacity,0,1)||!range(m.borderOpacity,0,1)||!range(m.borderPt,0,6)||!range(m.radiusCm,0,3))fail(`materials.${key}`);
+    if(m.highlight!==undefined){keys(m.highlight,['color','opacity'],`deck.materials.${key}.highlight`);color(m.highlight.color,`materials.${key}.highlight.color`);if(!range(m.highlight.opacity,0,1))fail(`materials.${key}.highlight`);}
+  }
+  keys(d.glow,['color','opacity','blurPt'],'deck.glow');color(d.glow.color,'glow.color',true);
+  if(!range(d.glow.opacity,0,1)||!range(d.glow.blurPt,0,72))fail('glow');
+  optionalKeys(d.accents,['primary','signal','chart','chartPrevious'],'deck.accents');
+  for(const key of ['primary','signal','chartPrevious'])if(d.accents[key]!==undefined)color(d.accents[key],`accents.${key}`,true);
+  if(!Array.isArray(d.accents.chart)||!d.accents.chart.length||d.accents.chart.length>8)fail('accents.chart');
+  d.accents.chart.forEach((v,i)=>color(v,`accents.chart.${i}`,true));
+  optionalKeys(d.type,['headingFace','bodyFace','displayFace','labelFace','headingWeight','capsTrackingEm','displayScale'],'deck.type');
+  for(const key of ['headingFace','bodyFace','displayFace','labelFace'])if((key in d.type||key==='headingFace'||key==='bodyFace')&&(typeof d.type[key]!=='string'||!face.test(d.type[key])))fail(`type.${key}`);
+  if(!range(d.type.capsTrackingEm,-.1,.5))fail('type.capsTrackingEm');
+  if(d.type.displayScale!==undefined&&!range(d.type.displayScale,1,3))fail('type.displayScale');
+  if(d.type.headingWeight!==undefined&&(!Number.isInteger(d.type.headingWeight)||d.type.headingWeight<100||d.type.headingWeight>900))fail('type.headingWeight');
+  optionalKeys(d.logo,['onDark','onLight','aspectRatio','heightCm','anchor','plate','marginCm'],'deck.logo');
+  for(const key of ['onDark','onLight','aspectRatio','heightCm','anchor','plate'])if(!(key in d.logo))fail(`logo.${key}`);
+  image(d.logo.onDark,'logo.onDark');image(d.logo.onLight,'logo.onLight');
+  if(!range(d.logo.aspectRatio,.1,100)||!range(d.logo.heightCm,.2,5)||!deckAnchors.includes(d.logo.anchor)||d.logo.plate!==false||d.logo.marginCm!==undefined&&!range(d.logo.marginCm,0,5))fail('logo');
+  if(d.supergraphic!==undefined){
+    optionalKeys(d.supergraphic,['cover','section','closing'],'deck.supergraphic');
+    for(const [key,g] of Object.entries(d.supergraphic)){
+      optionalKeys(g,['path','x','y','w','h','opacity'],`deck.supergraphic.${key}`);image(g.path,`supergraphic.${key}.path`);
+      if(!range(g.x,-34,68)||!range(g.y,-19,38)||!range(g.w,.1,102)||!range(g.h,.1,57)||g.opacity!==undefined&&!range(g.opacity,0,1))fail(`supergraphic.${key}`);
+    }
+  }
+  if(d.punctuation!==undefined){
+    optionalKeys(d.punctuation,['glyph','onDark','onLight','scale','append'],'deck.punctuation');
+    if(typeof d.punctuation.glyph!=='string'||!/^[.■-◿]$/u.test(d.punctuation.glyph))fail('punctuation.glyph');
+    color(d.punctuation.onDark,'punctuation.onDark',true);color(d.punctuation.onLight,'punctuation.onLight',true);
+    if(d.punctuation.scale!==undefined&&!range(d.punctuation.scale,.1,1)||d.punctuation.append!==undefined&&typeof d.punctuation.append!=='boolean')fail('punctuation');
+  }
+}
 export function defineBrand(input) {
   keys(input, [...optionalBrandKeys.filter(key => input[key]), ...requiredBrandKeys], 'brand');
   if (input.schemaVersion !== 1 || !/^[a-z][a-z0-9-]*$/.test(input.id)) throw new Error('Invalid brand identity');
@@ -60,6 +134,7 @@ export function defineBrand(input) {
     if (typeof input.palette !== 'object' || Array.isArray(input.palette) || !Object.keys(input.palette).length || Object.keys(input.palette).length > 32) throw new Error('Invalid brand palette');
     for (const [key,value] of Object.entries(input.palette)) if (!/^[a-z][a-z0-9-]{0,31}$/.test(key) || typeof value !== 'string' || !hex.test(value)) throw new Error('Invalid palette color');
   }
+  if(input.deck)checkDeck(input);
   resolveFoundation(input);
   const result = structuredClone(input);
   function freeze(value) { Object.values(value).forEach(v => { if (v && typeof v === 'object') freeze(v); }); return Object.freeze(value); }
@@ -84,11 +159,11 @@ export function toCssVariables(brand, requestedMode = 'light') {
   ]);
 }
 
+export function relativeLuminance(hex) {
+  const [r,g,b] = hex.slice(1).match(/../g).map(v => parseInt(v,16)/255).map(v => v <= .04045 ? v/12.92 : ((v+.055)/1.055)**2.4);
+  return .2126*r + .7152*g + .0722*b;
+}
 export function contrast(a,b) {
-  const luminance = hex => {
-    const [r,g,b] = hex.slice(1).match(/../g).map(v => parseInt(v,16)/255).map(v => v <= .04045 ? v/12.92 : ((v+.055)/1.055)**2.4);
-    return .2126*r + .7152*g + .0722*b;
-  };
-  const x=luminance(a),y=luminance(b);
+  const x=relativeLuminance(a),y=relativeLuminance(b);
   return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);
 }

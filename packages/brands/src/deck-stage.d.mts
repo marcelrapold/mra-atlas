@@ -1,0 +1,3 @@
+import type {SceneNode,SceneBackground} from './slide-scene.mjs';
+export function layoutOf(type:string):'cover'|'section'|'content'|'closing';
+export function deckStage(theme:Record<string,any>,type:string):null|{d:Record<string,any>;layout:string;surface:Record<string,any>;c:Record<string,string>;background:SceneBackground;rect(node:SceneNode,options?:{glow?:boolean;name?:string}):SceneNode[];text(node:SceneNode):SceneNode;title(node:SceneNode,display?:boolean):SceneNode;chart(node:SceneNode):SceneNode;logo:SceneNode|null;rule(y:number):SceneNode;displayPt:number;glow:{color:string;opacity:number;blurPt:number}};

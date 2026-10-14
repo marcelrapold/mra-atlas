@@ -1,13 +1,15 @@
 import { mkdir, writeFile, copyFile, readFile, readdir, access, cp } from 'node:fs/promises';
-import { brands } from '../packages/brands/src/index.mjs';
+import { brands, deckAssetPaths } from '../packages/brands/src/index.mjs';
 import { mermaidTheme,mermaidThemeCSS,mermaidClassDefs,MERMAID_WRAPPING_WIDTH,MERMAID_NODE_PADDING } from '../packages/brands/src/mermaid-theme.mjs';
 import { presentationTheme } from '../packages/brands/src/presentation.mjs';
 import { buildBrandAssets } from './build-brand-assets.mjs';
+import { buildDeckAssets } from './build-deck-assets.mjs';
 import { pruneBrandOutputs } from './prune-brand-outputs.mjs';
 // Source assets and their reproducible exports must exist before documentation
 // and presentation contracts reference them.
 await pruneBrandOutputs();
 await buildBrandAssets();
+await buildDeckAssets();
 const {version}=JSON.parse(await readFile(new URL('../package.json',import.meta.url),'utf8'));
 const root = new URL('../apps/docs/public/',import.meta.url);
 const sharedAgentGuide = await readFile(new URL('../llms.txt',import.meta.url),'utf8');
@@ -35,6 +37,8 @@ for (const brand of brands) {
   // Rapold has a dedicated export pipeline (build-brand-assets.mjs) and is excluded here.
   const staticAssets=new URL(`../brands/${brand.id}/assets/`,import.meta.url);
   if(brand.id!=='rapold'&&await access(staticAssets).then(()=>true,()=>false))await cp(staticAssets,new URL('assets/',directory),{recursive:true});
+  // Deck contract images (backdrops, raster logos, supergraphics) keep their repository path.
+  for(const file of deckAssetPaths(brand)){await mkdir(new URL(file.replace(/[^/]+$/,''),root),{recursive:true});await copyFile(new URL('../'+file,import.meta.url),new URL(file,root));}
   if(brand.assets?.logo){
     const original=new URL('../'+brand.assets.logo.path,import.meta.url);
     if(await access(original).then(()=>true,()=>false))await copyFile(original,new URL(brand.assets.logo.path,root));

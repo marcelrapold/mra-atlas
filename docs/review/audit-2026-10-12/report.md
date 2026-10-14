@@ -510,10 +510,10 @@ Publish a state-matrix table per component on /components.
 ### [P2] [L] [ICE 0.6] UX-16 – Atlas UI package lacks patterns already in the radiox UI package (import gap and IA slot gap)
 
 - **Bereich:** UX, IA, Inhalt, erster Eindruck
-- **Beleg:** C:\DEV\marcelrapold\radiox\packages\ui\src exports IconButton, LiveDot, Eyebrow, Inset, FloatingLayer, ModalDialog with useSwipeToDismiss, Tooltip with positioning, statusTone/tone, SpaLink, GlassPlayButton, CurrencySwitcher and SwissFlag. apps/frontend/components has LanguageSwitcher, OnboardingWizard, Toast, RadioXLoader, ErrorBoundary, DashboardStats and MediaPlayer. Atlas core (packages/core/src/ui) has 19 modules and none of: icon button, status/live indicator, eyebrow component, stepper/wizard, language switcher, media player or error boundary. The Atlas IA has no group for 'Status & Indikatoren', 'Assistenten/Stepper' or 'Medien'. (I did not inspect radiox.cloud's rendered UI in depth.)
+- **Beleg:** marcelrapold/radiox\packages\ui\src exports IconButton, LiveDot, Eyebrow, Inset, FloatingLayer, ModalDialog with useSwipeToDismiss, Tooltip with positioning, statusTone/tone, SpaLink, GlassPlayButton, CurrencySwitcher and SwissFlag. apps/frontend/components has LanguageSwitcher, OnboardingWizard, Toast, RadioXLoader, ErrorBoundary, DashboardStats and MediaPlayer. Atlas core (packages/core/src/ui) has 19 modules and none of: icon button, status/live indicator, eyebrow component, stepper/wizard, language switcher, media player or error boundary. The Atlas IA has no group for 'Status & Indikatoren', 'Assistenten/Stepper' or 'Medien'. (I did not inspect radiox.cloud's rendered UI in depth.)
 - **Prinzip:** Design-system coverage: patterns used in products should exist once in the DS (Nielsen H4 across products)
 - **Massnahme:** Build an intake table (radiox component → Atlas target → neutralise brand values → status). Generic patterns go to core with tokens only: IconButton, StatusDot/LiveDot, Eyebrow, Inset, Stepper (from OnboardingWizard), LanguageSwitcher, ErrorState/ErrorBoundary, Loader. Product-specific ones (GlassPlayButton, MediaPlayer, CurrencySwitcher, SwissFlag) go to a product/brand layer or a 'Muster' page. Add IA slots under Komponenten: 'Status & Indikatoren', 'Assistenten', 'Medien'.
-- **Prüfung:** The cited path is wrong: C:\DEV\marcelrapold\radiox\packages\ui\src does not exist, and packages/ui contains only node_modules. The components do exist under C:\DEV\marcelrapold\radiox\apps\frontend\components\ui (IconButton.tsx, LiveDot.tsx, Eyebrow.tsx, GlassPlayButton.tsx, CurrencySwitcher.tsx, SwissFlag.tsx). LanguageSwitcher.tsx, OnboardingWizard.tsx, ErrorBoundary.tsx, Toast.tsx and RadioXLoader.tsx are directly under apps/frontend/components. Atlas core (packages/core/src/ui) has 19 modules and none of them is an IconButton, LiveDot, Eyebrow, Stepper or LanguageSwitcher. The gap is real and matches the user's explicit request to import radiox elements. The evidence path must be corrected to apps/frontend/components/ui, and neutralising brand values is mandatory under the white-label core rule (README:65). P2.
+- **Prüfung:** The cited path is wrong: marcelrapold/radiox\packages\ui\src does not exist, and packages/ui contains only node_modules. The components do exist under marcelrapold/radiox\apps\frontend\components\ui (IconButton.tsx, LiveDot.tsx, Eyebrow.tsx, GlassPlayButton.tsx, CurrencySwitcher.tsx, SwissFlag.tsx). LanguageSwitcher.tsx, OnboardingWizard.tsx, ErrorBoundary.tsx, Toast.tsx and RadioXLoader.tsx are directly under apps/frontend/components. Atlas core (packages/core/src/ui) has 19 modules and none of them is an IconButton, LiveDot, Eyebrow, Stepper or LanguageSwitcher. The gap is real and matches the user's explicit request to import radiox elements. The evidence path must be corrected to apps/frontend/components/ui, and neutralising brand values is mandatory under the white-label core rule (README:65). P2.
 
 ### [P3] [S] [ICE 0.97] PERF-03 – Section pages lose og:image, og:locale, og:type and siteName; twitter:title is 'Atlas' on every page
 
@@ -1057,7 +1057,7 @@ Sampled live (curl, 2026-10-12): /, /brand, /tokens, /typography, /components, /
 
 I read this source: apps/docs/app/{layout,page,[section]/page,praesentation/page,praesentationslogik/page}.tsx, _components/{catalog.ts, framework-shell, reference-page, brand-showcase, rapold-showcase, presentation-page, pattern-showcase, component-demo, icon-gallery}.tsx, parts of rapold-worlds.tsx, globals.css (shell and media queries), packages/brands/src/prompt-compiler.mjs, packages/brands/src/*.json (names/status), brands/rapold/identity.json (statuses), docs/produkte-einbinden.md, README.md and AGENTS.md.
 
-For radiox, I only listed C:\DEV\marcelrapold\radiox\packages\ui\src and apps/frontend/components to find patterns Atlas does not have. I did not browse radiox.cloud's rendered UI in depth (only checked it returns HTTP 200).
+For radiox, I only listed marcelrapold/radiox\packages\ui\src and apps/frontend/components to find patterns Atlas does not have. I did not browse radiox.cloud's rendered UI in depth (only checked it returns HTTP 200).
 
 Skipped:
 - The pages I did not render: /layout, /motion, /tables, /forms, /charts, /dashboard, /mermaid, /organigramm, /login-pattern, /auth-flow, /mail-templates, /health-status, /engineering, /accessibility, /content, /infografik, /marketing-hero. I reviewed these from source only.
@@ -1099,7 +1099,7 @@ ISO 9241-110: suitability for the task is weak for flows (a) signets and (b) com
 
 ### Barrierefreiheit & Responsive
 
-Rendered checks used headless Chromium (Playwright 1.63 from radiox/node_modules) against the live site https://atlas.rapold.io, plus source in C:\DEV\marcelrapold\mra-atlas. Nothing in the repo was edited.
+Rendered checks used headless Chromium (Playwright 1.63 from radiox/node_modules) against the live site https://atlas.rapold.io, plus source in mra-atlas. Nothing in the repo was edited.
 
 What I sampled:
 (1) axe-core 4.10.2, injected from cdnjs, using tags wcag2a, wcag2aa, wcag21aa, wcag22aa and best-practice. It ran on all 35 sitemap routes in 6 brand/mode combinations (neutral, rapold and dominicano-express, each in light and dark) at 1440x900 with reduced motion, which is 210 runs. It ran again on all 35 routes at 375px with mobile/touch emulation, inside the open mobile Sheet, inside the open command palette, on deck and slide dialogs (/praesentation), on the Lightbox (/lightbox), and with the Dialog, Sheet and DropdownMenu demos open (/components).
@@ -1125,7 +1125,7 @@ What I skipped:
 
 ### Visuelles Design, Zustände & Bewegung
 
-SAMPLED (live = https://atlas.rapold.io, build 0.7.1; the local apps/docs/out CSS hash 3bvtb48uz92n4.css matches the live CSS). Rendered with headless Chromium through Playwright from C:\DEV\marcelrapold\radiox\node_modules, using a fresh context with no user browser.
+SAMPLED (live = https://atlas.rapold.io, build 0.7.1; the local apps/docs/out CSS hash 3bvtb48uz92n4.css matches the live CSS). Rendered with headless Chromium through Playwright from marcelrapold/radiox\node_modules, using a fresh context with no user browser.
 (1) /components in all 6 brand x mode combinations (rapold, neutral, dominicano-express, light and dark). Measured computed focus styles by walking Tab through the first ~20 controls, plus hover, active and disabled styles, dialog and select open animation, trigger heights, toast and skeleton.
 (2) /forms error path (typed "ab" and "   ").
 (3) /accessibility prose measure (characters per line) and heading scale.
@@ -1149,7 +1149,7 @@ Live checks against https://atlas.rapold.io on 2026-10-12 (deploy commit fd6bd84
 
 ### Codequalität, Formulare & i18n
 
-Inspected (read-only, nothing edited) in repo C:\DEV\marcelrapold\mra-atlas at fd6bd84:
+Inspected (read-only, nothing edited) in repo mra-atlas at fd6bd84:
 - All of packages/core/src: brand-provider.tsx, index.ts, styles.css, and every ui/*.tsx. I read lightbox.tsx, input.tsx, button.tsx and dialog.tsx in full and grepped the rest for hex values, brand names and hardcoded strings.
 - packages/brands/src: orgchart.mjs palette/escaping, prompt-compiler.mjs and .d.mts, mermaid-theme.mjs, atlas-slide-content.mjs number formatting, rapold.json and neutral.json.
 - packages/presentation/src: grepped only, for lang and formatting.

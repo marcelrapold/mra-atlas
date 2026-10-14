@@ -48,7 +48,23 @@
       "status": "draft",
       "reason": "Die vollständige Zuordnung zu Framework-Rollen, Kontrastableitungen und die visuelle UI-Abnahme sind eine neue Integration."
     },
-    "umbrellaSymbol": "none"
+    "umbrellaSymbol": "none",
+    "umbrellaProposal": {
+      "id": "first",
+      "name": "Der First",
+      "status": "proposal",
+      "label": "Vorschlag Dachmarke",
+      "recordedOn": "2026-10-14",
+      "source": "brands/rapold-io (DESIGN-DNA.md, dna.json, assets/logos)",
+      "assets": "brands/rapold/assets/umbrella/",
+      "construction": "scripts/brand-rapold-deck.mjs (Kopie der Master, kompakter Lockup, Deck-Platten)",
+      "scope": [
+        "Präsentationen (deck)",
+        "Brand-Seite rapold, als Vorschlag gekennzeichnet"
+      ],
+      "evidence": "Auftrag von Marcel Rapold: Dachmarke rapold.io umsetzen. Das konkrete Zeichen «Der First» ist ein Vorschlag; die visuelle Freigabe steht aus.",
+      "note": "umbrellaSymbol bleibt \"none\", bis die Freigabe mit Datum und Beleg dokumentiert ist. Danach umbrellaSymbol auf {id:\"first\"} setzen und diesen Block auf approved stellen."
+    }
   },
   "sources": [
     {

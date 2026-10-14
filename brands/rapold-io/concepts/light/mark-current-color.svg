@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img">
+  <title>rapold.io – Dachmarke «Lichtfalte»</title>
+  <desc>Ein Band, einmal senkrecht gefaltet: Vorderfläche als Stamm eines kleinen r, die belichtete Seitenfläche als Arm und als Punkt von .io. Isometrische Steigung 1:0.5 wie die Raumfalten-Signets. Variante: currentColor, transparent.</desc>
+  <path data-part="body" fill="currentColor" d="M 60.00 60.50 L 106.00 83.50 L 106.00 217.50 L 60.00 194.50 Z"/>
+  <path data-part="facet-1" fill="currentColor" d="M 106.00 83.50 L 196.00 38.50 L 196.00 82.50 L 106.00 127.50 Z"/>
+  <path data-part="facet-2" fill="currentColor" d="M 162.00 155.50 L 196.00 138.50 L 196.00 172.50 L 162.00 189.50 Z"/>
+</svg>

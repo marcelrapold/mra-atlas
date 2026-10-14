@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "generator": "scripts/build-deck-assets.mjs",
+  "files": [
+    {
+      "source": "deck-src/closing.svg",
+      "sourceSha256": "47a6fb4772b9b43d97a7c393f03399915de3b01a4e816891e3960230a48d4b32",
+      "output": "deck/closing.png",
+      "width": 2400,
+      "height": 1350,
+      "sha256": "a5ed615143f1df1d69e0ae1825cffe56f6b93379a2e0c3dbdc02ba9d229e7aec"
+    },
+    {
+      "source": "deck-src/content.svg",
+      "sourceSha256": "c92e6d1d6b551f3bac37e007f4ae31e152a85f2ad3141448d43176c3b66a5f05",
+      "output": "deck/content.png",
+      "width": 2400,
+      "height": 1350,
+      "sha256": "f3fadd8628ba8e5216671066ebcda019c140a9d3bedf3de45f68d8bcc3b9034c"
+    },
+    {
+      "source": "deck-src/cover.svg",
+      "sourceSha256": "6b7d90d12a0b3a8984c6a7464ed7b65b6f92e8bffcff19832e4070695d0a2a46",
+      "output": "deck/cover.png",
+      "width": 2400,
+      "height": 1350,
+      "sha256": "288fa6d3a2a88bf26c5caca97324e6029d8e7c323af0c643aafe5f471a2074bc"
+    },
+    {
+      "source": "deck-src/lockup-on-dark@1600w.svg",
+      "sourceSha256": "0eca85f56e017bf5b370bd985a91dc80737b3d3de805dd378ebae863ff31ecfa",
+      "output": "deck/lockup-on-dark.png",
+      "width": 1600,
+      "height": 353,
+      "sha256": "cdb49567275a2bd34eb5c5137a51b11aaeadd505c32560ad8d3c2c68d99f2ace"
+    },
+    {
+      "source": "deck-src/lockup-on-light@1600w.svg",
+      "sourceSha256": "c1fb7bb0eda1b8b3d61c82b594a2f5f6a3f75ea7408a3452184aa1c658c85321",
+      "output": "deck/lockup-on-light.png",
+      "width": 1600,
+      "height": 353,
+      "sha256": "c9d33370bcab1fb7de986887f92dcc8cb9ac6f028f24a8b8026bfac0cc9d8f88"
+    },
+    {
+      "source": "deck-src/section.svg",
+      "sourceSha256": "c968604c844018d5808a0f8e86ecb27f3aa1da30bf557fa298659aaf46be0d50",
+      "output": "deck/section.png",
+      "width": 2400,
+      "height": 1350,
+      "sha256": "a910aa1fbce531f184ee33921985abc1ce8590a776c6b52eae5cf83473bc2a4d"
+    }
+  ]
+}

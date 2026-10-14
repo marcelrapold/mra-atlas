@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img">
+  <title>rapold.io – Zeichen</title>
+  <desc>Monogramm r mit Faltpunkt im 256er-Raster (Geist 720 Outline, x-Höhe 168, Faltpunkt 64, Schutzzone 24). Variante: light, App-Kachel.</desc>
+  
+  <rect data-part="tile" width="256" height="256" rx="56" fill="#F4FAFF"/><path data-part="letter-r" fill="#050B19" d="M37.22 212V41.97H83.81L85.48 91.75L81.73 91Q85.91 64.98 96.43 53.48Q106.95 41.97 125.51 41.97H140.78V82.34H125.22Q111.93 82.34 103.33 85.72Q94.72 89.1 90.45 96.61Q86.17 104.13 86.17 116.86V212Z"/><g data-part="faltpunkt"><polygon fill="#0066B3" points="186.78,148.00 218.78,148.00 218.78,212.00 154.78,212.00 154.78,180.00"/><polygon data-part="facet" fill="#2B89B5" points="186.78,148.00 154.78,180.00 186.78,180.00"/></g>
+</svg>

@@ -47,3 +47,48 @@ SemVer: neue optionale Tokens und Adapter als Minor, Umbenennung/Entfernung sema
 ## Original-Assets und PowerPoint-Schriftfamilien
 
 Optionales `assets.logo` enthält `path`, `aspectRatio`, `background` und `padding`. Der Pfad ist relativ zum öffentlichen Asset-Verzeichnis, `padding` ein Anteil des vorgesehenen Logo-Feldes. Seitenverhältnis und Schutzraum müssen aus dem Original-Asset und dessen Brand-Vorgaben stammen. Optionale `typography.bodyFamily` und `headingFamily` benennen die konkreten PowerPoint-Schriftschnitte. Die CSS-Schriftfamilie bleibt in `family`.
+
+## Deck-Rendervertrag (`deck`)
+
+Optionales `deck` beschreibt, wie der Renderer die Folien einer Brand inszeniert. `presentation` bleibt Leitplanke für Agenten, `deck` ist renderrelevant: Folienflächen je Rolle, Materialien für Karten, Glow, Akzente, Schnitte und Rasterlogos. Brands ohne `deck` rendern unverändert die neutralen Atlas-Folien; ein Regressionstest (`tests/deck-baseline.test.mjs`) hält Szenen und `presentation.json` dieser Brands bytegleich.
+
+```json
+"deck": {
+  "mode": "dark",
+  "surfaces": {
+    "cover":   { "fill": "#050505", "backdrop": "brands/beispiel/assets/deck/cover.png", "logo": true },
+    "section": { "fill": "#050505", "backdrop": "brands/beispiel/assets/deck/section.png", "logo": { "heightCm": 0.48 } },
+    "content": { "fill": "#050505", "backdrop": "brands/beispiel/assets/deck/content.png", "logo": { "anchor": "top-right", "heightCm": 0.48 } },
+    "closing": { "fill": "#050505", "backdrop": "brands/beispiel/assets/deck/cover.png", "logo": { "anchor": "bottom-center", "heightCm": 1.06 } }
+  },
+  "materials": {
+    "panel":       { "fill": "#000000", "fillOpacity": 0.25, "border": "#FFFFFF", "borderOpacity": 0.10, "borderPt": 0.75, "radiusCm": 0.423 },
+    "panelRaised": { "fill": "#FFFFFF", "fillOpacity": 0.06, "border": "#FFFFFF", "borderOpacity": 0.10, "borderPt": 0.75, "radiusCm": 0.317 },
+    "window":      { "fill": "#0F151D", "fillOpacity": 0.88, "border": "#E2F1FF", "borderOpacity": 0.18, "borderPt": 0.75, "radiusCm": 0.741, "highlight": { "color": "#FFFFFF", "opacity": 0.12 } }
+  },
+  "glow": { "color": "akzent", "opacity": 0.35, "blurPt": 12 },
+  "accents": { "primary": "akzent", "signal": "alarm", "chart": ["akzent", "zweit", "dritt"], "chartPrevious": "grau" },
+  "type": { "headingFace": "Segoe UI", "bodyFace": "Segoe UI", "displayFace": "Segoe UI Black", "labelFace": "Segoe UI Semibold", "capsTrackingEm": 0.16, "displayScale": 1.6 },
+  "logo": { "onDark": "brands/beispiel/assets/deck/wordmark-on-dark.png", "onLight": "brands/beispiel/assets/deck/wordmark-on-light.png", "aspectRatio": 3.594, "heightCm": 0.74, "anchor": "top-left", "plate": false },
+  "supergraphic": { "section": { "path": "brands/beispiel/assets/deck/zeichen.png", "x": -6, "y": 2, "w": 20, "h": 20, "opacity": 0.9 } },
+  "punctuation": { "glyph": "◆", "onDark": "#FFA36C", "onLight": "#B4511A" }
+}
+```
+
+| Schlüssel | Pflicht | Bedeutung |
+|---|---|---|
+| `mode` | ja | `light` oder `dark`: welcher Eintrag aus `modes` die Deckfarben liefert. Der Modus muss existieren. |
+| `surfaces` | `cover`, `section`, `content`; `closing` optional | Fläche je Folienrolle: `fill` (Hex), `backdrop` (Bild über die volle Folie), `logo` (`true` oder `{anchor, heightCm}`), optional `mode` und `textWidthCm` (Cover, Kapitel, Schluss: maximale Textspaltenbreite ab dem linken Rand, damit Titel nicht über eine im Backdrop gebackene Supergrafik laufen). Ohne `mode` gilt die Luminanz der Füllung (unter 0,4 dunkel); ein dunkler Surface verlangt `modes.dark`. Fehlt `closing`, gilt `cover`. |
+| `materials` | `panel`, `panelRaised`; `window` optional | Kartenmaterial: Füllung und Rand mit Deckkraft, Randstärke in pt, Radius in cm, optionale obere Lichtkante `highlight`. |
+| `glow` | ja | Aussenschatten für genau ein Primärelement je Folie (KPI-Heldenkachel). |
+| `accents` | `chart` | Palette-Schlüssel oder Hex. `primary` ersetzt die Akzentrolle, `signal` den Alarm, `chart[1]` die zweite Serie, `chartPrevious` die Vorperiode. Gilt für den Deck-Modus. |
+| `type` | `headingFace`, `bodyFace`, `capsTrackingEm` | PowerPoint-Schnitte. `displayFace` für Cover-, Kapitel- und Schlusstitel, `labelFace` für Versalien-Labels, `displayScale` (1–3, Standard 1,5) multipliziert die 30-pt-Titelgrösse auf Cover und Kapitel. Nennt ein Schnitt sein Gewicht («Semibold», «Bold», «Black»), setzt der Renderer kein zusätzliches Fett. |
+| `logo` | ja | Rasterlogos `onDark`/`onLight`, `aspectRatio`, `heightCm`, `anchor`, optional `marginCm` (Standard 0,93). `plate` ist immer `false`: Deck-Logos stehen ohne Platte. |
+| `supergraphic` | nein | Grosse Markengrafik je `cover`, `section`, `closing` mit Lage in cm (darf über den Rand ragen) und optionaler Deckkraft. |
+| `punctuation` | nein | Markenpunkt: ein Titel, der mit «.» endet, erhält stattdessen die Glyphe (Unicode-Block Geometric Shapes) in `onDark` bzw. `onLight`; `scale` relativ zur Titelgrösse (Standard 0,32), `append: true` setzt sie an jeden Rollentitel. Höchstens ein Punkt je Folie. |
+
+**Pfade.** Alle Bilder sind PNG oder JPG, relativ zum Repository und liegen in `brands/<id>/`. SVG wird abgelehnt, weil PowerPoint-Export aus Node SVG nicht zuverlässig darstellt. Die SVG-Quellen liegen in `brands/<id>/assets/deck-src/`; `node scripts/build-deck-assets.mjs` rastert sie nach `brands/<id>/assets/deck/` (16:9-Quelle → 2400 × 1350, sonst 1200 px breit, `name@2000w.svg` setzt die Breite). `deck-assets.json` hält Quell- und Ausgabehash; unveränderte Quellen werden nicht neu kodiert, `--force` erzwingt es. Die PNGs sind kanonisch und werden committet. Der Build (`npm run contracts`) führt den Schritt vor den Decks aus und veröffentlicht die referenzierten Dateien unter demselben Pfad.
+
+**Was der Renderer daraus macht.** Folientypen werden Rollen zugeordnet: `cover-foto` → `cover`, `foto-schluss` → `closing`, `kapitel-trenner` → `section`, alle anderen → `content`. Statt der opaken Grundfläche und der Primärbänder setzt er den Folienhintergrund (Farbe oder Bild). Cover und Kapitel erhalten grosse Titel, Inhaltsfolien eine Haarlinie statt der Primär-Fusslinie. Neutrale Evidenzflächen werden `panel`, hervorgehobene `panelRaised`. Versalien-Labels (Eyebrows, Spaltenköpfe, Pills) erhalten die Laufweite `capsTrackingEm`. Diagramme übernehmen Achsen-, Legenden- und Wertfarben aus dem Surface-Modus. Das Logo erscheint nur auf Rollen mit `logo`, in der Variante passend zur Flächenluminanz. Auf Inhaltsfolien darf das Logo nicht `top-left` oder `top-center` stehen, dort liegt die Titelzone.
+
+**Referenzbilder.** `deck` und die Bytes aller referenzierten Bilder gehen in den Digest der Folienvorschauen (`scripts/reference-cache.mjs`). Jede Änderung verlangt `npm run deck:reference`.

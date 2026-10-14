@@ -11,7 +11,15 @@
     "navy": "#050B19",
     "paper": "#F4FAFF",
     "logo-light-primary": "#0066B3",
-    "logo-light-facet": "#2B89B5"
+    "logo-light-facet": "#2B89B5",
+    "abyss": "#02060F",
+    "firstglut": "#FFA36C",
+    "firstglut-core": "#FFE2CC",
+    "firstglut-light": "#B4511A",
+    "deep-azure": "#0066B3",
+    "light-facet": "#2B89B5",
+    "muted-light": "#46617E",
+    "ink-light": "#10253D"
   },
   "modes": {
     "light": {
@@ -107,6 +115,102 @@
   },
   "presentation": {
     "logoOnCover": false
+  },
+  "deck": {
+    "mode": "light",
+    "surfaces": {
+      "cover": {
+        "fill": "#050B19",
+        "backdrop": "brands/rapold/assets/deck/cover.png",
+        "textWidthCm": 21.5,
+        "logo": {
+          "anchor": "top-left",
+          "heightCm": 0.7
+        }
+      },
+      "section": {
+        "fill": "#050B19",
+        "backdrop": "brands/rapold/assets/deck/section.png",
+        "textWidthCm": 21.5
+      },
+      "content": {
+        "fill": "#F4FAFF",
+        "backdrop": "brands/rapold/assets/deck/content.png",
+        "logo": {
+          "anchor": "bottom-right",
+          "heightCm": 0.5
+        }
+      },
+      "closing": {
+        "fill": "#050B19",
+        "backdrop": "brands/rapold/assets/deck/closing.png",
+        "textWidthCm": 21.5,
+        "logo": {
+          "anchor": "top-left",
+          "heightCm": 0.7
+        }
+      }
+    },
+    "materials": {
+      "panel": {
+        "fill": "#FFFFFF",
+        "fillOpacity": 1,
+        "border": "#CDDEEE",
+        "borderOpacity": 1,
+        "borderPt": 0.75,
+        "radiusCm": 0.339
+      },
+      "panelRaised": {
+        "fill": "#FFFFFF",
+        "fillOpacity": 1,
+        "border": "#0066B3",
+        "borderOpacity": 0.28,
+        "borderPt": 0.75,
+        "radiusCm": 0.339,
+        "highlight": {
+          "color": "#009DFF",
+          "opacity": 0.9
+        }
+      }
+    },
+    "glow": {
+      "color": "azure",
+      "opacity": 0.22,
+      "blurPt": 14
+    },
+    "accents": {
+      "primary": "deep-azure",
+      "chart": [
+        "deep-azure",
+        "ink-light",
+        "light-facet",
+        "muted-light"
+      ],
+      "chartPrevious": "#6F87A0"
+    },
+    "type": {
+      "headingFace": "Geist SemiBold",
+      "bodyFace": "Geist",
+      "displayFace": "Geist SemiBold",
+      "labelFace": "Geist Mono",
+      "capsTrackingEm": 0.2,
+      "displayScale": 1.7
+    },
+    "logo": {
+      "onDark": "brands/rapold/assets/deck/lockup-on-dark.png",
+      "onLight": "brands/rapold/assets/deck/lockup-on-light.png",
+      "aspectRatio": 4.533,
+      "heightCm": 0.7,
+      "anchor": "top-left",
+      "plate": false
+    },
+    "punctuation": {
+      "glyph": "◆",
+      "onDark": "firstglut",
+      "onLight": "firstglut-light",
+      "scale": 0.32,
+      "append": true
+    }
   },
   "sources": [
     "brands/rapold/README.md",

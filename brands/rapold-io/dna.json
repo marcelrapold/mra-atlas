@@ -1,0 +1,299 @@
+{
+  "schemaVersion": 1,
+  "brand": "rapold-io",
+  "name": "rapold.io",
+  "role": "Dachmarke über der Rapold-Produktfamilie und dem Digital-Operations-Studio",
+  "status": "proposal",
+  "approval": "ausstehend (Marcel Rapold); bis zur Freigabe bleibt brands/rapold/sources/provenance.json umbrellaSymbol \"none\"",
+  "date": "2026-10-14",
+  "winner": "fold («Der First»), verfeinert; Grafts aus «Lichtfalte» (light) und «Faltpunkt» (type)",
+  "sourceOfTruth": [
+    "packages/brands/src/rapold.json (palette, modes.light, modes.dark)",
+    "brands/rapold/identity.json (Raumfalten-Signets, Varianten, geometry.clearSpaceUnits 24)",
+    "scripts/build-signet-proposals.mjs (isoP, Steigung 1:0,5, 256er-Raster)",
+    "brands/rapold/sources/provenance.json (umbrellaSymbol: none)",
+    "rapold.io messages/de.json:4 descriptor «Fullstack Digital Operations», :20 headline «Digitale Systeme, die laufen — gebaut und betrieben.»",
+    "brands/rapold-io/sources/build.py + deck.py (Konstruktion und Folienmuster, reproduzierbar)"
+  ],
+  "claim": {
+    "primary": "Systeme, die laufen.",
+    "umbrellaStory": "Alles unter einem Dach.",
+    "descriptor": "Fullstack Digital Operations",
+    "spine": ["Build", "Connect", "Run"]
+  },
+  "theme": {
+    "colorScheme": "dark-first",
+    "stages": { "dark": "Navy #050B19 (Cover, Kapitel, Schluss, Web dunkel)", "light": "Ice Paper #F4FAFF (Inhaltsfolien, Web hell)" }
+  },
+  "colors": {
+    "navy": "#050B19",
+    "abyss": "#02060F",
+    "panel": "#0B1528",
+    "panel-2": "#142741",
+    "line-dark": "#23334A",
+    "ink": "#EDF5FF",
+    "muted": "#9AADC7",
+    "azure": "#009DFF",
+    "ice": "#A8EDFF",
+    "sky": "#38B8FF",
+    "firstglut": "#FFA36C",
+    "firstglut-core": "#FFE2CC",
+    "firstglut-light": "#B4511A",
+    "paper": "#F4FAFF",
+    "card-light": "#FFFFFF",
+    "deep-azure": "#0066B3",
+    "light-facet": "#2B89B5",
+    "ink-light": "#10253D",
+    "muted-light": "#46617E",
+    "line-light": "#CDDEEE",
+    "chart-indigo": "#597DFF",
+    "chart-cyan": "#42D6EC",
+    "rules": {
+      "azure": "Markenfarbe: steigende Ebene, Akzentteil der Wortmarke, zweite Titelzeile. Nie unter kleiner weisser Schrift (Weiss auf Azure 2,89:1).",
+      "ice": "Fallende Ebene, Mono-Eyebrows auf Dunkel, Glas-Rim. Auf Ice Paper nie als Schrift.",
+      "firstglut": "Einziger warmer Ton. Nur Dachmarke: das Licht auf dem First in Supergrafiken und genau ein Rautenpunkt pro Folie. Max. ca. 1 % der Fläche. Nie für Produkte, nie für Fliesstext, nie als Fläche, in Diagrammen nur als einzelner Highlight-Wert.",
+      "light-facet": "Nur Grafik (3,73:1 auf Ice Paper), keine Schrift.",
+      "retired": ["Violett/Indigo des heutigen rapold.io (#7C5CFF als Fläche)", "Amber der Personal-Site", "Office-Standardpalette 4472C4 …", "Unicode ▮ als Logo"]
+    }
+  },
+  "contrast": {
+    "ink/navy": 17.88, "muted/navy": 8.59, "azure/navy": 6.8, "ice/navy": 15.18, "firstglut/navy": 10.02, "sky/navy": 8.86,
+    "muted/panel": 7.96, "ink/panel": 16.58,
+    "ink-light/paper": 14.74, "muted-light/paper": 6.1, "deep-azure/paper": 5.62, "deep-azure/white": 5.91,
+    "light-facet/paper": 3.73, "firstglut-light/paper": 4.83, "white/azure": 2.89,
+    "method": "WCAG 2.x relative luminance, berechnet 14.10.2026"
+  },
+  "surfaces": {
+    "stageDark": { "background": "linear-gradient(180deg, #050B19 0%, #02060F 100%)" },
+    "stageLight": { "background": "#F4FAFF", "bloom": "radial-gradient(55% 55% at 100% 0%, rgba(0,157,255,0.10), transparent)" },
+    "cardDark": { "background": "rgba(11,21,40,0.70)", "backdropFilter": "blur(24px)", "border": "1px solid rgba(255,255,255,0.10)", "radius": "16px", "shadow": "none" },
+    "cardDarkFlat": { "background": "#0B1528", "border": "1px solid #23334A", "radius": "16px" },
+    "cardLight": { "background": "#FFFFFF", "border": "1px solid #CDDEEE", "radius": "16px", "foldedCorner": "unten links 36x18 px (Steigung 1:0,5), Fläche #2B89B5 @ 0.50, Ecke ohne Radius", "shadow": "none" },
+    "glassMark": { "planeLeft": "gradients.planeAzure", "planeRight": "gradients.planeIce", "rim": "1.5px #A8EDFF @ 0.45", "ridge": "glow.first" }
+  },
+  "gradients": {
+    "floor": "linear-gradient(180deg, #050B19 0%, #02060F 100%)",
+    "bloomCover": "radial-gradient(62% 62% at 74% 34%, rgba(0,157,255,0.30) 0%, rgba(0,157,255,0.07) 45%, rgba(0,157,255,0) 100%)",
+    "bloomSection": "radial-gradient(62% 62% at 26% 40%, rgba(0,157,255,0.30) 0%, rgba(0,157,255,0.07) 45%, rgba(0,157,255,0) 100%)",
+    "bloomClosing": "radial-gradient(62% 62% at 50% 36%, rgba(0,157,255,0.30) 0%, rgba(0,157,255,0.07) 45%, rgba(0,157,255,0) 100%)",
+    "warmApex": "radial-gradient(18% 18% at <Apex>, rgba(255,163,108,0.24), rgba(255,163,108,0))",
+    "planeAzure": "linear-gradient(180deg, #2FB1FF 0%, #009DFF 55%, #003E86 100%)",
+    "planeIce": "linear-gradient(163deg, #E6FAFF 0%, #A8EDFF 50%, #3D7FA6 100%)",
+    "veilCover": "linear-gradient(90deg, rgba(5,11,25,0.92) 0%, rgba(5,11,25,0.55) 52%, rgba(5,11,25,0) 70%)",
+    "fadeSection": "linear-gradient(90deg, rgba(5,11,25,0) 24%, rgba(5,11,25,0.94) 60%)",
+    "fadeBottom": "Maske über Supergrafik: voll bis 62 % Höhe, 0 bei 95 % Höhe",
+    "chartBar": "linear-gradient(180deg, #009DFF 0%, #0066B3 100%)"
+  },
+  "glow": {
+    "first": {
+      "halo": { "color": "#FFA36C", "opacity": 0.55, "strokePx": 24, "blurPx": 16 },
+      "glow": { "color": "#FFA36C", "opacity": 1, "strokePx": 8, "blurPx": 3 },
+      "core": { "color": "#FFE2CC", "opacity": 1, "strokePx": 2 },
+      "path": "beide Gratsegmente: Apex bis Fensteroberkante und Fensterunterkante bis Bauchunterkante",
+      "minRenderedMarkHeightPx": 400,
+      "note": "Firstlicht existiert nur als gerendertes Licht in Supergrafiken (Cover, Kapitel, Schluss, Hero-Web). Die Logo-Dateien tragen kein Firstglut."
+    },
+    "grain": { "filter": "feTurbulence fractalNoise baseFrequency 0.9 numOctaves 2 seed 1909", "alpha": 0.035, "color": "#FFFFFF" }
+  },
+  "logo": {
+    "mark": {
+      "name": "Der First",
+      "files": {
+        "dark": "assets/logos/mark-dark.svg",
+        "light": "assets/logos/mark-light.svg",
+        "mono-white": "assets/logos/mark-mono-white.svg",
+        "mono-black": "assets/logos/mark-mono-black.svg"
+      },
+      "grid": 256,
+      "clearSpaceUnits": 24,
+      "inkBox": [43.259, 24, 212.741, 232],
+      "construction": {
+        "flatLetter": { "outer": [[0,0],[44,0],[44,72],[160,72],[160,168],[0,168]], "counter": [[44,104],[118,104],[118,134],[44,134]], "leg": [[86,58],[138,58],[176,0],[124,0]], "openGap": 14 },
+        "ridgeU": 80,
+        "fold": "u <= 80: (u, -v - 0.5u); u > 80: (u, -v - 40 + 0.5(u - 80))",
+        "slope": "1:0.5 (isoP, scripts/build-signet-proposals.mjs)",
+        "fit": { "scale": 0.962963, "offset": [43.259259, 224.296296] },
+        "ridgeX": 120.296,
+        "monoFugeUnits": 6
+      },
+      "colors": {
+        "dark": { "body": "#009DFF", "facet": "#A8EDFF", "surface": "#050B19" },
+        "light": { "body": "#0066B3", "facet": "#2B89B5", "surface": "#F4FAFF" },
+        "mono-white": { "fill": "#FFFFFF", "ridge": "6 Einheiten Luft (First-Fuge)" },
+        "mono-black": { "fill": "#000000", "ridge": "6 Einheiten Luft (First-Fuge)" }
+      },
+      "minSizePx": { "screen": 16, "firstLight": 400, "print": "6 mm Höhe" },
+      "faviconCanvasPx": [16, 32, 48, 64, 96]
+    },
+    "wordmark": {
+      "text": "rapold.io",
+      "font": "Geist 600 (variabel instanziert), als Pfade",
+      "tracking": "-0.045em",
+      "kerning": "GPOS kern aus Geist",
+      "point": { "shape": "45°-Raute auf der Grundlinie", "halfDiagonalEm": 0.078, "sideBearingEm": 0.05 },
+      "colors": {
+        "dark": { "root": "#EDF5FF", "point": "#009DFF", "tld": "#009DFF" },
+        "light": { "root": "#10253D", "point": "#0066B3", "tld": "#0066B3" }
+      },
+      "files": { "dark": "assets/logos/wordmark-dark.svg", "light": "assets/logos/wordmark-light.svg" },
+      "minSizePx": 14,
+      "never": ["Rapold.io", "RAPOLD.IO als Logo (nur als Mono-Metadatum)", "runder Punkt", "Punkt in Firstglut", "Wortmarke mit Schatten oder Verlauf"]
+    },
+    "lockup": {
+      "files": { "dark": "assets/logos/lockup-horizontal-dark.svg", "light": "assets/logos/lockup-horizontal-light.svg" },
+      "masterPx": [529, 156],
+      "wordmarkPx": 92,
+      "descriptor": { "text": "FULLSTACK DIGITAL OPERATIONS", "font": "Geist Mono 450", "sizeEm": 0.163, "tracking": "0.2em", "baselineOffsetEm": 0.46, "color": { "dark": "#9AADC7", "light": "#46617E" } },
+      "lock": "Zeichen-Oberkante = Oberlänge «l»; Zeichen-Unterkante = Grundlinie Deskriptor; Abstand Zeichen–Wortmarke 0,40 em; Deskriptor beginnt am Stamm des «r»",
+      "compact": "ohne Deskriptor: Zeichenhöhe 1,32 × Oberlänge, zentriert auf die Oberlänge, Abstand 0,34 em",
+      "minWidthPx": { "withDescriptor": 240, "compact": 96 }
+    },
+    "endorsement": {
+      "product": "Produktsignet + Produktname Geist 600 −0,03 em; darunter Geist Mono 450 «EIN SYSTEM VON» + kompakte Wortmarke",
+      "domain": "Produktdomains heben ihren Teil hervor: «ai».rapold.io"
+    }
+  },
+  "typography": {
+    "web": {
+      "sans": "Geist, Inter, ui-sans-serif, system-ui, sans-serif",
+      "mono": "'Geist Mono', ui-monospace, SFMono-Regular, Consolas, monospace",
+      "webfonts": ["brands/rapold/assets/fonts/Geist-Variable.woff2", "brands/rapold/assets/fonts/GeistMono-Variable.woff2"],
+      "license": "SIL OFL 1.1, fsType 0 (installierbar), kein Reserved Font Name",
+      "weights": { "body": 400, "ui": 500, "title": 600, "wordmark": 600, "numeralOutline": 250, "metadata": 450 },
+      "tracking": { "display": "-0.05em", "title": "-0.045em", "content": "-0.035em", "body": "-0.01em", "mono": "0.20em", "eyebrow": "0.24em" },
+      "numerals": "tabular-nums für Kennzahlen; Schweizer Format 4'207, 99,97 %, U+2212 Minus, schmales Leerzeichen vor %",
+      "retired": ["Fraunces", "Inter Tight", "JetBrains Mono"]
+    },
+    "deck": {
+      "theme": { "major": "Geist", "minor": "Geist", "mono": "Geist Mono" },
+      "embedding": "statische TTF-Instanzen (Geist Regular/Medium/SemiBold, Geist Mono Regular/Medium) einbetten; Variable-WOFF2 ist in PowerPoint nicht einbettbar. OFL erlaubt Einbettung.",
+      "fallback": "Inter (OFL, @fontsource/inter) nur, wenn Geist fehlt",
+      "pxToPt": 0.6,
+      "canvas": "1600 x 900 px = 13,333 x 7,5 in"
+    },
+    "scale": {
+      "cover-display": { "px": 136, "pt": 81.6, "weight": 600, "tracking": "-0.05em", "lineHeight": 1.04 },
+      "closing-display": { "px": 72, "pt": 43.2, "weight": 600, "tracking": "-0.045em", "lineHeight": 1.17 },
+      "section-title": { "px": 84, "pt": 50.4, "weight": 600, "tracking": "-0.045em", "lineHeight": 1.1 },
+      "section-numeral": { "px": 360, "pt": 216, "weight": 250, "tracking": "-0.05em", "style": "Kontur 1.5px #A8EDFF @ 0.55, gefüllt keine" },
+      "content-title": { "px": 56, "pt": 33.6, "weight": 600, "tracking": "-0.035em" },
+      "hero-number": { "px": 184, "pt": 110.4, "weight": 600, "tracking": "-0.055em", "unit": "64px Geist 500" },
+      "lead-cover": { "px": 26, "pt": 15.6, "weight": 400, "tracking": "-0.01em" },
+      "lead": { "px": 22, "pt": 13.2, "weight": 400, "tracking": "-0.01em" },
+      "data-label": { "px": 24, "pt": 14.4, "weight": 600, "tracking": "-0.02em" },
+      "eyebrow": { "px": 15, "pt": 9, "family": "Geist Mono", "weight": 450, "tracking": "0.24em", "transform": "uppercase" },
+      "meta": { "px": 14, "pt": 8.4, "family": "Geist Mono", "weight": 450, "tracking": "0.20em", "transform": "uppercase", "floor": true },
+      "web": { "display": "clamp(56px, 8vw, 128px)", "h1": "clamp(40px, 5vw, 72px)", "h2": "40px", "h3": "28px", "body": "17px/1.6", "small": "14px", "mono": "12px / 0.2em" }
+    },
+    "point": { "name": "Rautenpunkt", "rule": "Der Schlusspunkt der Hauptaussage einer Folie ist die 45°-Raute (Halbdiagonale 0,087 em, 0,03 em Vorbreite); dunkel Firstglut #FFA36C, hell Firstglut Light #B4511A. Nur ein Rautenpunkt pro Folie." }
+  },
+  "radii": { "control": "8px", "card": "16px", "appIcon": "56/256 (21,9 %)", "slideCard": "16px", "foldedCorner": "0px" },
+  "spacing": {
+    "grid": "8px",
+    "steps": [4, 8, 12, 16, 24, 32, 48, 64, 96, 112],
+    "deck": { "margin": 112, "columns": 12, "gutter": 24, "footerRuleY": 808, "footerBaselineY": 850, "footerContextX": 420 },
+    "web": { "container": "1200px", "gutter": "24px desktop / 16px mobil", "section": "96px desktop / 64px mobil" }
+  },
+  "motion": {
+    "easing": { "fold": "cubic-bezier(0.2, 0.7, 0.2, 1)", "ui": "cubic-bezier(0.2, 0.7, 0.2, 1)" },
+    "durations": { "ui": "180ms", "rise": "240ms", "reveal": "900ms", "ignite": "240ms", "deckFade": "300ms", "coverFade": "600ms" },
+    "logoReveal": "Flaches R faltet um den Grat: rechte Seite 0 → Isofall in 900ms (fold-Easing); danach zündet der First: Firstglut-Linie scaleY 0 → 1 in 240ms, 10px-Glow-Puls",
+    "ambient": { "bloomDrift": "70s", "gridBreathe": "24s, Opazität 0.04 ↔ 0.07", "apexHalo": "12s, Opazität 0.12 ↔ 0.22" },
+    "ui": { "cardRise": "12px", "signetHover": "1px Firstglut-Haarlinie an der gefalteten Kartenecke, 180ms" },
+    "rules": ["keine Glitch-, RGB-Split- oder Shimmer-Effekte für die Dachmarke", "nichts schneller als 3 Hz", "Ambient pausiert in verborgenen Tabs", "Parallax nur bei feinem Zeiger, max. 12px"],
+    "reduced": "statischer Endzustand: Zeichen gefaltet, First leuchtet, kein Ambient"
+  },
+  "deck": {
+    "canvas": { "widthPx": 1600, "heightPx": 900, "widthIn": 13.333, "heightIn": 7.5, "pxToPt": 0.6, "pxToEmu": 7620 },
+    "surfaces": {
+      "cover": { "fill": "#050B19", "backdrop": "cover-dark.png" },
+      "section": { "fill": "#050B19", "backdrop": "section-dark.png" },
+      "content": { "fill": "#F4FAFF", "backdrop": "content-light.png" },
+      "contentDark": { "fill": "#050B19", "backdrop": "content-dark.png" },
+      "closing": { "fill": "#050B19", "backdrop": "closing-dark.png" }
+    },
+    "backdrops": {
+      "cover-dark.png": { "size": "3200x1800", "layers": ["gradients.floor", "gradients.bloomCover", "gradients.warmApex at 86.5% 6% r 18%", "Isoraster 56px, Linien ±0,5, #A8EDFF @ 0.055, Radialmaske 70%/40%", "Supergrafik «Der First» Skala 4.0 (Zeichen 830px hoch) bei x 905 y −40, glassMark + glow.first + fadeBottom", "gradients.veilCover", "glow.grain"] },
+      "section-dark.png": { "size": "3200x1800", "layers": ["gradients.floor", "gradients.bloomSection", "Isoraster wie Cover, Maske 30%/45%", "Supergrafik Skala 3.2 bei x −300 y 130, links angeschnitten", "gradients.fadeSection", "glow.grain"] },
+      "content-light.png": { "size": "3200x1800", "layers": ["#F4FAFF", "stageLight.bloom", "Eckfacette oben rechts: Dreieck (1340,0) (1600,0) (1600,130), #0066B3 @ 0.06"] },
+      "content-dark.png": { "size": "3200x1800", "layers": ["gradients.floor", "bloomCover @ 50 %", "Isoraster @ 0.035"] },
+      "closing-dark.png": { "size": "3200x1800", "layers": ["gradients.floor", "gradients.bloomClosing", "gradients.warmApex at 50% 7.5% r 12%", "Isoraster, Maske 50%/40%", "Supergrafik Skala 1.55 zentriert, Oberkante y 70", "glow.grain"] },
+      "rule": "Licht, Glas, Raster und Supergrafik werden einmal als Platte gerendert; Text bleibt live in Geist."
+    },
+    "cardFill": { "dark": { "color": "#0B1528", "opacity": 0.70, "pptxTransparency": 30 }, "light": { "color": "#FFFFFF", "opacity": 1, "pptxTransparency": 0 } },
+    "cardBorder": { "dark": { "color": "#FFFFFF", "opacity": 0.10, "pptxTransparency": 90, "widthPt": 0.75 }, "light": { "color": "#CDDEEE", "opacity": 1, "widthPt": 0.75 } },
+    "cardRadius": { "px": 16, "in": 0.133 },
+    "logo": {
+      "headerDark": "kompakter Lockup, Wortmarke 30px (18pt), oben links x 112, Grundlinie y 112",
+      "footer": "kompakter Lockup, Wortmarke 22px (13,2pt), x 112, Grundlinie y 852; Variante passend zur Bühne",
+      "closing": "kompakter Lockup 30px zentriert, Grundlinie y 700",
+      "logoOnCover": true,
+      "plate": false,
+      "files": "Lockups als SVG plus PNG-Fallback 2x"
+    },
+    "font": "typography.deck",
+    "grid": { "margin": 112, "columns": 12, "gutter": 24, "contentTop": 300, "contentBottom": 760, "footerRule": "y 808, 1px #FFFFFF @ 0.12 (dunkel) bzw. #10253D @ 0.12 (hell), links 96px Akzent 2px #0066B3 auf hell" },
+    "transitions": { "default": "fade 0.3s", "coverToSection": "morph 0.9s (Supergrafik wandert von Skala 4.0 rechts nach 3.2 links)", "build": "fade + 8% Einflug, 0.3s", "forbidden": ["fly-in", "zoom", "spin", "bounce", "glitch"] },
+    "chart": {
+      "seriesDark": ["#009DFF", "#A8EDFF", "#597DFF", "#42D6EC"],
+      "seriesLight": ["#0066B3", "#2B89B5", "#46617E", "#10253D"],
+      "highlight": "Firstglut nur für einen einzelnen Wert",
+      "bar": "gradients.chartBar, Oberkante mit Facettenschnitt 1:0,5 (Abfall 0,125 × Balkenbreite) und 3px #A8EDFF-Lichtkante",
+      "gridline": "#10253D @ 0.08 hell, #FFFFFF @ 0.06 dunkel",
+      "label": "Geist 600 24px Wert, Geist Mono 450 14px Achse/Kategorie",
+      "numberFormat": "de-CH #'##0,00"
+    },
+    "pptxTheme": {
+      "dk1": "#050B19", "lt1": "#FFFFFF", "dk2": "#10253D", "lt2": "#F4FAFF",
+      "accent1": "#009DFF", "accent2": "#0066B3", "accent3": "#A8EDFF", "accent4": "#597DFF", "accent5": "#42D6EC", "accent6": "#2B89B5",
+      "hlink": "#0066B3", "folHlink": "#46617E",
+      "note": "ersetzt die Office-Palette 4472C4 …; Firstglut bewusst nicht im Theme, nur als Platte/Rautenpunkt"
+    },
+    "slideRecipes": {
+      "cover": [
+        "Platte cover-dark.png",
+        "kompakter Lockup oben links (x 112, Grundlinie 112, Wortmarke 30px), Haarlinie Ice @ 0.20 32px rechts davon, Mono «MANAGEMENT REVIEW · Q4 2026» 14px #9AADC7",
+        "Eyebrow y 333: Ice-Raute 12px + Geist Mono 15px #A8EDFF 0.24em «RAPOLD.IO / THEMA / JAHR»",
+        "Titel zweizeilig Geist 600 136px −0,05 em, Grundlinien 476 und 618: Zeile 1 #EDF5FF, Zeile 2 #009DFF, Rautenpunkt #FFA36C",
+        "Lead y 692: Geist 400 26px #9AADC7, max. 900px breit (Spalten 1–7)",
+        "Familienleiste: Haarlinie y 776 Ice @ 0.12, zehn Signets 40px ab x 112 im 52px-Takt (Opazität 0.92), rechts Mono 14px «NAME · ROLLE · DATUM»"
+      ],
+      "section": [
+        "Platte section-dark.png",
+        "Riesenziffer Geist 250 360px als Kontur, Grundlinie y 470 ab x 820, Azure-Rautenpunkt danach",
+        "Eyebrow y 559: Firstglut-Raute 12px + Mono 15px Ice «KAPITEL 02 / THEMA»",
+        "Titel Geist 600 84px −0,045 em, Grundlinien 660 und 752: Zeile 1 Ink, Zeile 2 Azure",
+        "Fuss y 850: Mono 14px Produkte des Kapitels ab x 816, Seitenzahl rechts"
+      ],
+      "content": [
+        "Platte content-light.png",
+        "Breadcrumb y 112: Deep-Azure-Raute 10px + Mono 14px #0066B3 «02.3 / BETRIEB / THEMA»",
+        "Aktionstitel als ganzer Satz Geist 600 56px −0,035 em #10253D, Grundlinie 190, Rautenpunkt #B4511A",
+        "Lead Geist 400 22px #46617E, Grundlinie 240",
+        "Eine Heldenzahl pro Folie in weisser Karte (x 112 y 312, 600x420, Radius 16, Rand #CDDEEE, gefaltete Ecke unten links): Mono-Label, Zahl 184px #0066B3, Ziel/Delta 22px, Quelle Mono 14px",
+        "Diagramm rechts ab x 776 nach chart-Regeln, Beispieldaten sichtbar als «BEISPIELDATEN» markiert",
+        "Fuss: Haarlinie y 808 + 96px-Akzent #0066B3, kompakter Lockup hell 22px, Mono-Kontext x 420, Seitenzahl rechts"
+      ],
+      "closing": [
+        "Platte closing-dark.png (Zeichen zentriert mit vollem Firstlicht)",
+        "Aussage zentriert Geist 600 72px: Zeile 1 Ink «Gebaut. Betrieben.» (Grundlinie 512), Zeile 2 Azure «Unter einem Dach» + Firstglut-Rautenpunkt (Grundlinie 596)",
+        "kompakter Lockup 30px zentriert, Grundlinie 700",
+        "Mono 14px zentriert y 760: «MARCEL@RAPOLD.IO · RAPOLD.IO · MARCEL.RAPOLD.IO»",
+        "Haarlinie y 808, zehn Signets 40px zentriert im 60px-Takt (Opazität 0.85)"
+      ]
+    },
+    "mocks": "brands/rapold-io/sources/deck-cover|section|content|closing.webp"
+  },
+  "voice": {
+    "tone": "trocken, präzise, ohne Agentur-Show",
+    "headlines": "ganze Sätze mit Rautenpunkt, Schweizer Rechtschreibung (immer ss, kein Eszett)",
+    "examples": ["Systeme, die laufen.", "Was läuft, bleibt gepflegt.", "Gebaut. Betrieben. Unter einem Dach."]
+  },
+  "jury": {
+    "criteria": ["Distinktion/Fancyness", "Kohärenz Raumfalten", "Skalierbarkeit 16px–Cover", "Deck-Charakter", "Umsetzbarkeit Atlas"],
+    "fold": [9, 9, 8, 9, 8],
+    "light": [8, 8, 9, 9, 7],
+    "type": [6, 6, 8, 7, 9],
+    "totals": { "fold": 43, "light": 41, "type": 36 }
+  }
+}
