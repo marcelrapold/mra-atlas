@@ -28,7 +28,7 @@
     },
     {
       "source": "deck-src/wordmark-on-dark@1600w.svg",
-      "sourceSha256": "af0e82c7b101c8e3ff1d9eec4e32fa67b3f59e7d8580f86ec730e4f13e8d8429",
+      "sourceSha256": "8930298cffbb1d4d07f70bc66de08d07acd69b625ee584ebb6bafc1bfbc86249",
       "output": "deck/wordmark-on-dark.png",
       "width": 1600,
       "height": 445,
@@ -36,7 +36,7 @@
     },
     {
       "source": "deck-src/wordmark-on-light@1600w.svg",
-      "sourceSha256": "215240bf02a65e1b4524b0a21425e988f217ec2f93937a0bf7260b28632e4a47",
+      "sourceSha256": "c06b652ef8f29bfd5ec74b54bc718e30aae76232512a503c94e3ec983f562027",
       "output": "deck/wordmark-on-light.png",
       "width": 1600,
       "height": 445,
