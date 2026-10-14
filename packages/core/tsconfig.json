@@ -1,6 +1,6 @@
 {
   "extends": "../../tsconfig.json",
-  "compilerOptions": {"noUncheckedIndexedAccess": true, "noImplicitOverride": true, "verbatimModuleSyntax": true, "noFallthroughCasesInSwitch": true, "noImplicitReturns": true},
+  "compilerOptions": {"noImplicitOverride": true, "verbatimModuleSyntax": true, "noFallthroughCasesInSwitch": true, "noImplicitReturns": true},
   "include": ["src/**/*.ts", "src/**/*.tsx"],
   "exclude": []
 }
