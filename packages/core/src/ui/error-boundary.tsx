@@ -99,17 +99,17 @@ function ErrorBoundaryFallback({
  * error boundaries; handle those where they occur.
  */
 class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  state: ErrorBoundaryState = { error: null }
+  override state: ErrorBoundaryState = { error: null }
 
   static getDerivedStateFromError(error: unknown): ErrorBoundaryState {
     return { error: toError(error) }
   }
 
-  componentDidCatch(error: unknown, info: React.ErrorInfo) {
+  override componentDidCatch(error: unknown, info: React.ErrorInfo) {
     this.props.onError?.(toError(error), info, this.props.scope)
   }
 
-  componentDidUpdate(prevProps: ErrorBoundaryProps) {
+  override componentDidUpdate(prevProps: ErrorBoundaryProps) {
     if (this.state.error && !Object.is(prevProps.resetKey, this.props.resetKey)) {
       this.reset()
     }
@@ -120,7 +120,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     this.props.onReset?.()
   }
 
-  render() {
+  override render() {
     const { error } = this.state
     if (!error) return this.props.children
 
