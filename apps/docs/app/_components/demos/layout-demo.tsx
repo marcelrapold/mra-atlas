@@ -29,6 +29,8 @@ import {
 } from '@rapold/framework-core'
 import { Button } from '@rapold/framework-core'
 
+import { DemoPanel } from '../demo-panel'
+
 const team = ['Anna Meier', 'Luca Brunner', 'Sofia Keller', 'Noah Frei', 'Mia Graf', 'Elias Huber']
 
 const navItems = [
@@ -56,8 +58,20 @@ export function LayoutDemo() {
 
   return (
     <div className="demo-grid">
-      <section className="demo-panel">
-        <h2>Page Header</h2>
+      <DemoPanel
+        id="page-header"
+        title="Page Header"
+        layout="fill"
+        code={`import { PageHeader } from '@rapold/framework-core'
+
+<PageHeader
+  eyebrow="Projektportfolio"
+  title="Kundenportal 2027"
+  description="Planung, Budget und Freigaben."
+  breadcrumb={<Breadcrumb>…</Breadcrumb>}
+  actions={<Button>Freigeben</Button>}
+/>`}
+      >
         <PageHeader
           size="default"
           eyebrow="Projektportfolio"
@@ -89,21 +103,25 @@ export function LayoutDemo() {
           }
         />
         <PageHeader size="compact" title="Live-Übersicht" description="Kompakte Variante für dichte Dashboards." />
-        <pre>
-          <code>{`import { PageHeader } from '@rapold/framework-core'
+      </DemoPanel>
 
-<PageHeader
-  eyebrow="Projektportfolio"
-  title="Kundenportal 2027"
-  description="Planung, Budget und Freigaben."
-  breadcrumb={<Breadcrumb>…</Breadcrumb>}
-  actions={<Button>Freigeben</Button>}
-/>`}</code>
-        </pre>
-      </section>
+      <DemoPanel
+        id="breadcrumb"
+        title="Breadcrumb"
+        layout="fill"
+        code={`import {
+  Breadcrumb, BreadcrumbList, BreadcrumbItem,
+  BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator,
+} from '@rapold/framework-core'
 
-      <section className="demo-panel">
-        <h2>Breadcrumb</h2>
+<Breadcrumb>
+  <BreadcrumbList>
+    <BreadcrumbItem><BreadcrumbLink href="/">Start</BreadcrumbLink></BreadcrumbItem>
+    <BreadcrumbSeparator />
+    <BreadcrumbItem><BreadcrumbPage>Budget 2027</BreadcrumbPage></BreadcrumbItem>
+  </BreadcrumbList>
+</Breadcrumb>`}
+      >
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -124,24 +142,24 @@ export function LayoutDemo() {
           </BreadcrumbList>
         </Breadcrumb>
         <p>Mit Router-Links: <code>{'<BreadcrumbLink asChild><Link href="/">Start</Link></BreadcrumbLink>'}</code></p>
-        <pre>
-          <code>{`import {
-  Breadcrumb, BreadcrumbList, BreadcrumbItem,
-  BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator,
-} from '@rapold/framework-core'
+      </DemoPanel>
 
-<Breadcrumb>
-  <BreadcrumbList>
-    <BreadcrumbItem><BreadcrumbLink href="/">Start</BreadcrumbLink></BreadcrumbItem>
-    <BreadcrumbSeparator />
-    <BreadcrumbItem><BreadcrumbPage>Budget 2027</BreadcrumbPage></BreadcrumbItem>
-  </BreadcrumbList>
-</Breadcrumb>`}</code>
-        </pre>
-      </section>
+      <DemoPanel
+        id="section"
+        title="Section"
+        layout="fill"
+        code={`import { Section } from '@rapold/framework-core'
 
-      <section className="demo-panel">
-        <h2>Section</h2>
+<Section
+  title="Nächste Termine"
+  description="Die drei nächsten Meilensteine."
+  icon={<CalendarDays />}
+  actions={<Button size="sm">Alle anzeigen</Button>}
+  spacing="md"
+>
+  …
+</Section>`}
+      >
         <Section
           spacing="sm"
           icon={<CalendarDays />}
@@ -155,23 +173,24 @@ export function LayoutDemo() {
             <li>17. März – Go-live Pilotgruppe</li>
           </ul>
         </Section>
-        <pre>
-          <code>{`import { Section } from '@rapold/framework-core'
+      </DemoPanel>
 
-<Section
-  title="Nächste Termine"
-  description="Die drei nächsten Meilensteine."
-  icon={<CalendarDays />}
-  actions={<Button size="sm">Alle anzeigen</Button>}
-  spacing="md"
->
-  …
-</Section>`}</code>
-        </pre>
-      </section>
+      <DemoPanel
+        id="avatar"
+        title="Avatar & Avatar Group"
+        code={`import {
+  Avatar, AvatarImage, AvatarFallback, AvatarGroup, getInitials,
+} from '@rapold/framework-core'
 
-      <section className="demo-panel">
-        <h2>Avatar & Avatar Group</h2>
+<Avatar size="lg">
+  <AvatarImage src={user.avatarUrl} alt={user.name} />
+  <AvatarFallback label={user.name}>{getInitials(user.name)}</AvatarFallback>
+</Avatar>
+
+<AvatarGroup label="Projektteam" max={4} total={12}>
+  {members.map((m) => <Avatar key={m.id}>…</Avatar>)}
+</AvatarGroup>`}
+      >
         <div className="demo-row">
           <Avatar size="xl">
             <AvatarFallback label="Anna Meier">{getInitials('Anna Meier')}</AvatarFallback>
@@ -204,28 +223,22 @@ export function LayoutDemo() {
             ))}
           </AvatarGroup>
         </div>
-        <pre>
-          <code>{`import {
-  Avatar, AvatarImage, AvatarFallback, AvatarGroup, getInitials,
-} from '@rapold/framework-core'
+      </DemoPanel>
 
-<Avatar size="lg">
-  <AvatarImage src={user.avatarUrl} alt={user.name} />
-  <AvatarFallback label={user.name}>{getInitials(user.name)}</AvatarFallback>
-</Avatar>
+      <DemoPanel
+        id="bottom-nav"
+        title="Bottom Nav"
+        description={<p>Vorschau im Fluss (<code>position=&quot;static&quot;</code>). In der App ist die Leiste fixiert und berücksichtigt die Safe Area.</p>}
+        layout="fill"
+        code={`import { BottomNav, BottomNavItem, BottomNavFab } from '@rapold/framework-core'
 
-<AvatarGroup label="Projektteam" max={4} total={12}>
-  {members.map((m) => <Avatar key={m.id}>…</Avatar>)}
-</AvatarGroup>`}</code>
-        </pre>
-      </section>
-
-      <section className="demo-panel">
-        <h2>Bottom Nav</h2>
-        <p>
-          Vorschau im Fluss (<code>position=&quot;static&quot;</code>). In der App ist die Leiste fixiert und
-          berücksichtigt die Safe Area.
-        </p>
+<BottomNav className="lg:hidden" fab={<BottomNavFab label="Neu"><Plus /></BottomNavFab>}>
+  <BottomNavItem asChild label="Start" icon={<Home />} active={pathname === '/'}>
+    <Link href="/" />
+  </BottomNavItem>
+  <BottomNavItem href="/projekte" label="Projekte" icon={<FolderKanban />} />
+</BottomNav>`}
+      >
         <div className="mt-20 overflow-hidden rounded-[var(--brand-radius)] border border-border">
           <BottomNav
             position="static"
@@ -262,21 +275,21 @@ export function LayoutDemo() {
           </BottomNav>
         </div>
         <p role="status" aria-live="polite">{status}</p>
-        <pre>
-          <code>{`import { BottomNav, BottomNavItem, BottomNavFab } from '@rapold/framework-core'
+      </DemoPanel>
 
-<BottomNav className="lg:hidden" fab={<BottomNavFab label="Neu"><Plus /></BottomNavFab>}>
-  <BottomNavItem asChild label="Start" icon={<Home />} active={pathname === '/'}>
-    <Link href="/" />
-  </BottomNavItem>
-  <BottomNavItem href="/projekte" label="Projekte" icon={<FolderKanban />} />
-</BottomNav>`}</code>
-        </pre>
-      </section>
+      <DemoPanel
+        id="bottom-stack"
+        title="Bottom Stack"
+        description={<p>Player-Leiste über der Navigation in einem Container; die Höhe steht als <code>--bottom-stack-height</code> bereit.</p>}
+        layout="fill"
+        code={`import { BottomStack, BottomStackSpacer, BottomNav } from '@rapold/framework-core'
 
-      <section className="demo-panel">
-        <h2>Bottom Stack</h2>
-        <p>Player-Leiste über der Navigation in einem Container; die Höhe steht als <code>--bottom-stack-height</code> bereit.</p>
+<main>… <BottomStackSpacer /></main>
+<BottomStack label="Wiedergabe und Navigation">
+  <PlayerBar />
+  <BottomNav position="static">…</BottomNav>
+</BottomStack>`}
+      >
         <div className="mt-20 overflow-hidden rounded-[var(--brand-radius)] border border-border">
           <BottomStack
             position="static"
@@ -318,16 +331,7 @@ export function LayoutDemo() {
             </BottomNav>
           </BottomStack>
         </div>
-        <pre>
-          <code>{`import { BottomStack, BottomStackSpacer, BottomNav } from '@rapold/framework-core'
-
-<main>… <BottomStackSpacer /></main>
-<BottomStack label="Wiedergabe und Navigation">
-  <PlayerBar />
-  <BottomNav position="static">…</BottomNav>
-</BottomStack>`}</code>
-        </pre>
-      </section>
+      </DemoPanel>
     </div>
   )
 }

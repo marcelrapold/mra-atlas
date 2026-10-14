@@ -40,6 +40,23 @@ Klassen und Flowchart-Geometrie. Es dient auch als Agenten-Vertrag.
 - Definitionen auf 30 000 Zeichen und 500 Kanten begrenzen.
 - SVG mit unverzerrtem Seitenverhältnis zeigen. Vollbild über dieselbe Lightbox
   mit Fokusfalle, Escape und Rückkehr zum Auslöser anbieten.
+- Erst rendern, wenn das Diagramm in die Nähe des sichtbaren Bereichs kommt
+  (IntersectionObserver, 400 px Vorlauf). Ausserhalb bleibt das letzte SVG stehen und
+  gilt nach einem Brand- oder Moduswechsel als veraltet, bis es wieder in der Nähe ist.
+- Zwischen zwei Diagrammen dem Browser eine Runde lassen (`scheduler.yield`,
+  sonst `setTimeout`). Das Mermaid-Bundle im Leerlauf vorladen.
+- Das beim ersten Rendern gemessene Seitenverhältnis beibehalten. Ein Brand-Wechsel
+  rendert in denselben Rahmen und verschiebt den Inhalt darunter nicht.
+
+## Barrierefreiheit
+
+- Jede Definition beginnt mit accTitle und accDescr, direkt nach der Typzeile.
+  Mermaid schreibt sie als `<title>` und `<desc>` ins SVG; Screenreader erhalten so
+  Titel und Kernaussage, auch im Download.
+- accTitle nennt das Diagramm, accDescr die Aussage in einem bis zwei Sätzen.
+  Illustrative Werte als solche kennzeichnen.
+- Farbe unterstützt die Orientierung, trägt aber nie allein die Bedeutung.
+  Kategorien, Segmente und Rollen sind immer beschriftet.
 
 ## Abdeckung
 

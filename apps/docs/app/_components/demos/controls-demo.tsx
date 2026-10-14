@@ -11,6 +11,8 @@ import { RadioGroup, RadioGroupOption } from '@rapold/framework-core'
 import { LikeToggle, Toggle } from '@rapold/framework-core'
 import { Label } from '@rapold/framework-core'
 
+import { DemoPanel } from '../demo-panel'
+
 /** Simuliert Laden → Abspielen, ohne echtes Audio. */
 function usePlaybackDemo(initial: PlayButtonState = 'idle') {
   const [state, setState] = React.useState<PlayButtonState>(initial)
@@ -46,9 +48,16 @@ export function ControlsDemo() {
 
   return (
     <>
-      <section className="demo-panel">
-        <h2>Button: Ladezustand & volle Breite</h2>
-        <p>Während des Speicherns zeigt der Button einen Spinner, ist gesperrt und meldet aria-busy.</p>
+      <DemoPanel
+        id="button-loading"
+        title="Button: Ladezustand & volle Breite"
+        description="Während des Speicherns zeigt der Button einen Spinner, ist gesperrt und meldet aria-busy."
+        layout="fill"
+        code={`import { Button } from '@rapold/framework-core'
+
+<Button loading={saving} onClick={save}>Entwurf speichern</Button>
+<Button fullWidth variant="secondary">Alle Sendungen anzeigen</Button>`}
+      >
         <div className="demo-row">
           <Button loading={saving} onClick={save}>
             {!saving && <Save aria-hidden="true" />}
@@ -67,17 +76,19 @@ export function ControlsDemo() {
           </Button>
         </div>
         <p role="status">{status}</p>
-        <pre>
-          <code>{`import { Button } from '@rapold/framework-core'
+      </DemoPanel>
 
-<Button loading={saving} onClick={save}>Entwurf speichern</Button>
-<Button fullWidth variant="secondary">Alle Sendungen anzeigen</Button>`}</code>
-        </pre>
-      </section>
+      <DemoPanel
+        id="icon-button"
+        title="IconButton"
+        description="Reine Icon-Aktionen. aria-label ist Pflicht; die Trefferfläche beträgt immer mindestens 44 px."
+        code={`import { IconButton } from '@rapold/framework-core'
+import { Share2 } from 'lucide-react'
 
-      <section className="demo-panel">
-        <h2>IconButton</h2>
-        <p>Reine Icon-Aktionen. aria-label ist Pflicht; die Trefferfläche beträgt immer mindestens 44 px.</p>
+<IconButton aria-label="Teilen" variant="glass" shape="round">
+  <Share2 />
+</IconButton>`}
+      >
         <div className="demo-row">
           <IconButton aria-label="Teilen" size="sm">
             <Share2 />
@@ -104,22 +115,24 @@ export function ControlsDemo() {
             <Share2 />
           </IconButton>
         </div>
-        <pre>
-          <code>{`import { IconButton } from '@rapold/framework-core'
-import { Share2 } from 'lucide-react'
+      </DemoPanel>
 
-<IconButton aria-label="Teilen" variant="glass" shape="round">
-  <Share2 />
-</IconButton>`}</code>
-        </pre>
-      </section>
+      <DemoPanel
+        id="play-button"
+        title="PlayButton"
+        description="Ein Wiedergabeknopf für alle Ansichten. Zustände idle, loading, playing, paused; Material Glas oder solid. Der Name bleibt fest, der Zustand läuft über aria-pressed und eine Live-Region."
+        layout="fill"
+        code={`import { PlayButton } from '@rapold/framework-core'
 
-      <section className="demo-panel">
-        <h2>PlayButton</h2>
-        <p>
-          Ein Wiedergabeknopf für alle Ansichten. Zustände idle, loading, playing, paused; Material Glas oder
-          solid. Der Name bleibt fest, der Zustand läuft über aria-pressed und eine Live-Region.
-        </p>
+<PlayButton
+  label="Morgenjournal abspielen"
+  state={state}            // 'idle' | 'loading' | 'playing' | 'paused'
+  size="lg"                // sm 36 · md 44 · lg 64 · xl 112
+  material="glass"         // oder 'solid'
+  onPlay={start}
+  onPause={pause}
+/>`}
+      >
         <div
           className="demo-row relative rounded-[var(--brand-radius)] bg-linear-to-br from-chart-3 via-chart-1 to-chart-5 p-6"
           role="group"
@@ -146,23 +159,17 @@ import { Share2 } from 'lucide-react'
           />
           <span className="muted">Mini-Player · Zustand: {mini.state}</span>
         </div>
-        <pre>
-          <code>{`import { PlayButton } from '@rapold/framework-core'
+      </DemoPanel>
 
-<PlayButton
-  label="Morgenjournal abspielen"
-  state={state}            // 'idle' | 'loading' | 'playing' | 'paused'
-  size="lg"                // sm 36 · md 44 · lg 64 · xl 112
-  material="glass"         // oder 'solid'
-  onPlay={start}
-  onPause={pause}
-/>`}</code>
-        </pre>
-      </section>
+      <DemoPanel
+        id="toggle"
+        title="Toggle & LikeToggle"
+        description="Zweizustands-Knöpfe mit aria-pressed. LikeToggle ist ein Preset mit Herz, gefüllt wenn aktiv."
+        code={`import { Toggle, LikeToggle } from '@rapold/framework-core'
 
-      <section className="demo-panel">
-        <h2>Toggle & LikeToggle</h2>
-        <p>Zweizustands-Knöpfe mit aria-pressed. LikeToggle ist ein Preset mit Herz, gefüllt wenn aktiv.</p>
+<Toggle aria-label="Untertitel anzeigen">Untertitel</Toggle>
+<LikeToggle pressed={liked} onPressedChange={setLiked} />`}
+      >
         <div className="demo-row">
           <Toggle aria-label="Untertitel anzeigen" variant="outline">
             Untertitel
@@ -171,17 +178,18 @@ import { Share2 } from 'lucide-react'
           <LikeToggle label="Merken" showLabel size="lg" />
           <LikeToggle count={liked ? 1205 : 1204} pressed={liked} onPressedChange={setLiked} size="sm" />
         </div>
-        <pre>
-          <code>{`import { Toggle, LikeToggle } from '@rapold/framework-core'
+      </DemoPanel>
 
-<Toggle aria-label="Untertitel anzeigen">Untertitel</Toggle>
-<LikeToggle pressed={liked} onPressedChange={setLiked} />`}</code>
-        </pre>
-      </section>
+      <DemoPanel
+        id="switch"
+        title="Switch"
+        description="Für Einstellungen mit sofortiger Wirkung. Die Speicherung der Präferenz bleibt Sache der App."
+        layout="fill"
+        code={`import { Switch, Label } from '@rapold/framework-core'
 
-      <section className="demo-panel">
-        <h2>Switch</h2>
-        <p>Für Einstellungen mit sofortiger Wirkung. Die Speicherung der Präferenz bleibt Sache der App.</p>
+<Switch id="follow" checked={follow} onCheckedChange={setFollow} />
+<Label htmlFor="follow">Transkript mitscrollen</Label>`}
+      >
         <div className="demo-row">
           <Switch id="demo-follow" checked={follow} onCheckedChange={setFollow} />
           <Label htmlFor="demo-follow">Transkript mitscrollen</Label>
@@ -197,16 +205,20 @@ import { Share2 } from 'lucide-react'
           <Switch id="demo-locked" disabled defaultChecked />
           <Label htmlFor="demo-locked">Automatische Updates (vom Betrieb gesperrt)</Label>
         </div>
-        <pre>
-          <code>{`import { Switch, Label } from '@rapold/framework-core'
+      </DemoPanel>
 
-<Switch id="follow" checked={follow} onCheckedChange={setFollow} />
-<Label htmlFor="follow">Transkript mitscrollen</Label>`}</code>
-        </pre>
-      </section>
+      <DemoPanel
+        id="radio-group"
+        title="RadioGroup"
+        layout="fill"
+        code={`import { RadioGroup, RadioGroupOption } from '@rapold/framework-core'
 
-      <section className="demo-panel">
-        <h2>RadioGroup</h2>
+<RadioGroup value={quality} onValueChange={setQuality} aria-label="Audioqualität">
+  <RadioGroupOption value="auto" variant="card" label="Automatisch"
+    description="Passt die Bitrate an die Verbindung an." />
+  <RadioGroupOption value="high" variant="card" label="Hoch" />
+</RadioGroup>`}
+      >
         <p id="demo-quality-label" className="mb-3 text-sm font-semibold text-foreground">
           Audioqualität
         </p>
@@ -230,16 +242,7 @@ import { Share2 } from 'lucide-react'
           <RadioGroupOption value="fr" label="Französisch" />
           <RadioGroupOption value="it" label="Italienisch" />
         </RadioGroup>
-        <pre>
-          <code>{`import { RadioGroup, RadioGroupOption } from '@rapold/framework-core'
-
-<RadioGroup value={quality} onValueChange={setQuality} aria-label="Audioqualität">
-  <RadioGroupOption value="auto" variant="card" label="Automatisch"
-    description="Passt die Bitrate an die Verbindung an." />
-  <RadioGroupOption value="high" variant="card" label="Hoch" />
-</RadioGroup>`}</code>
-        </pre>
-      </section>
+      </DemoPanel>
     </>
   )
 }
