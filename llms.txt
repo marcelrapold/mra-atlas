@@ -1,64 +1,78 @@
 # Atlas
 
-Atlas ist das Designsystem von Rapold: ein White-Label-Designstandard für Web-Interfaces und Management-Präsentationen.
-Hauptadresse: https://atlas.rapold.io
-Repository: https://github.com/marcelrapold/mra-atlas
-Den tatsächlich ausgelieferten Stand über /build-info.json prüfen.
-Atlas ist seine eigene Referenz: Struktur, Muster und Verträge stehen in diesem Repository.
-Die aktive Brand bestimmt die Markenidentität, Atlas die gemeinsame Struktur.
+> Atlas ist das Designsystem von Rapold: ein White-Label-Designstandard für Web-Interfaces und Management-Präsentationen. Die aktive Brand bestimmt die Markenidentität, Atlas die gemeinsame Struktur.
 
-## Einstieg für ausführende Agenten
+Hauptadresse: https://atlas.rapold.io · Repository: https://github.com/marcelrapold/mra-atlas
+Den tatsächlich ausgelieferten Stand über https://atlas.rapold.io/build-info.json prüfen.
+Atlas ist seine eigene Referenz: Struktur, Muster und Verträge stehen in diesem Repository.
 
 Bei «Repo analysieren und Management-Präsentation erstellen» direkt den vollständigen Ablauf
 unter https://atlas.rapold.io/brands/{brand}/management.md laden und ausführen.
 Die ausdrücklich genannte Brand beziehungsweise der verlinkte Theme-Einstieg bestimmt `{brand}`;
-ohne Theme-Wahl `neutral` verwenden. Namen über /brands/index.json auflösen.
+ohne Theme-Wahl `neutral` verwenden. Namen über https://atlas.rapold.io/brands/index.json auflösen.
 Der Vertrag enthält Defaults, Quellenprüfung, Gestaltung, Export und Abnahme.
 Der Nutzer muss diese Regeln nicht in den Auftrag kopieren.
-
-- /contracts/repo-to-management.md: vollständiger Auftrag vom Repository zur Management-Präsentation
-- /contracts/brand-contract.md: Tokenmodell, Erweiterung und Abnahme
-- /contracts/components.md: alle UI-Komponenten mit Import, Varianten, Barrierefreiheit und Do/Don't
-- /contracts/produkte-einbinden.md: Atlas in Produkten einbinden (Signet, Favicon, Manifest, Tokens, Schrift)
-- /brands/index.json: verfügbare Brands mit Version, Status und Asset-Pfaden
-- /brands/{brand}/llms.txt: Einstieg ausschliesslich für das aktive Theme
-- /brands/{brand}/brand.json: Identität des aktiven Themes
-- /brands/{brand}/presentation.json: Präsentationsrollen des aktiven Themes
-
-Repository-Entsprechungen: docs/repo-to-management.md, docs/brand-contract.md,
-packages/brands/src/*.json und die Quellen des aktiven Brand-Pakets.
 
 Ohne ausdrückliche Theme-Wahl gilt das Default-Preset (brand: neutral).
 Nur Quellen und Assets der aktiven Brand verwenden; keine Firmenvorgaben aus anderen Themes übernehmen.
 
 Der Standard liefert Regeln und Daten. Repository-Analyse, PPTX-Erzeugung und PDF-Export
 führt der konsumierende Agent mit seinen verfügbaren Werkzeugen aus.
-
-## Präsentationslogik (verbindlich)
-https://atlas.rapold.io/contracts/presentation-logic.md
-
-## Vollständige Token-Exporte
-/brands/{brand}/tokens.light.json
-/brands/{brand}/tokens.light.css
-/brands/{brand}/tokens.light.dtcg.json
-
-## Neutrale Icons
-/icons/index.json
-/icons/{PascalCaseName}.svg
-
-## Deck-Prüfung
-Im Repository: node scripts/validate-deck.mjs deck.json
 Muster-Decks sind illustrative Beispiele, keine analysierten Projektdeck-Ergebnisse.
+Deck-Prüfung im Repository: node scripts/validate-deck.mjs deck.json
 
-Inhaltsschema: /praesentation/deck-input.schema.json
-Eigenständig importierbarer Validator: /praesentation/deck-validation.mjs
-Redaktionelle Regeln im Browser: /praesentationslogik
+Repository-Entsprechungen: docs/repo-to-management.md, docs/brand-contract.md,
+packages/brands/src/{brand}.json (Brand), packages/brands/src/foundation.json (gemeinsame Skalen),
+packages/brands/src/brand.schema.json (Schema) und die Quellen des aktiven Brand-Pakets.
 
-Projektdeck-Export: /contracts/project-decks.md
-Schema für renderbare Inhalte: /praesentation/project-input.schema.json
-Projektvalidator: /praesentation/project-validation.mjs
-Belegtes Beispiel: /praesentation/framework-review.json
-Echte Referenzbilder und PDFs: /presentation-reference.json
+## Einstieg für ausführende Agenten
 
-Mermaid-Regeln: /contracts/mermaid.md
-Mermaid-Theme: /brands/{brand}/mermaid.{mode}.json
+- [Management-Ablauf](https://atlas.rapold.io/brands/{brand}/management.md): vollständiger Auftrag vom Repository zur Management-Präsentation im aktiven Theme
+- [Theme-Einstieg](https://atlas.rapold.io/brands/{brand}/llms.txt): Einstieg ausschliesslich für das aktive Theme
+- [Vollständiger Kontext](https://atlas.rapold.io/brands/{brand}/llms-full.txt): Theme-Einstieg und alle Verträge in einer Datei
+- [Brand-Verzeichnis](https://atlas.rapold.io/brands/index.json): verfügbare Brands mit Version, Status und Asset-Pfaden
+
+## Verträge
+
+- [Repository zur Management-Präsentation](https://atlas.rapold.io/contracts/repo-to-management.md): Ablauf, Quellenmanifest, Theme-Grenzen und Abnahme
+- [Brand-Vertrag](https://atlas.rapold.io/contracts/brand-contract.md): Tokenmodell, Erweiterung und Abnahme
+- [Brand-Schema](https://atlas.rapold.io/contracts/brand.schema.json): JSON-Schema jeder Brand-Datei
+- [Produkte einbinden](https://atlas.rapold.io/contracts/produkte-einbinden.md): Atlas in Produkten einbinden (Signet, Favicon, Manifest, Tokens, Schrift)
+- [Engineering](https://atlas.rapold.io/contracts/engineering.md): Qualitätsregeln für Anwendungscode, Prüfungen und Releases
+- [Mermaid-Regeln](https://atlas.rapold.io/contracts/mermaid.md): Diagramme mit dem Theme der aktiven Brand
+
+## Aktive Brand
+
+- [brand.json](https://atlas.rapold.io/brands/{brand}/brand.json): Identität des aktiven Themes
+- [presentation.json](https://atlas.rapold.io/brands/{brand}/presentation.json): Präsentationsrollen des aktiven Themes
+- [tokens.light.json](https://atlas.rapold.io/brands/{brand}/tokens.light.json): vollständiger Token-Export, hell
+- [tokens.light.css](https://atlas.rapold.io/brands/{brand}/tokens.light.css): CSS Custom Properties, hell
+- [tokens.light.dtcg.json](https://atlas.rapold.io/brands/{brand}/tokens.light.dtcg.json): Design Tokens (DTCG), hell
+- [tokens.dark.json](https://atlas.rapold.io/brands/{brand}/tokens.dark.json): vollständiger Token-Export, dunkel
+- [tokens.dark.css](https://atlas.rapold.io/brands/{brand}/tokens.dark.css): CSS Custom Properties, dunkel
+- [tokens.dark.dtcg.json](https://atlas.rapold.io/brands/{brand}/tokens.dark.dtcg.json): Design Tokens (DTCG), dunkel
+- [mermaid.{mode}.json](https://atlas.rapold.io/brands/{brand}/mermaid.{mode}.json): Mermaid-Theme; `{mode}` ist `light` oder `dark`
+
+## Komponenten
+
+- [Komponentenvertrag](https://atlas.rapold.io/contracts/components.md): alle UI-Komponenten mit Import, Varianten, Barrierefreiheit und Do/Don't
+- [Komponenten-Manifest](https://atlas.rapold.io/contracts/components.json): maschinenlesbar je Modul: Exporte, cva-Varianten mit Defaults, data-slot-Anatomie, Abhängigkeiten, Spezifikation und Doku-Adresse
+- [Komponenten-Showcase](https://atlas.rapold.io/components): alle Komponenten im aktiven Theme
+
+## Präsentation
+
+- [Präsentationslogik (verbindlich)](https://atlas.rapold.io/contracts/presentation-logic.md): Dramaturgie, Folientypen und redaktionelle Regeln
+- [Projektdeck-Export](https://atlas.rapold.io/contracts/project-decks.md): editierbare PPTX und PDF aus belegten Projektinhalten
+- [Deck-Inhaltsschema](https://atlas.rapold.io/praesentation/deck-input.schema.json): JSON-Schema für Deck-Inhalte
+- [Deck-Validator](https://atlas.rapold.io/praesentation/deck-validation.mjs): eigenständig importierbares ES-Modul
+- [Projektdeck-Schema](https://atlas.rapold.io/praesentation/project-input.schema.json): Schema für renderbare Projektinhalte
+- [Projektvalidator](https://atlas.rapold.io/praesentation/project-validation.mjs): Prüfung eines Projektdecks vor dem Rendering
+- [Belegtes Beispiel](https://atlas.rapold.io/praesentation/framework-review.json): Projektdeck mit Quellen
+- [Referenzbilder und PDFs](https://atlas.rapold.io/presentation-reference.json): echte Renderings mit Prüfsummen
+- [Redaktionelle Regeln im Browser](https://atlas.rapold.io/praesentationslogik): Präsentationslogik als Seite
+
+## Optional
+
+- [Icon-Index](https://atlas.rapold.io/icons/index.json): neutraler Lucide-Satz; Einzeldateien als icons/<PascalCaseName>.svg
+- [Build-Info](https://atlas.rapold.io/build-info.json): ausgelieferte Version, Commit und Build-Zeit
+- [Repository](https://github.com/marcelrapold/mra-atlas): Quellen, Tests und Changelog
