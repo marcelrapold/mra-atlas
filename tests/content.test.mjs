@@ -11,7 +11,8 @@ import {brands} from '../packages/brands/src/index.mjs';
 const root=fileURLToPath(new URL('..',import.meta.url));
 const SKIP_DIRS=new Set(['.git','node_modules','.next','out','.vercel','.sites-runtime','.claude','brands-private','deck-output']);
 const walk=(dir,rel='')=>readdirSync(dir,{withFileTypes:true}).flatMap(e=>{const r=rel?`${rel}/${e.name}`:e.name;if(e.isDirectory())return SKIP_DIRS.has(e.name)||r==='apps/docs/public'?[]:walk(path.join(dir,e.name),r);return e.isFile()?[r]:[];});
-const tracked=(()=>{try{return execFileSync('git',['ls-files','-z'],{cwd:root,encoding:'utf8',stdio:['ignore','pipe','ignore']}).split('\0').filter(Boolean);}catch{return walk(root);}})().filter(f=>existsSync(path.join(root,f)));
+let fromGit=true;
+const tracked=(()=>{try{return execFileSync('git',['ls-files','-z'],{cwd:root,encoding:'utf8',stdio:['ignore','pipe','ignore']}).split('\0').filter(Boolean);}catch{fromGit=false;return walk(root);}})().filter(f=>existsSync(path.join(root,f)));
 const trackedSet=new Set(tracked),trackedDirs=new Set(tracked.flatMap(f=>f.split('/').slice(0,-1).map((_,i,a)=>a.slice(0,i+1).join('/'))));
 const BINARY=/\.(png|jpe?g|webp|gif|ico|pdf|pptx|zip|woff2?|ttf|otf|bundle|tgz)$/i;
 const cache=new Map(),read=f=>{if(!cache.has(f))cache.set(f,readFileSync(path.join(root,f),'utf8'));return cache.get(f);};
@@ -66,7 +67,8 @@ test('every relative markdown link and anchor resolves',()=>{
     if(/^[a-z][a-z0-9+.-]*:/i.test(target)||target.startsWith('/'))continue;
     const [rawPath,rawHash]=target.split('#'),relPath=decodeURIComponent(rawPath);
     const resolved=relPath?path.posix.normalize(path.posix.join(path.posix.dirname(file),relPath)).replace(/\/$/,''):file;
-    if(!trackedSet.has(resolved)&&!trackedDirs.has(resolved)){broken.push(`${file}: ${target} (missing ${resolved})`);continue;}
+    // Without Git metadata the walk skips generated output, so links into it fall back to the file system.
+    if(!trackedSet.has(resolved)&&!trackedDirs.has(resolved)&&(fromGit||!existsSync(path.join(root,resolved)))){broken.push(`${file}: ${target} (missing ${resolved})`);continue;}
     if(rawHash!==undefined&&resolved.endsWith('.md')&&!anchors(resolved).has(decodeURIComponent(rawHash)))broken.push(`${file}: ${target} (no heading #${decodeURIComponent(rawHash)})`);
   }
   assert.deepEqual(broken,[]);
