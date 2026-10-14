@@ -1,12 +1,7 @@
 import type {Metadata, ResolvingMetadata} from 'next';
 import PresentationPage from '../_components/presentation-page';
-export async function generateMetadata(_props: unknown, parent: ResolvingMetadata): Promise<Metadata> {
- const title='Präsentation · Atlas';
- const inherited=await parent;
- return {
-  title,
-  alternates:{canonical:'/praesentation'},
-  openGraph:{...inherited.openGraph,title,url:'/praesentation'},
- };
-}
-export default function Page(){return <PresentationPage/>;}
+import {articleData,jsonLd,pageDescription,pageMetadata,siteViewport} from '../_seo/seo';
+const title='Präsentation',description=pageDescription('praesentation','Der Präsentationsbaukasten von Atlas: vermessene Layouts, ausführbare Folienrezepte und dieselbe Brand für Website und PowerPoint.');
+export const viewport=siteViewport;
+export function generateMetadata(_props:unknown,parent:ResolvingMetadata):Promise<Metadata>{return pageMetadata(parent,{title,description,path:'/praesentation'});}
+export default function Page(){return <>{jsonLd(articleData('praesentation',{title,description}))}<PresentationPage/></>;}
