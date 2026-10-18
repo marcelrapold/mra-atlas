@@ -1,185 +1,160 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "product": "edgeportal",
   "name": "EdgePortal",
-  "status": "proposal",
   "date": "2026-10-18",
-  "world": "Shared Space",
   "essence": "EdgePortal macht jeden Bildschirm in einem Raum zu einer gekoppelten, ruhigen Fläche, auf der die AI-Welt sichtbar und hörbar wird: zentral gesteuert, ehrlich im Zustand und begrenzt durch die Menschen, die davorstehen.",
   "principles": [
-    { "id": "display", "name": "Anzeigen, nicht entscheiden", "rule": "Entscheide bleiben im Quellsystem. Ein Screen zeigt an und darf Halt auslösen; aufheben, antworten und freigeben geschieht im Agents Terminal." },
-    { "id": "honest", "name": "Nichts erfinden", "rule": "Bewegung ist Messung, nicht Deko. Zustand immer mit Wort und Form, nie nur mit Farbe. «Übertragen» ist nicht «Angezeigt». Bei Ausfall gilt der letzte Stand, sichtbar markiert." },
-    { "id": "room", "name": "Der Raum bestimmt mit", "rule": "Wer davorsteht, begrenzt, was ein Screen zeigt und sagt. Guest, Ambient und Night sind Normalzustände, keine Sonderfälle." }
+    { "id": "display", "name": "Anzeigen, nicht entscheiden", "rule": "Entscheide bleiben im Quellsystem. Ein Screen zeigt an und darf die Notbremse ziehen; lösen, antworten und freigeben geschieht im Leitstand." },
+    { "id": "honest", "name": "Nichts erfinden", "rule": "Bewegung ist Messung, nicht Deko. Zustand immer mit Wort und Form, nie nur mit Farbe. Bei Ausfall gilt der letzte Stand, sichtbar markiert." },
+    { "id": "room", "name": "Der Raum bestimmt mit", "rule": "Wer davorsteht, begrenzt, was ein Screen zeigt und sagt. Gast, Ruhe und Nacht sind Normalzustände." }
   ],
-  "naming": {
-    "source": "Rapold Stack Naming, 18.10.2026",
-    "rule": "Namen von Flächen, Ansichten und Zuständen sind englisch, Sätze in der Oberfläche deutsch in Du-Form, Schweizer Rechtschreibung.",
-    "decided": { "Leitstand": "Agents Terminal", "AI Fabric": "Fabric" },
-    "fromAudit": { "Bühne": "Agents Home", "Notbremse": "Halt", "Wand": "Wall", "Kachel": "Tile" },
-    "proposed": {
-      "Steuerung": "Control", "Übersicht": "Launcher", "Spiegel": "Mirror", "Öffentlicher Link": "Share Link",
-      "Übernahme": "Claim", "Kopplung": "Pairing", "Kopplungscode": "Pair Code", "Sitzung": "Session", "Szene": "Scene",
-      "Startseite": "Bootstrap", "Einrichtung": "Setup", "Ruhemodus": "Ambient", "Anwesenheit": "Presence",
-      "TV an": "TV Wake", "TV aus": "Goodbye", "langsames Aufwachen": "Slow Wake", "Statusbildschirme": "Status Screens",
-      "Ein gemeinsamer Raum": "Shared Space"
+  "reference": {
+    "repository": "marcelrapold/mra-edgeportal (privat)",
+    "commit": "e46563c",
+    "files": ["app/stage.css", "app/presence.css", "app/screen-nav.css", "app/tv-power.css", "components/stage/stage-view.tsx", "components/stage/agent-card.tsx", "components/stage/radio-panel.tsx", "components/screen-nav.tsx", "lib/stage.ts", "lib/screen-nav.ts", "src/tv.mjs"],
+    "copies": "brands/rapold/edgeportal/tv/*.css",
+    "screenshots": "Spiegel des Wohnzimmer-Screens (3840 × 2160) und Steuerung, 18.10.2026, privat bei Marcel Rapold",
+    "rule": "Atlas bildet den TV-Stand ab, verändert ihn aber nicht. Ändert sich das Produkt, werden die Kopien mit neuem Commit nachgeführt."
+  },
+  "tv": {
+    "status": "Ist-Stand, verbindlich",
+    "rule": "Was am Fernseher zu sehen ist, bleibt, wie es ist. Atlas dokumentiert es mit den echten Werten und baut es 1:1 nach.",
+    "tokens": {
+      "source": "app/stage.css, Block .stage",
+      "roles": { "st-bg": "#050B19", "st-abyss": "#02060F", "st-fg": "#EDF5FF", "st-card": "#0B1528", "st-popover": "#142741", "st-primary": "#38B8FF", "st-primary-fg": "#04101D", "st-muted": "#142741", "st-muted-fg": "#9AADC7", "st-info": "#38B8FF", "st-success": "#34D399", "st-warning": "#FBBF24", "st-danger": "#FB7185", "st-border": "#23334A", "st-input": "#5F7089" },
+      "surfaces": { "st-surface-info": "#0F2239", "st-surface-success": "#0E2431", "st-surface-warning": "#1E2328", "st-surface-danger": "#1E1C2F" },
+      "identity": { "st-azure": "#009DFF", "st-ice": "#A8EDFF", "st-raised": "#0066B3", "st-firstglut": "#FFA36C" },
+      "derived": { "st-glass": "card 80 %", "st-solid": "card 94 %", "st-scrim": "bg 90 %", "st-raised-border": "raised 28 %", "st-glow": "azure 22 %" },
+      "atlasRoles": { "st-bg": "background", "st-card": "card", "st-popover": "popover", "st-fg": "foreground", "st-muted-fg": "muted-foreground", "st-primary": "primary", "st-success": "success", "st-warning": "warning", "st-danger": "destructive", "st-border": "border", "st-input": "input" }
+    },
+    "scale": {
+      "fs": "clamp(16px, min(1.9cqi, 1.9cqb, max(1.05cqi, 1.05cqb)), 120px)",
+      "px": "fs / 20 (ein Designpixel bei 1080p)",
+      "edgeX": "max(safe-area, overscan × 1cqi + 2.4 × fs)",
+      "edgeY": "max(safe-area, overscan × 1cqb + 1.5 × fs)",
+      "gap": "24 px-Einheiten",
+      "examples": { "1080p": "fs ≈ 20 px", "4K": "fs ≈ 40 px" },
+      "frame": "Atlas rendert jeden Rahmen als virtuellen TV mit 3840 × 2160 Pixeln und verkleinert ihn als Ganzes. Alle Werte gelten unverändert."
+    },
+    "type": [
+      { "element": "Titel in der Kopfzeile", "size": "1.6 em", "weight": 650 },
+      { "element": "Agent-Name auf der Poster-Karte", "size": "3.6 em (ein Agent: 4.4 em)", "weight": 650 },
+      { "element": "Uhr", "size": "2.4 em", "weight": 650 },
+      { "element": "RadioX-Titel", "size": "1.5 em", "weight": 650 },
+      { "element": "Eyebrow", "size": "0.9 em, Geist Mono, Laufweite 0.2 em, Versalien", "weight": 400 },
+      { "element": "Grussformel bei TV an und aus", "size": "clamp(48px, 7vw, 132px)", "weight": 300 }
+    ],
+    "radii": { "card": "24 px-Einheiten", "inner": "16 px-Einheiten", "pill": "999px", "launcherTile": "24px" },
+    "borders": { "hair": "1.5 px-Einheiten", "strong": "2 px-Einheiten", "attention": "3 px-Einheiten plus Umriss" },
+    "motion": {
+      "easing": "cubic-bezier(.2, .7, .2, 1)",
+      "durations": { "fast": 150, "normal": 180, "slow": 300, "deliberate": 500, "cinema": 1200 },
+      "ambience": "Aurora driftet in 40, 52 und 64 s; Kino-Porträts atmen über 24 s",
+      "rules": ["Keine Blur-Filter, damit es auf jeder GPU läuft.", "Aufmerksamkeit ohne Pulsieren; der einzige Puls ist der Live-Punkt von RadioX.", "Reduzierte Bewegung: nur Überblendungen bis 160 ms.", "Low Power: Standbilder, nur Live-Punkt, Pegel und Bildwechsel bewegen sich."]
+    },
+    "layout": [
+      "Kopfzeile: Signet, Eyebrow «Agents · Host», Titel mit Firstglut-Raute; Mitte: Hinweise und Präsenz; rechts: Stimme und Uhr mit Datum.",
+      "Notbremse-Band zwischen Kopfzeile und Inhalt, nur wenn gezogen.",
+      "Inhalt: Agents nach Anzahl in Spalten, RadioX als Leiste darunter (Leiste), in einer Seitenspalte (Karte) oder aus.",
+      "Poster-Karte: Porträt links, Name, Modell, Rolle, Zustand und Autonomie rechts; Zustandslicht als Linie an der Oberkante.",
+      "Präsenz-Hinweis oben in der Mitte; Kamerahinweis unten links."
+    ],
+    "views": [
+      { "id": "buehne", "name": "Bühne", "note": "Poster-Karten der Agents mit RadioX-Leiste" },
+      { "id": "terminal", "name": "Terminals", "note": "Kompakte Karten mit Terminal-Ausschnitt" },
+      { "id": "fokus", "name": "Fokus", "note": "Ein Agent gross, Verlauf und Mini-Pills der anderen" },
+      { "id": "stack", "name": "Stack", "note": "Fünf Glasebenen" },
+      { "id": "uebersicht", "name": "Übersicht", "note": "Kachelmenü über die Zurück-Taste" },
+      { "id": "tv", "name": "TV an und aus", "note": "Grussformel auf abgedunkeltem Bild" }
+    ],
+    "states": {
+      "agent": [
+        { "id": "bereit", "word": "bereit", "shape": "✓", "tone": "success" },
+        { "id": "arbeitet", "word": "arbeitet", "shape": "●", "tone": "info" },
+        { "id": "frage", "word": "Frage an dich", "shape": "?", "tone": "warning" },
+        { "id": "dialog", "word": "braucht dich", "shape": "◆", "tone": "warning" },
+        { "id": "haengt", "word": "hängt", "shape": "‼", "tone": "danger" },
+        { "id": "aus", "word": "läuft nicht", "shape": "■", "tone": "muted" }
+      ],
+      "autonomy": [
+        { "id": "fragt", "word": "fragt", "shape": "◇", "tone": "muted" },
+        { "id": "meldet", "word": "meldet", "shape": "◇", "tone": "muted" },
+        { "id": "voll", "word": "voll", "shape": "◆", "tone": "muted" }
+      ],
+      "stage": [
+        { "id": "offline", "word": "Verbindung unterbrochen · letzter Stand", "shape": "!", "tone": "warning" },
+        { "id": "brake", "word": "Notbremse gezogen · Lösen nur im Leitstand", "shape": "■", "tone": "danger" },
+        { "id": "guest", "word": "Gast im Raum · Privates ausgeblendet", "shape": "◌", "tone": "muted" },
+        { "id": "live", "word": "Live", "shape": "●", "tone": "danger" }
+      ]
+    },
+    "copy": [
+      "Stimme an", "Verbindung unterbrochen · letzter Stand", "Gast im Raum · Privates ausgeblendet", "Kamera mit Gesichtserkennung aktiv",
+      "Frage an dich", "braucht dich", "Antworten im Leitstand", "Lösen nur im Leitstand", "Ersatz · Einstellung",
+      "Danach:", "On Air:", "Stream auf dem Screen", "Stand von vorhin",
+      "EdgePortal · Übersicht", "◀ ▶ ▲ ▼ wählen · OK öffnen · Zurück: «Bühne» · 0: Start", "Alle Agents sofort anhalten · OK zweimal", "Nochmals OK: jetzt ziehen",
+      "Ton aktivieren: Taste drücken oder antippen"
+    ],
+    "remote": [
+      { "key": "Zurück", "action": "eine Ebene hoch, auf der Bühne die Übersicht" },
+      { "key": "0", "action": "zur Startansicht" },
+      { "key": "OK", "action": "öffnen" },
+      { "key": "OK lang", "action": "sprechen" },
+      { "key": "◀ ▶", "action": "Agent wählen" },
+      { "key": "▲ ▼", "action": "Ansicht wechseln" },
+      { "key": "1–9", "action": "direkt fokussieren" },
+      { "key": "⏯", "action": "Radio, bringt den Ton zurück" }
+    ],
+    "greetings": {
+      "source": "src/tv.mjs",
+      "slots": [
+        { "from": "05:00", "to": "11:00", "wake": "Guten Morgen", "goodbye": "Schönen Tag" },
+        { "from": "11:00", "to": "17:00", "wake": "Hallo", "goodbye": "Bis später" },
+        { "from": "17:00", "to": "22:00", "wake": "Guten Abend", "goodbye": "Schönen Abend" },
+        { "from": "22:00", "to": "05:00", "wake": "Gute Nacht", "goodbye": "Gute Nacht" }
+      ],
+      "timing": "Ausschalten: Gruss mindestens 3,5 s, dann 3 s Ausblendung. Einschalten: Bild über 12 s aus Schwarz, Ton über 20 s, dann der Gruss."
     }
   },
-  "distanceProfiles": [
-    { "id": "wall", "label": "Wall", "distance": "3–4 m", "devices": ["TV"], "mode": "dark", "baseMinPx1080": 28, "contrastMin": 7, "lineMaxChars": 38, "situationCards": 3, "linesPerCard": 4, "targets": "Fernbedienung, keine Zeiger-Ziele",
-      "scale": { "caption": { "px1080": 28, "cqi": 1.458 }, "body": { "px1080": 32, "cqi": 1.667 }, "title": { "px1080": 48, "cqi": 2.5 }, "display": { "px1080": 96, "cqi": 5 } } },
-    { "id": "desk", "label": "Desk", "distance": "60–80 cm", "devices": ["Laptop", "Monitor"], "mode": "light-dark", "baseMinPx": 16, "contrastMin": 4.5, "targetPx": 44 },
-    { "id": "hand", "label": "Hand", "distance": "30–40 cm", "devices": ["Phone", "Tablet"], "mode": "light-dark", "baseMinPx": 16, "contrastMin": 4.5, "targetPx": 44 }
-  ],
-  "wallTokens": {
-    "source": "packages/brands/src/rapold.json → modes.dark",
-    "bg": "#050B19", "surface": "#0B1528", "raised": "#142741", "fg": "#EDF5FF", "muted": "#9AADC7", "line": "#23334A",
-    "accent": "#38B8FF", "ok": "#34D399", "warn": "#FBBF24", "danger": "#FB7185", "abyss": "#02060F",
-    "textOn": { "bg": ["fg", "muted", "accent", "ok", "warn", "danger"], "surface": ["fg", "muted", "accent", "ok", "warn"], "raised": ["fg", "ok", "warn"] },
-    "rules": [
-      "Text in danger steht nur auf bg (7,3:1). Auf surface und raised trägt der Text fg, der Ton liegt in Form und Rahmen.",
-      "muted und accent als Text nicht auf raised (6,6:1 und 6,8:1).",
-      "input #5F7089 nur für Konturen, nie für Text (3,9:1).",
-      "Keine Hexwerte in Produktkomponenten: Rollen kommen aus dem Atlas-Export."
-    ]
-  },
-  "surfaces": [
-    { "id": "boot", "name": "Boot", "profile": "wall", "device": "TV",
-      "purpose": "Vom Einschalten bis zur ersten nützlichen Ansicht, eröffnet von rapold.io.",
-      "spec": "brands/rapold-io/DESIGN-DNA.md 7.1", "rules": ["Zeitachse startet, wenn der TV per CEC «on» meldet.", "Jede Stufe hängt an einem echten Signal und hält mindestens 400 ms.", "Kopplungscode nie eingeklappt."] },
-    { "id": "setup", "name": "Setup", "profile": "wall", "device": "TV und Phone",
-      "purpose": "WLAN einrichten, nur wenn kein Netz gespeichert ist.",
-      "copy": ["WLAN verbinden. Scanne den Code.", "Deine WLAN-Daten bleiben auf diesem Pi."],
-      "rules": ["Erscheint nie beim normalen Start mit gespeichertem Netz.", "Signet statt Monitor-Icon, Rapold-Rollen statt Fabric-Theme."] },
-    { "id": "claim", "name": "Claim", "profile": "wall", "device": "TV und Phone",
-      "purpose": "Einen neuen Screen per QR übernehmen.",
-      "regions": ["Signet und Wortmarke", "QR", "Pair Code, sechs Zeichen, gross", "Restzeit"],
-      "copy": ["Dein Screen. Ein Scan entfernt.", "Pair Code", "gültig 4:59 · danach neuer Code", "Dieser Screen gehört dazu."],
-      "rules": ["Pair Code immer sichtbar, Restzeit als Text.", "Nach dem Claim ein Ankommen-Moment von 3 s mit dem Screen-Namen."] },
-    { "id": "home", "name": "Agents Home", "profile": "wall", "device": "TV",
-      "purpose": "Die Agents und das Radio im Raum: lesend, mit Stimme und Halt.",
-      "brand": "Agents-Signet mit «Agents Home»; EdgePortal und Standort stehen in der Statuszeile.",
-      "regions": ["Kopfzeile: Signet, Titel, Hinweis-Pills, Status-Chips, Uhr", "Halt-Band, nur wenn gezogen", "Hauptansicht", "Lagespalte mit höchstens 3 Karten zu 4 Zeilen", "Fussleiste: Fernbedienungs-Hinweis, Presence"],
-      "views": [
-        { "id": "stage", "name": "Stage", "rule": "Poster-Karten je Agent, Text auf mindestens 90 % Navy." },
-        { "id": "terminals", "name": "Terminals", "rule": "Kompakte Karten mit Terminal-Ausschnitt in Geist Mono." },
-        { "id": "focus", "name": "Focus", "rule": "Ein Agent gross, Verlauf und Mini-Pills der anderen." },
-        { "id": "stack", "name": "Stack", "rule": "Fünf Glasebenen: Du, Agents, Tasks, Guardrails, Fabric." }
-      ],
-      "rules": ["Aufmerksamkeit durch 3-px-Tonrahmen plus Wort, nie durch Pulsieren.", "Sprechen: Wort «spricht», Pegel mit 5 Balken, Azure-Glow höchstens 0,22.", "Firstglut kommt in Agents Home nicht vor."] },
-    { "id": "launcher", "name": "Launcher", "profile": "wall", "device": "TV",
-      "purpose": "Kachelmenü über die Zurück-Taste, über dem laufenden Inhalt.",
-      "regions": ["Eyebrow «EdgePortal · Launcher»", "Tiles 16:9, höchstens 4 pro Reihe", "Gruppen: Views, Scenes, Agents, Cameras", "Legende der Tasten"],
-      "rules": ["Fokus: 3-px-Ring mit 4 px Abstand und Skalierung 1,02, Eintritt 180 ms.", "Halt-Tile braucht zweimal OK; nach dem ersten OK steht «Nochmals OK: jetzt ziehen».", "Nach 10 min ohne Eingabe zurück zur Startansicht, ausser bei RadioX."] },
-    { "id": "content", "name": "Content", "profile": "wall", "device": "TV",
-      "purpose": "Text, Dashboard und Apps auf einem Screen.",
-      "rules": ["Inhalte werden nur als Text gerendert.", "Herkunftsrahmen «von …» bei fremden Inhalten; keine QR-Codes, URLs oder Freigabe-Wörter darin."] },
-    { "id": "radiox", "name": "RadioX Fullscreen", "profile": "wall", "device": "TV",
-      "purpose": "Das Radio im Vollbild.",
-      "brand": "RadioX ist eine eigene, endorsed Marke (Brand radiox in Atlas). EdgePortal stellt nur den Rahmen; Live-Rot nur als Punkt und Rand, nie als Fläche." },
-    { "id": "mirror", "name": "Mirror und Share Link", "profile": "desk", "device": "Browser",
-      "purpose": "Den Screen 1:1 ansehen, mit Login oder als geteilter Link.",
-      "copy": ["Mirror · nur ansehen", "Geteilter Screen · EdgePortal", "Screen offline · letzter Stand"],
-      "rules": ["Share Link gilt immer als Guest: Terminals, Verläufe, Untertitel, Kamera, Gruss und Presence sind ausgeblendet.", "Neutraler Kopf ohne Agent-Namen."] },
-    { "id": "control", "name": "Control", "profile": "hand", "device": "Phone und Desktop",
-      "purpose": "Screens, Sessions und Scenes steuern.",
-      "regions": ["Arbeitszeile mit Verbindungs-Pill", "Screens als Tiles mit Online- und Render-Badge", "Editor: Inhalt, Scenes, Einstellungen", "Vorschau im 16:9-Rahmen, «Entwurf» oder «Wie auf dem Screen»", "Publish-Leiste «Auf Screen anzeigen»"],
-      "rules": ["Nichts wirkt ohne «Auf Screen anzeigen».", "44-px-Ziele, Radius 8 für Bedienelemente, 16 bis 24 für Karten, keine Schatten.", "Halt nur mit Bestätigungsdialog."] },
-    { "id": "tv", "name": "TV Wake und Goodbye", "profile": "wall", "device": "TV",
-      "purpose": "Einschalten und Ausschalten als Ritual.",
-      "rules": ["TV Wake: Bild über 12 s aus Schwarz, Ton über 20 s, dann der Gruss. Nach einem Boot halbiert.", "Goodbye: Gruss mindestens 3,5 s, dann 3 s Ausblendung.", "Grusstext Geist 300, höchstens 18 Zeichen pro Zeile.", "Reagiert der TV nicht, steht «Der TV hat nicht reagiert.» statt Schwarz."] },
-    { "id": "overlays", "name": "Voice und Perception", "profile": "wall", "device": "TV",
-      "purpose": "Mikrofon und Kamera sichtbar machen.",
-      "copy": ["Mikrofon an", "Ich höre zu …", "Kamera wird ausgewertet", "Wahrnehmung pausiert", "Stopp"],
-      "rules": ["Aufnahme: Rolle danger als ruhiger Punkt und Rand plus Wort, nie pulsierend, immer mit sichtbarem Stopp.", "Keine eigenen Rottöne; Tailwind-Rot wird durch danger ersetzt."] }
-  ],
-  "statusScreens": [
-    { "id": "starting", "headline": "Screen startet.", "shape": "●", "tone": "accent", "when": "Boot läuft, siehe DNA 7.1" },
-    { "id": "no-uplink", "headline": "Kein Uplink. Der Screen versucht es weiter.", "detail": "Nach 90 s: Diagnose in edgeportal-setup.log auf der SD-Karte", "shape": "■", "tone": "danger", "when": "kein Netz nach dem Start" },
-    { "id": "portal-down", "headline": "Portal nicht erreichbar. Letzter Stand bleibt.", "shape": "▲", "tone": "warn", "when": "Netz da, Server antwortet nicht" },
-    { "id": "unclaimed", "headline": "Dein Screen. Ein Scan entfernt.", "detail": "Pair Code 3F9A2C · gültig 4:59", "shape": "?", "tone": "accent", "when": "neuer Screen ohne Schlüssel" },
-    { "id": "claimed", "headline": "Dieser Screen gehört dazu.", "detail": "Wohnzimmer", "shape": "✓", "tone": "ok", "when": "3 s nach dem Claim" },
-    { "id": "revoked", "headline": "Pairing aufgehoben. Ein neuer Code folgt.", "shape": "■", "tone": "muted", "when": "Schlüssel widerrufen oder abgelaufen" },
-    { "id": "offline-last", "headline": "Offline · letzter Stand", "shape": "▲", "tone": "warn", "when": "drei Polls ohne Antwort (Entprellung), als Chip über dem Inhalt" },
-    { "id": "update", "headline": "Update läuft. Gleich zurück.", "detail": "Version 0.3.1", "shape": "●", "tone": "accent", "when": "OTA installiert oder Kiosk startet neu" },
-    { "id": "recovered", "headline": "Ansicht neu gestartet.", "detail": "Fehler im Log, Inhalt wieder da", "shape": "▲", "tone": "warn", "when": "Fehlergrenze hat gegriffen" },
-    { "id": "app-failed", "headline": "App nicht erreichbar.", "detail": "Handshake nach 10 s abgebrochen", "shape": "■", "tone": "danger", "when": "App-Host ohne Antwort" },
-    { "id": "ambient", "headline": "Ambient", "detail": "Uhr, Datum, Titel im Radio", "shape": "○", "tone": "muted", "when": "niemand im Raum" },
-    { "id": "halt", "headline": "Halt gezogen. Aufheben nur im Agents Terminal.", "shape": "■", "tone": "danger", "when": "Halt aktiv, als Band unter der Kopfzeile" },
-    { "id": "tv-silent", "headline": "Der TV hat nicht reagiert.", "shape": "▲", "tone": "warn", "when": "Ausschalten per CEC ohne Rückmeldung" }
-  ],
-  "states": {
-    "agent": [
-      { "id": "working", "word": "arbeitet", "shape": "●", "tone": "accent", "note": "gestrichelter Ring dreht langsam; bei reduzierter Bewegung steht er" },
-      { "id": "ready", "word": "bereit", "shape": "✓", "tone": "ok" },
-      { "id": "question", "word": "Frage an dich", "shape": "?", "tone": "warn" },
-      { "id": "needs-you", "word": "braucht dich", "shape": "◇", "tone": "warn", "note": "Hohle Raute: die gefüllte Raute gehört als Rautenpunkt der Dachmarke. Warnungen tragen ▲." },
-      { "id": "stuck", "word": "hängt", "shape": "‼", "tone": "danger" },
-      { "id": "off", "word": "läuft nicht", "shape": "■", "tone": "muted" }
+  "control": {
+    "status": "Atlas-Standard, darf sich leicht ändern",
+    "rule": "Die Steuerung unter edgeportal.rapold.io darf sich an Atlas angleichen: Atlas-Komponenten und Tokens, später als npm-Paket. Kleine Abweichungen vom heutigen Aussehen sind in Ordnung.",
+    "profiles": [
+      { "id": "desk", "label": "Desk", "distance": "60–80 cm", "devices": ["Laptop", "Monitor"], "baseMinPx": 16, "contrastMin": 4.5, "targetPx": 44 },
+      { "id": "hand", "label": "Hand", "distance": "30–40 cm", "devices": ["Phone", "Tablet"], "baseMinPx": 16, "contrastMin": 4.5, "targetPx": 44 }
     ],
     "render": [
-      { "id": "confirmed", "word": "Angezeigt", "shape": "✓", "tone": "ok" },
-      { "id": "assigned", "word": "Übertragen", "shape": "●", "tone": "accent" },
-      { "id": "stale", "word": "Veraltet", "shape": "▲", "tone": "warn" },
-      { "id": "offline", "word": "Offline", "shape": "■", "tone": "muted" }
+      { "id": "confirmed", "word": "Angezeigt", "tone": "success" },
+      { "id": "assigned", "word": "Übertragen", "tone": "info" },
+      { "id": "stale", "word": "Veraltet", "tone": "warning" },
+      { "id": "offline", "word": "Offline", "tone": "muted" }
     ],
-    "room": [
-      { "id": "known", "word": "bekannt", "shape": "●", "tone": "ok" },
-      { "id": "guest", "word": "Gast im Raum · Privates ausgeblendet", "shape": "◇", "tone": "warn" },
-      { "id": "ambient", "word": "Ambient", "shape": "○", "tone": "muted" },
-      { "id": "night", "word": "Night", "shape": "○", "tone": "muted" }
-    ],
-    "capture": [
-      { "id": "mic", "word": "Mikrofon an", "shape": "●", "tone": "danger" },
-      { "id": "camera", "word": "Kamera wird ausgewertet", "shape": "●", "tone": "danger" },
-      { "id": "paused", "word": "Wahrnehmung pausiert", "shape": "■", "tone": "muted" }
-    ]
-  },
-  "motion": {
-    "easing": "cubic-bezier(0.2, 0.7, 0.2, 1)",
-    "durations": { "fast": 150, "normal": 180, "slow": 300, "deliberate": 500, "cinema": 1200 },
     "rules": [
-      "Auf dem Pi nur transform und opacity animieren, kein Blur, keine Backdrop-Filter.",
-      "Mindesthaltezeit 400 ms pro Zustand; Offline erst nach drei verpassten Polls.",
-      "Einbrennschutz: alle 4 min ein Sprung um 2 px auf eine von neun Positionen, ohne Animation.",
-      "Dimmen in 5-%-Schritten mit 4 s Übergang.",
-      "Reduzierte Bewegung: Überblendungen bis 160 ms, sonst Stand. Low Power: Standbilder.",
-      "Nichts schneller als 3 Hz, kein Glitch, kein Shimmer."
+      "Nichts wirkt ohne «Auf Screen anzeigen».",
+      "44-px-Ziele, Radius 8 für Bedienelemente, 16 bis 24 für Karten, keine Schatten.",
+      "Notbremse nur mit Bestätigungsdialog.",
+      "Farben aus den Atlas-Rollen; die heutigen HSL-Tripel weichen beim Umstieg den vollen Werten."
     ]
   },
-  "remote": [
-    { "key": "Zurück", "action": "eine Ebene hoch, auf der Startansicht der Launcher" },
-    { "key": "0", "action": "zur Startansicht" },
-    { "key": "OK", "action": "öffnen" },
-    { "key": "OK lang", "action": "sprechen" },
-    { "key": "◀ ▶", "action": "Agent wählen" },
-    { "key": "▲ ▼", "action": "View wechseln" },
-    { "key": "1–9", "action": "direkt fokussieren" },
-    { "key": "⏯", "action": "Radio" }
-  ],
-  "greetings": {
-    "rule": "Eine Quelle für TV Wake, Goodbye und Presence. Ohne gültige Uhr gilt Night.",
-    "slots": [
-      { "from": "05:00", "to": "11:00", "wake": "Guten Morgen", "goodbye": "Schönen Tag" },
-      { "from": "11:00", "to": "17:00", "wake": "Hallo", "goodbye": "Bis später" },
-      { "from": "17:00", "to": "22:00", "wake": "Guten Abend", "goodbye": "Schönen Abend" },
-      { "from": "22:00", "to": "05:00", "wake": "Gute Nacht", "goodbye": "Gute Nacht" }
+  "naming": {
+    "source": "Rapold Stack Naming, 18.10.2026",
+    "rule": "Neue Namen gelten für Steuerung, Doku und Code. Die Texte am TV bleiben, bis Marcel sie dort ausdrücklich ändert.",
+    "decided": { "Leitstand": "Agents Terminal", "AI Fabric": "Fabric" },
+    "fromAudit": { "Bühne": "Agents Home", "Notbremse": "Halt", "Wand": "Wall", "Kachel": "Tile" },
+    "proposed": { "Steuerung": "Control", "Übersicht": "Launcher", "Spiegel": "Mirror", "Öffentlicher Link": "Share Link", "Übernahme": "Claim", "Kopplung": "Pairing", "Sitzung": "Session", "Szene": "Scene", "Ruhemodus": "Ambient", "TV an": "TV Wake", "TV aus": "Goodbye" }
+  },
+  "ideas": {
+    "status": "optional, nicht umgesetzt",
+    "rule": "Diese Ideen ändern den TV nicht. Sie werden nur umgesetzt, wenn Marcel es ausdrücklich will.",
+    "items": [
+      "Grundschrift auf der Wand-Distanz von etwa 20 auf 28 px bei 1080p anheben (Jarvis-Konzept: 7:1, 28 px).",
+      "Weitere Statusbildschirme: Update läuft, Ansicht neu gestartet, TV hat nicht reagiert.",
+      "Offline erst nach mehreren verpassten Abfragen anzeigen.",
+      "Aufnahme-Hinweise von Tailwind-Rot auf die Rolle danger umstellen.",
+      "Eine gemeinsame Grussquelle für TV an/aus und Präsenz.",
+      "Neuer Systemstart mit rapold.io «Der First» (DESIGN-DNA 7.1)."
     ]
   },
-  "sources": [
-    "EdgePortal-Repository (privat) bei Commit a5d1ae6, 18.10.2026: Oberflächen, Zustände, Texte, Fernbedienung, Jarvis-Konzept",
-    "Rapold Stack Naming, 18.10.2026",
-    "brands/rapold-io/DESIGN-DNA.md 7.1 (Systemstart)",
-    "packages/brands/src/rapold.json (dunkle Rollen)"
-  ],
-  "assumptions": [
-    "Wall verlangt 28 px Grundschrift bei 1080p und 7:1 Kontrast (Jarvis-Konzept); EdgePortal liegt heute bei etwa 20 px.",
-    "Die vorgeschlagenen englischen Namen sind noch nicht freigegeben."
-  ],
-  "refinements": [
-    "Neue Status Screens: update, recovered, tv-silent.",
-    "Offline mit Entprellung statt nach einem einzigen verpassten Poll.",
-    "Aufnahme ohne Pulsieren und in der Rolle danger statt Tailwind-Rot.",
-    "«braucht dich» mit hohler Raute, damit die gefüllte Firstglut-Raute der Dachmarke bleibt.",
-    "Eine Grussquelle statt zwei Logiken."
-  ]
+  "privacy": "Die öffentliche Atlas-Seite zeigt den TV mit neutralen Beispielen: keine echten Gerätenamen, Orte, Hosts, Personen oder Porträts. Gestaltung, Grössen und Texte des Produkts bleiben unverändert."
 }

@@ -1,0 +1,137 @@
+/* Ist-Stand des EdgePortal-TVs, übernommen aus marcelrapold/mra-edgeportal @ e46563c (18.10.2026): app/presence.css.
+   Atlas hält diese Kopie als Referenz, damit der TV-Stand reproduzierbar bleibt. Unverändert.
+   Nicht von Hand angleichen: Änderungen kommen aus dem Produkt und werden hier mit Commit nachgeführt. */
+
+/* Presence on the stage (components/stage/presence-layer.tsx): arrival greeting, guest notice,
+   presence badge and ambient mode. Atlas rapold: Geist, mono kickers, firstglut diamond once per
+   view, azure glow only on the stage. Sizes follow the stage font size (container units). */
+.stage {
+  --presence-ease-enter: cubic-bezier(0, 0, .2, 1);
+  --presence-ease-exit: cubic-bezier(.4, 0, 1, 1);
+  --presence-glut: #ffa36c;
+  --presence-raised: rgba(11, 21, 40, .86);
+  --presence-edge: color-mix(in srgb, #0066b3 28%, transparent);
+}
+.presence-kicker { display: inline-flex; align-items: center; gap: .6em; font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: .85em; letter-spacing: .2em; text-transform: uppercase; color: var(--quiet); }
+.presence-kicker svg { width: 1.1em; height: 1.1em; }
+
+/* ---------- Arrival: full-screen-ish greeting, then collapse into the badge (top right) ---------- */
+.presence-arrival { position: absolute; inset: 0; z-index: 36; display: grid; place-items: center; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 45%, rgba(5, 11, 25, .55), rgba(5, 11, 25, .9) 70%);
+  animation: presence-veil-in 500ms var(--presence-ease-enter) both; }
+.presence-arrival[data-leaving="true"] { animation: presence-veil-out 500ms var(--presence-ease-exit) both; }
+.presence-arrival-card { display: grid; justify-items: start; gap: 1.6em; width: min(78%, 70em); padding: 3.4em 4em 3.6em;
+  border-radius: 24px; border: 1px solid var(--presence-edge); background: var(--presence-raised);
+  box-shadow: 0 0 6cqw -1cqw color-mix(in srgb, #009dff 22%, transparent);
+  transform-origin: 96% 0; animation: presence-card-in 500ms var(--presence-ease-enter) both; }
+.presence-arrival[data-leaving="true"] .presence-arrival-card { animation: presence-card-out 500ms var(--presence-ease-exit) both; }
+.presence-arrival h2 { font-size: 4.6em; font-weight: 650; line-height: 1.05; letter-spacing: -0.03em; color: var(--text); text-wrap: balance; }
+.presence-glut { display: inline-block; margin-left: .12em; color: var(--presence-glut); font-size: .5em; vertical-align: .35em; }
+.presence-brief { display: grid; gap: .7em; list-style: none; padding: 0; margin: 0; font-size: 1.7em; line-height: 1.3; }
+.presence-brief li { display: flex; align-items: center; gap: .7em; color: var(--text); }
+.presence-brief-form { display: inline-grid; place-items: center; flex: none; width: 1.6em; height: 1.6em; border-radius: 999px;
+  font-size: .8em; font-weight: 700; color: var(--agent, #38b8ff); background: color-mix(in srgb, var(--agent, #38b8ff) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--agent, #38b8ff) 45%, transparent); }
+.presence-brief li[data-kind="frage"] .presence-brief-form, .presence-brief li[data-kind="dialog"] .presence-brief-form {
+  color: var(--warn); background: color-mix(in srgb, var(--warn) 16%, transparent); border-color: color-mix(in srgb, var(--warn) 50%, transparent); }
+.presence-brief li[data-kind="radio"] { color: var(--quiet); }
+.presence-quiet { font-size: 1.5em; color: var(--quiet); }
+@keyframes presence-veil-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes presence-veil-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes presence-card-in { from { opacity: 0; transform: translateY(1.2em) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes presence-card-out { from { opacity: 1; transform: none; } to { opacity: 0; transform: translate(18%, -38%) scale(.32); } }
+
+/* ---------- Guest moment: short, neutral, not alarming ---------- */
+.presence-guest { position: absolute; left: 50%; top: 9cqw; z-index: 36; display: grid; justify-items: center; gap: .3em;
+  padding: 1em 2em; border-radius: 16px; border: 1px solid var(--presence-edge); background: var(--presence-raised); pointer-events: none;
+  transform: translateX(-50%); animation: presence-guest-in 300ms var(--presence-ease-enter) both; }
+.presence-guest[data-leaving="true"] { animation: presence-veil-out 300ms var(--presence-ease-exit) both; }
+.presence-guest strong { font-size: 2.2em; font-weight: 650; letter-spacing: -0.02em; }
+.presence-guest span { display: inline-flex; align-items: center; gap: .55em; color: var(--quiet); font-size: 1.25em; }
+.presence-guest svg { width: 1.1em; height: 1.1em; }
+@keyframes presence-guest-in { from { opacity: 0; transform: translate(-50%, -.6em); } to { opacity: 1; transform: translateX(-50%); } }
+
+/* ---------- Persistent badge, below the header on the right ---------- */
+.presence-dock { position: absolute; right: 2.6cqw; top: 6.6cqw; z-index: 35; display: flex; flex-direction: column; align-items: flex-end; gap: .5em;
+  pointer-events: none; }
+.presence-badge { display: inline-flex; align-items: center; gap: .6em; padding: .35em .9em .35em .35em; border-radius: 999px;
+  border: 1px solid var(--line); background: rgba(10, 20, 38, .72); color: var(--text); font-size: .95em; font-weight: 600;
+  animation: presence-veil-in 300ms var(--presence-ease-enter) both; }
+.presence-badge[data-kind="private"] { padding-left: .9em; color: var(--quiet); font-weight: 500; }
+.presence-badge[data-kind="private"] svg { width: 1.05em; height: 1.05em; }
+.presence-camera { display: inline-flex; align-items: center; gap: .45em; font-size: .78em; color: var(--quiet); }
+.presence-camera svg { width: 1.05em; height: 1.05em; }
+.presence-initial { display: inline-grid; place-items: center; width: 1.9em; height: 1.9em; border-radius: 999px; font-weight: 650;
+  color: #04101d; background: #a8edff; }
+.presence-mine { display: inline-flex; align-items: center; gap: .4em; padding-left: .6em; border-left: 1px solid var(--line);
+  color: var(--quiet); font-weight: 500; }
+.presence-mine::before { content: ""; width: .55em; height: .55em; border-radius: 999px; background: var(--agent); }
+
+/* ---------- Ambient: nobody here for a while; clock and RadioX on a dimmed scene ---------- */
+.presence-ambient { position: absolute; inset: 0; z-index: 34; display: grid; place-items: center; overflow: hidden;
+  background: radial-gradient(ellipse at 50% 40%, rgba(11, 21, 40, .9), #02060f 75%);
+  animation: presence-veil-in 500ms var(--presence-ease-enter) both; }
+.presence-ambient-scene { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .22; filter: saturate(.9); }
+.presence-ambient-center { position: relative; display: grid; justify-items: center; gap: .4em; text-align: center; }
+.presence-ambient time { font-size: 11em; font-weight: 650; line-height: 1.05; letter-spacing: -0.04em; font-variant-numeric: tabular-nums;
+  color: var(--text); }
+.presence-ambient-center p { font-size: 1.8em; color: var(--quiet); }
+.presence-ambient-radio { position: absolute; left: 50%; bottom: 3cqw; transform: translateX(-50%); display: inline-flex; align-items: baseline;
+  gap: .6em; max-width: 80%; font-size: 1.5em; color: var(--quiet); white-space: nowrap; }
+.presence-ambient-radio svg { width: 1em; height: 1em; align-self: center; }
+.presence-ambient-radio span { font-family: var(--font-geist-mono), ui-monospace, monospace; font-size: .6em; letter-spacing: .2em; text-transform: uppercase; }
+.presence-ambient-radio strong { color: var(--text); font-weight: 600; overflow: hidden; text-overflow: ellipsis; }
+.presence-ambient-radio em { font-style: normal; overflow: hidden; text-overflow: ellipsis; }
+
+/* "My agent": highlighted card (rule generated per screen, see presence-layer.tsx). */
+.stage[data-preview="true"] .presence-dock { display: none; }
+
+/* Reduced motion: no movement or zoom, only short fades (stage.css removes all other animation). */
+@media (prefers-reduced-motion: reduce) {
+  .stage .presence-arrival, .stage .presence-arrival-card, .stage .presence-guest, .stage .presence-badge, .stage .presence-ambient {
+    animation: presence-veil-in 160ms linear both !important; }
+  .stage .presence-arrival[data-leaving="true"], .stage .presence-arrival[data-leaving="true"] .presence-arrival-card,
+  .stage .presence-guest[data-leaving="true"] { animation: presence-veil-out 160ms linear both !important; }
+  .stage .presence-guest { transform: translateX(-50%); }
+}
+
+/* ---------- Controller: personal preferences in the policy table (Atlas UI: no shadows) ---------- */
+.policy-person-cell { display: grid; grid-template-columns: minmax(0, 1fr); justify-items: start; gap: .3rem; min-width: 0; }
+.policy-person-cell .policy-disclosure { max-width: 100%; }
+.policy-disclosure span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.policy-settings .policy-row[data-open="true"] { border-color: hsl(var(--input)); border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.policy-disclosure { display: inline-flex; align-items: center; gap: .4rem; min-height: 2.75rem; padding: 0 .5rem; border-radius: 8px;
+  border: 1px solid transparent; background: transparent; color: hsl(var(--muted-foreground)); font-size: .78rem; font-weight: 500; cursor: pointer;
+  transition: background-color 150ms cubic-bezier(.2, .7, .2, 1), border-color 150ms cubic-bezier(.2, .7, .2, 1); }
+.policy-disclosure:hover, .policy-disclosure[aria-expanded="true"] { background: hsl(var(--accent)); color: hsl(var(--foreground)); }
+.policy-disclosure:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 2px; }
+.policy-disclosure svg { width: 1rem; height: 1rem; flex: none; }
+.policy-disclosure svg:first-child { color: hsl(var(--primary)); }
+.policy-disclosure svg:last-child { color: hsl(var(--muted-foreground)); transition: transform 180ms cubic-bezier(.2, .7, .2, 1); }
+.policy-disclosure[aria-expanded="true"] svg:last-child { transform: rotate(180deg); }
+.policy-prefs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 1.2rem; margin-top: -.4rem; padding: 1rem 1rem 1.1rem;
+  border: 1px solid hsl(var(--input)); border-top: 1px dashed hsl(var(--border)); border-radius: 0 0 10px 10px; background: hsl(var(--card)); min-width: 40rem; }
+.policy-prefs-view { border: 0; padding: 0; margin: 0; min-width: 0; grid-column: 1 / -1; }
+.policy-prefs-view legend { margin-bottom: .3rem; }
+.policy-prefs-hint { font-size: .72rem; color: hsl(var(--muted-foreground)); }
+.policy-prefs-wide { grid-column: 1 / -1; }
+.policy-segment { display: inline-flex; flex-wrap: nowrap; max-width: 100%; gap: 0; border: 1px solid hsl(var(--input)); border-radius: 8px; overflow: hidden; }
+.policy-segment label { position: relative; display: inline-flex; }
+.policy-segment input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.policy-segment span { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 .9rem; font-size: .85rem; cursor: pointer;
+  color: hsl(var(--foreground)); border-right: 1px solid hsl(var(--input)); transition: background-color 150ms cubic-bezier(.2, .7, .2, 1); }
+.policy-segment label:last-child span { border-right: 0; }
+.policy-segment input:checked + span { background: hsl(var(--primary)); color: hsl(var(--primary-foreground)); font-weight: 600; }
+.policy-segment input:focus-visible + span { outline: 2px solid hsl(var(--ring)); outline-offset: -3px; }
+.policy-label-icon { display: inline-flex; align-items: center; gap: .35rem; }
+.policy-label-icon svg { width: .9rem; height: .9rem; color: hsl(var(--primary)); }
+@media (prefers-reduced-motion: reduce) {
+  .policy-disclosure, .policy-disclosure svg:last-child, .policy-segment span { transition: none; }
+}
+/* Placement (integration): badges sit in the free middle of the header row, the camera notice small at the
+   bottom edge, so neither covers an agent card. With an attention banner the badges move below it. */
+.presence-dock { top: 2.2cqw; right: 0; left: 0; margin-inline: auto; width: fit-content; flex-direction: row; align-items: center;
+  flex-wrap: wrap; justify-content: center; max-width: 46%; }
+.stage[data-attention="true"] .presence-dock { top: 5.4cqw; }
+.presence-camera { position: absolute; left: 2.6cqw; bottom: .45cqw; z-index: 35; font-size: .7em; opacity: .8; pointer-events: none; }

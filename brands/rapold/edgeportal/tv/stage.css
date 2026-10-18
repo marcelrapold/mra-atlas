@@ -1,0 +1,662 @@
+/* Ist-Stand des EdgePortal-TVs, übernommen aus marcelrapold/mra-edgeportal @ e46563c (18.10.2026): app/stage.css.
+   Atlas hält diese Kopie als Referenz, damit der TV-Stand reproduzierbar bleibt. Ausgelassen: «Controller settings» (Steuerung, nicht TV). Sonst unverändert.
+   Nicht von Hand angleichen: Änderungen kommen aus dem Produkt und werden hier mit Commit nachgeführt. */
+
+/* Stage: agents, RadioX and Argus for a screen at living-room distance.
+   The stage is one size container. Everything scales from one fluid unit (--st-fs, the
+   body size; --st-px is one design pixel at 1080p), so a 4K TV, a portrait screen and the
+   controller preview show the same picture. Layout reflows by aspect ratio and agent count.
+   Colours are Atlas 0.11 (brand rapold, dark) roles; never hard-code hex below the tokens. */
+
+@property --st-fs { syntax: "<length>"; inherits: true; initial-value: 16px; }
+@property --st-px { syntax: "<length>"; inherits: true; initial-value: 0.8px; }
+
+.stage {
+  /* Atlas roles (dark) */
+  --st-bg: #050b19;
+  --st-abyss: #02060f;
+  --st-fg: #edf5ff;
+  --st-card: #0b1528;
+  --st-popover: #142741;
+  --st-primary: #38b8ff;
+  --st-primary-fg: #04101d;
+  --st-muted: #142741;
+  --st-muted-fg: #9aadc7;
+  --st-info: #38b8ff;
+  --st-success: #34d399;
+  --st-warning: #fbbf24;
+  --st-danger: #fb7185;
+  --st-border: #23334a;          /* decorative only */
+  --st-input: #5f7089;           /* functional outlines, >= 3:1 */
+  --st-surface-info: #0f2239;
+  --st-surface-success: #0e2431;
+  --st-surface-warning: #1e2328;
+  --st-surface-danger: #1e1c2f;
+  /* Atlas identity palette (not roles) */
+  --st-azure: #009dff;
+  --st-ice: #a8edff;
+  --st-raised: #0066b3;
+  --st-firstglut: #ffa36c;       /* only the one diamond full stop after the title */
+  /* Derived layers */
+  --st-glass: color-mix(in srgb, var(--st-card) 80%, transparent);
+  --st-solid: color-mix(in srgb, var(--st-card) 94%, transparent);
+  --st-scrim: color-mix(in srgb, var(--st-bg) 90%, transparent);
+  --st-raised-border: color-mix(in srgb, var(--st-raised) 28%, transparent);
+  --st-glow: color-mix(in srgb, var(--st-azure) 22%, transparent);
+  /* Motion (Atlas) plus one cinematic duration for picture cross-fades */
+  --st-fast: 150ms;
+  --st-normal: 180ms;
+  --st-slow: 300ms;
+  --st-deliberate: 500ms;
+  --st-cinema: 1200ms;
+  --st-ease: cubic-bezier(.2, .7, .2, 1);
+  --st-ease-enter: cubic-bezier(0, 0, .2, 1);
+  --st-ease-exit: cubic-bezier(.4, 0, 1, 1);
+  --overscan: 0;
+  --accent: var(--st-primary);
+
+  container: stage / size;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
+  inline-size: 100%;
+  block-size: 100%;
+  min-block-size: 16rem;
+  color: var(--st-fg);
+  color-scheme: dark;
+  background: var(--st-bg);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-weight: 400;
+  line-height: 1.35;
+  font-variant-numeric: tabular-nums;
+}
+/* Direct children resolve the fluid unit against the stage (container units on .stage itself
+   would refer to its parent). Registered as <length>, so descendants inherit pixels. */
+.stage > * {
+  /* Width on landscape, height on ultra-wide, and portrait screens are as tall as a TV is wide. */
+  --st-fs: clamp(16px, min(1.9cqi, 1.9cqb, max(1.05cqi, 1.05cqb)), 120px);
+  --st-px: calc(var(--st-fs) / 20);
+  --st-edge-x: max(env(safe-area-inset-left, 0px), calc(var(--overscan) * 1cqi + 2.4 * var(--st-fs)));
+  --st-edge-y: max(env(safe-area-inset-top, 0px), calc(var(--overscan) * 1cqb + 1.5 * var(--st-fs)));
+  font-size: var(--st-fs);
+}
+.stage[data-preview="true"] > * { --st-fs: clamp(4px, min(1.9cqi, 1.9cqb, max(1.05cqi, 1.05cqb)), 20px); }
+.stage { --st-gap: calc(var(--st-px) * 24); }
+.screen-frame .stage { aspect-ratio: 16 / 9; block-size: auto; min-block-size: 0; border-radius: 6px; }
+/* Not flex: 1. A flexed size-container has an indefinite block size during query evaluation in
+   Chromium, so cqb and aspect-ratio queries would see 0. A fixed 100dvh keeps them definite. */
+.screen-view > .stage { flex: 0 0 auto; block-size: 100dvh; }
+/* On a screen the stage owns the whole display; the toolbar appears after input (mouse moved,
+   tap, key) or while offline, and hides again on its own (data-toolbar, screen-client.tsx). */
+.screen-view:has(> .stage) .screen-toolbar {
+  position: fixed; inset: auto 0 0 0; z-index: 40; opacity: 0; transform: translateY(100%); pointer-events: none;
+  transition: opacity .3s ease, transform .3s ease;
+}
+.screen-view:has(> .stage)[data-toolbar="shown"] .screen-toolbar,
+.screen-view:has(> .stage) .screen-toolbar:focus-within { opacity: 1; transform: none; pointer-events: auto; }
+@media (prefers-reduced-motion: reduce) { .screen-view:has(> .stage) .screen-toolbar { transition: opacity .2s linear; } }
+
+/* State tones: colour is never the only signal (every badge carries word and form). */
+.stage [data-level] { --tone: var(--st-success); --tone-surface: var(--st-surface-success); }
+.stage [data-level="arbeitet"] { --tone: var(--st-info); --tone-surface: var(--st-surface-info); }
+.stage [data-level="frage"], .stage [data-level="dialog"] { --tone: var(--st-warning); --tone-surface: var(--st-surface-warning); }
+.stage [data-level="haengt"] { --tone: var(--st-danger); --tone-surface: var(--st-surface-danger); }
+.stage [data-level="aus"] { --tone: var(--st-muted-fg); --tone-surface: var(--st-muted); }
+
+.stage-eyebrow {
+  display: block; font-family: var(--font-geist-mono), ui-monospace, monospace; font-weight: 400;
+  font-size: .9em; line-height: 1.2; letter-spacing: .2em; text-transform: uppercase; color: var(--st-muted-fg);
+}
+.stage .signet-light { display: none; }
+.stage .signet-dark { display: block; }
+
+/* ---------- Ambience: soft gradients, no blur filter (cheap on every GPU) ---------- */
+.stage-ambience { position: absolute; inset: -12%; z-index: -2; pointer-events: none; opacity: .5; }
+.stage-ambience span { position: absolute; inline-size: 62%; block-size: 70%; border-radius: 50%; will-change: transform; }
+.stage-ambience span:nth-child(1) { left: 0; top: 0; background: radial-gradient(closest-side, color-mix(in srgb, var(--agent-a) 55%, transparent), transparent); }
+.stage-ambience span:nth-child(2) { right: 0; top: 14%; background: radial-gradient(closest-side, color-mix(in srgb, var(--agent-b) 50%, transparent), transparent); }
+.stage-ambience span:nth-child(3) { left: 24%; bottom: -4%; background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 34%, transparent), transparent); }
+.ambience-aurora .stage-ambience span:nth-child(1) { animation: stage-drift-a 40s ease-in-out infinite alternate; }
+.ambience-aurora .stage-ambience span:nth-child(2) { animation: stage-drift-b 52s ease-in-out infinite alternate; }
+.ambience-aurora .stage-ambience span:nth-child(3) { animation: stage-drift-c 64s ease-in-out infinite alternate; }
+.ambience-ruhig .stage-ambience { opacity: .3; }
+.ambience-kino .stage-ambience { opacity: .26; }
+.stage::after { /* fine grain keeps large gradients from banding on TVs */
+  content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .045;
+  background-image: radial-gradient(color-mix(in srgb, var(--st-fg) 70%, transparent) .5px, transparent .6px); background-size: 3px 3px;
+}
+@keyframes stage-drift-a { to { transform: translate(12%, 9%) scale(1.12); } }
+@keyframes stage-drift-b { to { transform: translate(-14%, 7%) scale(.92); } }
+@keyframes stage-drift-c { to { transform: translate(9%, -10%) scale(1.16); } }
+/* Kino scene: the deepest layer, drifting slowest (parallax against the portraits). */
+.stage-scene { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.stage-scene img { inline-size: 100%; block-size: 100%; object-fit: cover; opacity: .36; animation: stage-scene 90s ease-in-out infinite alternate; }
+.stage-scene::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--st-bg) 60%, transparent), color-mix(in srgb, var(--st-bg) 20%, transparent) 35%, color-mix(in srgb, var(--st-bg) 88%, transparent) 82%),
+    radial-gradient(ellipse at 50% 40%, transparent 30%, color-mix(in srgb, var(--st-bg) 72%, transparent)); }
+@keyframes stage-scene { from { transform: scale(1.02); } to { transform: scale(1.08) translate(-1.2%, .8%); } }
+
+/* ---------- Header ---------- */
+.stage-header {
+  grid-row: 1; margin: var(--st-edge-y) var(--st-edge-x) 0;
+  display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: var(--st-gap);
+}
+.stage-brand { grid-column: 1; display: flex; align-items: center; gap: .75em; min-inline-size: 0; }
+.stage-brand .signet { inline-size: max(24px, calc(var(--st-px) * 44)) !important; block-size: max(24px, calc(var(--st-px) * 44)) !important; }
+.stage-brand > div { min-inline-size: 0; }
+.stage-brand strong { display: block; margin-top: .2em; font-size: 1.6em; font-weight: 650; letter-spacing: -.02em; line-height: 1.12;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Firstglut: the 45° diamond full stop, once per view. */
+.stage-glut { display: inline-block; inline-size: .26em; block-size: .26em; margin-left: .2em; vertical-align: .08em; overflow: hidden;
+  color: transparent; background: var(--st-firstglut); transform: rotate(45deg); }
+.stage-attention { grid-column: 2; display: flex; flex-wrap: wrap; justify-content: center; gap: .6em; }
+.stage-attention > span {
+  display: inline-flex; align-items: center; gap: .55em; padding: .45em 1.1em .45em .5em; border-radius: 999px;
+  font-size: 1.1em; font-weight: 400; color: var(--st-fg); background: var(--tone-surface);
+  border: calc(var(--st-px) * 3) solid var(--tone); animation: stage-pop var(--st-deliberate) var(--st-ease-enter) both;
+}
+.stage-attention strong { font-weight: 650; }
+.stage-attention-form, .stage-state-form {
+  display: grid; place-items: center; flex: none; inline-size: 1.6em; block-size: 1.6em; border-radius: 50%;
+  font-size: .8em; font-weight: 650; line-height: 1; color: var(--st-primary-fg); background: var(--tone);
+}
+.stage-status { grid-column: 3; justify-self: end; display: flex; align-items: center; gap: .9em; min-inline-size: 0; }
+.stage-clock { display: grid; text-align: right; line-height: 1.05; }
+.stage-clock strong { font-size: 2.4em; font-weight: 650; letter-spacing: -.03em; }
+.stage-clock span { margin-top: .25em; color: var(--st-muted-fg); font-size: .9em; white-space: nowrap; }
+.stage-voice, .stage-offline, .stage-presence {
+  display: inline-flex; align-items: center; gap: .45em; padding: .4em .9em; border-radius: 999px; white-space: nowrap;
+  font-size: .9em; color: var(--st-fg); background: var(--st-glass); border: calc(var(--st-px) * 1.5) solid var(--st-border);
+}
+.stage-voice svg { inline-size: 1.15em; block-size: 1.15em; color: var(--st-success); }
+/* Sound off: one calm line that says why and how to get it back (lib/sound-state.ts). No motion, no blur: Pi-safe. */
+.stage-sound-off {
+  display: inline-flex; align-items: center; gap: .5em; padding: .45em 1em; border-radius: 999px; white-space: nowrap;
+  font-size: 1em; font-weight: 400; color: var(--st-fg); background: var(--st-glass); border: calc(var(--st-px) * 1.5) solid var(--st-border);
+}
+.stage-sound-off svg { flex: none; inline-size: 1.15em; block-size: 1.15em; color: var(--st-muted-fg); }
+/* RadioX full screen hides the header: the line sits at the top centre, above the view. */
+.stage-sound-float { position: absolute; z-index: 25; inset-block-start: var(--st-edge-y); inset-inline: 0;
+  display: flex; justify-content: center; pointer-events: none; }
+.stage-offline { background: var(--st-surface-warning); border-color: var(--st-warning); }
+.stage-offline::before { content: "!"; display: grid; place-items: center; inline-size: 1.3em; block-size: 1.3em; border-radius: 50%;
+  font-weight: 650; font-size: .85em; color: var(--st-primary-fg); background: var(--st-warning); }
+.stage-presence { font-weight: 650; animation: stage-pop var(--st-deliberate) var(--st-ease-enter) both; }
+.stage-presence[data-kind="greet"] { background: var(--st-surface-info); border-color: color-mix(in srgb, var(--st-primary) 60%, transparent); }
+.stage-presence[data-kind="guest"] { background: var(--st-surface-warning); border-color: var(--st-warning); }
+.stage-presence[data-kind="private"] { color: var(--st-muted-fg); font-weight: 400; }
+
+/* ---------- Body: one grid, areas by RadioX placement, Argus and aspect ratio ---------- */
+.stage-body {
+  grid-row: 2; min-block-size: 0; margin: var(--st-gap) var(--st-edge-x) var(--st-edge-y);
+  --st-side: clamp(calc(var(--st-px) * 300), 26%, calc(var(--st-px) * 520));
+  display: grid; gap: var(--st-gap);
+  grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); grid-template-areas: "agents";
+}
+.stage-body > :not(.stage-radio, .stage-argus) { grid-area: agents; min-block-size: 0; min-inline-size: 0; }
+.stage-body > .stage-radio { grid-area: radio; min-inline-size: 0; }
+.stage-body > .stage-argus { grid-area: argus; min-inline-size: 0; }
+/* Leiste: RadioX as a bar below the agents, the camera beside it. */
+.radio-leiste .stage-body { grid-template-rows: minmax(0, 1fr) auto; grid-template-areas: "agents" "radio"; }
+.radio-leiste .stage-body:has(> .stage-argus) { grid-template-columns: minmax(0, 1fr) calc(var(--st-px) * 300); grid-template-areas: "agents agents" "radio argus"; }
+/* Karte: RadioX and the camera in a side column. */
+.radio-karte .stage-body { grid-template-columns: minmax(0, 1fr) var(--st-side); grid-template-rows: auto minmax(0, 1fr); grid-template-areas: "agents radio" "agents ."; }
+.radio-karte .stage-body:has(> .stage-argus) { grid-template-areas: "agents radio" "agents argus"; }
+.radio-karte .stage-body > .stage-argus { align-self: start; }
+.radio-aus .stage-body:has(> .stage-argus) { grid-template-columns: minmax(0, 1fr) var(--st-side); grid-template-areas: "agents argus"; }
+.radio-aus .stage-body > .stage-argus { align-self: start; }
+/* Without agents RadioX becomes the hero. */
+.stage[data-agents="false"] .stage-body { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); grid-template-areas: "radio"; align-items: center; }
+.stage[data-agents="false"] .stage-body:has(> .stage-argus) { grid-template-columns: minmax(0, 1fr) var(--st-side); grid-template-areas: "radio argus"; }
+.stage[data-agents="false"] .stage-radio { font-size: 1.5em; }
+
+/* Ultra-wide (21:9 and wider): height is scarce, so RadioX always moves to the side. */
+@container stage (aspect-ratio > 2.1) {
+  .radio-leiste .stage-body, .radio-leiste .stage-body:has(> .stage-argus) {
+    grid-template-columns: minmax(0, 1fr) var(--st-side); grid-template-rows: auto minmax(0, 1fr); grid-template-areas: "agents radio" "agents argus";
+  }
+  .radio-leiste .stage-radio { grid-template-columns: minmax(0, 1fr); grid-template-areas: "cover" "main" "stream"; }
+  .radio-leiste .stage-body > .stage-argus { align-self: start; }
+}
+/* Portrait and near-square: everything stacks, RadioX becomes a bar. */
+@container stage (aspect-ratio < .8) {
+  .stage-header { grid-template-columns: minmax(0, 1fr) auto; }
+  .stage-attention { grid-column: 1 / -1; grid-row: 2; justify-content: flex-start; }
+  .stage-status { grid-column: 2; grid-row: 1; }
+  .stage-voice, .stage-presence[data-kind="private"] { display: none; }
+  .radio-leiste .stage-body, .radio-karte .stage-body, .radio-aus .stage-body:has(> .stage-argus) {
+    grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) auto; grid-template-areas: "agents" "radio";
+  }
+  .stage .stage-body:has(> .stage-argus) { grid-template-columns: minmax(0, 1fr) 38%; grid-template-rows: minmax(0, 1fr) auto; grid-template-areas: "agents agents" "radio argus"; }
+  .radio-aus .stage-body:has(> .stage-argus) { grid-template-areas: "agents agents" ". argus"; }
+  .stage-body > .stage-argus { align-self: stretch; }
+  .radio-karte .stage-radio { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "cover main" "stream stream"; }
+  .radio-karte .stage-radio-cover { inline-size: calc(var(--st-px) * 140); }
+}
+
+/* ---------- Loading, empty and error states (Atlas empty-state rules) ---------- */
+.stage-empty {
+  display: grid; place-content: center; justify-items: center; gap: .55em; padding: 2em; text-align: center;
+  border-radius: calc(var(--st-px) * 24); color: var(--st-muted-fg);
+  background: color-mix(in srgb, var(--st-card) 40%, transparent); border: calc(var(--st-px) * 2) dashed var(--st-input);
+}
+.stage-empty .signet { inline-size: max(24px, calc(var(--st-px) * 64)) !important; block-size: max(24px, calc(var(--st-px) * 64)) !important; margin-bottom: .4em; }
+.stage-empty h2 { color: var(--st-fg); font-size: 1.8em; font-weight: 650; letter-spacing: -.02em; line-height: 1.12; text-wrap: balance; }
+.stage-empty p { max-inline-size: 34em; font-size: 1.05em; line-height: 1.5; text-wrap: pretty; }
+.stage-empty[data-kind="loading"] { border-style: solid; border-color: var(--st-border); }
+.stage-empty[data-kind="error"] { border-style: solid; border-color: var(--st-danger); background: var(--st-surface-danger); color: var(--st-fg); }
+.stage-spinner { inline-size: 2.2em; block-size: 2.2em; border-radius: 50%; margin-bottom: .4em;
+  border: calc(var(--st-px) * 4) solid var(--st-border); border-top-color: var(--st-primary); animation: stage-spin 1s linear infinite; }
+@keyframes stage-spin { to { transform: rotate(360deg); } }
+
+/* ---------- Agent grid: columns by count and aspect ---------- */
+.stage-agents { --cols: 1; display: grid; gap: var(--st-gap); grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); grid-auto-rows: minmax(0, 1fr); }
+.stage-agents[data-count="2"] { --cols: 2; }
+.stage-agents[data-count="3"], .stage-agents[data-count="5"], .stage-agents[data-count="6"] { --cols: 3; }
+.stage-agents[data-count="4"] { --cols: 4; }
+@container stage (aspect-ratio < 1.5) { .stage-agents[data-count="4"] { --cols: 2; } }
+@container stage (aspect-ratio > 2.1) { .stage-agents[data-count="5"] { --cols: 5; } .stage-agents[data-count="6"] { --cols: 6; } }
+@container stage (aspect-ratio < .8) {
+  .stage-agents[data-count="2"] { --cols: 1; }
+  .stage-agents[data-count="3"], .stage-agents[data-count="4"], .stage-agents[data-count="5"], .stage-agents[data-count="6"] { --cols: 2; }
+  .stage-agents[data-count="3"] > :first-child { grid-column: 1 / -1; }
+}
+.stage-agents.view-terminal[data-count="4"] { --cols: 2; }
+
+/* ---------- Agent card ---------- */
+.stage-agent {
+  container: agent / size;
+  position: relative; display: flex; flex-direction: column; gap: calc(var(--st-px) * 16); min-block-size: 0; min-inline-size: 0;
+  padding: calc(var(--st-px) * 24); border-radius: calc(var(--st-px) * 24); overflow: hidden;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--agent) 12%, var(--st-glass)), var(--st-glass) 48%);
+  border: calc(var(--st-px) * 1.5) solid color-mix(in srgb, var(--agent) 26%, var(--st-border));
+  outline: 0 solid transparent; outline-offset: calc(var(--st-px) * 4);
+  transition: border-color var(--st-deliberate) var(--st-ease), outline-color var(--st-deliberate) var(--st-ease), box-shadow var(--st-deliberate) var(--st-ease);
+}
+/* Attention reads from three metres: a thick tone frame, a banner and the word. No pulsing. */
+.stage-agent[data-level="frage"], .stage-agent[data-level="dialog"], .stage-agent[data-level="haengt"] {
+  border-color: var(--tone); outline: calc(var(--st-px) * 3) solid color-mix(in srgb, var(--tone) 55%, transparent);
+}
+/* Stage glow is the one Atlas allows: azure at .22, never a dark drop shadow. */
+.stage-agent[data-speaking="true"] { border-color: color-mix(in srgb, var(--agent) 70%, transparent);
+  box-shadow: 0 0 calc(var(--st-px) * 56) var(--st-glow); }
+.stage-agent-head { display: flex; align-items: center; gap: calc(var(--st-px) * 24); min-inline-size: 0; }
+.stage-agent-id { min-inline-size: 0; }
+.stage-agent-id h2 { font-size: 2.6em; font-weight: 650; letter-spacing: -.03em; line-height: 1.05; }
+.stage-agent-id > p { color: var(--st-muted-fg); margin: .25em 0 .6em; }
+/* Runtime model: one calm line under the name; a fallback gets a quiet warning marker, never an alarm. */
+.stage-model { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2em .6em; margin-top: .3em; min-inline-size: 0;
+  color: var(--st-muted-fg); font-size: .95em; line-height: 1.25; }
+.stage-model-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; letter-spacing: .01em; }
+.stage-model-fallback { padding: .05em .55em; border-radius: 999px; font-size: .85em; font-weight: 600; white-space: nowrap;
+  color: var(--st-fg); background: var(--st-surface-warning); border: calc(var(--st-px) * 1.5) solid color-mix(in srgb, var(--st-warning) 60%, transparent); }
+.stage-model-fallback span { font-weight: 400; }
+.stage-model-detail { flex-basis: 100%; font-family: var(--font-geist-mono), ui-monospace, monospace; font-size: .8em; letter-spacing: .02em; }
+.stage-agent[data-compact="true"] .stage-model { font-size: .8em; }
+.stage-focus-hero .stage-model { justify-content: center; font-size: 1.15em; }
+.stage-focus-hero.is-poster .stage-model { justify-content: flex-start; }
+/* Autonomy: a calm stage word (fragt · meldet · voll); a lock is a clear marker, never an alarm. Cost only in the focus view. */
+.stage-autonomy { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2em .6em; margin-top: .45em; min-inline-size: 0;
+  color: var(--st-muted-fg); font-size: .9em; line-height: 1.25; }
+.stage-autonomy-level { letter-spacing: .02em; }
+.stage-autonomy-level::before { content: "◇ "; opacity: .7; }
+.stage-autonomy[data-level="voll"] .stage-autonomy-level::before { content: "◆ "; }
+.stage-autonomy-lock { padding: .05em .55em; border-radius: 999px; font-size: .9em; font-weight: 650; white-space: nowrap;
+  color: var(--st-fg); background: var(--st-surface-danger); border: calc(var(--st-px) * 1.5) solid color-mix(in srgb, var(--st-danger) 70%, transparent); }
+.stage-autonomy-cost { flex-basis: 100%; font-family: var(--font-geist-mono), ui-monospace, monospace; font-size: .85em; letter-spacing: .02em; }
+.stage-agent[data-compact="true"] .stage-autonomy { font-size: .8em; }
+.stage-focus-hero .stage-autonomy { justify-content: center; font-size: 1.05em; }
+.stage-focus-hero.is-poster .stage-autonomy { justify-content: flex-start; }
+/* Open approval ("braucht dich"): prominent but calm; answering happens only in the Leitstand. */
+.stage-approval { display: flex; align-items: flex-start; gap: .6em; padding: .6em .9em; border-radius: calc(var(--st-px) * 16);
+  color: var(--st-fg); background: var(--st-surface-warning); border: calc(var(--st-px) * 2) solid var(--st-warning); }
+.stage-approval-form { flex: none; color: var(--st-warning); font-size: 1.1em; line-height: 1.3; }
+.stage-approval p { min-inline-size: 0; display: grid; gap: .2em; }
+.stage-approval strong { font-size: 1.1em; font-weight: 650; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.stage-approval-hint { color: var(--st-muted-fg); font-size: .85em; }
+.stage-focus-hero .stage-approval { margin-top: .8em; text-align: start; }
+/* Emergency stop: full width between header and body, red-ish but steady (no blinking). */
+.stage:has(> .stage-brake) { grid-template-rows: auto auto minmax(0, 1fr); }
+.stage:has(> .stage-brake) > .stage-body { grid-row: 3; }
+.stage-brake { grid-row: 2; margin: var(--st-gap) var(--st-edge-x) 0; display: flex; flex-wrap: wrap; align-items: center; gap: .4em 1em;
+  padding: .7em 1.1em; border-radius: calc(var(--st-px) * 16); font-size: 1.2em; color: var(--st-fg);
+  background: color-mix(in srgb, var(--st-danger) 22%, var(--st-surface-danger)); border: calc(var(--st-px) * 2) solid var(--st-danger); }
+.stage-brake-form { color: var(--st-danger); }
+.stage-brake strong { font-weight: 650; flex: 1 1 20em; min-inline-size: 0; overflow-wrap: anywhere; }
+.stage-brake-hint { color: var(--st-muted-fg); font-size: .8em; }
+.stage-agent-title { color: var(--st-muted-fg); font-size: .9em; margin-top: .55em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stage-agent-flag {
+  display: flex; align-items: center; gap: .55em; padding: .55em .9em; border-radius: calc(var(--st-px) * 16);
+  font-size: 1.15em; font-weight: 650; color: var(--st-fg); background: var(--tone-surface); border: calc(var(--st-px) * 2) solid var(--tone);
+}
+.stage-agent-flag::before { content: "?"; display: grid; place-items: center; flex: none; inline-size: 1.5em; block-size: 1.5em; border-radius: 50%;
+  font-size: .8em; color: var(--st-primary-fg); background: var(--tone); }
+.stage-agent-flag[data-level="dialog"]::before { content: "!"; }
+.stage-agent[data-compact="true"] { padding: calc(var(--st-px) * 16); gap: calc(var(--st-px) * 12); }
+.stage-agent[data-compact="true"] .stage-agent-head { gap: calc(var(--st-px) * 14); }
+.stage-agent[data-compact="true"] .stage-agent-id h2 { font-size: 1.6em; }
+.stage-agent[data-compact="true"] .stage-agent-id > p:not(.stage-agent-title) { display: none; }
+.stage-agent[data-compact="true"] .stage-agent-title { display: none; }
+@container agent (block-size < 26em) {
+  .stage-agent-id > p:not(.stage-agent-title) { display: none; }
+  .stage-agent-title { display: none; }
+  .stage-bubble p { -webkit-line-clamp: 2; }
+}
+@container agent (block-size < 17em) {
+  .stage-agent:not([data-compact="true"]) .stage-terminal { display: none; }
+}
+@container agent (inline-size < 18em) {
+  .stage-agent-id h2 { font-size: 1.9em; }
+  .stage-state-since { display: none; }
+}
+
+/* ---------- Avatar (circle) ---------- */
+.stage-avatar {
+  position: relative; flex: none; aspect-ratio: 1; border-radius: 50%;
+  inline-size: clamp(calc(var(--st-px) * 56), min(34cqi, 34cqb), calc(var(--st-px) * 360));
+  background: radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--agent) 30%, var(--st-card)), var(--st-abyss) 72%);
+}
+.stage-agents[data-count="1"] .stage-avatar:not(.is-poster) { inline-size: clamp(calc(var(--st-px) * 80), min(30cqi, 42cqb), calc(var(--st-px) * 480)); }
+.stage-agent[data-compact="true"] .stage-avatar { inline-size: calc(var(--st-px) * 64); }
+.stage-mini .stage-avatar { inline-size: calc(var(--st-px) * 64); }
+.stage-avatar-media { position: absolute; inset: 0; border-radius: inherit; overflow: hidden; }
+.stage-avatar-layer { position: absolute; inset: 0; overflow: hidden; }
+.stage-avatar img, .stage-avatar video { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; }
+/* Cross-fade: the new picture fades in over the old one, the old one leaves a little later (no dark dip). */
+.stage-avatar .is-top { animation: stage-fade-in var(--st-cinema) var(--st-ease) both; }
+.stage-avatar .is-below { animation: stage-fade-out 700ms var(--st-ease-exit) 500ms both; }
+@keyframes stage-fade-in { from { opacity: 0; } }
+@keyframes stage-fade-out { to { opacity: 0; } }
+.stage-avatar[data-kind="video"] video { image-rendering: pixelated; }
+.stage-avatar-initial { position: absolute; inset: 0; display: grid; place-items: center; font-size: 2.2em; font-weight: 650; color: var(--st-fg); }
+.stage-avatar-ring { position: absolute; inset: -5%; border-radius: 50%; pointer-events: none;
+  border: calc(var(--st-px) * 3) solid color-mix(in srgb, var(--agent) 60%, transparent); }
+.stage-avatar[data-level="frage"] .stage-avatar-ring, .stage-avatar[data-level="dialog"] .stage-avatar-ring,
+.stage-avatar[data-level="haengt"] .stage-avatar-ring { border-color: var(--tone); border-width: calc(var(--st-px) * 4); }
+.stage-avatar[data-level="arbeitet"] .stage-avatar-ring { border-style: dashed; animation: stage-spin 16s linear infinite; }
+.stage-avatar[data-speaking="true"] .stage-avatar-ring { border-color: var(--agent); border-style: solid; animation: none; }
+.stage-avatar[data-level="aus"] .stage-avatar-media { filter: grayscale(.9) brightness(.6); }
+/* Kino portraits are stills: give them slow life (breathing zoom) and state light. */
+.stage-avatar[data-kind="kino"] img { object-position: 50% 22%; transform-origin: 50% 30%; }
+.stage-avatar[data-kind="kino"] img { animation: stage-kino 24s ease-in-out infinite alternate; }
+.stage-avatar[data-kind="kino"][data-level="arbeitet"] img { animation-duration: 12s; }
+.stage-avatar[data-kind="kino"][data-level="aus"] img { animation: none; }
+@keyframes stage-kino { from { transform: scale(1.03); } to { transform: scale(1.1) translateY(1.2%); } }
+.stage-avatar[data-kind="kino"]:not(.is-poster)::after { content: ""; position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle at 50% 115%, color-mix(in srgb, var(--agent) 36%, transparent), transparent 55%); }
+
+/* Speaking: a level meter with the word, for every avatar style. */
+.stage-avatar-voice {
+  position: absolute; left: 50%; bottom: -8%; z-index: 3; transform: translateX(-50%);
+  display: inline-flex; align-items: center; gap: .5em; padding: .3em .75em; border-radius: 999px; white-space: nowrap;
+  font-family: var(--font-geist-mono), ui-monospace, monospace; font-size: .9em; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--st-fg); background: var(--st-scrim); border: calc(var(--st-px) * 1.5) solid color-mix(in srgb, var(--agent) 70%, transparent);
+  animation: stage-pop var(--st-slow) var(--st-ease-enter) both;
+}
+.stage-avatar-bars { display: inline-flex; align-items: flex-end; gap: .18em; block-size: 1.1em; }
+.stage-avatar-bars i { inline-size: .22em; block-size: 100%; border-radius: 1px; background: var(--agent); transform-origin: 50% 100%;
+  transform: scaleY(.3); animation: stage-eq .9s ease-in-out infinite alternate; }
+.stage-avatar-bars i:nth-child(2) { animation-delay: -.3s; }
+.stage-avatar-bars i:nth-child(3) { animation-delay: -.6s; }
+.stage-avatar-bars i:nth-child(4) { animation-delay: -.15s; }
+.stage-avatar-bars i:nth-child(5) { animation-delay: -.45s; }
+@keyframes stage-eq { to { transform: scaleY(1); } }
+.stage-mini .stage-avatar-voice { font-size: 0; gap: 0; padding: .25em .4em; }
+.stage-mini .stage-avatar-bars { font-size: 10px; }
+
+/* ---------- State badge ---------- */
+.stage-state {
+  display: inline-flex; align-items: center; gap: .5em; max-inline-size: 100%; padding: .32em .9em .32em .36em; border-radius: 999px;
+  font-size: .95em; font-weight: 650; white-space: nowrap; color: var(--st-fg);
+  background: var(--tone-surface); border: calc(var(--st-px) * 1.5) solid color-mix(in srgb, var(--tone) 60%, transparent);
+  transition: background-color var(--st-slow) var(--st-ease), border-color var(--st-slow) var(--st-ease);
+}
+.stage-state > span:not([class]) { overflow: hidden; text-overflow: ellipsis; }
+.stage-state-since { color: var(--st-muted-fg); font-weight: 400; }
+
+/* ---------- Speech bubble ---------- */
+.stage-bubble { position: relative; margin: 0; padding: .8em 1em; border-radius: calc(var(--st-px) * 16); font-size: 1.05em; line-height: 1.45;
+  background: color-mix(in srgb, var(--st-bg) 78%, transparent); border: calc(var(--st-px) * 1.5) solid var(--st-border); }
+.stage-bubble p { display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; white-space: pre-line; text-wrap: pretty; }
+.stage-bubble[data-waiting="true"] { background: var(--st-surface-warning); border: calc(var(--st-px) * 2) solid var(--st-warning); }
+.stage-bubble-kicker { display: flex; align-items: center; gap: .5em; margin-bottom: .45em; color: var(--st-fg);
+  font-family: var(--font-geist-mono), ui-monospace, monospace; font-size: .9em; letter-spacing: .2em; text-transform: uppercase; }
+.stage-bubble-kicker::before { content: ""; inline-size: .6em; block-size: .6em; background: var(--st-warning); transform: rotate(45deg); }
+
+/* ---------- Terminal ---------- */
+.stage-terminal { flex: 1 1 0; min-block-size: 0; overflow: hidden; container-type: inline-size; contain: content;
+  border-radius: calc(var(--st-px) * 16); background: color-mix(in srgb, var(--st-abyss) 92%, transparent);
+  border: calc(var(--st-px) * 1.5) solid var(--st-border);
+  display: flex; flex-direction: column; justify-content: flex-end;
+  mask-image: linear-gradient(to bottom, transparent, #000 18%); }
+.stage-terminal pre { margin: 0; padding: .6em .9em; font-family: var(--font-geist-mono), ui-monospace, monospace; color: var(--st-fg);
+  font-size: calc(100cqi / (var(--cols) * .62)); line-height: 1.3; white-space: pre; }
+.stage-terminal.size-klein pre { font-size: calc(100cqi / (var(--cols) * .75)); }
+.stage-terminal.size-gross pre { font-size: calc(100cqi / (var(--cols) * .54)); white-space: pre-wrap; }
+.stage-terminal-line { min-block-size: 1.3em; }
+.stage-terminal-empty { display: grid; place-items: center; color: var(--st-muted-fg); mask-image: none; font-size: .9em; }
+
+/* ---------- Poster cards: the cinematic portrait fills the card ---------- */
+.stage-agent.is-poster { justify-content: flex-end; background: var(--st-abyss); }
+/* The head is the picture area: the portrait fills the card behind it, the name sits at its foot. */
+.stage-agent.is-poster .stage-agent-head { flex: 1 0 34%; display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; min-block-size: 0; }
+.stage-avatar.is-poster { position: absolute; inset: 0; z-index: 0; inline-size: auto; aspect-ratio: auto; border-radius: 0; background: var(--st-abyss); }
+.stage-avatar.is-poster img, .stage-avatar.is-poster video { object-position: 50% 18%; }
+.stage-agent.is-poster > :not(.stage-agent-head), .stage-agent.is-poster .stage-agent-id { position: relative; z-index: 2; }
+/* Scrim: transparent over the face, at least 90 % navy behind any text (>= 4.5:1 even over white pixels). */
+.stage-avatar.is-poster::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(180deg, transparent 0 30%, color-mix(in srgb, var(--st-bg) 55%, transparent) 52%,
+    color-mix(in srgb, var(--st-bg) 92%, transparent) 74%, color-mix(in srgb, var(--st-bg) 97%, transparent)),
+    radial-gradient(ellipse at 85% 100%, color-mix(in srgb, var(--agent) 28%, transparent), transparent 60%); }
+.stage-agent.is-poster .stage-agent-id { margin: -3.2em calc(var(--st-px) * -24) 0; padding: 3.2em calc(var(--st-px) * 24) 0;
+  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--st-bg) 90%, transparent) 3em); }
+.stage-agent.is-poster .stage-agent-id h2 { font-size: 3.6em; }
+.stage-agent.is-poster .stage-agent-title { position: absolute; right: calc(var(--st-px) * 24); top: 0; max-inline-size: 55%; margin: 0;
+  padding: .3em .8em; border-radius: 999px; font-size: .9em; color: var(--st-fg); background: var(--st-scrim); border: calc(var(--st-px) * 1.5) solid var(--st-border); }
+.stage-agent.is-poster .stage-bubble { background: color-mix(in srgb, var(--st-bg) 92%, transparent); }
+.stage-agent.is-poster .stage-bubble[data-waiting="true"] { background: var(--st-surface-warning); }
+.stage-agent.is-poster .stage-terminal { flex: 0 1 46%; background: color-mix(in srgb, var(--st-abyss) 96%, transparent); }
+/* State light: a line along the top edge in agent colour, tone colour when it needs you. */
+.stage-avatar.is-poster .stage-avatar-ring { inset: 0 0 auto 0; z-index: 3; block-size: calc(var(--st-px) * 5); border: 0; border-radius: 0;
+  background: linear-gradient(90deg, transparent, var(--agent) 30% 70%, transparent); animation: none; }
+.stage-avatar.is-poster[data-level="frage"] .stage-avatar-ring, .stage-avatar.is-poster[data-level="dialog"] .stage-avatar-ring,
+.stage-avatar.is-poster[data-level="haengt"] .stage-avatar-ring { background: var(--tone); }
+.stage-avatar.is-poster[data-level="arbeitet"] .stage-avatar-ring { background-size: 200% 100%; animation: stage-scan 3.2s ease-in-out infinite alternate; }
+@keyframes stage-scan { from { background-position: 100% 0; } to { background-position: 0 0; } }
+.stage-avatar.is-poster .stage-avatar-voice { left: auto; right: calc(var(--st-px) * 20); top: calc(var(--st-px) * 20); bottom: auto; transform: none; font-size: .9em; }
+.stage-agents[data-count="1"] .stage-agent.is-poster .stage-agent-id h2 { font-size: 4.4em; }
+@container agent (inline-size < 22em) { .stage-agent.is-poster .stage-agent-id h2 { font-size: 2.6em; } }
+/* A wide or square poster card: picture left, words right. Tall cards keep the picture on top. */
+@container agent (aspect-ratio > .9) {
+  .stage-agent.is-poster .stage-agent-head { flex: 0 0 auto; }
+  .stage-agent.is-poster .stage-agent-id, .stage-agent.is-poster > :not(.stage-agent-head) { margin-left: 42%; }
+  .stage-avatar.is-poster { inset: 0 58% 0 0; }
+  .stage-avatar.is-poster::after { background: linear-gradient(90deg, transparent 60%, color-mix(in srgb, var(--st-abyss) 92%, transparent)),
+    linear-gradient(180deg, transparent 70%, color-mix(in srgb, var(--st-abyss) 60%, transparent)); }
+  .stage-avatar.is-poster img, .stage-avatar.is-poster video { object-position: 50% 22%; }
+  .stage-agent.is-poster .stage-agent-id { margin-block: 0; margin-right: 0; padding: 0; background: none; }
+  .stage-agent.is-poster .stage-agent-title { position: static; display: block; max-inline-size: none; margin-top: .6em;
+    padding: 0; border: 0; background: none; color: var(--st-muted-fg); }
+  .stage-agent.is-poster .stage-terminal { flex: 1 1 0; }
+  .stage-avatar.is-poster .stage-avatar-ring { inset: 0 0 auto 0; }
+  .stage-avatar.is-poster .stage-avatar-voice { left: calc(var(--st-px) * 20); right: auto; top: auto; bottom: calc(var(--st-px) * 20); }
+}
+
+/* ---------- Fokus view ---------- */
+.stage-focus { display: grid; gap: var(--st-gap); grid-template-columns: minmax(0, .9fr) minmax(0, 1.3fr);
+  grid-template-rows: minmax(0, 1fr); grid-template-areas: "hero body"; }
+.stage-focus[data-others="true"] { grid-template-rows: minmax(0, 1fr) auto; grid-template-areas: "hero body" "others others"; }
+@container stage (aspect-ratio < .8) {
+  .stage-focus, .stage-focus[data-others="true"] { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, .95fr) minmax(0, 1fr) auto;
+    grid-template-areas: "hero" "body" "others"; }
+}
+.stage-focus-hero {
+  grid-area: hero; container: hero / size; position: relative; overflow: hidden; min-block-size: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: calc(var(--st-px) * 20); text-align: center;
+  padding: calc(var(--st-px) * 32); border-radius: calc(var(--st-px) * 24);
+  background: radial-gradient(ellipse at 50% 30%, color-mix(in srgb, var(--agent) 20%, transparent), transparent 70%), var(--st-glass);
+  border: calc(var(--st-px) * 1.5) solid color-mix(in srgb, var(--agent) 28%, var(--st-border));
+  transition: border-color var(--st-deliberate) var(--st-ease);
+}
+.stage-focus-hero[data-level="frage"], .stage-focus-hero[data-level="dialog"], .stage-focus-hero[data-level="haengt"] { border: calc(var(--st-px) * 3) solid var(--tone); }
+.stage-focus-hero .stage-avatar:not(.is-poster) { inline-size: clamp(calc(var(--st-px) * 90), min(62cqi, 50cqb), calc(var(--st-px) * 640)); }
+.stage-focus-hero h2 { font-size: 4em; font-weight: 650; letter-spacing: -.03em; line-height: 1.05; }
+.stage-focus-id > p { color: var(--st-muted-fg); margin: .3em 0 .8em; }
+.stage-focus-hero.is-poster { align-items: stretch; justify-content: flex-end; text-align: left; background: var(--st-abyss); }
+.stage-focus-hero.is-poster .stage-focus-id { position: relative; z-index: 2; }
+.stage-focus-hero.is-poster .stage-agent-title { white-space: normal; }
+.stage-focus-body { grid-area: body; display: flex; flex-direction: column; gap: calc(var(--st-px) * 16); min-block-size: 0; min-inline-size: 0; }
+.stage-focus-quiet { flex: 1; display: grid; align-content: center; gap: .6em; padding: 1.4em; border-radius: calc(var(--st-px) * 24); background: var(--st-glass); }
+.stage-focus-quiet p { font-size: 1.6em; line-height: 1.35; text-wrap: balance; }
+.stage-history { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; justify-content: flex-end; gap: calc(var(--st-px) * 12);
+  flex: 1; min-block-size: 0; overflow: hidden; mask-image: linear-gradient(to bottom, transparent, #000 25%); }
+.stage-history li { max-inline-size: 88%; padding: .75em 1em; border-radius: calc(var(--st-px) * 16); line-height: 1.45; font-size: 1.05em; }
+.stage-history li p { white-space: pre-line; display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; overflow: hidden; }
+.stage-history li[data-from="agent"] { align-self: flex-start; background: color-mix(in srgb, var(--agent) 12%, var(--st-solid));
+  border: calc(var(--st-px) * 1.5) solid color-mix(in srgb, var(--agent) 28%, transparent); }
+.stage-history li[data-from="human"], .stage-history li[data-from="other"] { align-self: flex-end; background: var(--st-solid); border: calc(var(--st-px) * 1.5) solid var(--st-border); }
+.stage-focus-others { grid-area: others; display: flex; flex-wrap: wrap; gap: calc(var(--st-px) * 16); }
+.stage-mini { display: flex; align-items: center; gap: calc(var(--st-px) * 14); padding: calc(var(--st-px) * 10) calc(var(--st-px) * 20) calc(var(--st-px) * 10) calc(var(--st-px) * 10);
+  border-radius: 999px; background: var(--st-glass); border: calc(var(--st-px) * 1.5) solid var(--st-border); }
+.stage-mini[data-level="frage"], .stage-mini[data-level="dialog"], .stage-mini[data-level="haengt"] { border: calc(var(--st-px) * 3) solid var(--tone); }
+.stage-mini strong { display: block; font-size: 1.15em; font-weight: 650; margin-bottom: .2em; }
+
+/* ---------- RadioX ---------- */
+.stage-radio {
+  container: radio / inline-size; position: relative; min-block-size: 0;
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "cover main stream"; align-items: center; gap: 0 1.1em;
+  padding: calc(var(--st-px) * 14) calc(var(--st-px) * 22) calc(var(--st-px) * 14) calc(var(--st-px) * 14); border-radius: calc(var(--st-px) * 24);
+  background: var(--st-glass); border: calc(var(--st-px) * 1.5) solid var(--st-raised-border);
+}
+.stage-radio.placement-karte { grid-template-columns: minmax(0, 1fr); grid-template-areas: "cover" "main" "stream"; align-content: start; gap: 1em;
+  padding: calc(var(--st-px) * 18); }
+.stage-radio-cover { grid-area: cover; position: relative; inline-size: calc(var(--st-px) * 104); aspect-ratio: 1; border-radius: calc(var(--st-px) * 16);
+  overflow: hidden; display: grid; place-items: center; background: var(--st-card); }
+.placement-karte .stage-radio-cover { inline-size: min(100%, 36cqb); justify-self: center; }
+.stage-radio-cover img, .stage-radio-cover video { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover;
+  animation: stage-fade-in var(--st-deliberate) var(--st-ease) both; }
+.stage-radio-cover svg { inline-size: 40%; block-size: 40%; color: var(--st-muted-fg); }
+.stage-radio-main { grid-area: main; min-inline-size: 0; }
+.stage-radio-kicker { display: flex; align-items: center; flex-wrap: wrap; gap: .4em .8em; }
+.stage-radio-kicker .stage-eyebrow { font-size: .9em; }
+.stage-live { position: relative; display: inline-flex; align-items: center; gap: .5em; padding: .15em .7em .15em .55em; border-radius: 999px;
+  font-family: var(--font-geist-mono), ui-monospace, monospace; font-size: .9em; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--st-fg); background: var(--st-surface-danger); border: calc(var(--st-px) * 1.5) solid color-mix(in srgb, var(--st-danger) 70%, transparent); }
+.stage-live-dot { position: relative; inline-size: .7em; block-size: .7em; border-radius: 50%; background: var(--st-danger); }
+.stage-live-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--st-danger); opacity: .6;
+  animation: stage-live 2s var(--st-ease-exit) infinite; }
+@keyframes stage-live { to { transform: scale(2.6); opacity: 0; } }
+.stage-radio-listeners { display: inline-flex; align-items: center; gap: .35em; color: var(--st-muted-fg); font-size: .9em; }
+.stage-radio-listeners svg { inline-size: 1.15em; block-size: 1.15em; }
+.stage-radio h3 { margin-top: .2em; font-size: 1.5em; font-weight: 650; letter-spacing: -.02em; line-height: 1.12;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.placement-karte h3 { white-space: normal; font-size: 1.7em; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; text-wrap: balance; }
+.stage-radio-artist { color: var(--st-muted-fg); font-size: 1.05em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stage-radio-progress { position: relative; display: flex; justify-content: space-between; margin-top: .6em; padding-top: .7em;
+  color: var(--st-muted-fg); font-size: .9em; }
+.stage-radio-progress::before, .stage-radio-progress span { content: ""; position: absolute; left: 0; right: 0; top: 0; block-size: .35em; border-radius: 1em; }
+.stage-radio-progress::before { background: color-mix(in srgb, var(--st-fg) 16%, transparent); }
+.stage-radio-progress span { background: linear-gradient(90deg, var(--st-azure), var(--st-ice)); transform-origin: left; transition: transform 1s linear; }
+.stage-radio-meta { display: flex; flex-wrap: wrap; gap: .3em 1.4em; margin-top: .5em; color: var(--st-muted-fg); font-size: .9em; }
+.stage-radio-meta strong { color: var(--st-fg); font-weight: 650; }
+.stage-radio-stream { grid-area: stream; justify-self: start; display: flex; align-items: center; gap: .5em; padding: .45em .9em; border-radius: 999px;
+  white-space: nowrap; font-size: .9em; color: var(--st-muted-fg); background: var(--st-scrim); border: calc(var(--st-px) * 1.5) solid var(--st-border); }
+.stage-radio-stream svg { inline-size: 1.2em; block-size: 1.2em; }
+.stage-radio-stream[data-state="live"] { color: var(--st-fg); }
+.stage-radio-stream[data-state="live"] svg { color: var(--st-primary); }
+.stage-radio-stream[data-state="fehler"] { color: var(--st-fg); background: var(--st-surface-danger); border-color: var(--st-danger); }
+.stage-radio-stream[data-state="blockiert"] { color: var(--st-fg); }
+.stage-radio-stream button { margin-left: .3em; min-block-size: max(44px, 2em); padding: 0 1em; border-radius: 999px; font-weight: 650;
+  color: var(--st-primary-fg); background: var(--st-primary); }
+.stage-radio-stream button:focus-visible { outline: 3px solid var(--st-ice); outline-offset: 2px; }
+.stage-radio[data-state="unavailable"] { border-color: var(--st-danger); background: var(--st-surface-danger); }
+.stage-radio[data-state="stale"] .stage-radio-meta > span:last-child { color: var(--st-warning); }
+/* A narrow bar (portrait, small screens): the stream pill moves under the title. */
+@container radio (inline-size < 34em) {
+  .stage-radio:not(.placement-karte) { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "cover main" "cover stream"; gap: .5em 1em; }
+  .stage-radio-meta > span:nth-child(2) { display: none; }
+}
+
+/* ---------- Argus camera (shared component, stage skin) ---------- */
+.stage-argus { container: argus / inline-size; min-block-size: 0; overflow: hidden; padding: calc(var(--st-px) * 12); border-radius: calc(var(--st-px) * 24);
+  background: var(--st-glass); border: calc(var(--st-px) * 1.5) solid var(--st-border); }
+.stage-argus .argus-panel { gap: calc(var(--st-px) * 10); }
+.stage-argus .argus-frame { border-radius: calc(var(--st-px) * 16); background: var(--st-abyss); border: calc(var(--st-px) * 1.5) solid var(--st-border);
+  color: var(--st-muted-fg); font-size: .9em; }
+.stage-argus .argus-frame em { font-size: .9em; color: var(--st-primary-fg); background: var(--st-warning); }
+.stage-argus .argus-panel[data-motion="true"] .argus-frame { border-color: var(--st-warning); box-shadow: none; outline: calc(var(--st-px) * 2) solid color-mix(in srgb, var(--st-warning) 45%, transparent); }
+.stage-argus .argus-meta { gap: .3em .8em; padding-inline: .2em; color: var(--st-muted-fg); font-size: .9em; }
+.stage-argus .argus-cam, .stage-argus .argus-motion { gap: .45em; }
+.stage-argus .argus-motion svg { inline-size: 1.1em; block-size: 1.1em; }
+.stage-argus .argus-motion[data-on="true"] { color: var(--st-fg); }
+.stage-argus .argus-motion[data-on="true"] svg { color: var(--st-warning); }
+.stage-argus .argus-dot { inline-size: .55em; block-size: .55em; background: var(--st-input); }
+.stage-argus .argus-dot[data-on="true"] { background: var(--st-success); box-shadow: none; }
+.stage-argus .argus-empty { align-items: center; text-align: center; gap: .4em; padding: 1em; color: var(--st-muted-fg);
+  border: calc(var(--st-px) * 2) dashed var(--st-input); border-radius: calc(var(--st-px) * 16); }
+.stage-argus .argus-empty h3 { color: var(--st-fg); font-size: 1em; font-weight: 650; }
+.stage-argus .argus-empty p, .stage-argus .argus-note { font-size: .9em; color: var(--st-muted-fg); }
+.stage-argus .argus-orbit svg { inline-size: 2em; block-size: 2em; color: var(--st-muted-fg); }
+
+/* ---------- Captions and unlock ---------- */
+.stage-caption {
+  position: absolute; z-index: 20; inset-inline: 0; bottom: var(--st-edge-y); margin-inline: auto;
+  inline-size: fit-content; max-inline-size: calc(100% - 2 * var(--st-edge-x));
+  display: flex; gap: 1em; align-items: baseline; padding: .8em 1.3em; border-radius: calc(var(--st-px) * 24);
+  background: color-mix(in srgb, var(--st-abyss) 93%, transparent); border: calc(var(--st-px) * 2) solid color-mix(in srgb, var(--agent) 55%, transparent);
+  box-shadow: 0 0 calc(var(--st-px) * 64) var(--st-glow);
+  animation: stage-rise var(--st-deliberate) var(--st-ease-enter) both;
+}
+.stage-caption strong { flex: none; display: inline-flex; align-items: center; gap: .5em; font-size: 1.1em; font-weight: 650; color: var(--st-fg); }
+.stage-caption strong::before { content: ""; inline-size: .6em; block-size: .6em; border-radius: 50%; background: var(--agent); }
+/* Readable at three metres: at least 28 px, about 44 characters per line. */
+.stage-caption p { max-inline-size: 44ch; font-size: 1.4em; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; text-wrap: pretty; }
+.stage-caption[data-spoken="false"] { border-style: dashed; }
+.stage:not([data-preview="true"]) .stage-caption p { font-size: max(2.2cqi, 28px); }
+@keyframes stage-rise { from { opacity: 0; transform: translateY(.6em); } }
+@keyframes stage-pop { from { opacity: 0; transform: scale(.96); } }
+.stage-unlock {
+  position: absolute; z-index: 30; right: var(--st-edge-x); bottom: var(--st-edge-y);
+  display: inline-flex; align-items: center; gap: .5em; min-block-size: max(44px, 2.4em); padding: 0 1.3em; border-radius: 999px;
+  font-size: 1.05em; font-weight: 650; color: var(--st-primary-fg); background: var(--st-primary);
+}
+.stage-unlock:focus-visible { outline: 3px solid var(--st-ice); outline-offset: 3px; }
+.stage-unlock svg { inline-size: 1.2em; block-size: 1.2em; }
+
+/* ---------- Low power (Raspberry Pi): same picture, far less GPU work ---------- */
+/* No backdrop filters anywhere; only the Live dot, the voice meter and picture fades keep moving. */
+.stage[data-lowpower="true"] .stage-ambience span,
+.stage[data-lowpower="true"] .stage-scene img,
+.stage[data-lowpower="true"] .stage-avatar-ring { animation: none !important; }
+.stage[data-lowpower="true"] .stage-avatar[data-kind="kino"] img { animation: none; }
+.stage[data-lowpower="true"] .stage-avatar-bars i { animation: none; transform: scaleY(.7); }
+.stage[data-lowpower="true"] :is(.stage-terminal, .stage-history) { mask-image: none; }
+.stage[data-lowpower="true"] .stage-ambience span { will-change: auto; }
+
+/* ---------- Reduced motion: no movement or zoom, only fades up to 160 ms ---------- */
+.stage[data-motion="reduced"] *, .stage[data-motion="reduced"] *::before, .stage[data-motion="reduced"] *::after {
+  animation: none !important; transition-duration: .16s !important; transition-delay: 0s !important;
+}
+.stage[data-motion="reduced"] :is(.stage-avatar .is-top, .stage-caption, .stage-attention > span, .stage-presence, .stage-avatar-voice, .stage-radio-cover img) {
+  animation: stage-fade-in .16s linear both !important;
+}
+.stage[data-motion="reduced"] .stage-avatar-bars i { transform: scaleY(.7); }
+.stage[data-motion="reduced"] .stage-radio-progress span { transition: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .stage *, .stage *::before, .stage *::after { animation: none !important; transition-duration: .16s !important; transition-delay: 0s !important; }
+  .stage :is(.stage-avatar .is-top, .stage-caption, .stage-attention > span, .stage-presence, .stage-avatar-voice, .stage-radio-cover img) {
+    animation: stage-fade-in .16s linear both !important;
+  }
+  .stage .stage-avatar-bars i { transform: scaleY(.7); }
+}
+
+/* ---------- TV remote hint ---------- */
+.stage-remote-hint { position: absolute; left: 50%; bottom: 14cqw; z-index: 40; transform: translateX(-50%); max-width: 80%;
+  padding: .6em 1.2em; border-radius: 999px; border: 1px solid var(--line); background: rgba(5, 11, 25, .88); color: var(--text);
+  font-size: 1.2em; font-weight: 650; text-align: center; animation: stage-remote-in 180ms cubic-bezier(.2,.7,.2,1) both; }
+.stage-remote-hint[data-help="true"] { font-family: var(--font-geist-mono), ui-monospace, monospace; font-weight: 400; font-size: 1em;
+  letter-spacing: .02em; border-radius: 1em; }
+@keyframes stage-remote-in { from { opacity: 0; } }

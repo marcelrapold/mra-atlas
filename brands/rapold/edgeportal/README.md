@@ -1,49 +1,36 @@
-# EdgePortal-CI
+# EdgePortal in Atlas
 
-**Status: Vorschlag vom 18.10.2026.** Die vollständige Oberfläche von EdgePortal, aufgebaut auf der Brand `rapold` und dem Systemstart aus [DESIGN-DNA 7.1](../../rapold-io/DESIGN-DNA.md#71-korona-und-ridgeline-im-systemstart-bewusste-abweichung-a1). Sichtbar auf der Brand-Seite unter [EdgePortal-CI](https://atlas.rapold.io/brand?brand=rapold#edgeportal-ci).
+**Am TV: Ist-Stand, verbindlich.** Atlas dokumentiert den Fernseher so, wie EdgePortal ihn heute zeigt, und baut ihn 1:1 nach. Atlas ändert am TV nichts. Sichtbar auf der Brand-Seite unter [EdgePortal: der TV, wie er ist](https://atlas.rapold.io/brand?brand=rapold#edgeportal-ci).
+
+**Steuerung (edgeportal.rapold.io): Atlas-Standard.** Die Admin-Oberfläche darf sich leicht an Atlas angleichen, mit Atlas-Komponenten und Tokens und später als npm-Paket.
 
 | Datei | Inhalt |
 |---|---|
-| [`edgeportal.json`](edgeportal.json) | Spezifikation: Prinzipien, Namen, Distanzprofile, Wall-Tokens, Flächen, Status Screens, Zustände, Bewegung, Fernbedienung, Grussquelle, Quellen und Annahmen |
-| [`edgeportal.css`](edgeportal.css) | Bildschirm-Styles mit den Wall-Tokens (`--ep-*`), geladen von der Brand-Seite |
-| `tests/edgeportal-ci.test.mjs` | Prüft die Tokens gegen die dunklen Rapold-Rollen, die Kontrastregeln, die Wall-Skala und das Zustandsvokabular |
+| [`tv/stage.css`](tv/stage.css) | Kopie von `app/stage.css`: Bühne, Kopfzeile, Poster-Karten, Zustände, RadioX-Leiste, Fokus, Terminals |
+| [`tv/presence.css`](tv/presence.css) | Kopie von `app/presence.css`: Präsenz, Gast, Ruhemodus, Kamerahinweis |
+| [`tv/screen-nav.css`](tv/screen-nav.css) | Kopie von `app/screen-nav.css`: Übersicht und Kameras, im Rahmen positioniert |
+| [`tv/tv-power.css`](tv/tv-power.css) | Kopie von `app/tv-power.css`: TV an und aus, im Rahmen positioniert |
+| [`edgeportal.json`](edgeportal.json) | Werte, Zustände, Texte, Tasten und Grüsse am TV; Regeln der Steuerung; Namen; optionale Ideen |
+| [`edgeportal.css`](edgeportal.css) | Seitenrahmen für den Nachbau und die Steuerung auf dem Phone |
+| `tests/edgeportal-ci.test.mjs` | Prüft Commit-Angaben, Skalierung, Tokens gegen die Kopien und gegen die Rapold-Rollen, Zustände und Grüsse |
 
-## Kern
+## Quelle
 
-EdgePortal macht jeden Bildschirm in einem Raum zu einer gekoppelten, ruhigen Fläche. Drei Prinzipien tragen jede Entscheidung: **Anzeigen, nicht entscheiden**, **Nichts erfinden** und **Der Raum bestimmt mit**.
+`marcelrapold/mra-edgeportal` (privat) bei Commit `e46563c`, dazu Screenshots des Wohnzimmer-Screens im Spiegel (3840 × 2160) und der Steuerung vom 18.10.2026. Die Kopien tragen den Commit im Kopfkommentar.
 
-## Distanzprofile
+Umgerechnet für den Rahmen und nur dort:
 
-| Profil | Abstand | Grundschrift | Kontrast | Bedienung |
-|---|---|---|---|---|
-| Wall | 3–4 m, TV | 28 px bei 1080p | 7:1 | Fernbedienung |
-| Desk | 60–80 cm | 16 px | 4,5:1 | 44 px |
-| Hand | 30–40 cm | 16 px | 4,5:1 | 44 px |
+- Übersicht und TV an/aus: `position: fixed` wird `absolute`, `vw` wird `cqi`. Der Rahmen ist ein virtueller TV mit 3840 × 2160 Pixeln, der als Ganzes verkleinert wird, deshalb gelten alle Werte unverändert.
+- Ausgelassen sind die Controller-Einstellungen in `stage.css` und eine Handy-Regel in `screen-nav.css`.
 
-Wall-Skala bei 1080p: Caption 28, Text 32, Titel 48, Display 96 px. In CSS als Containereinheiten (`1.458cqi` usw.), damit jede Bildgrösse dieselben Proportionen erhält.
+## Nachführen
 
-## Flächen
+Ändert sich der TV im Produkt, werden die vier Kopien und `edgeportal.json` mit dem neuen Commit nachgeführt. Von Hand angeglichen wird nichts. Bis EdgePortal Atlas als Paket bezieht, bleibt das Produkt die Quelle für den TV.
 
-Boot, Setup, Claim, Agents Home (Views Stage, Terminals, Focus, Stack), Launcher, Content, RadioX Fullscreen, Mirror und Share Link, Control, TV Wake und Goodbye, Voice und Perception. Regeln und Regionen stehen je Fläche in der JSON-Datei.
+## Öffentlich
 
-- Agents Home trägt das Agents-Signet, EdgePortal steht als Plattform in der Statuszeile.
-- RadioX bleibt eine eigene, endorsed Marke. EdgePortal stellt nur den Rahmen.
-- Firstglut kommt in EdgePortal nicht vor, ausser im Systemstart der Dachmarke.
+Die Atlas-Seite zeigt den TV mit neutralen Beispielen: keine echten Gerätenamen, Orte, Hosts, Personen oder Porträts. Gestaltung, Grössen und Texte des Produkts bleiben unverändert.
 
-## Zustände
+## Ideen
 
-Jeder Zustand spricht mit Wort und Form, nie nur mit Farbe. Die gefüllte Raute gehört als Rautenpunkt der Dachmarke; Warnungen tragen ▲, «braucht dich» und Guest die hohle Raute ◇. Text in der Rolle danger steht auf Wall nur auf dem Grund (7,3:1).
-
-## Quellen, Annahmen, Verfeinerungen
-
-Getrennt aufgeführt in `edgeportal.json` unter `sources`, `assumptions` und `refinements`. Kurz:
-
-- **Quellen:** EdgePortal-Repository bei Commit a5d1ae6 (privat, nur gelesen), Rapold Stack Naming, DESIGN-DNA 7.1, die dunklen Rapold-Rollen.
-- **Annahmen:** Wall verlangt 28 px und 7:1 (Jarvis-Konzept); EdgePortal liegt heute bei etwa 20 px. Die englischen Namen sind teils nur vorgeschlagen.
-- **Verfeinerungen:** neue Status Screens (`update`, `recovered`, `tv-silent`), Offline mit Entprellung, Aufnahme ohne Pulsieren in der Rolle danger, eine Grussquelle.
-
-Alle Ansichten auf der Brand-Seite zeigen Beispieldaten. Sie melden keine echten Geräte, Agents oder Verbindungen.
-
-## Einbindung
-
-Bis Atlas als npm-Paket erscheint, übernimmt EdgePortal Werte und Regeln aus dieser Spezifikation. Die Tokens sind die dunklen Rapold-Rollen; eigene Hexwerte im Produkt entfallen. Die Prüfung im Browser auf echten TVs (Pi 3 bis 5, 720p bis 4K) steht aus.
+`edgeportal.json → ideas` sammelt Vorschläge, etwa 28 px Grundschrift für die Wand-Distanz, zusätzliche Statusbildschirme oder den neuen Systemstart aus [DESIGN-DNA 7.1](../../rapold-io/DESIGN-DNA.md#71-korona-und-ridgeline-im-systemstart-bewusste-abweichung-a1). Sie ändern den TV nicht und werden nur umgesetzt, wenn Marcel es ausdrücklich will.

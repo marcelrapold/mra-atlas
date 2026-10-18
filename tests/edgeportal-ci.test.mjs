@@ -5,63 +5,51 @@ import {readFile} from 'node:fs/promises';
 const read = path => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 const ci = JSON.parse(await read('brands/rapold/edgeportal/edgeportal.json'));
 const rapold = JSON.parse(await read('packages/brands/src/rapold.json'));
-const css = await read('brands/rapold/edgeportal/edgeportal.css');
+const stage = await read('brands/rapold/edgeportal/tv/stage.css');
 
-const luminance = hex => {
-  const [r, g, b] = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255).map(c => c <= .04045 ? c / 12.92 : ((c + .055) / 1.055) ** 2.4);
-  return .2126 * r + .7152 * g + .0722 * b;
-};
-const contrast = (a, b) => {const [x, y] = [luminance(a), luminance(b)].sort((m, n) => n - m); return (x + .05) / (y + .05);};
-
-test('EdgePortal wall tokens are the dark Rapold roles, in JSON and CSS', () => {
-  const dark = rapold.modes.dark, roles = {bg: 'background', surface: 'card', raised: 'popover', fg: 'foreground', muted: 'muted-foreground', line: 'border', accent: 'primary', ok: 'success', warn: 'warning', danger: 'destructive'};
-  for (const [token, role] of Object.entries(roles)) {
-    assert.equal(ci.wallTokens[token].toUpperCase(), dark[role].toUpperCase(), `${token} drifts from rapold.json ${role}`);
-    const declared = css.match(new RegExp(`--ep-${token}:\\s*(#[0-9A-Fa-f]{6})`));
-    assert.ok(declared, `edgeportal.css declares --ep-${token}`);
-    assert.equal(declared[1].toUpperCase(), dark[role].toUpperCase(), `--ep-${token} drifts from rapold.json ${role}`);
+test('the TV copies name their source commit and stay the product stylesheets', async () => {
+  for (const file of ['stage', 'presence', 'screen-nav', 'tv-power']) {
+    const text = await read(`brands/rapold/edgeportal/tv/${file}.css`);
+    assert.match(text, new RegExp(`mra-edgeportal @ ${ci.reference.commit}`), `${file}.css names commit ${ci.reference.commit}`);
   }
-  assert.equal(ci.wallTokens.abyss.toUpperCase(), rapold.palette.abyss.toUpperCase());
+  assert.match(stage, /--st-fs: clamp\(16px, min\(1\.9cqi, 1\.9cqb, max\(1\.05cqi, 1\.05cqb\)\), 120px\);/, 'stage.css keeps the product scale');
+  assert.equal(ci.tv.scale.fs, 'clamp(16px, min(1.9cqi, 1.9cqb, max(1.05cqi, 1.05cqb)), 120px)');
+  assert.doesNotMatch(stage, /\.stage-settings|\.stage-switch/, 'the controller part stays out of the TV copy');
 });
 
-test('Wall text roles reach 7:1 on every surface they are allowed on', () => {
-  const wall = ci.distanceProfiles.find(profile => profile.id === 'wall');
-  for (const [surface, roles] of Object.entries(ci.wallTokens.textOn)) for (const role of roles) {
-    const ratio = contrast(ci.wallTokens[role], ci.wallTokens[surface]);
-    assert.ok(ratio >= wall.contrastMin, `${role} on ${surface}: ${ratio.toFixed(2)}:1`);
+test('the documented TV tokens are the values in the copied stage.css', () => {
+  for (const group of ['roles', 'surfaces', 'identity']) for (const [name, value] of Object.entries(ci.tv.tokens[group])) {
+    const declared = stage.match(new RegExp(`--${name}:\\s*(#[0-9a-fA-F]{6})`));
+    assert.ok(declared, `stage.css declares --${name}`);
+    assert.equal(declared[1].toUpperCase(), value.toUpperCase(), `--${name}`);
   }
 });
 
-test('Wall scale meets the 28 px minimum and matches its container units', () => {
-  const wall = ci.distanceProfiles.find(profile => profile.id === 'wall');
-  for (const [step, size] of Object.entries(wall.scale)) {
-    assert.ok(size.px1080 >= wall.baseMinPx1080, `${step} below ${wall.baseMinPx1080} px`);
-    assert.ok(Math.abs(size.cqi * 19.2 - size.px1080) < .5, `${step}: ${size.cqi} cqi is not ${size.px1080} px at 1920 px`);
-    assert.match(css, new RegExp(`--ep-${step}:\\s*${size.cqi}cqi`), `edgeportal.css uses ${size.cqi}cqi for ${step}`);
+test('the TV already uses the dark Rapold roles of Atlas', () => {
+  const dark = rapold.modes.dark;
+  for (const [token, role] of Object.entries(ci.tv.tokens.atlasRoles)) {
+    assert.equal(ci.tv.tokens.roles[token].toUpperCase(), dark[role].toUpperCase(), `${token} vs rapold.json ${role}`);
   }
 });
 
-test('every state speaks with word and shape, and the filled rhombus stays with the umbrella', () => {
-  const items = [...Object.values(ci.states).flat(), ...ci.statusScreens];
-  for (const item of items) {
-    assert.ok(item.shape && item.shape.trim(), `${item.id} has a shape`);
-    assert.ok((item.word ?? item.headline)?.trim(), `${item.id} has words`);
-    assert.notEqual(item.shape, '◆', `${item.id} must not use the umbrella rhombus`);
-    assert.ok(['accent', 'ok', 'warn', 'danger', 'muted'].includes(item.tone), `${item.id} uses a known tone`);
+test('every TV state speaks with word and shape, as in the product', () => {
+  assert.deepEqual(ci.tv.states.agent.map(state => state.id).sort(), ['arbeitet', 'aus', 'bereit', 'dialog', 'frage', 'haengt']);
+  for (const item of Object.values(ci.tv.states).flat()) {
+    assert.ok(item.shape?.trim(), `${item.id} has a shape`);
+    assert.ok(item.word?.trim(), `${item.id} has a word`);
   }
-  const ids = ci.surfaces.map(surface => surface.id);
-  assert.equal(new Set(ids).size, ids.length, 'surface ids are unique');
 });
 
-test('one greeting source covers the whole day', () => {
+test('the TV greetings cover the whole day', () => {
   const minutes = time => {const [h, m] = time.split(':').map(Number); return h * 60 + m;};
-  const total = ci.greetings.slots.reduce((sum, slot) => sum + ((minutes(slot.to) - minutes(slot.from) + 1440) % 1440), 0);
+  const total = ci.tv.greetings.slots.reduce((sum, slot) => sum + ((minutes(slot.to) - minutes(slot.from) + 1440) % 1440), 0);
   assert.equal(total, 1440);
 });
 
-test('the brand page loads the EdgePortal CI with its own stylesheet', async () => {
-  const showcase = await read('apps/docs/app/_components/rapold-showcase.tsx');
-  assert.match(showcase, /<RapoldEdgePortal\/>/);
-  assert.match(await read('apps/docs/app/_components/rapold-edgeportal.tsx'), /import '\.\.\/\.\.\/\.\.\/\.\.\/brands\/rapold\/edgeportal\/edgeportal\.css';/);
-  assert.doesNotMatch(await read('apps/docs/app/globals.css'), /edgeportal\.css|\.ep-/);
+test('ideas stay optional and the brand page loads the TV copies', async () => {
+  assert.match(ci.ideas.status, /optional/);
+  const component = await read('apps/docs/app/_components/rapold-edgeportal.tsx');
+  for (const file of ['stage', 'presence', 'screen-nav', 'tv-power']) assert.match(component, new RegExp(`import '\\.\\./\\.\\./\\.\\./\\.\\./brands/rapold/edgeportal/tv/${file}\\.css';`));
+  assert.match(await read('apps/docs/app/_components/rapold-showcase.tsx'), /<RapoldEdgePortal\/>/);
+  assert.doesNotMatch(await read('apps/docs/app/globals.css'), /edgeportal|\.stage\b|\.nav-layer/);
 });

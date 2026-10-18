@@ -1,29 +1,31 @@
-/* EdgePortal CI: Flächen, Zustände und Distanzprofile.
+/* EdgePortal in Atlas: Seitenrahmen für den TV-Nachbau und die Steuerung.
    Wird mit rapold-edgeportal.tsx im /brand-Chunk geladen, nicht global.
-   Spezifikation: brands/rapold/edgeportal/edgeportal.json. Die --ep-*-Werte prüft tests/edgeportal-ci.test.mjs gegen die dunklen Rapold-Rollen. */
+   Der TV selbst kommt aus brands/rapold/edgeportal/tv/*.css (Kopien aus dem Produkt). */
 
 /* Seitenrahmen in den Doku-Tokens */
 .ep-ci-principles {display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 24px 0 8px;}
 .ep-ci-principles > div {border-top: 2px solid var(--primary); padding-top: 12px; min-width: 0;}
 .ep-ci-principles h3 {margin: 0 0 4px; font-size: 16px; font-weight: 650;}
 .ep-ci-principles p {margin: 0; color: var(--muted-foreground); font-size: 14px;}
-.ep-ci-h {margin: 48px 0 8px; font-size: 20px; font-weight: 650; letter-spacing: -.01em;}
+.ep-ci-h {display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 48px 0 8px; font-size: 20px; font-weight: 650; letter-spacing: -.01em;}
+.ep-ci-h span {font-size: 13px; font-weight: 500; color: var(--muted-foreground);}
 .ep-ci-lead {margin: 0 0 16px; max-width: 68ch; color: var(--muted-foreground);}
-.ep-ci-profiles {display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;}
-.ep-ci-profile {display: grid; align-content: start; gap: 8px; padding: 16px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); min-width: 0;}
-.ep-ci-profile b {font-size: 18px; font-weight: 650;}
-.ep-ci-profile span {font-size: 13px; color: var(--muted-foreground);}
-.ep-ci-profile dl {display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 4px 0 0; font-size: 14px;}
-.ep-ci-profile dt {color: var(--muted-foreground);}
-.ep-ci-profile dd {margin: 0; font-variant-numeric: tabular-nums;}
 .ep-ci-gallery {display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 24px; align-items: start;}
+.ep-ci-gallery > .ep-ci-wide {grid-column: 1 / -1;}
 .ep-ci-figure {display: grid; gap: 8px; margin: 0; min-width: 0;}
 .ep-ci-figure figcaption {font-size: 13px; color: var(--muted-foreground);}
 .ep-ci-figure figcaption strong {color: var(--foreground); font-weight: 650;}
-.ep-ci-status {display: grid; grid-template-columns: repeat(auto-fill, minmax(232px, 1fr)); gap: 16px;}
-.ep-ci-status figure {display: grid; gap: 8px; margin: 0;}
-.ep-ci-status figcaption {font-size: 13px; color: var(--muted-foreground);}
-.ep-ci-status figcaption code {font-size: 12px;}
+.ep-ci-facts {display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px;}
+.ep-ci-facts > div, .ep-ci-cols > div {padding: 16px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); min-width: 0;}
+.ep-ci-facts h4, .ep-ci-cols h4 {margin: 0 0 8px; font-size: 15px; font-weight: 650;}
+.ep-ci-facts dl {display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin: 0; font-size: 14px;}
+.ep-ci-facts dt {color: var(--muted-foreground);}
+.ep-ci-facts dd {margin: 0; min-width: 0; overflow-wrap: anywhere;}
+.ep-ci-facts code {font-size: 12.5px;}
+.ep-ci-swatches {display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin: 0; padding: 0; list-style: none;}
+.ep-ci-swatches li {display: flex; align-items: center; gap: 8px; font-size: 13px;}
+.ep-ci-swatches i {flex: none; width: 24px; height: 24px; border-radius: 6px; box-shadow: inset 0 0 0 1px var(--border);}
+.ep-ci-swatches code {display: block; font-size: 12px; color: var(--muted-foreground);}
 .ep-ci-scroll {overflow-x: auto; border: 1px solid var(--border); border-radius: 12px;}
 .ep-ci-table {width: 100%; min-width: 420px; border-collapse: collapse; font-size: 14px;}
 .ep-ci-table caption {padding: 12px 16px 0; text-align: left; font-weight: 650;}
@@ -31,104 +33,44 @@
 .ep-ci-table tr:last-child td {border-bottom: 0;}
 .ep-ci-table th {font-size: 12px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--muted-foreground);}
 .ep-ci-table .ep-glyph {display: inline-block; width: 1.4em; font-weight: 700; text-align: center;}
-.ep-ci-tables {display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px;}
-.ep-ci-cols {display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;}
-.ep-ci-cols > div {padding: 16px; border: 1px solid var(--border); border-radius: 16px; background: var(--card); min-width: 0;}
-.ep-ci-cols h4 {margin: 0 0 8px; font-size: 15px; font-weight: 650;}
+.ep-ci-tables {display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;}
+.ep-ci-cols {display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px;}
 .ep-ci-cols ul {margin: 0; padding-left: 16px; color: var(--muted-foreground); font-size: 14px;}
 .ep-ci-cols li {margin: 4px 0;}
 .ep-ci-cols kbd {font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; padding: 0 4px; border: 1px solid var(--border); border-radius: 4px; color: var(--foreground);}
+.ep-ci-copy {display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none;}
+.ep-ci-copy li {padding: 2px 10px; border: 1px solid var(--border); border-radius: 999px; font-size: 13px;}
 .ep-ci-note {margin-top: 24px; font-size: 14px; color: var(--muted-foreground);}
 .ep-ci-note summary {cursor: pointer; color: var(--foreground); font-weight: 650;}
 .ep-ci-note h4 {margin: 16px 0 4px; font-size: 14px; color: var(--foreground);}
 .ep-ci-note ul {margin: 0; padding-left: 16px;}
+.ep-ci-control {display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 24px; align-items: start;}
 @media (max-width: 960px) {
-  .ep-ci-gallery, .ep-ci-tables, .ep-ci-cols {grid-template-columns: minmax(0, 1fr);}
-  .ep-ci-principles, .ep-ci-profiles {grid-template-columns: minmax(0, 1fr);}
+  .ep-ci-gallery, .ep-ci-tables, .ep-ci-cols, .ep-ci-facts, .ep-ci-control, .ep-ci-principles {grid-template-columns: minmax(0, 1fr);}
 }
 
-/* Bildschirm: Wall-Tokens aus packages/brands/src/rapold.json → modes.dark. EdgePortal-Screens sind immer dunkel. */
+/* TV-Rahmen: ein virtueller Fernseher in Originalauflösung (3840 × 2160 wie der Wohnzimmer-Screen), als Ganzes verkleinert.
+   So gelten alle Werte der Kopien unverändert, auch feste Pixelgrössen. Den Massstab setzt rapold-edgeportal.tsx. */
+.ep-tv-frame {position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: 10px; background: #000; box-shadow: 0 0 0 1px var(--border), 0 0 0 6px #02060F;}
+.ep-tv-screen {
+  --font-geist-sans: 'Geist'; --font-geist-mono: 'Geist Mono';
+  position: absolute; left: 0; top: 0; width: 3840px; height: 2160px; transform-origin: 0 0; container-type: size;
+  font-size: 16px; line-height: normal; text-align: left;
+}
+
+/* Steuerung auf dem Phone: Atlas-Standard, darf vom heutigen Aussehen abweichen. Rollen wie die dunklen Rapold-Rollen. */
 .ep-screen {
   --ep-bg: #050B19; --ep-surface: #0B1528; --ep-raised: #142741; --ep-fg: #EDF5FF; --ep-muted: #9AADC7; --ep-line: #23334A;
   --ep-accent: #38B8FF; --ep-ok: #34D399; --ep-warn: #FBBF24; --ep-danger: #FB7185; --ep-abyss: #02060F;
-  --ep-caption: 1.458cqi; --ep-body: 1.667cqi; --ep-title: 2.5cqi; --ep-display: 5cqi; --ep-hair: .156cqi;
-  --ep-ease: cubic-bezier(.2, .7, .2, 1);
   position: relative; overflow: hidden; container-type: inline-size; color-scheme: dark;
   background: var(--ep-bg); color: var(--ep-fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; line-height: 1.25;
 }
-.ep-screen[data-tone='accent'], .ep-screen [data-tone='accent'] {--tone: var(--ep-accent);}
-.ep-screen[data-tone='ok'], .ep-screen [data-tone='ok'] {--tone: var(--ep-ok);}
-.ep-screen[data-tone='warn'], .ep-screen [data-tone='warn'] {--tone: var(--ep-warn);}
+.ep-screen[data-tone='success'], .ep-screen [data-tone='success'] {--tone: var(--ep-ok);}
+.ep-screen[data-tone='info'], .ep-screen [data-tone='info'] {--tone: var(--ep-accent);}
+.ep-screen[data-tone='warning'], .ep-screen [data-tone='warning'] {--tone: var(--ep-warn);}
 .ep-screen[data-tone='danger'], .ep-screen [data-tone='danger'] {--tone: var(--ep-danger);}
 .ep-screen[data-tone='muted'], .ep-screen [data-tone='muted'] {--tone: var(--ep-muted);}
-.ep-tv {aspect-ratio: 16 / 9; border: .6cqi solid var(--ep-abyss); border-radius: 10px; box-shadow: 0 0 0 1px var(--border);}
-.ep-safe {position: absolute; inset: 5%; border: 1px dashed var(--ep-line); border-radius: 4px; pointer-events: none;}
-.ep-mono {font-family: 'Geist Mono', ui-monospace, monospace;}
-.ep-eyebrow {font-family: 'Geist Mono', ui-monospace, monospace; font-size: var(--ep-caption); letter-spacing: .12em; text-transform: uppercase; color: var(--ep-muted);}
-.ep-state {display: inline-flex; align-items: center; gap: .45em; font-size: var(--ep-caption); color: var(--ep-fg); white-space: nowrap;}
 .ep-shape {min-width: 1em; color: var(--tone, var(--ep-muted)); font-weight: 700; text-align: center;}
-.ep-pill {display: inline-flex; align-items: center; gap: .45em; padding: .3cqi .9cqi; border: var(--ep-hair) solid var(--tone, var(--ep-line)); border-radius: 999px; font-size: var(--ep-caption);}
-
-/* Agents Home */
-.ep-home {position: absolute; inset: 5%; display: grid; grid-template-rows: auto 1fr auto; gap: 1.8cqi;}
-.ep-home-head {display: flex; align-items: center; justify-content: space-between; gap: 2cqi;}
-.ep-brand {display: inline-flex; align-items: center; gap: 1cqi; font-size: var(--ep-title); font-weight: 650; letter-spacing: -.03em; line-height: 1;}
-.ep-brand img {width: 1.25em; height: 1.25em;}
-.ep-meta {display: inline-flex; align-items: center; gap: 1.6cqi; font-size: var(--ep-caption); color: var(--ep-muted);}
-.ep-clock {font-size: var(--ep-body); color: var(--ep-fg); font-variant-numeric: tabular-nums;}
-.ep-home-body {display: grid; grid-template-columns: 1fr 1fr .9fr; gap: 1.6cqi; min-height: 0;}
-.ep-card {display: grid; align-content: start; gap: .9cqi; min-width: 0; padding: 1.6cqi; border: var(--ep-hair) solid var(--ep-line); border-radius: 1.25cqi; background: var(--ep-surface);}
-.ep-card[data-attn] {border-color: var(--tone); box-shadow: inset 0 0 0 var(--ep-hair) var(--tone);}
-.ep-card-top {display: flex; align-items: center; gap: 1cqi;}
-.ep-card b {font-size: var(--ep-title); font-weight: 650; letter-spacing: -.02em; line-height: 1;}
-.ep-card p {margin: 0; font-size: var(--ep-body);}
-.ep-card small {font-size: var(--ep-caption); color: var(--ep-muted);}
-.ep-avatar {position: relative; display: grid; place-items: center; width: 3.6cqi; height: 3.6cqi; border-radius: 50%; background: var(--ep-raised); font-size: var(--ep-body); font-weight: 650;}
-.ep-avatar[data-ring]::after {content: ''; position: absolute; inset: -.5cqi; border: var(--ep-hair) dashed var(--ep-accent); border-radius: 50%; animation: ep-spin 12s linear infinite;}
-.ep-radio {align-content: end; background: linear-gradient(180deg, var(--ep-surface), var(--ep-raised));}
-.ep-live {display: inline-block; width: .7cqi; height: .7cqi; border-radius: 50%; background: var(--ep-danger);}
-.ep-home-foot {display: flex; justify-content: space-between; gap: 2cqi; font-size: var(--ep-caption); color: var(--ep-muted);}
-.ep-halt {display: flex; align-items: center; gap: 1cqi; padding: .8cqi 1.6cqi; border: var(--ep-hair) solid var(--ep-danger); border-radius: 1cqi; background: var(--ep-bg); font-size: var(--ep-body);}
-.ep-halt .ep-shape {color: var(--ep-danger);}
-.ep-hidden {display: grid; place-items: center; min-height: 6cqi; border: var(--ep-hair) dashed var(--ep-line); border-radius: .8cqi; font-size: var(--ep-caption); color: var(--ep-muted);}
-
-/* Launcher */
-.ep-launch {position: absolute; inset: 5%; display: grid; align-content: center; gap: 1.8cqi;}
-.ep-launch h4 {margin: 0; font-size: 3.5cqi; font-weight: 650; letter-spacing: -.03em; line-height: 1;}
-.ep-tiles {display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.6cqi;}
-.ep-tile {display: grid; gap: .7cqi; min-width: 0;}
-.ep-thumb {display: grid; place-items: center; aspect-ratio: 16 / 9; border: var(--ep-hair) solid var(--ep-line); border-radius: 1.25cqi; background: linear-gradient(160deg, var(--ep-raised), var(--ep-surface)); font-size: var(--ep-title); font-weight: 650;}
-.ep-thumb img {width: 34%; height: auto;}
-.ep-tile[data-focus] .ep-thumb {outline: var(--ep-hair) solid var(--ep-accent); outline-offset: .21cqi; transform: scale(1.02);}
-.ep-tile[data-tone='danger'] .ep-thumb {border-color: var(--ep-danger); color: var(--ep-danger);}
-.ep-tile b {font-size: var(--ep-body); font-weight: 650;}
-.ep-tile small {font-size: var(--ep-caption); color: var(--ep-muted);}
-.ep-legend {font-size: var(--ep-caption); color: var(--ep-muted);}
-
-/* Claim */
-.ep-claim {position: absolute; inset: 5%; display: grid; grid-template-columns: 1.25fr 1fr; align-items: center; gap: 4cqi;}
-.ep-claim h4 {margin: 1.4cqi 0; font-size: 4cqi; font-weight: 650; letter-spacing: -.03em; line-height: 1.05;}
-.ep-claim-side {display: grid; justify-items: start; gap: 1.2cqi;}
-.ep-qr {width: 17cqi; padding: 1cqi; border-radius: .8cqi; background: var(--ep-fg);}
-.ep-qr svg {display: block; width: 100%; height: auto; fill: var(--ep-bg);}
-.ep-code {font-family: 'Geist Mono', ui-monospace, monospace; font-size: 4.4cqi; letter-spacing: .08em; line-height: 1;}
-
-/* TV Wake */
-.ep-wake {position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 1.4cqi; background: #000; text-align: center;}
-.ep-wake strong {font-size: var(--ep-display); font-weight: 300; letter-spacing: -.02em; line-height: 1;}
-.ep-wake span {font-size: var(--ep-body); color: var(--ep-muted);}
-
-/* Status Screens: verkleinert, nicht massstäblich */
-.ep-status-tile {aspect-ratio: 16 / 9; display: grid; place-content: center; justify-items: center; gap: 6px; padding: 16px; border: 4px solid var(--ep-abyss); border-radius: 8px; box-shadow: 0 0 0 1px var(--border); text-align: center;}
-.ep-status-tile .ep-shape {font-size: 22px; line-height: 1;}
-.ep-status-tile strong {font-size: 14px; font-weight: 650; line-height: 1.25; text-wrap: balance;}
-.ep-status-tile small {font-size: 12px; color: var(--ep-muted);}
-.ep-status-tile[data-chip] {place-content: end start; justify-items: start; text-align: left;}
-.ep-status-tile[data-chip] strong {display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border: 1px solid var(--ep-warn); border-radius: 999px; font-size: 12px;}
-.ep-status-tile[data-band] {place-content: start stretch; justify-items: stretch; text-align: left;}
-.ep-status-tile[data-band] strong {display: flex; align-items: center; gap: 8px; padding: 6px 10px; border: 1px solid var(--ep-danger); border-radius: 6px; font-size: 12px;}
-
-/* Control auf dem Phone: Hand-Profil, 16 px bei 390 px Breite = 4,1cqi */
 .ep-phone {width: min(100%, 300px); margin-inline: auto; aspect-ratio: 9 / 19; border: 8px solid var(--ep-abyss); border-radius: 32px; box-shadow: 0 0 0 1px var(--border);}
 .ep-phone-ui {position: absolute; inset: 0; display: grid; grid-template-rows: auto auto 1fr auto; gap: 3cqi; padding: 6cqi 4.5cqi 4.5cqi; font-size: 4.1cqi;}
 .ep-phone-bar {display: flex; align-items: center; justify-content: space-between; gap: 2cqi; font-size: 3.6cqi;}
@@ -149,16 +91,6 @@
 .ep-publish span:first-child {background: var(--ep-accent); color: var(--ep-bg);}
 .ep-publish span:last-child {padding: 0 4cqi; border: 1px solid var(--ep-line);}
 
-/* Mirror und Share Link im Browser */
-.ep-desk {aspect-ratio: 16 / 11; border: 1px solid var(--border); border-radius: 10px;}
-.ep-desk-bar {position: absolute; inset: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 2cqi; height: 7%; padding: 0 2cqi; border-bottom: 1px solid var(--ep-line); background: var(--ep-surface); font-size: 1.5cqi; color: var(--ep-muted);}
-.ep-desk-bar b {color: var(--ep-fg); font-weight: 650;}
-.ep-desk-screen {position: absolute; inset: 10% 4% auto; aspect-ratio: 16 / 9;}
-
-@keyframes ep-spin {to {transform: rotate(360deg);}}
-@media (prefers-reduced-motion: reduce) {
-  .ep-avatar[data-ring]::after {animation: none;}
-}
 @media (forced-colors: active) {
-  .ep-screen {forced-color-adjust: none;}
+  .ep-screen, .ep-tv-frame {forced-color-adjust: none;}
 }
