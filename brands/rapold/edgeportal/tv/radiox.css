@@ -1,0 +1,234 @@
+/* Ist-Stand des EdgePortal-TVs, übernommen aus marcelrapold/mra-edgeportal @ e46563c (18.10.2026): app/radiox.css.
+   Atlas hält diese Kopie als Referenz, damit der TV-Stand reproduzierbar bleibt. Unverändert (die Datei nutzt schon position absolute und Container-Einheiten).
+   Nicht von Hand angleichen: Änderungen kommen aus dem Produkt und werden hier mit Commit nachgeführt. */
+
+/* RadioX full screen (components/radiox/radiox-view.tsx, docs/stage.md «RadioX-Vollbild").
+   RadioX brand from Atlas (brands/radiox, public/brand/README.md): ground #050505, cards black 25 % with a
+   white 10 % hairline and no blur, line cyan #22D3EE, live red #EF4444 only as dot and rim, caps eyebrows 0.16em,
+   headings 700, system font stack. EdgePortal TV rules: one fluid unit from the 16:9 picture, legible at 3–4 m,
+   no blur filters or backdrop filters (Pi 4/5), one calm pulse with its word, everything still with reduced motion. */
+.rx-view {
+  --rx-bg: #050505; --rx-fg: #fff; --rx-fg-2: #cbd5e1; --rx-fg-3: #94a3b8;
+  --rx-card: rgb(0 0 0 / .25); --rx-line: rgb(255 255 255 / .10); --rx-inset: rgb(255 255 255 / .06);
+  --rx-accent: #22d3ee; --rx-accent-soft: #a5f3fc; --rx-onair: #ef4444; --rx-ai: #a78bfa; --rx-news: #fbbf24; --rx-danger: #fb7185;
+  --rx-love: #f9a8d4;
+  --rx-ease: cubic-bezier(.22, 1, .36, 1);
+  container: rx / size;
+  position: absolute; inset: 0; z-index: 0; overflow: hidden; isolation: isolate;
+  color: var(--rx-fg); background: var(--rx-bg); color-scheme: dark;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.3; font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased;
+}
+.rx-view > * {
+  /* 16:9 first: width on landscape, height on ultra-wide; portrait screens stay readable. */
+  --rx-fs: clamp(14px, min(1.45cqi, 2.6cqb), 96px);
+  --rx-px: calc(var(--rx-fs) / 20);
+  --rx-edge-x: max(env(safe-area-inset-left, 0px), calc(var(--overscan, 0) * 1cqi + 2.2 * var(--rx-fs)));
+  --rx-edge-y: max(env(safe-area-inset-top, 0px), calc(var(--overscan, 0) * 1cqb + 1.3 * var(--rx-fs)));
+  font-size: var(--rx-fs);
+}
+.rx-view[data-preview="true"] > * { --rx-fs: clamp(4px, min(1.45cqi, 2.6cqb), 20px); }
+/* Rows: header, now playing (with Klang-DNA), cards (Danach, Du wählst, News), studio strip, footer.
+   Every extra block may be missing; the rows close up around it. */
+.rx-view { display: grid; grid-template-rows: auto minmax(0, 1fr) auto auto auto; }
+/* Static light: cyan top left, the host's colour bottom right. Gradients only, no blur filter. */
+.rx-wash { position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(60% 70% at 12% 8%, rgb(34 211 238 / .16), transparent 70%),
+    radial-gradient(55% 60% at 92% 96%, color-mix(in srgb, var(--rx-host) 20%, transparent), transparent 70%),
+    linear-gradient(180deg, transparent 55%, rgb(0 0 0 / .5)); }
+
+.rx-eyebrow { display: inline-flex; align-items: center; gap: .45em; font-size: .62em; font-weight: 600; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--rx-fg-3); }
+.rx-eyebrow svg { inline-size: 1.3em; block-size: 1.3em; }
+.rx-accent { color: var(--rx-accent); }
+.rx-muted { color: var(--rx-fg-3); }
+.rx-small { font-size: .7em; }
+.rx-badge { padding: .15em .7em; border: 1px solid var(--rx-line); border-radius: 999px; font-size: .7em; color: var(--rx-fg-2); }
+
+/* Header */
+.rx-head { display: flex; align-items: center; gap: 1.4em; padding: var(--rx-edge-y) var(--rx-edge-x) .6em; }
+.rx-wordmark { block-size: 1.5em; inline-size: auto; }
+.rx-show { display: grid; line-height: 1.15; padding-inline-start: 1.2em; border-inline-start: 1px solid var(--rx-line); min-inline-size: 0; }
+.rx-show strong { font-size: .95em; font-weight: 700; }
+.rx-show .rx-muted { font-size: .65em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-inline-size: 30em; }
+/* On Air: the host beside the show (moved up from the card row), ring in the host's colour. */
+.rx-host { display: flex; align-items: center; gap: .6em; padding-inline-start: 1.2em; border-inline-start: 1px solid var(--rx-line); min-inline-size: 0; }
+.rx-host > div { display: grid; line-height: 1.15; min-inline-size: 0; }
+.rx-host strong { font-size: .95em; font-weight: 700; }
+.rx-host .rx-muted { font-size: .65em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-inline-size: 18em; }
+.rx-host .rx-avatar { inline-size: 2em; block-size: 2em; }
+.rx-head-end { margin-inline-start: auto; display: flex; align-items: center; gap: 1.1em; flex: none; }
+.rx-clock { font-size: 1.1em; font-weight: 700; letter-spacing: -.01em; }
+.rx-listeners { display: inline-flex; align-items: center; gap: .3em; font-size: .75em; }
+.rx-listeners svg { inline-size: 1.2em; block-size: 1.2em; }
+.rx-weather { display: inline-flex; align-items: baseline; gap: .4em; font-size: .75em; white-space: nowrap; }
+.rx-weather strong { font-size: 1.3em; font-weight: 700; color: var(--rx-fg); }
+/* Live: white text on scrim, red rim and dot (never a red surface). The only pulse, always with the word. */
+.rx-live { display: inline-flex; align-items: center; gap: .5em; padding: .2em .8em .2em .6em; border-radius: 999px;
+  background: rgb(0 0 0 / .7); border: 1px solid rgb(239 68 68 / .5); font-size: .62em; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
+.rx-live-dot { position: relative; inline-size: .75em; block-size: .75em; border-radius: 50%; background: var(--rx-onair); }
+.rx-live-dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--rx-onair); opacity: .55;
+  animation: rx-pulse 2.4s cubic-bezier(.4, 0, 1, 1) infinite; }
+@keyframes rx-pulse { to { transform: scale(2.4); opacity: 0; } }
+
+/* Now playing: cover left (square, as high as the row allows), text right */
+.rx-main { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 2em; min-block-size: 0;
+  padding: .6em var(--rx-edge-x) 1em; }
+.rx-cover { position: relative; overflow: hidden; aspect-ratio: 1; inline-size: 2.6em; border-radius: 6px; background: var(--rx-inset);
+  border: 1px solid var(--rx-line); display: grid; place-items: center; flex: none; }
+.rx-cover img, .rx-cover video { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; }
+.rx-cover svg { inline-size: 45%; block-size: 45%; color: var(--rx-fg-3); }
+.rx-cover-large { inline-size: min(46cqb, 38cqi); border-radius: 16px; box-shadow: 0 0 0 1px var(--rx-line), 0 2em 4em -1em rgb(0 0 0 / .8); }
+.rx-view[data-motion="full"] .rx-cover img, .rx-view[data-motion="full"] .rx-cover video { animation: rx-fade 600ms var(--rx-ease) both; }
+@keyframes rx-fade { from { opacity: 0; } }
+.rx-now { display: grid; align-content: center; gap: .3em; min-inline-size: 0; }
+.rx-title { margin: .05em 0 0; font-size: 3em; font-weight: 700; line-height: 1.04; letter-spacing: -.025em;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-wrap: balance; }
+.rx-artist { margin: 0; font-size: 1.5em; color: var(--rx-fg-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rx-progress { display: grid; grid-template-columns: 1fr auto; gap: .35em 1em; margin-top: .7em; max-inline-size: 26em; font-size: .7em; color: var(--rx-fg-3); }
+.rx-progress-bar { grid-column: 1 / -1; position: relative; block-size: .4em; border-radius: 1em; background: rgb(255 255 255 / .14); overflow: hidden; }
+.rx-progress-bar span { position: absolute; inset: 0; background: linear-gradient(90deg, var(--rx-accent), var(--rx-accent-soft));
+  transform-origin: left; transition: transform 1s linear; border-radius: inherit; }
+.rx-progress small:last-child { justify-self: end; }
+.rx-onair { margin: .9em 0 0; padding: .8em 1em; max-inline-size: 30em; border-radius: 12px; background: var(--rx-card);
+  border: 1px solid var(--rx-line); border-inline-start: 3px solid var(--rx-host); }
+.rx-onair p { margin: .35em 0 0; font-size: .95em; line-height: 1.4; color: var(--rx-fg-2);
+  display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+.rx-lyrics { margin: .9em 0 0; display: grid; gap: .25em; max-inline-size: 30em; }
+.rx-lyrics p { margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rx-lyric-side { font-size: .85em; color: var(--rx-fg-3); min-block-size: 1.3em; }
+.rx-lyric-now { font-size: 1.35em; font-weight: 700; color: var(--rx-fg); }
+.rx-view[data-motion="full"] .rx-lyric-now { animation: rx-fade 400ms var(--rx-ease) both; }
+/* Pulse of the track: who brought it in, hearts, RadioX's score; one quiet line under the progress. */
+.rx-pulse { margin: .15em 0 0; display: flex; flex-wrap: wrap; align-items: center; gap: .2em .6em; font-size: .72em; color: var(--rx-fg-3); }
+.rx-pulse > span { display: inline-flex; align-items: center; gap: .35em; }
+.rx-pulse > span + span::before { content: "·"; margin-inline-end: .25em; color: var(--rx-fg-3); }
+.rx-pulse strong { color: var(--rx-fg-2); font-weight: 600; }
+.rx-hearts { color: var(--rx-love); }
+.rx-hearts svg { inline-size: 1.05em; block-size: 1.05em; fill: currentColor; }
+
+/* Main with Klang-DNA: a third column beside the text; the cover gives a little room. */
+.rx-main[data-dna="true"] { grid-template-columns: auto minmax(0, 1fr) minmax(12em, 17em); }
+.rx-main[data-dna="true"] .rx-cover-large { inline-size: min(44cqb, 32cqi); }
+.rx-main[data-dna="true"] .rx-title { font-size: 2.7em; }
+.rx-dna { display: grid; align-self: center; justify-items: start; gap: .3em; min-inline-size: 0; padding: .8em 1em .9em;
+  border-radius: 16px; background: var(--rx-card); border: 1px solid var(--rx-line); }
+.rx-dna .rx-eyebrow { color: var(--rx-accent); }
+.rx-vibe { font-size: 1.15em; font-weight: 700; line-height: 1.1; letter-spacing: -.01em; }
+.rx-dna > svg { display: block; inline-size: 100%; block-size: auto; margin-block: .2em; }
+.rx-dna text { font-size: 15px; fill: var(--rx-fg-2); }
+.rx-radar-grid { fill: none; stroke: rgb(255 255 255 / .16); stroke-width: 1; }
+.rx-radar-mid { stroke-dasharray: 2 4; }
+.rx-radar-track { fill: rgb(34 211 238 / .22); stroke: var(--rx-accent); stroke-width: 2.5; stroke-linejoin: round; }
+.rx-radar-room { fill: none; stroke: var(--rx-ai); stroke-width: 2; stroke-dasharray: 6 5; stroke-linejoin: round; }
+.rx-dna-legend { margin: 0; display: flex; flex-wrap: wrap; gap: .2em 1em; font-size: .62em; color: var(--rx-fg-3); }
+.rx-dna-legend span { display: inline-flex; align-items: center; gap: .45em; }
+.rx-dna-legend i { inline-size: 1.3em; block-size: .75em; border-radius: 3px; }
+.rx-key-track { background: rgb(34 211 238 / .3); border: 2px solid var(--rx-accent); }
+.rx-key-room { border: 2px dashed var(--rx-ai); }
+
+/* Cards: up next, the vote (twice as wide) and news (RadioX card material) */
+.rx-cards { display: flex; gap: 1em; padding: 0 var(--rx-edge-x) 1em; }
+.rx-card { flex: 1 1 0; display: grid; align-content: start; gap: .55em; min-inline-size: 0; padding: .8em 1em; border-radius: 16px;
+  background: var(--rx-card); border: 1px solid var(--rx-line); font-size: .85em; }
+/* Du wählst: three rows with vote bars, the QR to vote on the phone beside them. */
+.rx-card.rx-ballot { flex-grow: 2; display: flex; gap: 1.2em; align-items: stretch; }
+.rx-ballot-list { flex: 1; min-inline-size: 0; display: grid; align-content: start; gap: .5em; }
+.rx-ballot-list > .rx-eyebrow { display: flex; color: var(--rx-ai); }
+.rx-ballot-state { padding: .05em .65em; border-radius: 999px; border: 1px solid rgb(167 139 250 / .45); color: var(--rx-fg-2); letter-spacing: .12em; }
+.rx-ballot-note { margin-inline-start: auto; color: var(--rx-fg-3); text-transform: none; letter-spacing: 0; font-weight: 500; font-size: 1.15em; }
+.rx-ballot ol { margin: 0; padding: 0; list-style: none; display: grid; gap: .4em; }
+.rx-ballot li { display: grid; grid-template-columns: 1.8em minmax(0, 1fr) minmax(3em, 7em) 1.8em; align-items: center; gap: .7em; }
+.rx-ballot li .rx-cover { inline-size: 1.8em; border-radius: 4px; }
+.rx-ballot-name { display: flex; align-items: baseline; gap: .5em; min-inline-size: 0; white-space: nowrap; overflow: hidden; }
+.rx-ballot-name strong { font-weight: 700; overflow: hidden; text-overflow: ellipsis; min-inline-size: 0; flex: 0 1 auto; }
+.rx-ballot-name .rx-muted { overflow: hidden; text-overflow: ellipsis; min-inline-size: 3em; flex: 0 1000 auto; font-size: .85em; }
+.rx-ballot-bar { position: relative; block-size: .45em; border-radius: 1em; background: rgb(255 255 255 / .12); overflow: hidden; }
+.rx-ballot-bar span { position: absolute; inset: 0; transform-origin: left; border-radius: inherit; background: rgb(167 139 250 / .7);
+  transition: transform 1s var(--rx-ease); }
+.rx-ballot li[data-lead="true"] .rx-ballot-bar span { background: var(--rx-accent); }
+.rx-ballot li[data-lead="true"] strong { color: var(--rx-accent-soft); }
+.rx-ballot-votes { text-align: end; font-weight: 700; }
+.rx-qr { margin: 0; flex: none; display: grid; justify-items: center; align-content: center; gap: .35em; text-align: center; }
+.rx-qr img { inline-size: 5.4em; block-size: 5.4em; border-radius: 6px; image-rendering: pixelated; }
+.rx-qr figcaption { display: grid; line-height: 1.15; font-size: .8em; }
+.rx-qr figcaption .rx-muted { font-size: .85em; white-space: nowrap; }
+.rx-card p { margin: 0; }
+.rx-row { display: flex; align-items: center; gap: .8em; min-inline-size: 0; }
+.rx-row > div { display: grid; min-inline-size: 0; line-height: 1.2; }
+.rx-row strong, .rx-row .rx-muted { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rx-row strong { font-weight: 700; }
+.rx-row .rx-cover { inline-size: 2.8em; }
+.rx-avatar { inline-size: 2.8em; block-size: 2.8em; border-radius: 50%; object-fit: cover; flex: none; border: 2px solid var(--rx-host); }
+.rx-avatar-letter { display: grid; place-items: center; font-weight: 700; background: var(--rx-inset); }
+.rx-news .rx-eyebrow { color: var(--rx-news); }
+.rx-news ul { margin: 0; padding: 0; list-style: none; display: grid; gap: .35em; }
+.rx-news li { line-height: 1.25; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.rx-news li + li { color: var(--rx-fg-3); -webkit-line-clamp: 1; }
+
+/* Studio live: one slim line of figures above the footer, the moderation's origin at its end. */
+.rx-studio { display: flex; flex-wrap: wrap; align-items: baseline; gap: .25em 1.5em; min-inline-size: 0;
+  padding: .55em var(--rx-edge-x) .45em; border-top: 1px solid var(--rx-line); background: rgb(0 0 0 / .45);
+  /* A direct child of .rx-view, so relative to the fluid unit, not to the inherited size. */
+  font-size: calc(var(--rx-fs) * .72); color: var(--rx-fg-3); }
+.rx-studio > .rx-eyebrow { color: var(--rx-accent); font-size: .86em; }
+.rx-stat strong { color: var(--rx-fg); font-weight: 700; font-size: 1.1em; }
+.rx-origin { display: inline-flex; align-items: baseline; gap: .7em; min-inline-size: 0; margin-inline-start: auto; color: var(--rx-fg-2);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rx-origin .rx-eyebrow { font-size: .86em; color: var(--rx-host); }
+.rx-studio + .rx-foot { border-top-color: rgb(255 255 255 / .05); }
+
+/* Footer: recently played and the show switcher */
+.rx-foot { display: flex; align-items: center; justify-content: space-between; gap: 1.5em; min-inline-size: 0;
+  padding: .7em var(--rx-edge-x) var(--rx-edge-y); border-top: 1px solid var(--rx-line); background: rgb(0 0 0 / .45); }
+.rx-recent { display: flex; align-items: center; gap: 1.1em; min-inline-size: 0; overflow: hidden; font-size: .72em; }
+.rx-recent-item { display: flex; align-items: center; gap: .55em; min-inline-size: 0; max-inline-size: 15em; }
+.rx-recent-item > span { display: grid; min-inline-size: 0; line-height: 1.2; }
+.rx-recent-item strong, .rx-recent-item .rx-muted { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rx-recent-item .rx-cover { inline-size: 2.4em; }
+.rx-controls { display: flex; align-items: center; gap: 1em; flex: none; }
+.rx-shows { display: flex; align-items: center; gap: .3em; font-size: .72em; color: var(--rx-fg-3); }
+.rx-shows > svg { inline-size: 1.3em; block-size: 1.3em; }
+.rx-shows button { min-block-size: 44px; padding: .3em .9em; border-radius: 999px; border: 1px solid var(--rx-line); background: transparent;
+  color: var(--rx-fg-2); font: inherit; font-weight: 600; cursor: pointer; }
+.rx-shows button[aria-pressed="true"] { color: #000; background: var(--rx-accent); border-color: var(--rx-accent); }
+.rx-stream { display: inline-flex; align-items: center; gap: .5em; min-block-size: 44px; padding: .3em 1em; border-radius: 999px;
+  border: 1px solid var(--rx-line); background: rgb(0 0 0 / .6); color: var(--rx-fg-2); font: inherit; font-size: .72em; cursor: pointer; }
+.rx-stream svg { inline-size: 1.2em; block-size: 1.2em; }
+.rx-stream[data-state="live"] { color: var(--rx-fg); border-color: rgb(34 211 238 / .5); }
+.rx-stream[data-state="live"] svg { color: var(--rx-accent); }
+.rx-stream[data-state="fehler"], .rx-stream[data-state="blockiert"] { color: var(--rx-fg); border-color: var(--rx-danger); }
+.rx-stream:disabled { cursor: default; }
+
+.rx-hint { position: absolute; left: 50%; top: calc(var(--rx-edge-y, 2em) + 3.2em); transform: translateX(-50%); z-index: 2;
+  padding: .5em 1.2em; border-radius: 12px; background: rgb(0 0 0 / .85); border: 1px solid var(--rx-line); font-size: var(--rx-fs, 24px); font-weight: 600; }
+.rx-view[data-motion="full"] .rx-hint { animation: rx-fade 180ms var(--rx-ease) both; }
+.rx-view[data-state="unavailable"] .rx-title { font-size: 2.2em; }
+
+/* Narrow or portrait: one column; cover above the text, DNA below it, cards stacked. */
+@container rx (max-aspect-ratio: 4/3) {
+  .rx-head { flex-wrap: wrap; row-gap: .6em; }
+  .rx-main, .rx-main[data-dna="true"] { grid-template-columns: minmax(0, 1fr); justify-items: start; align-content: center; }
+  .rx-cover-large, .rx-main[data-dna="true"] .rx-cover-large { inline-size: min(34cqb, 62cqi); }
+  .rx-dna { inline-size: min(100%, 22em); }
+  .rx-cards { flex-direction: column; }
+  .rx-origin { margin-inline-start: 0; }
+  .rx-foot { flex-wrap: wrap; }
+}
+/* Calm: no loops, no pulse, no fades (prefers-reduced-motion or low power). */
+.rx-view[data-motion="calm"] .rx-live-dot::after { animation: none; opacity: 0; }
+.rx-view[data-motion="calm"] :is(.rx-progress-bar, .rx-ballot-bar) span { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .rx-view *, .rx-view *::after { animation: none !important; transition: none !important; }
+}
+/* The overlay from the TV overview fills the navigation layer edge to edge. */
+.nav-radiox { position: absolute; inset: 0; }
+/* Something lies above the stage (screen navigation): the hidden view stops its pulse (cheap on a Pi). */
+:root[data-nav="over"] .stage .rx-view .rx-live-dot::after { animation: none; }
+/* On the stage (placement «vollbild»): the view covers the whole stage; the stage header steps aside. */
+.stage.radio-vollbild > .stage-header { display: none; }
+.stage.radio-vollbild > .stage-body { position: static; margin: 0; }
+.stage.radio-vollbild > .stage-body > .rx-view { position: absolute; inset: 0; }
+/* Controller preview: a thumbnail, no touch targets. */
+.rx-view[data-preview="true"] :is(.rx-shows button, .rx-stream) { min-block-size: 0; }

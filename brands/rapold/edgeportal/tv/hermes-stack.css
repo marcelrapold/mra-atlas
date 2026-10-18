@@ -1,0 +1,196 @@
+/* Ist-Stand des EdgePortal-TVs, übernommen aus marcelrapold/mra-edgeportal @ e46563c (18.10.2026): app/hermes-stack.css.
+   Atlas hält diese Kopie als Referenz, damit der TV-Stand reproduzierbar bleibt. Unverändert.
+   Nicht von Hand angleichen: Änderungen kommen aus dem Produkt und werden hier mit Commit nachgeführt. */
+
+/* Hermes-Stack (stage view "stack", components/stage/hermes-stack.tsx): five glass layers that float
+   slightly out of step, one glowing lane per agent through all of them, the Fabric's neural net behind.
+   Motion follows the reported state (lib/hermes-stack.ts laneOf); low power and reduced motion stop it
+   (stage.css removes every animation under data-motion="reduced"). Atlas roles only, no hex below. */
+
+.hstack {
+  position: relative; isolation: isolate; block-size: 100%; min-block-size: 0;
+  display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: .6em;
+}
+.hstack-net { position: absolute; inset: -4% -2%; z-index: -1; inline-size: 104%; block-size: 108%; opacity: .5; pointer-events: none; }
+.hstack-net-edges line { stroke: color-mix(in srgb, var(--st-ice) 16%, transparent); stroke-width: 1; }
+.hstack-net-nodes circle { fill: color-mix(in srgb, var(--st-ice) 45%, transparent); }
+.hstack[data-flowing="true"] .hstack-net { opacity: .7; }
+.hstack[data-emergency="true"] .hstack-net { opacity: .2; }
+
+.hstack-grid {
+  position: relative; min-block-size: 0;
+  display: grid; column-gap: 1.2em;
+  grid-template-columns: minmax(5.5em, 8em) repeat(var(--count), minmax(0, 1fr));
+  grid-template-rows: repeat(5, minmax(0, 1fr));
+}
+
+/* Layers: glass slabs tilted back a little, each floating on its own beat. */
+@keyframes hstack-float { to { translate: 0 calc(var(--st-px) * -7); } }
+.hstack-plate, .hstack-label, .hstack-cell {
+  animation: hstack-float 8s ease-in-out infinite alternate;
+  animation-delay: calc(var(--row) * -1.6s);
+}
+.hstack-plate {
+  /* Narrower towards the top: the Fabric is the broad foundation, you are the tip. */
+  grid-column: 1 / -1; z-index: 0; margin-block: .32em; border-radius: 1.1em;
+  margin-inline: calc((4 - var(--row)) * .9em);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--st-ice) 7%, transparent), transparent 40%),
+    var(--st-glass);
+  border: 1px solid var(--st-raised-border);
+  box-shadow: 0 1.4em 2.4em -1.2em color-mix(in srgb, var(--st-abyss) 85%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--st-ice) 14%, transparent);
+  transform: perspective(160em) rotateX(9deg);
+  overflow: hidden;
+}
+/* A slow light sweep across each slab, like the Fabric's shimmer. */
+.hstack-plate::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(100deg, transparent 30%, color-mix(in srgb, var(--st-ice) 9%, transparent) 50%, transparent 70%);
+  translate: -100% 0; animation: hstack-sweep 14s ease-in-out infinite; animation-delay: calc(var(--row) * 2.2s);
+}
+@keyframes hstack-sweep { 0%, 55% { translate: -100% 0; } 85%, 100% { translate: 100% 0; } }
+.hstack-plate[data-layer="fabric"] { background: linear-gradient(180deg, color-mix(in srgb, var(--st-azure) 12%, transparent), transparent 70%), var(--st-glass); }
+.hstack-plate[data-layer="du"] { background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 10%, transparent), transparent 70%), var(--st-glass); }
+
+.hstack-label {
+  grid-column: 1; z-index: 2; align-self: center; padding-inline-start: calc((4 - var(--row)) * .9em + 1em);
+  font-weight: 650; font-size: 1.05em; line-height: 1.15; color: var(--st-fg);
+}
+.hstack-label .stage-eyebrow { font-size: .62em; margin-block-end: .25em; color: var(--st-primary); }
+
+.hstack-cell {
+  z-index: 2; min-inline-size: 0; align-self: center; justify-self: stretch;
+  display: flex; align-items: center; gap: .7em; flex-wrap: wrap; padding: .3em .6em;
+  border-radius: .8em; transition: box-shadow var(--st-slow) var(--st-ease), background var(--st-slow) var(--st-ease);
+}
+.hstack-cell:not(.is-wide) { padding-inline-start: 2.6em; }
+.hstack-cell.is-wide { grid-column: 2 / -1; justify-content: center; font-size: 1.05em; }
+/* Where the lanes begin: a soft glow along the lower edge of «Du». */
+.hstack-plate[data-layer="du"]::before {
+  content: ""; position: absolute; inset: auto 8% 0; block-size: 2px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 70%, transparent), transparent);
+  box-shadow: 0 0 1.2em color-mix(in srgb, var(--accent) 60%, transparent);
+}
+.hstack-cell[data-stop="true"] {
+  background: color-mix(in srgb, var(--st-warning) 10%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--st-warning) 55%, transparent), 0 0 2em -.4em color-mix(in srgb, var(--st-warning) 45%, transparent);
+}
+.hstack-cell[data-lane="haengt"][data-stop="true"] {
+  background: color-mix(in srgb, var(--st-danger) 10%, transparent);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--st-danger) 55%, transparent);
+}
+.hstack-quiet { color: var(--st-muted-fg); font-size: .9em; }
+.hstack-avatar { inline-size: 3.6em; block-size: 3.6em; flex: none; }
+.hstack-avatar .stage-avatar { inline-size: 100%; block-size: 100%; }
+.hstack-id { display: grid; gap: .25em; min-inline-size: 0; }
+.hstack-id strong { font-size: 1.25em; letter-spacing: .02em; }
+
+.hstack-tasks { list-style: none; margin: 0; padding: 0; display: grid; gap: .3em; min-inline-size: 0; inline-size: 100%; }
+.hstack-tasks li {
+  display: flex; align-items: baseline; gap: .55em; min-inline-size: 0; padding: .2em .5em; border-radius: .5em;
+  background: color-mix(in srgb, var(--tone-surface) 70%, transparent);
+  border-inline-start: 3px solid var(--tone);
+}
+.hstack-tasks li[data-current="true"] { box-shadow: 0 0 1.2em -.4em var(--tone); }
+.hstack-task-state { display: inline-flex; gap: .3em; flex: none; font-size: .8em; color: var(--tone); font-weight: 600; }
+.hstack-task-title { min-inline-size: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hstack-task-key {
+  flex: none; margin-inline-start: auto; font-family: var(--font-geist-mono), ui-monospace, monospace; font-size: .68em;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--st-ice);
+}
+.hstack-guard {
+  display: inline-flex; align-items: center; gap: .45em; padding: .2em .65em; border-radius: 999px; font-weight: 600;
+  background: var(--st-surface-info); color: var(--st-ice); border: 1px solid color-mix(in srgb, var(--st-info) 40%, transparent);
+}
+.hstack-guard::before { content: ""; inline-size: .55em; block-size: .55em; border-radius: 50%; background: currentColor; }
+.hstack-guard[data-level="voll"] { color: var(--st-success); background: var(--st-surface-success); border-color: color-mix(in srgb, var(--st-success) 40%, transparent); }
+.hstack-guard[data-level="fragt"] { color: var(--st-warning); background: var(--st-surface-warning); border-color: color-mix(in srgb, var(--st-warning) 40%, transparent); }
+
+/* Lanes: a line from you to the Fabric, a node at each layer, pulses as the state reads. */
+/* The lane is the spine on the left edge of an agent's column; its cells sit to the right of it. */
+.hstack-lane { --x: 1.1em; grid-row: 1 / -1; z-index: 1; position: relative; container-type: size; pointer-events: none; }
+.hstack-lane-line {
+  position: absolute; inset-inline-start: var(--x); inset-block: 17% 10%; inline-size: calc(var(--st-px) * 4); translate: -50% 0;
+  border-radius: 99px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 60%, transparent),
+    color-mix(in srgb, var(--agent) 75%, transparent) 30%, color-mix(in srgb, var(--agent) 55%, transparent) 70%,
+    color-mix(in srgb, var(--st-azure) 70%, transparent));
+  box-shadow: 0 0 1.4em color-mix(in srgb, var(--agent) 45%, transparent), 0 0 .3em color-mix(in srgb, var(--agent) 60%, transparent);
+  opacity: .7;
+}
+.hstack-lane[data-mode="fliesst"] .hstack-lane-line { opacity: .95; }
+.hstack-lane[data-mode="aus"] .hstack-lane-line { opacity: .18; box-shadow: none; }
+.hstack-node {
+  position: absolute; inset-inline-start: var(--x); inset-block-start: calc(var(--at) * 100%);
+  inline-size: .7em; block-size: .7em; translate: -50% -50%; border-radius: 50%;
+  background: var(--st-bg); border: 2px solid color-mix(in srgb, var(--agent) 80%, transparent);
+  box-shadow: 0 0 .8em color-mix(in srgb, var(--agent) 40%, transparent);
+}
+.hstack-lane[data-mode="aus"] .hstack-node { border-color: var(--st-muted-fg); box-shadow: none; opacity: .4; }
+.hstack-node[data-stop="true"] { border-color: var(--st-warning); animation: hstack-ping 1.6s ease-out infinite; }
+.hstack-lane[data-mode="haengt"] .hstack-node[data-stop="true"] { border-color: var(--st-danger); }
+@keyframes hstack-ping {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--st-warning) 70%, transparent); }
+  100% { box-shadow: 0 0 0 1.4em transparent; }
+}
+
+.hstack-pulse {
+  position: absolute; inset-inline-start: var(--x); inset-block-start: 0; inline-size: .8em; block-size: .8em; border-radius: 50%;
+  translate: -50% 10cqb; opacity: 0;
+  background: radial-gradient(circle, var(--st-fg) 0 25%, var(--agent) 60%);
+  box-shadow: 0 0 1em .2em color-mix(in srgb, var(--agent) 70%, transparent);
+}
+.hstack-pulse.is-down { animation: hstack-down var(--period) cubic-bezier(.45, 0, .55, 1) infinite; animation-delay: calc(var(--k) * var(--period) / -3); }
+.hstack-pulse.is-up {
+  background: radial-gradient(circle, var(--st-fg) 0 25%, var(--st-ice) 60%);
+  box-shadow: 0 0 1em .2em color-mix(in srgb, var(--st-ice) 60%, transparent);
+  animation: hstack-up calc(var(--period) * 1.15) cubic-bezier(.45, 0, .55, 1) infinite;
+  animation-delay: calc(var(--k) * var(--period) * -.55 - .4s);
+}
+.hstack-pulse.is-slow { animation: hstack-breathe var(--period) ease-in-out infinite; }
+.hstack-pulse.is-hold { animation: hstack-hold 2.4s ease-out infinite; }
+.hstack-lane[data-mode="wartet"] .hstack-pulse { --agent: var(--st-warning); }
+.hstack-lane[data-mode="haengt"] .hstack-pulse { --agent: var(--st-danger); animation: hstack-stuck 1.2s steps(2, jump-none) infinite; translate: -50% calc(var(--stop) * 100cqb - .4em); }
+@keyframes hstack-down {
+  0% { translate: -50% calc(17cqb - .4em); opacity: 0; }
+  8%, 90% { opacity: 1; }
+  100% { translate: -50% calc(90cqb - .4em); opacity: 0; }
+}
+@keyframes hstack-up {
+  0% { translate: -50% calc(90cqb - .4em); opacity: 0; }
+  10%, 88% { opacity: 1; }
+  100% { translate: -50% calc(30cqb - .4em); opacity: 0; }
+}
+@keyframes hstack-breathe {
+  0% { translate: -50% calc(17cqb - .4em); opacity: 0; }
+  4% { opacity: .8; }
+  36% { translate: -50% calc(90cqb - .4em); opacity: .8; }
+  40%, 100% { translate: -50% calc(90cqb - .4em); opacity: 0; }
+}
+@keyframes hstack-hold {
+  0% { translate: -50% calc(17cqb - .4em); opacity: 0; }
+  12% { opacity: 1; }
+  55%, 100% { translate: -50% calc(var(--stop) * 100cqb - .4em); opacity: 1; }
+}
+@keyframes hstack-stuck { 50% { opacity: .25; } 0%, 100% { opacity: 1; } }
+
+/* Emergency stop: everything stands, lanes red; the banner is the stage's own (stage-brake). */
+.hstack[data-emergency="true"] .hstack-plate { border-color: color-mix(in srgb, var(--st-danger) 45%, transparent); animation: none; }
+.hstack[data-emergency="true"] :is(.hstack-label, .hstack-cell) { animation: none; }
+.hstack[data-emergency="true"] .hstack-lane-line { background: var(--st-danger); opacity: .5; }
+.hstack-foot { justify-self: end; font-size: .7em; opacity: .7; }
+
+/* Portrait: labels above, agents side by side still; very small previews drop the avatars. */
+@container stage (aspect-ratio < 1) {
+  .hstack-grid { grid-template-columns: minmax(4.5em, 6.5em) repeat(var(--count), minmax(0, 1fr)); column-gap: .6em; }
+  .hstack-plate { margin-inline: calc((4 - var(--row)) * .45em); transform: perspective(160em) rotateX(4deg); }
+  .hstack-label { padding-inline-start: calc((4 - var(--row)) * .45em + .7em); font-size: .85em; overflow-wrap: anywhere; }
+  .hstack-avatar { inline-size: 2.6em; block-size: 2.6em; }
+  .hstack-cell:not(.is-wide) { padding-inline-start: 2.2em; }
+  .hstack-task-key { display: none; }
+}
+
+/* Low power (Pi): still slabs, still lanes, no net. Reduced motion is handled in stage.css. */
+.stage[data-lowpower="true"] :is(.hstack-plate, .hstack-label, .hstack-cell, .hstack-plate::after, .hstack-node) { animation: none; }
+.stage[data-lowpower="true"] .hstack-plate { transform: none; }
