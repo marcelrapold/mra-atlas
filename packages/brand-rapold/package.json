@@ -1,0 +1,59 @@
+{
+  "name": "@rapold/brand-rapold",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Rapold-Brand für Atlas: Tokens, Geist-Fonts, Produkt-Signets und Icons als Paket",
+  "license": "UNLICENSED",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.mjs"
+    },
+    "./tokens.css": {
+      "types": "./dist/asset.d.ts",
+      "default": "./dist/tokens.css"
+    },
+    "./tokens.light.css": {
+      "types": "./dist/asset.d.ts",
+      "default": "./dist/tokens.light.css"
+    },
+    "./tokens.dark.css": {
+      "types": "./dist/asset.d.ts",
+      "default": "./dist/tokens.dark.css"
+    },
+    "./fonts.css": {
+      "types": "./dist/asset.d.ts",
+      "default": "./dist/fonts/fonts.css"
+    },
+    "./fonts/*": {
+      "types": "./dist/asset.d.ts",
+      "default": "./dist/fonts/*"
+    },
+    "./signets/*": {
+      "types": "./dist/asset.d.ts",
+      "default": "./dist/signets/*"
+    },
+    "./icons/*": {
+      "types": "./dist/asset.d.ts",
+      "default": "./dist/icons/*"
+    },
+    "./edgeportal/boot/*": {
+      "types": "./dist/asset.d.ts",
+      "default": "./dist/edgeportal/boot/*"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "build": "node ../../scripts/build-brand-package.mjs",
+    "prepack": "node ../../scripts/build-brand-package.mjs"
+  }
+}

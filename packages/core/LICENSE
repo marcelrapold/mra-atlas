@@ -1,0 +1,29 @@
+Atlas — Rapold Design System
+============================
+
+Copyright (c) 2026 Marcel Rapold. Alle Rechte vorbehalten.
+
+Dieses Repository und seine Inhalte (Quellcode, Dokumentation, Design-Tokens,
+Signets, Wortmarken, Vorlagen und generierte Exporte) sind Eigentum von
+Marcel Rapold. Die öffentliche Einsehbarkeit gewährt keine Nutzungsrechte.
+Jede Nutzung, Vervielfältigung, Bearbeitung oder Weitergabe ausserhalb der
+eigenen Produkte von Marcel Rapold bedarf seiner vorherigen schriftlichen
+Zustimmung.
+
+Marken: «Rapold», «Atlas», die Produktnamen und alle Signets der
+Raumfalten-Familie sind Kennzeichen von Marcel Rapold.
+
+Komponenten Dritter behalten ihre eigenen Lizenzen und sind von diesem
+Vorbehalt ausgenommen:
+
+- Geist und Geist Mono: SIL Open Font License 1.1
+  (brands/rapold/assets/fonts/OFL.txt)
+- Lucide-Icons: ISC-Lizenz (ausgeliefert als icons/LICENSE.txt)
+- Apache ECharts: Apache License 2.0 mit NOTICE
+  (ausgeliefert unter vendor/echarts-LICENSE.txt und vendor/echarts-NOTICE.txt)
+- ÆON-Learn-Hero-Ebenen: Apache License 2.0 mit NOTICE
+  (brands/rapold/assets/worlds/learn/LICENSE und NOTICE)
+- npm-Abhängigkeiten: jeweils gemäss ihrem Paket.
+
+DIESES REPOSITORY WIRD OHNE MÄNGELGEWÄHR BEREITGESTELLT, OHNE AUSDRÜCKLICHE
+ODER STILLSCHWEIGENDE GEWÄHRLEISTUNG.

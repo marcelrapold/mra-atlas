@@ -19,6 +19,8 @@
     "test:coverage": "node --test --experimental-test-coverage --test-coverage-include=\"packages/**\" --test-coverage-exclude=\"packages/presentation/**\" tests/*.test.mjs",
     "test:e2e": "playwright test",
     "check": "npm run test && npm run typecheck && npm run build",
+    "build:brand-package": "node scripts/build-brand-package.mjs",
+    "pack:packages": "node scripts/pack-packages.mjs",
     "contracts": "node scripts/build-contracts.mjs",
     "predev": "npm run contracts",
     "prebuild": "npm run contracts",
