@@ -1,18 +1,24 @@
 {
   "name": "@rapold/framework-core",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
+  "description": "Atlas-Core: markenfreie React-Komponenten und Tailwind-v4-Stylesheet (TypeScript-Quelle)",
   "license": "UNLICENSED",
   "type": "module",
   "sideEffects": [
     "**/*.css"
   ],
   "files": [
-    "src"
+    "src",
+    "LICENSE"
   ],
   "exports": {
-    ".": "./src/index.ts",
-    "./styles.css": "./src/styles.css"
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./styles.css": "./src/styles.css",
+    "./package.json": "./package.json"
   },
   "peerDependencies": {
     "react": "^19.0.0",

@@ -110,13 +110,14 @@ for (const brand of brands) {
 console.log(`Generated contracts for ${brands.length} brands.`);
 
 
-const {tokenDocument,dtcgTokens,toCssVariables}=await import('../packages/brands/src/index.mjs');
+const {tokenDocument,dtcgTokens}=await import('../packages/brands/src/index.mjs');
+const {modeCssText}=await import('./build-token-exports.mjs');
 for(const brand of brands)for(const mode of Object.keys(brand.modes)) {
  const directory=new URL(`brands/${brand.id}/`,root);
  await writeFile(new URL(`mermaid.${mode}.json`,directory),JSON.stringify({schemaVersion:1,brand:brand.id,mode,theme:'base',look:'classic',themeVariables:mermaidTheme(brand,mode),themeCSS:mermaidThemeCSS(brand,mode),flowchart:{wrappingWidth:MERMAID_WRAPPING_WIDTH,padding:MERMAID_NODE_PADDING},classDefs:mermaidClassDefs(brand)},null,2)+'\n');
  await writeFile(new URL(`tokens.${mode}.json`,directory),JSON.stringify(tokenDocument(brand,mode),null,2)+'\n');
  await writeFile(new URL(`tokens.${mode}.dtcg.json`,directory),JSON.stringify(dtcgTokens(brand,mode),null,2)+'\n');
- await writeFile(new URL(`tokens.${mode}.css`,directory),`[data-brand="${brand.id}"][data-mode="${mode}"] {\n${Object.entries(toCssVariables(brand,mode)).map(([k,v])=>`  ${k}: ${v};`).join('\n')}\n}\n`);
+ await writeFile(new URL(`tokens.${mode}.css`,directory),modeCssText(brand,mode));
 }
 await (await import('./build-token-exports.mjs')).writeAll();
 await mkdir(new URL('praesentation/',root),{recursive:true});
