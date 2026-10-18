@@ -8,7 +8,7 @@ Bis zur Freigabe gilt in `brands/rapold/sources/provenance.json` weiterhin `umbr
 
 ## 1. Kern und Prinzipien
 
-**rapold.io ist das Dach über der Familie.** Unter ihm stehen zehn Produkte mit eigenen Raumfalten-Signets und das Studio für Fullstack Digital Operations. Die Dachmarke ist «Der First»: ein R, das einmal um einen senkrechten Grat gefaltet ist. Oben bildet es ein Satteldach, und der Grat (der First) fängt das Licht.
+**rapold.io ist das Dach über der Familie.** Unter ihm stehen elf Produkte mit eigenen Raumfalten-Signets und das Studio für Fullstack Digital Operations. Die Dachmarke ist «Der First»: ein R, das einmal um einen senkrechten Grat gefaltet ist. Oben bildet es ein Satteldach, und der Grat (der First) fängt das Licht.
 
 | | |
 |---|---|
@@ -247,7 +247,7 @@ Die Muster sind gerendert und geprüft: `brands/rapold-io/sources/deck-cover|sec
 3. Eyebrow y 333: Ice-Raute und Mono 15 px Ice «RAPOLD.IO / PRODUKTE & BETRIEB / 2026».
 4. Titel Geist 600, 136 px: «Systeme,» in Ink (Grundlinie 476) und «die laufen» in Azure (Grundlinie 618), dazu der Firstglut-Rautenpunkt.
 5. Lead 26 px Muted (Grundlinie 692), höchstens 900 px breit.
-6. Familienleiste: Haarlinie y 776, zehn Signets à 40 px, rechts in Mono «MARCEL RAPOLD · FOUNDER · DATUM».
+6. Familienleiste: Haarlinie y 776, die freigegebenen Signets à 40 px (derzeit elf), rechts in Mono «MARCEL RAPOLD · FOUNDER · DATUM».
 
 ### Kapitel
 
@@ -274,7 +274,7 @@ Die Muster sind gerendert und geprüft: `brands/rapold-io/sources/deck-cover|sec
 1. Platte `closing-dark.png`: Glas-First zentriert (Skala 1,55) mit vollem Firstlicht, Bloom und Halo darüber.
 2. «Gebaut. Betrieben.» in Ink und «Unter einem Dach» in Azure, 72 px, zentriert, mit Firstglut-Rautenpunkt.
 3. Kompakter Lockup und darunter in Mono «MARCEL@RAPOLD.IO · RAPOLD.IO · MARCEL.RAPOLD.IO».
-4. Haarlinie und die zehn Signets zentriert, die Familie unter dem Dach.
+4. Haarlinie und die freigegebenen Signets zentriert, die Familie unter dem Dach.
 
 Lesbarkeit: Jeder Text liegt auf ruhiger Fläche (Schleier, Ausblendung), alle Textpaare erreichen AA (siehe 4.2), Metadaten sind mindestens 8,4 pt gross.
 

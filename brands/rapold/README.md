@@ -1,6 +1,6 @@
 # Rapold
 
-Ein optional wählbares Rapold-Theme für die Produkte AI Fabric, Argus, ÆON Learn und EdgePortal sowie Lotse, Cockpit, Auditor, Rapold Auth, PocketForge und das Designsystem Atlas; diese zehn Signets sind freigegeben. Für Agents (agents.rapold.io) liegt ein Signet-Vorschlag vor. Es liefert eine gemeinsame Farb- und Typografiebasis für das neutrale Atlas-System. Der Atlas-Default bleibt `neutral`.
+Ein optional wählbares Rapold-Theme für die Produkte AI Fabric, Argus, ÆON Learn und EdgePortal sowie Lotse, Cockpit, Auditor, Rapold Auth, PocketForge, das Designsystem Atlas und Agents; alle elf Signets sind freigegeben. Es liefert eine gemeinsame Farb- und Typografiebasis für das neutrale Atlas-System. Der Atlas-Default bleibt `neutral`.
 
 **Status des UI-Adapters: `draft`, Version 0.2.0.** Marcel Rapold hat am **11.10.2026** die vier Signets der Raumfalten-Familie B (AI Fabric, Argus, ÆON Learn, EdgePortal) und am **12.10.2026** die sechs mit 0.7.0 ergänzten Signets (Lotse, Cockpit, Auditor, Rapold Auth, PocketForge, Atlas) freigegeben. Die Zuordnung zu vollständigen UI-Rollen und ihre visuelle Abnahme bleiben als separate Integrationsarbeit dokumentiert.
 
@@ -11,7 +11,7 @@ Ein optional wählbares Rapold-Theme für die Produkte AI Fabric, Argus, ÆON Le
 | Ebene | Inhalt | Kanonische Quelle |
 |---|---|---|
 | Gemeinsames Theme | `rapold`: Farben, Geist, helle und dunkle semantische Rollen | `packages/brands/src/rapold.json` |
-| Produktidentität | Zehn freigegebene eigenständige Zeichen und ein Vorschlag, jeweils mit `status` | [identity.json](identity.json) |
+| Produktidentität | Elf freigegebene eigenständige Zeichen, jeweils mit `status` | [identity.json](identity.json) |
 | Produktassets | Transparente SVG-Master und Farbvarianten | `brands/rapold/assets/logos/` |
 | Belegte Ausgangswerte | Unveränderte Tokenkopie des gelieferten Brand-Pakets | `brands/rapold/sources/brand-tokens.json` |
 | Herkunft und Ableitungen | Nutzerfreigabe, Prüfsumme, Quellen und UI-Verfeinerungen | `brands/rapold/sources/provenance.json` |
@@ -44,9 +44,9 @@ Die folgenden Signets entstanden mit 0.7.0 und sind seit **12.10.2026 freigegebe
 
 Die Geometrie wird in [`scripts/build-signet-proposals.mjs`](../../scripts/build-signet-proposals.mjs) konstruiert und als SVG-Master geschrieben; der normale Build liest nur die Master. Für diese sechs Produkte gibt es noch keine eigenen Produktwelten; die Referenz zeigt dort einen Hinweis.
 
-### Vorschlag vom 18.10.2026, Freigabe ausstehend
+### Ergänzt und freigegeben am 18.10.2026
 
-Agents ist ein eigenes Produkt neben EdgePortal: das native Web-Terminal für KI-Agents. Der Leitstand im Repository `marcelrapold/mra-hermes` trägt bisher das AI-Fabric-Signet; ein eigenes Zeichen fehlte. Der Vorschlag steht mit `status: "proposal"` im Katalog (Nachweis `agentsProposal` in [provenance.json](sources/provenance.json)). Präsentationen und die Familienleiste der Decks zeigen nur freigegebene Signets.
+Agents ist ein eigenes Produkt neben EdgePortal: das native Web-Terminal für KI-Agents. Der Leitstand im Repository `marcelrapold/mra-hermes` trägt bisher das AI-Fabric-Signet; ein eigenes Zeichen fehlte. Das Zeichen ist seit **18.10.2026 freigegeben** (`status: "approved"`, Nachweis `agentsProposal` in [provenance.json](sources/provenance.json)) Das Produkt-Repo übernimmt es separat. Die Deck-Platten (Cover und Schluss) zeigen in der Familienleiste noch die zehn bisherigen Zeichen: Der Generator nimmt Agents beim nächsten Lauf auf, dafür müssen die PPTX-Vorschauen unter Linux mit LibreOffice 7.4.7 neu gerendert werden.
 
 | Kennung | Produkt | Bisheriges Zeichen | Signet | SVG-Master |
 |---|---|---|---|---|
@@ -87,7 +87,7 @@ Die Produktwelten sind begrenzte Referenzcontainer innerhalb des Rapold-Showcase
 | EdgePortal | Neues CI-Anwendungsbeispiel für das freigegebene Portalzeichen. Eine vollständige Übernahme der ursprünglichen App oder ihrer Verbindungszustände wird nicht behauptet. |
 | Facetten und Spektrum | Neue gemeinsame CI-Dekore aus der freigegebenen Faltensprache und dem Rapold-Farbspektrum. Sie sind gestalterische Anwendungen der Identität, keine als Original ausgegebenen App-Assets. |
 
-Alle Referenzen verwenden die neuen Raumfalten-Signets. Bestehende Produktlogos oder Wortmarken werden dafür nicht kopiert. Es bleibt eine gemeinsame Brand `rapold` mit zehn Produktkennungen; Produktwelten bestehen für die vier oben genannten.
+Alle Referenzen verwenden die neuen Raumfalten-Signets. Bestehende Produktlogos oder Wortmarken werden dafür nicht kopiert. Es bleibt eine gemeinsame Brand `rapold` mit elf Produktkennungen; Produktwelten bestehen für die vier oben genannten.
 
 ### Bewegung und ehrliche Beispiele
 
