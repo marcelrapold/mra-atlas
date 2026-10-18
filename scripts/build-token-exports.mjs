@@ -6,9 +6,11 @@
 // Standalone: node scripts/build-token-exports.mjs
 import { mkdir, writeFile } from 'node:fs/promises';
 import { pathToFileURL } from 'node:url';
-import { brands, dtcgFoundation, dtcgColors, dtcgResolver, toCssText } from '../packages/brands/src/index.mjs';
+import { brands, dtcgFoundation, dtcgColors, dtcgResolver, toCssText, toCssVariables } from '../packages/brands/src/index.mjs';
 
 const json=value=>JSON.stringify(value,null,2)+'\n';
+/** Legacy stylesheet of one mode (`tokens.{mode}.css`), scoped to data-brand and data-mode. */
+export const modeCssText=(brand,mode)=>`[data-brand="${brand.id}"][data-mode="${mode}"] {\n${Object.entries(toCssVariables(brand,mode)).map(([k,v])=>`  ${k}: ${v};`).join('\n')}\n}\n`;
 /** Writes the four export kinds for one brand into `dir` (a directory URL or path) and returns the file names. */
 export async function writeTokenExports(brand, dir) {
   const base=dir instanceof URL?dir:pathToFileURL(String(dir).replace(/[\\/]?$/,'/'));
