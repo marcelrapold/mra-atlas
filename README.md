@@ -42,6 +42,7 @@ Bei Änderungen an der Brand-Registry entfernt die Generierung nicht mehr regist
 | `packages/core/src` | Alle UI-Module (seit 0.8.0 inklusive der aus RadioX übernommenen Komponenten), Hooks und BrandProvider |
 | `packages/brands/src` | Validierter Brand-Vertrag, Registry für Neutral, Dominicano Express, Rapold und RadioX sowie Präsentationsadapter |
 | `packages/presentation/src` | Datenadapter, Inhaltsprüfung und editierbarer PPTX-Export |
+| `packages/brand-rapold` | npm-Paket `@rapold/brand-rapold`: Tokens, Geist, Signets, Icons und typisierter Katalog der Rapold-Brand; `dist/` generiert `scripts/build-brand-package.mjs` |
 | `apps/docs` | Next.js-Referenz, statisch exportierbar; die indexierten Seiten listet `/sitemap.xml` |
 | `brands/rapold` | Original-Signets, lokale Geist-Fonts, Produktkatalog und dokumentierte UI-Ableitungen |
 | `docs/apple-design-audit.md` | Apple-orientierter Web-Audit mit Befunden und Abnahmegrenzen |
@@ -74,7 +75,7 @@ Firmenlogos, interne Vorgaben und lizenzierte Assets sind getrennt vom neutralen
 Repository: [marcelrapold/mra-atlas](https://github.com/marcelrapold/mra-atlas).
 Hauptadresse: `atlas.rapold.io`.
 
-Die Domain steht in der Metadaten-Konfiguration, in `vercel.json` und im Agenten-Einstieg. `atlas.rapold.io` ist im Vercel-Projekt `atlas` verifiziert; die frühere Adresse leitet per 308 dorthin um ([Deployment](docs/deployment.md)). Die npm-Paketnamen `@rapold/framework-*` bleiben vorerst unverändert.
+Die Domain steht in der Metadaten-Konfiguration, in `vercel.json` und im Agenten-Einstieg. `atlas.rapold.io` ist im Vercel-Projekt `atlas` verifiziert; die frühere Adresse leitet per 308 dorthin um ([Deployment](docs/deployment.md)). Die npm-Paketnamen `@rapold/framework-*` bleiben vorerst unverändert. `npm run pack:packages` packt `@rapold/brand-rapold` und `@rapold/framework-core` als Tarball nach `dist/packages/`; Bezug und Registry-Entscheid: [Produkte einbinden](docs/produkte-einbinden.md), `docs/adr/0001-npm-bezug.md`.
 
 ## Erweiterter Stand
 

@@ -1,6 +1,6 @@
 # Atlas in Produkten einbinden
 
-Kurzanleitung für Rapold-Produkte (Lotse, Cockpit, Auditor, Rapold Auth, PocketForge, Atlas, Fabric, ÆON Learn, Argus, EdgePortal, Agents). Alle Pfade liegen unter **https://atlas.rapold.io**. Für den Produktivbetrieb Dateien **ins Produkt-Repository kopieren** (oder beim Build herunterladen) und selbst ausliefern; Atlas ist die Quelle, kein CDN mit Verfügbarkeitszusage.
+Kurzanleitung für Rapold-Produkte (Lotse, Cockpit, Auditor, Rapold Auth, PocketForge, Atlas, Fabric, ÆON Learn, Argus, EdgePortal, Agents). Alle Pfade liegen unter **https://atlas.rapold.io**. Für den Produktivbetrieb Dateien **ins Produkt-Repository kopieren** (oder beim Build herunterladen) und selbst ausliefern; Atlas ist die Quelle, kein CDN mit Verfügbarkeitszusage. Neu lassen sich Tokens, Fonts, Signets, Icons und der Core auch als npm-Paket beziehen (Abschnitt 5).
 
 `<produkt>` steht für die ID aus [`identity.json`](https://atlas.rapold.io/brands/rapold/identity.json): `fabric`, `argus`, `learn`, `edgeportal`, `lotse`, `cockpit`, `auditor`, `auth`, `pocketforge`, `atlas`, `agents`.
 
@@ -83,10 +83,58 @@ Client anlegen (Secret erzeugen, Client-Definition, Deploy): Anleitung im Reposi
 
 Auf der Login-Seite des Produkts das eigene Signet (`logos/<produkt>-*.svg`) und die Tokens verwenden; das Zeichen von Rapold Auth (`exports/auth/`) gehört nur zu auth.rapold.io selbst.
 
+## 5. Bezug über npm (Tarball)
+
+Statt Dateien von Hand zu kopieren, bezieht ein Produkt Atlas als Paket. Entscheid und Ausblick (später npmjs.com unter `@rapold`) stehen in `docs/adr/0001-npm-bezug.md`. Beide Pakete sind `private` und liegen in keiner Registry; Atlas erzeugt die Tarballs:
+
+```sh
+npm run pack:packages
+# dist/packages/rapold-brand-rapold-0.1.0.tgz     Tokens, Geist, Signets, Icons, typisierter Katalog
+# dist/packages/rapold-framework-core-0.3.0.tgz   markenfreie Komponenten (TypeScript-Quelle) und styles.css
+```
+
+Im Produkt die Tarballs unter `vendor/` ablegen und exakt einbinden:
+
+```sh
+npm install ./vendor/rapold-brand-rapold-0.1.0.tgz ./vendor/rapold-framework-core-0.3.0.tgz
+# package.json: "@rapold/brand-rapold": "file:vendor/rapold-brand-rapold-0.1.0.tgz"
+```
+
+| Import | Inhalt |
+|---|---|
+| `@rapold/brand-rapold/tokens.css` | Tokens hell und dunkel (`light-dark()`), greift unter `data-brand="rapold"` |
+| `@rapold/brand-rapold/tokens.light.css`, `tokens.dark.css` | Einzelmodi für ältere Browser, mit `data-mode` |
+| `@rapold/brand-rapold/fonts.css` | Geist und Geist Mono; woff2 und Lizenzdateien unter `@rapold/brand-rapold/fonts/` |
+| `@rapold/brand-rapold/signets/<produkt>-<variante>.svg` | `dark`, `light`, `mono-white`, `mono-black`, `current-color` |
+| `@rapold/brand-rapold/icons/<produkt>/…` | Favicon-Satz (SVG, ICO, PNG), Apple Touch, PWA-Icons, `manifest.webmanifest` |
+| `@rapold/brand-rapold` | `productIds`, `getProduct()`, `signetPath()`, `colorRoles`, `cssVariables` mit Typen (`ProductId`, `ColorRole`) |
+| `@rapold/framework-core`, `@rapold/framework-core/styles.css` | Komponenten und Stylesheet des Core |
+
+```ts
+// app/layout.tsx (Next.js)
+import '@rapold/brand-rapold/fonts.css';
+import '@rapold/brand-rapold/tokens.css';
+import { getProduct } from '@rapold/brand-rapold';
+const product = getProduct('edgeportal'); // Name, Domain, Paketpfade der Signets und Icons
+```
+
+Für den Core: `transpilePackages: ['@rapold/framework-core']` in `next.config`, `moduleResolution: "bundler"` und im Tailwind-Stylesheet `@source "../node_modules/@rapold/framework-core/src";` (Pfad relativ zum Stylesheet). Favicons und Manifest gehören ins Web-Root: per Kopierschritt vor dem Build aus `node_modules/@rapold/brand-rapold/dist/icons/<produkt>/` nach `public/`, nicht von Hand. Update: neue Tarballs aus Atlas übernehmen, Version steht nur in `package-lock.json`.
+
+### EdgePortal-Controller migrieren (Pilot)
+
+Gilt für den Controller unter edgeportal.rapold.io (Steuerung, Einrichtung, Login). **Der TV bleibt, wie er ist:** Bühne, Präsenz, Übersicht und TV an/aus behalten ihre Stylesheets und ihr Bild. Die Kopien unter `brands/rapold/edgeportal/tv/` sind Ist-Referenzen in Atlas und werden nicht durch Paket-Importe ersetzt; Änderungen am TV sind höchstens optionale Ideen mit pixelgleichem Nachweis.
+
+1. **Pakete einbinden:** beide Tarballs unter `vendor/`, exakt gepinnt; `transpilePackages` und `@source` wie oben. Sichtbar ändert sich nichts.
+2. **Fonts, Signet, Favicons aus dem Paket:** `fonts.css` statt `next/font` mit gehashtem Namen, Signet und Favicon-Satz per Kopierschritt aus `@rapold/brand-rapold`. Die Dateien sind heute byte-identisch; die Pipeline prüft das über die Prüfsummen.
+3. **Tokens:** `tokens.css` einbinden, `<html data-brand="rapold">`, next-themes auf `data-mode` umstellen; ein Codemod ersetzt im Controller `hsl(var(--x))` durch `var(--x)` und `/ α` durch `color-mix(…)`. Danach fallen die Rollenblöcke des Controllers in `globals.css` weg; die TV-Stylesheets bleiben unberührt.
+4. **Core-Komponenten:** Button, Input, Switch, Segmented (als ToggleGroup) und Dialog des Controllers durch den Core ersetzen, mit visueller Abnahme in hell und dunkel.
+5. **Drift-Prüfungen in der CI:** Hex-Verbot ausserhalb einer produktlokalen Liste (die TV-Stylesheets stehen darauf), Prüfsummen der Assets gegen das Paket, Atlas-Version nur in `package-lock.json`, nicht in Kommentaren.
+6. **Boot-Kit:** sobald `@rapold/brand-rapold/edgeportal/boot/*` im Paket liegt, nutzen Einrichtung und Startseite es. Die Pis bekommen die Dateien weiter per OTA, nicht über npm.
+
 ## Checkliste
 
 - [ ] `exports/<produkt>/` ins Web-Root übernommen, Favicon/Manifest verlinkt
 - [ ] `tokens.css` eingebunden und `data-brand="rapold"` gesetzt (`data-mode` nur zum Erzwingen eines Schemas)
 - [ ] Geist-Ordner inkl. Lizenzdateien kopiert, `fonts.css` eingebunden
 - [ ] OIDC-Client auf auth.rapold.io angelegt, Issuer und Scopes wie oben
-- [ ] Bei Atlas-Updates Dateien neu übernehmen (Version siehe [`/build-info.json`](https://atlas.rapold.io/build-info.json))
+- [ ] Bei Atlas-Updates Dateien neu übernehmen (Version siehe [`/build-info.json`](https://atlas.rapold.io/build-info.json)) oder, beim Bezug über npm, die neuen Tarballs exakt pinnen

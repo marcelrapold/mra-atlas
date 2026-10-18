@@ -153,19 +153,19 @@ function validateIdentity(identity) {
   for(const variant of ['dark','light'])for(const value of [identity.exportTreatment[variant].background,...identity.exportTreatment[variant].cutColors])if(!/^#[0-9A-F]{6}$/.test(value))throw new Error('Invalid export background colour.');
 }
 
-async function performBuild() {
+async function performBuild(outputRoot=publicRoot,{withWorlds=true,quiet=false}={}) {
   const identityBytes=await readFile(join(canonicalRoot,'identity.json'));
   const identity=JSON.parse(identityBytes.toString('utf8'));
   validateIdentity(identity);
   const generatedAt=new Date().toISOString();
   const assets=[],resources=[];
   const sourceHashes={};
-  await mkdir(publicRoot,{recursive:true});
+  await mkdir(outputRoot,{recursive:true});
 
   async function emit(path,bytes,meta,{resource=false}={}) {
     safePath(path);
     const data=Buffer.isBuffer(bytes)?bytes:Buffer.from(bytes,'utf8');
-    const absolutePath=join(publicRoot,path);
+    const absolutePath=join(outputRoot,path);
     await mkdir(dirname(absolutePath),{recursive:true});
     await writeFile(absolutePath,data);
     const asset={
@@ -268,7 +268,7 @@ async function performBuild() {
     const packedPaths=new Set(files.map(asset=>withinProduct(asset.path)));
     for(const asset of files) {
       const path=withinProduct(asset.path);
-      const bytes=await readFile(join(publicRoot,asset.path));
+      const bytes=await readFile(join(outputRoot,asset.path));
       if(asset.format==='webmanifest')for(const icon of JSON.parse(bytes).icons) {
         const target=posix.normalize(posix.join(posix.dirname(path),icon.src));
         if(!packedPaths.has(target))throw new Error(`${product.id}: missing packaged web manifest icon ${target}.`);
@@ -295,16 +295,24 @@ async function performBuild() {
     summary:{files:assets.length,resources:resources.length,products:identity.products.length,bytes:[...assets,...resources].reduce((sum,asset)=>sum+asset.bytes,0)},
     source:{identity:'brands/rapold/identity.json',identitySha256:sha256(identityBytes)},
   };
-  await writeFile(join(publicRoot,'identity.json'),identityBytes);
-  await writeFile(join(publicRoot,'assets-manifest.json'),JSON.stringify(manifest,null,2)+'\n');
-  console.log(`Generated Rapold product assets: ${assets.length} exports, ${resources.length} canonical resources, ${identity.products.length} products.`);
-  const {buildProductWorlds}=await import('./build-product-worlds.mjs');
-  await buildProductWorlds();
+  await writeFile(join(outputRoot,'identity.json'),identityBytes);
+  await writeFile(join(outputRoot,'assets-manifest.json'),JSON.stringify(manifest,null,2)+'\n');
+  if(!quiet)console.log(`Generated Rapold product assets: ${assets.length} exports, ${resources.length} canonical resources, ${identity.products.length} products.`);
+  if(withWorlds) {
+    const {buildProductWorlds}=await import('./build-product-worlds.mjs');
+    await buildProductWorlds();
+  }
   return manifest;
 }
 
 let activeBuild;
-export function buildBrandAssets() {
+/**
+ * Default: the public site tree including the product worlds, one shared build per process.
+ * With `outputRoot` (e.g. a temporary folder for the npm package) the same exports are written there,
+ * without product worlds and without touching apps/docs/public.
+ */
+export function buildBrandAssets({outputRoot}={}) {
+  if(outputRoot)return performBuild(resolve(outputRoot),{withWorlds:false,quiet:true});
   if(!activeBuild)activeBuild=performBuild().finally(()=>{activeBuild=undefined;});
   return activeBuild;
 }
