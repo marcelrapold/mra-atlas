@@ -1,0 +1,28 @@
+/* Ist-Stand des EdgePortal-TVs, übernommen aus marcelrapold/mra-edgeportal @ e46563c (18.10.2026): app/mirror.css, Zeilen 1–24 (Spiegel und geteilter Link im Browser).
+   Atlas hält diese Kopie als Referenz, damit der Stand reproduzierbar bleibt. Für den Rahmen umgerechnet: position fixed -> absolute (.mirror-page, .mirror-overlay; der Rahmen ist ein virtuelles Browserfenster).
+   Ausgelassen: Zeilen 25–46 (Spiegel-Links in der Steuerung, nicht TV). Nicht von Hand angleichen: Änderungen kommen aus dem Produkt und werden hier mit Commit nachgeführt. */
+
+/* Spiegel (app/spiegel): the screen's picture at its own viewport, scaled to fit and letterboxed. */
+.mirror-page { position: absolute; inset: 0; display: grid; place-items: center; overflow: hidden; background: #000; color: #fff; }
+.mirror-box { position: relative; overflow: hidden; background: #000; }
+.mirror-box iframe { position: absolute; inset: 0 auto auto 0; border: 0; transform-origin: 0 0; background: #000; }
+.mirror-overlay {
+  position: absolute; inset: 12px 12px auto 12px; z-index: 10; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px;
+  padding: 8px 12px; border-radius: 12px; background: rgb(5 11 25 / 0.82); border: 1px solid rgb(255 255 255 / 0.12);
+  backdrop-filter: blur(10px); font-size: 0.8125rem; transition: opacity .3s ease, transform .3s ease;
+}
+.mirror-page[data-overlay="hidden"] .mirror-overlay:not(:focus-within) { opacity: 0; transform: translateY(-8px); pointer-events: none; }
+.mirror-overlay button { color: inherit; font-size: inherit; }
+.mirror-title { display: flex; flex-direction: column; margin-right: auto; min-width: 0; }
+.mirror-title strong { font-size: 0.9375rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mirror-title span { display: inline-flex; align-items: center; gap: 6px; color: rgb(255 255 255 / 0.7); }
+.mirror-title svg { width: 14px; height: 14px; }
+.mirror-state { display: inline-flex; align-items: center; gap: 6px; padding: 2px 10px; border-radius: 999px; background: rgb(250 204 21 / 0.16); color: #fde68a; }
+.mirror-state::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.mirror-state[data-live="true"] { background: rgb(52 211 153 / 0.16); color: #6ee7b7; }
+.mirror-scale { color: rgb(255 255 255 / 0.6); font-variant-numeric: tabular-nums; }
+.mirror-back { color: rgb(255 255 255 / 0.8); text-decoration: underline; text-underline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .mirror-overlay { transition: opacity .2s linear; } }
+.mirror-message { display: grid; place-items: center; padding: 2rem; text-align: center; background: #050b19; color: #fff; }
+.mirror-message h2 { font-size: 2rem; margin-bottom: .75rem; }
+.mirror-message a { text-decoration: underline; }

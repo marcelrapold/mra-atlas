@@ -1,0 +1,555 @@
+/* Ist-Stand des EdgePortal-TVs, übernommen aus marcelrapold/mra-edgeportal @ e46563c (18.10.2026): app/globals.css,
+   Zeilen 7–70, 93–189, 202–287, 399–492, 498 mit 519–539, 540–672 (Tokens und Basis, Marke und Signet, Verbindung, Textinhalt,
+   Kopplung und Onboarding, Screen-Ansicht und Toolbar, Bewegung, Dashboard, App-Host, Argus-Karte).
+   Atlas hält diese Kopie als Referenz, damit der TV-Stand reproduzierbar bleibt. Für den Rahmen angepasst:
+   - Geltungsbereich .ep-app (steht für <html> und <body> der Seite): :root und body -> .ep-app, .dark -> .ep-app.dark und .ep-app .dark,
+     * -> .ep-app und .ep-app *, alle übrigen Selektoren mit .ep-app davor. Sonst wirkten Element- und :root-Regeln in die Atlas-Docs.
+   - vw -> cqi, vh und dvh -> cqb, Breiten-Media-Queries -> @container (der Rahmen ist ein virtueller TV).
+   - Ausgelassen: Tailwind-Syntax (@import "tailwindcss", @import "tw-animate-css", @custom-variant, @theme inline: Zeilen 1–6 und 71–92),
+     die html-Schriftgrösse ab 1920 px (Zeilen 493–497: html lässt sich nicht eingrenzen; bei 1920 px Breite ergibt die Formel 16 px, also 100 %)
+     und was nur Steuerung, Login oder Phone betrifft (Zeilen 190–201, 288–398, 499–518, ab 673).
+   - Zwei Atlas-Blöcke, als solche markiert: «Einbettung» oben und «Übersetzung» unten. Sie sind kein Produkt-CSS.
+   Nicht von Hand angleichen: Änderungen kommen aus dem Produkt und werden hier mit Commit nachgeführt. */
+
+/* ---------- Atlas: Einbettung (kein Produkt-CSS) ----------
+   .ep-app ist der Viewport des virtuellen TVs. Was im Produkt auf <html> liegt (Tailwind-Preflight), steht hier. Elementregeln der
+   Atlas-Docs (h1–h3, p, li, main, footer, svg.lucide) werden auf den Stand des Produkts zurückgesetzt; :where() hält sie unter der Kopie. */
+.ep-app {
+  position: absolute; inset: 0; overflow: hidden;
+  line-height: 1.5; -webkit-text-size-adjust: 100%; tab-size: 4;
+  font-feature-settings: normal; font-variation-settings: normal; font-weight: 400; font-style: normal; letter-spacing: normal;
+  --icon-stroke: 2; /* Atlas setzt svg.lucide auf 1.5; im Produkt gilt der Lucide-Standard 2. */
+}
+.ep-app :where(h1, h2, h3) { letter-spacing: inherit; }
+.ep-app :where(h1, h2, h3, p, li, dd, figcaption, blockquote) { text-wrap: inherit; }
+.ep-app :where(main) { container: none; width: auto; max-width: none; margin: 0; padding: 0; flex: initial; min-width: auto; }
+.ep-app :where(footer) { display: block; align-items: normal; flex-wrap: nowrap; gap: normal; min-height: auto; padding: 0; border-top-width: 0; font-size: inherit; color: inherit; }
+
+/* ---------- Kopie: app/globals.css ---------- */
+/* Rapold semantic roles from Atlas 0.7.1 (packages/brands/src/rapold.json, commit 1a680a4). */
+.ep-app {
+  --background: 207.3 100% 97.8%; /* #F4FAFF */
+  --foreground: 212 58.4% 15.1%; /* #10253D */
+  --card: 0 0% 100%; /* #FFFFFF */
+  --card-foreground: 212 58.4% 15.1%; /* #10253D */
+  --primary: 205.8 100% 35.1%; /* #0066B3 */
+  --primary-foreground: 0 0% 100%; /* #FFFFFF */
+  --secondary: 208.7 56.1% 92%; /* #DFEBF6 */
+  --secondary-foreground: 212 58.4% 15.1%; /* #10253D */
+  --muted: 208.7 56.1% 92%; /* #DFEBF6 */
+  --muted-foreground: 211.1 28.6% 38.4%; /* #46617E */
+  --destructive: 335.4 27.7% 39.6%; /* #814960 */
+  --destructive-foreground: 0 0% 100%; /* #FFFFFF */
+  --success: 169.1 57.1% 30.2%; /* #217969 */
+  --success-foreground: 0 0% 100%; /* #FFFFFF */
+  --warning: 46.5 44.9% 34.9%; /* #816F31 */
+  --warning-foreground: 0 0% 100%; /* #FFFFFF */
+  --border: 209.1 49.3% 86.9%; /* #CDDEEE */
+  --input: 210.6 20.5% 53.1%; /* #6F87A0 */
+  --ring: 205.8 100% 35.1%; /* #0066B3 */
+  --radius: 0.5rem;
+  /* Screens are always dark (living-room distance): Atlas dark roles and surfaces, mode-independent. */
+  --screen-bg: #050B19;
+  --screen-card: #0B1528;
+  --screen-raised: #142741;
+  --screen-line: #23334A;
+  --screen-text: #EDF5FF;
+  --screen-muted: #9AADC7;
+  --screen-accent: #38B8FF;
+  --screen-success: #34D399;
+  --screen-warning: #FBBF24;
+  --screen-danger: #FB7185;
+  --screen-ink: #10253D;
+  --surface-info: #0F2239;
+  --surface-success: #0E2431;
+  --surface-warning: #1E2328;
+  --surface-danger: #1E1C2F;
+  --brand-azure: #009DFF;
+  --brand-ice: #A8EDFF;
+  --brand-navy: #050B19;
+  --brand-paper: #F4FAFF;
+}
+.ep-app.dark, .ep-app .dark {
+  --background: 222 66.7% 5.9%; /* #050B19 */
+  --foreground: 213.3 100% 96.5%; /* #EDF5FF */
+  --card: 219.3 56.9% 10%; /* #0B1528 */
+  --card-foreground: 213.3 100% 96.5%; /* #EDF5FF */
+  --primary: 201.4 100% 61%; /* #38B8FF */
+  --primary-foreground: 211.2 75.8% 6.5%; /* #04101D */
+  --secondary: 214.7 52.9% 16.7%; /* #142741 */
+  --secondary-foreground: 213.3 100% 96.5%; /* #EDF5FF */
+  --muted: 214.7 52.9% 16.7%; /* #142741 */
+  --muted-foreground: 214.7 28.7% 69.2%; /* #9AADC7 */
+  --destructive: 351.3 94.5% 71.4%; /* #FB7185 */
+  --destructive-foreground: 211.2 75.8% 6.5%; /* #04101D */
+  --success: 158.1 64.4% 51.6%; /* #34D399 */
+  --success-foreground: 211.2 75.8% 6.5%; /* #04101D */
+  --warning: 43.3 96.4% 56.3%; /* #FBBF24 */
+  --warning-foreground: 211.2 75.8% 6.5%; /* #04101D */
+  --border: 215.4 35.8% 21.4%; /* #23334A */
+  --input: 215.7 18.1% 45.5%; /* #5F7089 */
+  --ring: 201.4 100% 61%; /* #38B8FF */
+}
+.ep-app,
+.ep-app * {
+  box-sizing: border-box;
+  border-color: hsl(var(--border));
+}
+.ep-app {
+  margin: 0;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-geist-sans), sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.ep-app button,
+.ep-app a {
+  -webkit-tap-highlight-color: transparent;
+}
+.ep-app button:not(:disabled),
+.ep-app select {
+  cursor: pointer;
+}
+.ep-app :focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 3px;
+}
+.ep-app h1,
+.ep-app h2,
+.ep-app h3,
+.ep-app p {
+  margin: 0;
+}
+.ep-app h1 {
+  font-size: clamp(1.875rem, 3cqi, 2.25rem);
+  font-weight: 650;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+}
+.ep-app h2 {
+  font-size: 1.125rem;
+  font-weight: 650;
+  line-height: 1.12;
+}
+.ep-app h3 {
+  font-size: 1rem;
+  font-weight: 650;
+  line-height: 1.12;
+}
+.ep-app p {
+  line-height: 1.6;
+  max-width: 70ch;
+}
+.ep-app label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 650;
+  margin: 1rem 0 0.45rem;
+}
+.ep-app a {
+  text-underline-offset: 0.2em;
+}
+.ep-app .muted {
+  color: hsl(var(--muted-foreground));
+}
+.ep-app .small {
+  font-size: 0.875rem;
+}
+.ep-app .brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  white-space: nowrap;
+}
+.ep-app .signet {
+  display: inline-grid;
+  flex-shrink: 0;
+}
+.ep-app .signet > img {
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+}
+.ep-app .signet-dark,
+.ep-app.dark .signet-light, .ep-app .dark .signet-light {
+  display: none;
+}
+.ep-app.dark .signet-dark, .ep-app .dark .signet-dark {
+  display: block;
+}
+.ep-app .brand-domain {
+  color: hsl(var(--muted-foreground));
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  margin-top: -0.1rem;
+}
+.ep-app .connection {
+  display: inline-flex;
+  gap: 0.45rem;
+  align-items: center;
+  color: hsl(var(--success));
+  font-size: 0.75rem;
+}
+.ep-app .connection::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+.ep-app .connection.offline {
+  color: hsl(var(--destructive));
+}
+.ep-app .display-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem;
+  overflow-wrap: anywhere;
+}
+.ep-app .theme-ocean {
+  background: var(--surface-info);
+  color: var(--screen-text);
+}
+.ep-app .theme-paper {
+  background: var(--brand-paper);
+  color: var(--screen-ink);
+}
+.ep-app .theme-forest {
+  background: var(--surface-success);
+  color: var(--screen-text);
+}
+.ep-app .display-wordmark,
+.ep-app .display-caption {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+.ep-app .display-copy {
+  padding-block: 2rem;
+}
+.ep-app .display-copy h2 {
+  font-size: calc(clamp(1.6rem, 2.3cqi, 2.7rem) * var(--screen-text-scale, 1));
+  font-weight: 650;
+  line-height: 1.14;
+  letter-spacing: -0.035em;
+  max-width: 26ch;
+}
+.ep-app .display-copy p {
+  margin-top: 1rem;
+  white-space: pre-wrap;
+  opacity: 0.9;
+  font-size: calc(0.96rem * var(--screen-text-scale, 1));
+}
+.ep-app .content-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.8rem;
+  margin-top: 1.2rem;
+  font-size: 0.8rem;
+  border: 1px solid currentColor;
+  border-radius: 6px;
+}
+.ep-app .error-message {
+  color: hsl(var(--destructive));
+  font-size: 0.8rem;
+  margin-block: 0.8rem;
+}
+.ep-app .login-page {
+  min-height: 100cqb;
+  display: flex;
+  flex-direction: column;
+}
+.ep-app .login-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 76px;
+  padding: 1rem clamp(1.25rem, 5cqi, 5rem);
+  border-bottom: 1px solid hsl(var(--border));
+}
+.ep-app .pair-page {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: 3rem 1.5rem;
+}
+.ep-app .pair-card {
+  max-width: 440px;
+  width: 100%;
+}
+.ep-app .pair-card > p {
+  color: hsl(var(--muted-foreground));
+  margin-top: 1rem;
+}
+.ep-app .pair-card > button {
+  margin-top: 1.5rem;
+}
+.ep-app .pair-code {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: clamp(2.5rem, 9cqi, 4rem);
+  letter-spacing: 0.12em;
+  color: hsl(var(--primary));
+  padding: 2rem 0 1rem;
+}
+.ep-app .adoption-qr {
+  margin-block: 1.25rem;
+}
+.ep-app .adoption-qr img {
+  width: min(320px, 100%);
+  height: auto;
+  border-radius: 8px;
+  margin-inline: auto;
+}
+.ep-app .adoption-qr p {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+}
+.ep-app .back-link {
+  display: block;
+  color: hsl(var(--primary));
+  font-size: 0.8rem;
+  margin-top: 1.5rem;
+}
+.ep-app .screen-view {
+  min-height: 100cqb;
+  display: flex;
+  flex-direction: column;
+}
+.ep-app .screen-view > .display-content {
+  flex: 1;
+  min-height: calc(100cqb - 72px);
+  padding: clamp(1.5rem, 5cqi, 5rem);
+}
+.ep-app .screen-view .display-copy h2 {
+  font-size: calc(clamp(2rem, 6cqi, 6rem) * var(--screen-text-scale, 1));
+}
+.ep-app .screen-view .display-copy p {
+  font-size: calc(clamp(1rem, 1.8cqi, 1.7rem) * var(--screen-text-scale, 1));
+}
+.ep-app .screen-toolbar {
+  min-height: 72px;
+  background: hsl(var(--card));
+  border-top: 1px solid hsl(var(--border));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 1.5rem calc(0.7rem + env(safe-area-inset-bottom));
+  font-size: 0.75rem;
+}
+.ep-app .screen-toolbar > span > span {
+  margin-left: 0.8rem;
+  color: hsl(var(--muted-foreground));
+}
+.ep-app .screen-toolbar > div {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.ep-app .screen-toolbar button {
+  font-size: 0.75rem;
+}
+.ep-app .display-content.align-center {
+  text-align: center;
+}
+.ep-app .display-content.align-center .display-copy h2 {
+  margin-inline: auto;
+}
+.ep-app .display-content.text-compact {
+  --screen-text-scale: 0.85;
+}
+.ep-app .display-content.text-large {
+  --screen-text-scale: 1.25;
+}
+@container (max-width: 720px) {
+  .ep-app .screen-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.8rem 1rem;
+  }
+  .ep-app .screen-toolbar > div {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.3rem;
+  }
+  .ep-app .screen-toolbar .connection {
+    font-size: 0.75rem;
+  }
+  .ep-app .screen-toolbar button {
+    font-size: 0.75rem;
+  }
+  .ep-app .screen-view > .display-content {
+    min-height: calc(100cqb - 108px);
+  }
+}
+@media (pointer: coarse) {
+  .ep-app button,
+  .ep-app .nav-item,
+  .ep-app input,
+  .ep-app select {
+    min-height: 44px;
+  }
+}
+/* Reduced motion: the system setting, or the controller's own toggle (data-motion on <html>). */
+@media (prefers-reduced-motion: reduce) {
+  .ep-app:not([data-motion="full"]) *,
+  .ep-app:not([data-motion="full"]) *::before,
+  .ep-app:not([data-motion="full"]) *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+.ep-app[data-motion="reduce"] *,
+.ep-app[data-motion="reduce"] *::before,
+.ep-app[data-motion="reduce"] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+
+/* Onboarding stays visually continuous with the local Pi setup. */
+.ep-app .onboarding-page { color: var(--screen-text); background: radial-gradient(ellipse at 15% 5%, var(--surface-info) 0, transparent 55%), radial-gradient(ellipse at 95% 95%, var(--surface-danger) 0, transparent 55%), var(--screen-bg); }
+.ep-app .onboarding-page .pair-page { padding: 30px 24px 56px; }
+.ep-app .onboarding-page .pair-card { width: min(100%, 540px); max-width: none; }
+.ep-app .onboarding-page h1 { font-size: clamp(2.1rem, 4cqi, 3.6rem); margin-bottom: 24px; }
+.ep-app .onboarding-page .adoption-qr img { border-radius: 18px; width: min(320px, 100%); height: auto; }
+.ep-app .onboarding-page .adoption-qr p { margin: 20px 0 8px; color: var(--screen-muted); }
+.ep-app .onboarding-page .onboarding-ready { color: var(--screen-success); margin-bottom: 16px; }
+.ep-app .onboarding-details { margin: 22px 0; color: var(--screen-muted); }
+.ep-app .onboarding-details summary { cursor: pointer; }
+.ep-app .onboarding-details p { margin-top: 12px; }
+.ep-app .onboarding-page .pair-code { font-size: 2rem; }
+.ep-app .onboarding-page .pair-card > form { margin-top: 24px; }
+@container (min-width: 850px) {
+  .ep-app .onboarding-page .pair-page { padding: 3cqb 6cqi 5cqb; }
+  .ep-app .onboarding-page .pair-card:has(.adoption-qr) { width: 100%; max-width: none; display: grid; grid-template-columns: 1.1fr 1fr; column-gap: 6cqi; align-items: start; font-size: clamp(18px, min(1.6cqi, 2.6cqb), 56px); }
+  .ep-app .onboarding-page .pair-card:has(.adoption-qr) > :not(.adoption-qr) { grid-column: 1; }
+  .ep-app .onboarding-page .adoption-qr { grid-column: 2; grid-row: 1 / 6; margin: 0; text-align: center; }
+  .ep-app .onboarding-page .adoption-qr img { width: min(32cqi, 52cqb); max-width: 100%; image-rendering: pixelated; }
+  .ep-app .onboarding-page .adoption-qr p { font-size: .85em; margin-top: 1em; }
+  .ep-app .onboarding-page .adoption-qr .back-link { font-size: .7em; }
+  .ep-app .onboarding-page .pair-card:has(.adoption-qr) h1 { font-size: 2.6em; line-height: 1.06; margin-bottom: .4em; }
+  .ep-app .onboarding-page .pair-card:has(.adoption-qr) .small { font-size: .75em; }
+  .ep-app .onboarding-page .onboarding-details { margin: 1em 0; font-size: .8em; }
+}
+
+.ep-app .operations-dashboard { width: 100%; min-height: 100%; padding: clamp(24px, 4cqi, 72px); background: radial-gradient(ellipse at 10% 0, var(--surface-info) 0, transparent 55%), var(--screen-bg); color: var(--screen-text); container-type: inline-size; }
+.ep-app .screen-view > .operations-dashboard { flex:1; min-height:0; }
+.ep-app .operations-dashboard > header { margin-bottom: 4cqw; }
+.ep-app .operations-dashboard > header > span { color: var(--screen-muted); font-size: max(12px, 1.1cqw); }
+.ep-app .operations-dashboard > header h2 { font-size: clamp(26px, 4cqw, 76px); letter-spacing: -.045em; margin: 10px 0; }
+.ep-app .operations-dashboard > header p { color: var(--screen-muted); }
+.ep-app .operations-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 3cqw; }
+.ep-app .operations-grid article { padding: 3cqw; background: var(--screen-card); border: 1px solid var(--screen-line); border-radius: 20px; min-width: 0; }
+.ep-app .operations-heading { display: flex; align-items: center; gap: 10px; color: var(--screen-accent); }
+.ep-app .operations-heading h3 { font-size: max(16px, 1.5cqw); }
+.ep-app .operations-heading > span { margin-left: auto; font-size: max(12px, .9cqw); color: var(--screen-muted); }
+.ep-app .radio-track { padding: 4cqw 0 3cqw; }
+.ep-app .radio-track > svg { color: var(--screen-success); width: 4cqw; height: 4cqw; margin-bottom: 12px; }
+.ep-app .radio-track > h3 { font-size: clamp(22px, 3.4cqw, 62px); line-height: 1.15; margin: 12px 0; overflow-wrap: anywhere; }
+/* Long titles stay readable from a distance: at most three (title) or two lines, then an ellipsis. */
+.ep-app .radio-track > h3, .ep-app .radio-track p, .ep-app .radio-next strong, .ep-app .radio-next p { display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; }
+.ep-app .radio-track > h3 { -webkit-line-clamp: 3; line-clamp: 3; }
+.ep-app .radio-track p, .ep-app .radio-next strong, .ep-app .radio-next p { -webkit-line-clamp: 2; line-clamp: 2; }
+.ep-app .radio-dashboard:not([data-state="live"]) .radio-track > h3, .ep-app .radio-dashboard:not([data-state="live"]) .radio-next { opacity: .7; }
+.ep-app .radio-dashboard:is([data-state="stale"], [data-state="disconnected"], [data-state="unavailable"]) .radio-state { color: var(--screen-warning); font-weight: 650; }
+.ep-app .radio-track p, .ep-app .radio-next p { color: var(--screen-muted); font-size: max(13px, 1.4cqw); }
+.ep-app .radio-next { border-top: 1px solid var(--screen-line); padding-top: 18px; display: grid; gap: 8px; }
+.ep-app .radio-next span { color: var(--screen-muted); font-size: 12px; }
+.ep-app .radio-next strong { font-size: max(16px, 1.7cqw); }
+.ep-app .operations-grid footer { margin-top: 3cqw; font-size: max(12px, 1cqw); color: var(--screen-muted); line-height: 1.6; }
+.ep-app .operations-grid footer span { display: block; }
+.ep-app .argus-dashboard { display: flex; flex-direction: column; }
+.ep-app .argus-dashboard > div:nth-child(2) { margin: auto 0; padding: 3cqw 0; }
+.ep-app .argus-dashboard h3 { font-size: max(18px, 2cqw); }
+.ep-app .argus-dashboard p { color: var(--screen-muted); line-height: 1.7; margin-top: 12px; }
+.ep-app .argus-orbit { display: grid; place-items: center; border: 1px solid var(--screen-line); border-radius: 50%; width: 9cqw; height: 9cqw; min-width: 72px; min-height: 72px; margin-bottom: 24px; color: var(--screen-muted); }
+.ep-app .dashboard-hint { margin-top: 12px; }
+@container (max-width: 550px) { .ep-app .operations-grid { grid-template-columns: 1fr; } }
+/* Embedded apps remain bounded within each screen, including mobile layouts. */
+.ep-app .app-host { display:flex; flex-direction:column; width:100%; min-height:0; padding:1rem; gap:1rem; }
+.ep-app .app-settings { padding:1.25rem; overflow-wrap:anywhere; }
+.ep-app .app-settings label { display:block; font-size:.875rem; }
+.ep-app .app-settings button { margin-right:.4rem; margin-bottom:.4rem; white-space:normal; }
+.ep-app .app-settings h3 { font-weight:600; }
+.ep-app .app-host iframe { width:100%; flex:1; min-height:50cqb; border:1px solid hsl(var(--input)); border-radius:1rem; background:hsl(var(--background)); }
+.ep-app .app-host header, .ep-app .app-controls { display:flex; flex-wrap:wrap; align-items:center; gap:.75rem; }
+.ep-app .app-controls form { display:flex; flex-wrap:wrap; gap:.5rem; }
+.ep-app .app-controls input { border:1px solid hsl(var(--input)); padding:.5rem; max-width:100%; }
+.ep-app .radio-next strong, .ep-app .radio-next p, .ep-app .radio-track p, .ep-app .operations-dashboard h2 { overflow-wrap:anywhere; }
+.ep-app .operations-heading { flex-wrap:wrap; }
+@container (min-width:900px) {
+  .ep-app .screen-view > .operations-dashboard { padding:clamp(24px,3cqb,48px); }
+  .ep-app .screen-view .operations-dashboard > header { margin-bottom:2cqb; }
+  .ep-app .screen-view .operations-grid article { padding:clamp(20px,2.5cqb,40px); }
+  .ep-app .screen-view .radio-track { padding:2cqb 0; }
+  .ep-app .screen-view .radio-track > h3 { font-size:clamp(22px,3cqb,54px); }
+  .ep-app .screen-view .radio-next strong { font-size:clamp(18px,2cqb,32px); }
+  .ep-app .screen-view .operations-grid footer { margin-top:2cqb; }
+}
+.ep-app .display-wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 650;
+  letter-spacing: -0.035em;
+}
+/* Argus camera card (operations dashboard and stage) */
+.ep-app .argus-panel { display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+.ep-app .argus-panel.argus-empty { justify-content: center; }
+.ep-app .argus-frame { position: relative; overflow: hidden; border-radius: 14px; aspect-ratio: 16 / 9; background: var(--screen-bg); border: 1px solid var(--screen-line);
+  display: grid; place-items: center; color: var(--screen-muted); font-size: 14px; }
+.ep-app .argus-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ep-app .argus-frame em { position: absolute; right: 10px; top: 10px; font-style: normal; font-size: 12px; padding: 2px 8px; border-radius: 999px;
+  background: var(--screen-warning); color: var(--screen-ink); }
+.ep-app .argus-panel[data-motion="true"] .argus-frame { border-color: var(--screen-warning); outline: 1px solid var(--screen-warning); }
+.ep-app .argus-meta { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; color: var(--screen-muted); font-size: 14px; }
+.ep-app .argus-cam, .ep-app .argus-motion { display: inline-flex; align-items: center; gap: 8px; }
+.ep-app .argus-motion svg { width: 16px; height: 16px; }
+.ep-app .argus-motion[data-on="true"] { color: var(--screen-warning); }
+.ep-app .argus-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--screen-muted); }
+.ep-app .argus-dot[data-on="true"] { background: var(--screen-success); }
+.ep-app .argus-events { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14px; color: var(--screen-muted); }
+.ep-app .argus-events li { display: grid; grid-template-columns: 18px 1fr auto; align-items: center; gap: 10px; }
+.ep-app .argus-events svg { width: 16px; height: 16px; color: var(--screen-muted); }
+.ep-app .argus-events time { color: var(--screen-muted); font-variant-numeric: tabular-nums; }
+.ep-app .argus-note { color: var(--screen-muted); }
+
+/* ---------- Atlas: Übersetzung (kein Produkt-CSS) ----------
+   components/ui/button.tsx und input.tsx gestalten mit Tailwind-Klassen. Atlas bildet dieselben Klassennamen auf eigene Tokens ab,
+   darum stehen hier die Werte dieser Klassen als .ep-tw-*, mit den Rollen des Produkts (hsl(var(--…))). Button: inline-flex min-h-11
+   shrink-0 items-center justify-center gap-2 rounded-[8px] border border-transparent px-4 py-2 text-sm font-[650] leading-tight,
+   Fokus outline-2 offset-2 ring, disabled opacity-50, [&_svg]:size-4; Varianten default, outline, ghost. Input: w-full min-w-0
+   rounded-[8px] border border-input bg-background px-3 py-2 font-normal text-foreground min-h-11, md:text-sm (der TV ist breiter als md). */
+.ep-app .ep-tw-button {
+  display: inline-flex; min-height: 2.75rem; flex-shrink: 0; align-items: center; justify-content: center; gap: .5rem;
+  border: 1px solid transparent; border-radius: 8px; padding: .5rem 1rem; font-size: .875rem; font-weight: 650; line-height: 1.25;
+  transition-property: background-color, border-color, color, transform; transition-duration: 150ms; transition-timing-function: cubic-bezier(.2, .7, .2, 1);
+}
+.ep-app .ep-tw-button:focus-visible { outline: 2px solid hsl(var(--ring)); outline-offset: 2px; }
+.ep-app .ep-tw-button:disabled { pointer-events: none; opacity: .5; }
+.ep-app .ep-tw-button svg { width: 1rem; height: 1rem; flex-shrink: 0; }
+.ep-app .ep-tw-default { background-color: hsl(var(--primary)); color: hsl(var(--primary-foreground)); }
+.ep-app .ep-tw-default:hover { background-color: hsl(var(--primary) / .85); }
+.ep-app .ep-tw-outline { border-color: hsl(var(--input)); background-color: hsl(var(--card)); color: hsl(var(--foreground)); }
+.ep-app .ep-tw-outline:hover { background-color: hsl(var(--muted)); }
+.ep-app .ep-tw-ghost { color: hsl(var(--muted-foreground)); }
+.ep-app .ep-tw-ghost:hover { background-color: hsl(var(--muted)); color: hsl(var(--foreground)); }
+.ep-app .ep-tw-w-full { width: 100%; }
+.ep-app .ep-tw-mt-5 { margin-top: 1.25rem; }
+.ep-app .ep-tw-input {
+  width: 100%; min-width: 0; min-height: 2.75rem; border: 1px solid hsl(var(--input)); border-radius: 8px; background-color: hsl(var(--background));
+  padding: .5rem .75rem; font-size: .875rem; line-height: calc(1.25 / .875); font-weight: 400; color: hsl(var(--foreground));
+}
+.ep-app .ep-tw-input::placeholder { color: hsl(var(--muted-foreground)); }
+/* Platzhalter an der Stelle des App-iframes (Atlas lädt keine Apps): dieselben Masse wie .app-host iframe. */
+.ep-app .app-host > .ep-app-frame { width: 100%; flex: 1; min-height: 50cqb; border: 1px solid hsl(var(--input)); border-radius: 1rem; background: center / cover no-repeat hsl(var(--background)); }

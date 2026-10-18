@@ -12,8 +12,9 @@
   "reference": {
     "repository": "marcelrapold/mra-edgeportal (privat)",
     "commit": "e46563c",
-    "files": ["app/stage.css", "app/presence.css", "app/screen-nav.css", "app/tv-power.css", "components/stage/stage-view.tsx", "components/stage/agent-card.tsx", "components/stage/radio-panel.tsx", "components/screen-nav.tsx", "lib/stage.ts", "lib/screen-nav.ts", "src/tv.mjs"],
+    "files": ["app/globals.css", "app/stage.css", "app/autopilot.css", "app/hermes-stack.css", "app/presence.css", "app/voice.css", "app/perception.css", "app/screen-nav.css", "app/radiox.css", "app/tv-power.css", "app/mirror.css", "deploy/pi-setup/web/app/style.css", "deploy/kiosk/bootstrap.py", "components/stage/stage-view.tsx", "components/stage/agent-card.tsx", "components/stage/radio-panel.tsx", "components/stage/hermes-stack.tsx", "components/stage/terminal-pane.tsx", "components/stage/presence-layer.tsx", "components/stage/voice-assistant.tsx", "components/stage/perception-indicator.tsx", "components/radiox/radiox-view.tsx", "components/argus-view.tsx", "components/screen-nav.tsx", "components/tv-power.tsx", "components/mirror-view.tsx", "components/mirror-screen.tsx", "components/content-view.tsx", "components/screen-client.tsx", "lib/stage.ts", "lib/screen-nav.ts", "lib/sound-state.ts", "lib/autopilot.ts", "lib/hermes-stack.ts", "lib/tv-sequence.ts", "src/tv.mjs", "src/scenes.mjs"],
     "copies": "brands/rapold/edgeportal/tv/*.css",
+    "catalog": "brands/rapold/edgeportal/views.json",
     "screenshots": "Spiegel des Wohnzimmer-Screens (3840 × 2160) und Steuerung, 18.10.2026, privat bei Marcel Rapold",
     "rule": "Atlas bildet den TV-Stand ab, verändert ihn aber nicht. Ändert sich das Produkt, werden die Kopien mit neuem Commit nachgeführt."
   },
@@ -153,7 +154,8 @@
       "Offline erst nach mehreren verpassten Abfragen anzeigen.",
       "Aufnahme-Hinweise von Tailwind-Rot auf die Rolle danger umstellen.",
       "Eine gemeinsame Grussquelle für TV an/aus und Präsenz.",
-      "Neuer Systemstart mit rapold.io «Der First» (DESIGN-DNA 7.1)."
+      "Neuer Systemstart mit rapold.io «Der First» (DESIGN-DNA 7.1).",
+      "Tastenhinweis und «Ton aktivieren» in Bühnenschrift setzen: heute rechnet ihr em mit der 16-px-Basis der Bühne, am 4K-TV also 16 bis 19 px."
     ]
   },
   "privacy": "Die öffentliche Atlas-Seite zeigt den TV mit neutralen Beispielen: keine echten Gerätenamen, Orte, Hosts, Personen oder Porträts. Gestaltung, Grössen und Texte des Produkts bleiben unverändert."

@@ -1,0 +1,19 @@
+/* Ist-Stand des EdgePortal-TVs, übernommen aus marcelrapold/mra-edgeportal @ e46563c (18.10.2026): deploy/kiosk/bootstrap.py
+   (Startseite des Kiosks auf 127.0.0.1:8091, das <style> in PAGE). Atlas hält diese Kopie als Referenz, damit der TV-Stand
+   reproduzierbar bleibt. Für den Rahmen angepasst:
+   - Geltungsbereich .ep-boot (steht für <body>): body -> .ep-boot, die übrigen Selektoren mit .ep-boot davor; 100vh -> 100cqb.
+   - Die Seite hat kein eigenes Reset und lebt von den Standardstilen des Browsers. Atlas lädt Tailwind-Preflight und eigene
+     Elementregeln (dazu tv/base.css im Rahmen); der markierte Block darunter stellt die Chromium-Standardwerte für box-sizing,
+     main, h1, p und small wieder her.
+   Sonst unverändert. Nicht von Hand angleichen: Änderungen kommen aus dem Produkt und werden hier mit Commit nachgeführt. */
+.ep-boot{background:#091321;color:#e6f1ff;font:20px system-ui;margin:0;display:grid;min-height:100cqb;place-items:center}
+.ep-boot main{max-width:650px;padding:40px}.ep-boot small{color:#6bc8ff}.ep-boot h1{font-size:48px;letter-spacing:-2px}.ep-boot p{color:#a5bad2;line-height:1.6}
+
+/* ---------- Atlas: Browser-Standardstile (kein Produkt-CSS) ----------
+   Chromium-Werte, die Preflight und die Atlas-Docs sonst überschreiben; :where() hält sie unter der Kopie. */
+.ep-boot { letter-spacing: normal; text-align: start; -webkit-font-smoothing: auto; -moz-osx-font-smoothing: auto; }
+.ep-boot, .ep-boot :where(*) { box-sizing: content-box; }
+.ep-boot :where(main) { display: block; container: none; width: auto; margin: 0; flex: initial; min-width: auto; }
+.ep-boot :where(h1) { display: block; margin-block: .67em; font-weight: bold; line-height: normal; text-wrap: inherit; }
+.ep-boot :where(p) { margin-block: 1em; max-width: none; text-wrap: inherit; }
+.ep-boot :where(small) { font-size: smaller; }
