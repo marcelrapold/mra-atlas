@@ -1,6 +1,6 @@
 # Rapold
 
-Ein optional wählbares Rapold-Theme für die Produkte AI Fabric, Argus, ÆON Learn und EdgePortal sowie Lotse, Cockpit, Auditor, Rapold Auth, PocketForge, das Designsystem Atlas und Agents; alle elf Signets sind freigegeben. Es liefert eine gemeinsame Farb- und Typografiebasis für das neutrale Atlas-System. Der Atlas-Default bleibt `neutral`.
+Ein optional wählbares Rapold-Theme für die Produkte Fabric (bis 18.10.2026 AI Fabric), Argus, ÆON Learn und EdgePortal sowie Lotse, Cockpit, Auditor, Rapold Auth, PocketForge, das Designsystem Atlas und Agents; alle elf Signets sind freigegeben. Es liefert eine gemeinsame Farb- und Typografiebasis für das neutrale Atlas-System. Der Atlas-Default bleibt `neutral`.
 
 **Status des UI-Adapters: `draft`, Version 0.2.0.** Marcel Rapold hat am **11.10.2026** die vier Signets der Raumfalten-Familie B (AI Fabric, Argus, ÆON Learn, EdgePortal) und am **12.10.2026** die sechs mit 0.7.0 ergänzten Signets (Lotse, Cockpit, Auditor, Rapold Auth, PocketForge, Atlas) freigegeben. Die Zuordnung zu vollständigen UI-Rollen und ihre visuelle Abnahme bleiben als separate Integrationsarbeit dokumentiert.
 
@@ -24,7 +24,7 @@ Es gibt genau einen Rapold-Eintrag in der Brand-Registry. Die Produktkennungen w
 
 | Kennung | Produkt | SVG-Master |
 |---|---|---|
-| `fabric` | AI Fabric | [fabric.svg](assets/logos/fabric.svg) |
+| `fabric` | Fabric · fabric.rapold.io | [fabric.svg](assets/logos/fabric.svg) |
 | `argus` | Argus | [argus.svg](assets/logos/argus.svg) |
 | `learn` | ÆON Learn | [learn.svg](assets/logos/learn.svg) |
 | `edgeportal` | EdgePortal · edgeportal.rapold.io | [edgeportal.svg](assets/logos/edgeportal.svg) |
@@ -81,7 +81,7 @@ Die Produktwelten sind begrenzte Referenzcontainer innerhalb des Rapold-Showcase
 
 | Produkt / Motiv | Herkunft und integrierter Umfang |
 |---|---|
-| AI Fabric | Aus der belegten Originalgestaltung abgeleitete prozedurale Aurora, deterministisches Netz mit Pulsen und Glasflächen. Keine Original-Hintergrundbitmap vorhanden; kein privater App-Quellcode wird als Asset kopiert. Geist und Geist Mono entsprechen bereits der AI-Quelle. |
+| Fabric | Aus der belegten Originalgestaltung abgeleitete prozedurale Aurora, deterministisches Netz mit Pulsen und Glasflächen. Keine Original-Hintergrundbitmap vorhanden; kein privater App-Quellcode wird als Asset kopiert. Geist und Geist Mono entsprechen bereits der AI-Quelle. |
 | ÆON Learn | Vier bytegleich übernommene Hero-Dateien mit Atmosphäre, Wissensnetz, Reaktorkern und Signalbahnen. Partikel, Terminal und dezente Parallax werden als steuerbare Referenz umgesetzt. Die ursprünglichen Schriften Inter und JetBrains Mono werden bewusst durch Geist und Geist Mono ersetzt. |
 | Argus | Neues CI-Anwendungsbeispiel mit dem freigegebenen Argus-Zeichen. Es belegt keine Parität mit einer nicht zugänglichen Argus-Oberfläche und zeigt keine realen Kameras oder Betriebszustände. |
 | EdgePortal | Neues CI-Anwendungsbeispiel für das freigegebene Portalzeichen. Eine vollständige Übernahme der ursprünglichen App oder ihrer Verbindungszustände wird nicht behauptet. |

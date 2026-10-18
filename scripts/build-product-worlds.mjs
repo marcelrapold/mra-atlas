@@ -49,7 +49,7 @@ function validateSources(worlds, identity, provenance) {
     if (!identity.products.some(p => p.id === world.id)) throw new Error(`Unknown product-world signet: ${world.id}`);
     if (!['original-adapted', 'approved-ci-application'].includes(world.sourceKind)) throw new Error(`Unclear source scope: ${world.id}`);
     if (!world.sourceNote || !world.layers?.length) throw new Error(`Incomplete product-world documentation: ${world.id}`);
-    if (world.sourceUrl && !/^https:\/\/(?:ai|learn)\.rapold\.io\//.test(world.sourceUrl)) throw new Error(`Unexpected public reference: ${world.id}`);
+    if (world.sourceUrl && !/^https:\/\/(?:fabric|ai|learn)\.rapold\.io\//.test(world.sourceUrl)) throw new Error(`Unexpected public reference: ${world.id}`);
     for (const layer of world.layers) if (layer.path && !safePath(layer.path).startsWith('assets/worlds/')) throw new Error(`Layer is outside the world asset tree: ${layer.path}`);
   }
   const net = worlds.fabricNetwork;
