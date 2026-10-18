@@ -1,0 +1,941 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EdgePortal Boot</title>
+<meta name="description" content="Boot-Kit: deterministische EdgePortal-Bootsequenz aus timeline.json, offline, ohne Netz.">
+<!-- Quelle: Prototyp EdgePortal-Bootsequenz Fassung 5 (18.10.2026). Werte und Wortlaut: timeline.json (eingebettete Kopie unten). Regeln: brands/rapold-io/DESIGN-DNA.md 7.1. -->
+<style>
+@font-face{font-family:"Geist";src:url("../../assets/fonts/Geist-Variable.woff2") format("woff2");font-weight:100 900;font-display:block}
+@font-face{font-family:"Geist Mono";src:url("../../assets/fonts/GeistMono-Variable.woff2") format("woff2");font-weight:100 900;font-display:block}
+:root{
+  --bg:#050B19; --abyss:#02060F; --panel:#0B1528; --raised:#142741; --line:#23334A; --input:#5F7089;
+  --fg:#EDF5FF; --muted:#9AADC7; --azure:#009DFF; --sky:#38B8FF; --ice:#A8EDFF;
+  --ok:#34D399; --warn:#FBBF24; --bad:#FB7185; --firstglut:#FFA36C; --firstglut-core:#FFE2CC;
+  --sans:"Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  --mono:"Geist Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --ease:cubic-bezier(.2,.7,.2,1);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#000;overflow:hidden}
+body{color:var(--fg);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;cursor:none}
+/* Bühne: 16:9, zentriert, füllt den TV. Fassung 5 rechnet alle Grössen in cqw dieser Bühne. */
+.tv{position:absolute;inset:0;margin:auto;width:min(100vw,177.7778vh);height:min(56.25vw,100vh);background:#000;overflow:hidden;container-type:inline-size}
+.tv svg.scene{position:absolute;inset:0;width:100%;height:100%;display:block}
+.tv .up polygon{fill:var(--azure)}
+.tv .lo polygon{fill:var(--ice)}
+.tv .ghost polygon{fill:var(--line)}
+.tv .seg{stroke:var(--ice);stroke-width:2;transform-box:fill-box;transform-origin:0% 50%;transform:scaleX(0);transition:transform 1.2s var(--ease)}
+.tv .segA-m,.tv .stub{stroke:var(--input);stroke-width:2;opacity:0;transition:opacity .5s var(--ease)}
+.tv .stub{stroke-dasharray:8 10}
+.tv .hair{transition:opacity .9s var(--ease)}
+.tv .dot{fill:var(--azure);opacity:0;transition:opacity .4s var(--ease)}
+.tv .navy{opacity:0;transition:opacity .6s var(--ease)}
+.tv .bloom{opacity:0;transition:opacity 1.3s var(--ease)}
+.tv .ghost{opacity:0;transition:opacity .9s var(--ease)}
+.tv .plane{transition:transform .9s var(--ease),opacity .9s var(--ease)}
+.tv .shift{transform-origin:800px 430px;transition:transform 1.1s var(--ease)}
+.tv .gridwrap{transform-origin:800px 450px;transform:scale(.6);opacity:0;transition:transform 1.5s var(--ease),opacity 1.5s var(--ease)}
+.tv.s1 .navy,.tv.s1 .dot{opacity:1}
+.tv.s2 .segA{transform:scaleX(1)}
+/* Durchgang und Empfehlung: Flächen gleiten entlang der Fugenachse */
+.glide .up{opacity:0;transform:translate(230px,-122px)}
+.glide .lo{opacity:0;transform:translate(-230px,122px)}
+.hero.s3 .segB{transform:scaleX(1)}
+.hero.s3 .up{opacity:1;transform:none}
+.hero.s4 .lo{opacity:1;transform:none}
+.hero.s4 .bloom{opacity:1}
+.hero.s5 .hair,.hero.s5 .dot{opacity:0}
+.hero.offline .segA{opacity:0}
+.hero.offline .segA-m,.hero.offline .stub{opacity:1}
+.hero.offline .ghost{opacity:.7}
+.hero.offline .bloom{opacity:0}
+.hero.pair.s5 .shift{transform:translate(-300px,0)}
+.hero.s6 .shift{transform:translate(-650px,-310px) scale(.3)}
+.tv .ov{position:absolute;opacity:0;transition:opacity .6s var(--ease),transform .6s var(--ease)}
+.tv .word{left:0;right:0;top:63%;text-align:center;transform:translateY(1cqw)}
+.tv.s5 .word{opacity:1;transform:none}
+.hero.pair.s5 .word{transform:translateX(-18.75%)}
+.hero.s6 .word{opacity:0}
+.wm{display:inline-block;font-weight:700;font-size:3.9cqw;letter-spacing:-.052em;line-height:1.05;padding-bottom:.06em;
+  background:linear-gradient(153deg,var(--azure) 48%,var(--ice) 48%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.wsub{font-family:var(--mono);font-size:clamp(7px,1.15cqw,22px);color:var(--muted);margin-top:.9cqw;letter-spacing:.04em}
+.tv .status{left:6.5%;bottom:6.5%;font-family:var(--mono);font-size:clamp(7px,1.25cqw,28px);color:var(--muted);line-height:1.5}
+.tv.s1 .status{opacity:1}
+.st-diag{color:var(--input)}
+.tv .pairbox{left:62%;top:50%;width:26%;transform:translate(2cqw,-50%);text-align:left}
+.hero.pair.s5 .pairbox{opacity:1;transform:translate(0,-50%)}
+.pq{font-size:1.55cqw;font-weight:650;letter-spacing:-.02em;margin-bottom:1.1cqw;line-height:1.15}
+.qr{background:var(--fg);padding:.7cqw;border-radius:.4cqw;width:72%}
+.qr svg{display:block;width:100%;height:auto}
+.pcode{font-family:var(--mono);font-size:2cqw;margin-top:1.1cqw;letter-spacing:.08em}
+.pcount{font-family:var(--mono);font-size:clamp(7px,1cqw,18px);color:var(--muted)}
+.tv .hdr{left:12.4%;top:13.3%;transform:translateY(-50%);font-weight:650;font-size:1.6cqw;letter-spacing:-.03em}
+.tv .handoff{left:0;right:0;top:44%;text-align:center}
+.handoff b{display:block;font-weight:400;font-size:2.8cqw;letter-spacing:-.02em}
+.handoff span{font-family:var(--mono);font-size:clamp(7px,1.1cqw,20px);color:var(--muted)}
+.hero.s6 .handoff{opacity:1;transition-delay:.5s}
+.tv .safe{inset:5%;border:1px dashed rgba(168,237,255,.45);pointer-events:none;transition:opacity .2s}
+.tv .safe i{position:absolute;left:.6cqw;top:.4cqw;font-style:normal;font-family:var(--mono);font-size:clamp(7px,.8cqw,14px);color:var(--ice)}
+body.show-safe .tv .safe{opacity:1}
+/* Systemstart: rapold.io «Der First». firstEngine() rechnet jede Grösse pro Bild, damit die Plymouth-Frames deterministisch exportierbar sind. */
+.hero.pre .navy{opacity:1}
+.hero.pre .status{opacity:1}
+.hero.lvl1.pre:not(.s1) .status{opacity:0}
+.first path.c,.first line,.ridgeline line{fill:none;stroke-linecap:round}
+.first .scr,.ridgeline .scr,.bloomR{mix-blend-mode:screen}
+.fl-halo{stroke:var(--firstglut);stroke-opacity:.55}
+.fl-glut{stroke:var(--firstglut)}
+.fl-core{stroke:var(--firstglut-core)}
+.seam{stroke:var(--azure);stroke-width:1.2}
+.plate rect,.plate line{fill:none;stroke:var(--ice);stroke-width:1;vector-effect:non-scaling-stroke}
+.plate text{font-family:var(--mono);fill:var(--muted);font-size:6.5px}
+.hero.curhold .cur{animation:none}
+.hero.curoff .cur{opacity:0;transition:opacity .24s}
+.tv .ann{font-family:var(--mono);font-size:clamp(6px,.9cqw,18px);color:var(--muted);white-space:nowrap;transition:opacity .18s}
+.ann b{color:var(--ice);font-weight:400;margin-right:.45em}
+.ann b.r{margin:0 0 0 .45em}
+.tv .a-g{left:27%;top:25.5%}
+.tv .a-t{left:60%;top:32.5%}
+.tv .a-f{right:58%;top:69%}
+.tv .a-b{left:61.5%;top:69.5%}
+.hero.lvl3.ann-g .a-g,.hero.lvl4.ann-g .a-g,.hero.lvl5.ann-g .a-g,.hero.lvl4.ann-t .a-t,.hero.lvl5.ann-t .a-t,.hero.lvl4.ann-f .a-f,.hero.lvl5.ann-f .a-f,.hero.lvl4.ann-b .a-b,.hero.lvl5.ann-b .a-b{opacity:1}
+.hero .segA,.hero .segA-m{transform-origin:100% 50%}
+.hero.s4 .bloomR{opacity:0 !important;transition:opacity 1.3s var(--ease)}
+/* Endorsement unter dem Produktnamen */
+.endorse{display:flex;align-items:center;justify-content:center;gap:.9cqw;margin-top:1.2cqw}
+.endorse span{font-family:var(--mono);text-transform:uppercase;letter-spacing:.2em;font-size:clamp(7px,1cqw,22px);color:var(--muted)}
+.endorse svg{height:1.8cqw;width:8.15cqw;display:block}
+.endorse.left{justify-content:flex-start;margin-top:.7cqw}
+.word .wsub{margin-top:1.5cqw}
+/* Log und Hacker-Stufen */
+.log div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46cqw}
+.log b{font-weight:500}
+.log .old{opacity:.55}
+.k-ok{color:var(--ok)} .k-bad{color:var(--bad)} .k-wait{color:var(--muted)} .k-info{color:var(--sky)} .k-ts{color:var(--muted)}
+.cur{font-style:normal;color:var(--sky);margin-left:.15em;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.hero.lvl2 .log{color:var(--fg)}
+.hero.lvl3 .status,.hero.lvl4 .status,.hero.lvl5 .status{top:6.5%;bottom:auto;font-size:clamp(7px,1.1cqw,24px)}
+.hero.lvl3 .log,.hero.lvl4 .log{color:var(--fg)}
+.hero.lvl5 .log{color:var(--ice);letter-spacing:.04em}
+.hero.s6.lvl3 .status,.hero.s6.lvl4 .status,.hero.s6.lvl5 .status{opacity:0}
+.hero.lvl4 .wsub,.hero.lvl5 .wsub{color:var(--ice)}
+.hero.lvl5 .pq{font-family:var(--mono);font-weight:500;letter-spacing:.06em;font-size:1.3cqw}
+.lvl-row{gap:6px}
+.lvl-label{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-right:6px}
+.btn[aria-checked="true"]{border-color:var(--sky);background:rgba(56,184,255,.12)}
+.btn .lv{font-family:var(--mono);color:var(--sky);margin-right:6px}
+.top .lockup{margin-left:auto;width:104px;height:23px}
+.tv.reset,.tv.reset *{transition:none !important}
+@media (prefers-reduced-motion: reduce){.tv,.tv *{transition:none !important;animation:none !important}}
+/* Boot-Kit: Standbild (?t=) ohne Cursor-Blinken, reduzierte Bewegung auch per ?rm=1 */
+.tv.seek .cur{animation:none}
+.tv.rm,.tv.rm *{transition:none !important;animation:none !important}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id="ep-bloom"><stop offset="0" style="stop-color:var(--azure);stop-opacity:.3"/><stop offset=".45" style="stop-color:var(--azure);stop-opacity:.07"/><stop offset="1" style="stop-color:var(--azure);stop-opacity:0"/></radialGradient>
+    <linearGradient id="ep-floor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--bg)"/><stop offset="1" style="stop-color:var(--abyss)"/></linearGradient>
+    <pattern id="ep-iso" width="112" height="56" patternUnits="userSpaceOnUse"><path d="M0 0L112 56M0 56L112 0" fill="none" style="stroke:var(--ice)" stroke-opacity=".16" stroke-width="1.2"/></pattern>
+    <radialGradient id="ep-fadeg" cx=".5" cy=".5" r=".62"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#000"/></radialGradient>
+    <mask id="ep-fade" maskUnits="userSpaceOnUse" x="0" y="0" width="1600" height="900"><rect width="1600" height="900" fill="url(#ep-fadeg)"/></mask>
+    <radialGradient id="ep-apex"><stop offset="0" style="stop-color:var(--firstglut-core);stop-opacity:.3"/><stop offset=".14" style="stop-color:var(--firstglut);stop-opacity:.22"/><stop offset=".42" style="stop-color:var(--firstglut);stop-opacity:.07"/><stop offset=".72" style="stop-color:var(--firstglut);stop-opacity:.018"/><stop offset="1" style="stop-color:var(--firstglut);stop-opacity:0"/></radialGradient>
+    <filter id="ep-fl16" filterUnits="userSpaceOnUse" x="90" y="0" width="60" height="150"><feGaussianBlur stdDeviation="7"/></filter>
+    <filter id="ep-fl3" filterUnits="userSpaceOnUse" x="100" y="10" width="40" height="120"><feGaussianBlur stdDeviation="1.3"/></filter>
+    <filter id="ep-cor6" filterUnits="userSpaceOnUse" x="0" y="-20" width="256" height="290"><feGaussianBlur stdDeviation="6"/></filter>
+    <filter id="ep-cor3" filterUnits="userSpaceOnUse" x="0" y="-20" width="256" height="290"><feGaussianBlur stdDeviation="2.6"/></filter>
+    <linearGradient id="ep-planeA" gradientUnits="userSpaceOnUse" x1="0" y1="24" x2="0" y2="224.3"><stop offset="0" stop-color="#2FB1FF"/><stop offset=".55" stop-color="#009DFF"/><stop offset="1" stop-color="#003E86"/></linearGradient>
+    <linearGradient id="ep-planeI" gradientUnits="userSpaceOnUse" x1="120.3" y1="24" x2="186" y2="240"><stop offset="0" stop-color="#E6FAFF"/><stop offset=".5" stop-color="#A8EDFF"/><stop offset="1" stop-color="#3D7FA6"/></linearGradient>
+    <radialGradient id="ep-spark"><stop offset="0" style="stop-color:var(--firstglut-core);stop-opacity:.95"/><stop offset=".22" style="stop-color:var(--firstglut);stop-opacity:.55"/><stop offset=".55" style="stop-color:var(--firstglut);stop-opacity:.12"/><stop offset="1" style="stop-color:var(--firstglut);stop-opacity:0"/></radialGradient>
+    <radialGradient id="ep-sparkI"><stop offset="0" style="stop-color:var(--fg);stop-opacity:.9"/><stop offset=".25" style="stop-color:var(--ice);stop-opacity:.5"/><stop offset="1" style="stop-color:var(--ice);stop-opacity:0"/></radialGradient>
+    <filter id="ep-sil24" filterUnits="userSpaceOnUse" x="-60" y="-60" width="380" height="380"><feGaussianBlur stdDeviation="2.4"/></filter>
+    <filter id="ep-sil9" filterUnits="userSpaceOnUse" x="-60" y="-60" width="380" height="380"><feGaussianBlur stdDeviation="9"/></filter>
+    <filter id="ep-cg" filterUnits="userSpaceOnUse" x="-60" y="-60" width="380" height="380"><feGaussianBlur stdDeviation="2.2"/></filter>
+    <filter id="ep-rl13" filterUnits="userSpaceOnUse" x="-80" y="-260" width="160" height="340"><feGaussianBlur stdDeviation="13.3"/></filter>
+    <filter id="ep-rl25" filterUnits="userSpaceOnUse" x="-80" y="-260" width="160" height="340"><feGaussianBlur stdDeviation="2.5"/></filter>
+    <mask id="ep-reveal" maskUnits="userSpaceOnUse" x="-60" y="-60" width="380" height="380"><circle id="ep-reveal-c" cx="120.296" cy="24" r="0" fill="#fff" filter="url(#ep-sil9)"/></mask>
+    <symbol id="rapold-lockup" viewBox="0 0 499.63 110.358"><g transform="translate(-13.728 -4.945) scale(0.456)"><path fill="#009DFF" fill-rule="evenodd" d="M 43.259 224.296 L 85.63 203.111 L 85.63 133.778 L 120.296 116.444 L 120.296 24 L 43.259 62.519 Z M 85.63 102.963 L 120.296 85.63 L 120.296 56.741 L 85.63 74.074 Z"/><path fill="#A8EDFF" fill-rule="evenodd" d="M 120.296 116.444 L 197.333 154.963 L 197.333 62.519 L 120.296 24 Z M 120.296 85.63 L 156.889 103.926 L 156.889 75.037 L 120.296 56.741 Z M 126.074 132.815 L 176.148 157.852 L 212.741 232 L 162.667 206.963 Z"/></g><g transform="translate(110.25 89.358)"><path fill="#EDF5FF" d="M7.04 0V-53.4H19L19.48 -38.56L18.44 -38.82Q19.64 -46.5 22.97 -49.95Q26.3 -53.4 32.06 -53.4H37.02V-42.44H32.04Q27.92 -42.44 25.23 -41.23Q22.54 -40.02 21.19 -37.47Q19.84 -34.92 19.84 -30.76V0ZM55.26 1.2Q46.94 1.2 41.83 -2.64Q36.72 -6.48 36.72 -13.36Q36.72 -20.32 41.02 -24.2Q45.32 -28.08 54.06 -29.8L71.82 -33.26Q71.82 -38.96 69.21 -41.82Q66.6 -44.68 61.54 -44.68Q56.88 -44.68 54.22 -42.55Q51.56 -40.42 50.64 -36.38L37.62 -37.04Q39.16 -45.46 45.37 -50.03Q51.58 -54.6 61.54 -54.6Q72.94 -54.6 78.78 -48.87Q84.62 -43.14 84.62 -32.44V-12.98Q84.62 -10.86 85.35 -10.09Q86.08 -9.32 87.58 -9.32H89.28V0Q88.68 0.18 87.34 0.31Q86 0.44 84.64 0.44Q81.32 0.44 78.73 -0.65Q76.14 -1.74 74.7 -4.35Q73.26 -6.96 73.26 -11.56L74.42 -10.8Q73.56 -7.28 70.94 -4.55Q68.32 -1.82 64.3 -0.31Q60.28 1.2 55.26 1.2ZM57.9 -8.12Q62.16 -8.12 65.27 -9.79Q68.38 -11.46 70.1 -14.49Q71.82 -17.52 71.82 -21.56V-24.56L57.98 -21.76Q53.74 -20.920 51.85 -19.15Q49.96 -17.38 49.96 -14.56Q49.96 -11.5 52.03 -9.81Q54.1 -8.12 57.9 -8.12ZM93.14 15V-53.4H105.38L105.66 -42.04L104.42 -42.6Q106.42 -48.46 110.97 -51.53Q115.52 -54.6 121.58 -54.6Q129.2 -54.6 134.23 -50.82Q139.26 -47.04 141.77 -40.72Q144.28 -34.4 144.28 -26.7Q144.28 -19.04 141.75 -12.7Q139.22 -6.36 134.17 -2.58Q129.12 1.2 121.5 1.2Q117.52 1.2 114.07 -0.22Q110.62 -1.64 108.17 -4.22Q105.72 -6.8 104.7 -10.32L105.94 -11.32V15ZM118.5 -9.16Q124.32 -9.16 127.68 -13.82Q131.04 -18.48 131.04 -26.7Q131.04 -34.92 127.68 -39.58Q124.32 -44.24 118.5 -44.24Q114.62 -44.24 111.81 -42.28Q109 -40.32 107.47 -36.4Q105.94 -32.48 105.94 -26.7Q105.94 -20.92 107.44 -17Q108.94 -13.08 111.78 -11.12Q114.62 -9.16 118.5 -9.16ZM172.88 1.2Q164.98 1.2 159.06 -2.24Q153.14 -5.68 149.88 -11.97Q146.62 -18.26 146.62 -26.7Q146.62 -35.2 149.88 -41.44Q153.14 -47.68 159.06 -51.14Q164.98 -54.6 172.88 -54.6Q180.78 -54.6 186.67 -51.14Q192.56 -47.68 195.82 -41.44Q199.08 -35.2 199.08 -26.7Q199.08 -18.26 195.82 -11.97Q192.56 -5.68 186.67 -2.24Q180.78 1.2 172.88 1.2ZM172.88 -9.16Q179.06 -9.16 182.45 -13.79Q185.84 -18.42 185.84 -26.7Q185.84 -34.94 182.45 -39.59Q179.06 -44.24 172.88 -44.24Q166.7 -44.24 163.28 -39.59Q159.86 -34.94 159.86 -26.7Q159.86 -18.42 163.28 -13.79Q166.7 -9.16 172.88 -9.16ZM217.84 0Q211.96 0 208.5 -3Q205.04 -6 205.04 -12.64V-71H217.84V-13.94Q217.84 -11.86 218.87 -10.89Q219.9 -9.92 221.82 -9.92H225.74V0ZM248.44 1.2Q241.62 1.2 236.65 -2.22Q231.68 -5.64 229 -11.9Q226.32 -18.16 226.32 -26.7Q226.32 -35.24 229.02 -41.5Q231.72 -47.76 236.71 -51.18Q241.7 -54.6 248.44 -54.6Q254.02 -54.6 258.26 -52.29Q262.5 -49.98 264.66 -45.84V-71H277.46V0H265.34L265.04 -7.92Q262.84 -3.62 258.44 -1.21Q254.04 1.2 248.44 1.2ZM252.3 -9.16Q256.28 -9.16 259.03 -11.2Q261.78 -13.24 263.22 -17.17Q264.66 -21.1 264.66 -26.7Q264.66 -32.42 263.22 -36.32Q261.78 -40.22 259.03 -42.23Q256.28 -44.24 252.3 -44.24Q246.46 -44.24 243.01 -39.55Q239.56 -34.86 239.56 -26.7Q239.56 -18.68 243.03 -13.92Q246.5 -9.16 252.3 -9.16Z"/><path fill="#009DFF" d="M 292.80 -15.60 L 300.60 -7.80 L 292.80 0.00 L 285.00 -7.80 Z"/><path fill="#009DFF" d="M312.64 0V-53.4H325.44V0ZM312.4 -60.54V-71.86H325.68V-60.54ZM357.18 1.2Q349.28 1.2 343.36 -2.24Q337.44 -5.68 334.18 -11.97Q330.92 -18.26 330.92 -26.7Q330.92 -35.2 334.18 -41.44Q337.44 -47.68 343.36 -51.14Q349.28 -54.6 357.18 -54.6Q365.08 -54.6 370.97 -51.14Q376.86 -47.68 380.12 -41.44Q383.38 -35.2 383.38 -26.7Q383.38 -18.26 380.12 -11.97Q376.86 -5.68 370.97 -2.24Q365.08 1.2 357.18 1.2ZM357.18 -9.16Q363.36 -9.16 366.75 -13.79Q370.14 -18.42 370.14 -26.7Q370.14 -34.94 366.75 -39.59Q363.36 -44.24 357.18 -44.24Q351 -44.24 347.58 -39.59Q344.16 -34.94 344.16 -26.7Q344.16 -18.42 347.58 -13.79Q351 -9.16 357.18 -9.16Z"/></g></symbol>
+  </defs>
+</svg>
+<div class="tv hero glide" id="tv-hero" role="img" aria-label="EdgePortal-Bootsequenz"></div>
+<script type="application/json" id="edgeportal-boot-timeline">
+{
+  "schemaVersion": 1,
+  "id": "edgeportal-boot",
+  "status": "boot-kit",
+  "statusNote": "Boot-Kit in Atlas, ändert nichts an den Pis.",
+  "version": 5,
+  "source": "Prototyp EdgePortal-Bootsequenz, Fassung 5 (18.10.2026), von Marcel Rapold freigegeben",
+  "rules": {
+    "dna": "brands/rapold-io/DESIGN-DNA.md §4.3, §7.1, §9, §10 (Abweichung A1)",
+    "values": "brands/rapold-io/dna.json glow.corona, motion.systemStart, deviations"
+  },
+  "scene": {
+    "viewBox": [1600, 900],
+    "markTransform": "translate(800 440) scale(1.9) translate(-128 -128)",
+    "markHeightUnits": 200.296,
+    "signetTransform": "translate(800 430) scale(1.1) translate(-128 -121.7)",
+    "fugeAxisDeg": -27.9,
+    "fugeCenter": [800, 430],
+    "ridgeFoot": [785.362, 418.044],
+    "ridgeLength": 175.64
+  },
+  "gate": {
+    "startSignal": "cec-on",
+    "startFallbackMs": 6000,
+    "note": "Die Zeitachse startet erst, wenn der TV per CEC «on» meldet; vorher hält das Ruhebild. Fallback 6 s."
+  },
+  "easings": {
+    "fold": [0.2, 0.7, 0.2, 1],
+    "inOut": [0.45, 0, 0.55, 1],
+    "tip": [0.45, 0, 0.2, 1],
+    "lap": [0.4, 0, 0.3, 1],
+    "smoothstep": "x * x * (3 - 2 * x)",
+    "linear": "x"
+  },
+  "clock": {
+    "inDur": 1000,
+    "fold": 1200,
+    "foldDur": 900,
+    "ignite": 1760,
+    "igniteDur": 240,
+    "halo": 1880,
+    "haloDur": 400,
+    "apex": 1960,
+    "apexDur": 600,
+    "base": 1900,
+    "baseDur": 900,
+    "bloomInDur": 1600,
+    "lap": 2040,
+    "lapDur": 2400,
+    "hist": 420,
+    "dock": 4440,
+    "flareUp": 180,
+    "flareDown": 740,
+    "handoff": 4940,
+    "lightsOutDur": 900,
+    "gapClose": 5390,
+    "gapCloseDur": 250,
+    "take": 5640,
+    "tipDur": 1100,
+    "cool": 6140,
+    "coolDur": 600,
+    "kiosk": 6740,
+    "firstHide": 7140,
+    "ridgeFade": 9140,
+    "ridgeFadeDur": 400,
+    "end": 9640,
+    "plateIn": 200,
+    "plateInDur": 500,
+    "plateOut": 2260,
+    "plateOutDur": 900,
+    "legSparkUp": 90,
+    "legSparkDown": 530
+  },
+  "phases": [
+    { "id": "fade-in", "track": "mark", "startMs": 0, "endMs": 1000, "easing": "inOut", "draws": "Das flache R blendet auf Navy ein, dahinter der Azure-Bloom." },
+    { "id": "bloom-in", "track": null, "startMs": 0, "endMs": 1600, "easing": "inOut", "draws": "Azure-Bloom steigt auf 0,85." },
+    { "id": "plate", "track": null, "startMs": 200, "endMs": 3160, "easing": "linear", "draws": "Konstruktionsplatte aus DNA 3.1, nur Hacker Level 5 (Ghost), nur während der Faltung." },
+    { "id": "fold", "track": "mark", "startMs": 1200, "endMs": 2100, "easing": "fold", "draws": "Faltung um den Grat; Steigung linear interpoliert, die Ice-Facette blendet mit der Drehung ein (smoothstep)." },
+    { "id": "ignite", "track": "ridge", "startMs": 1760, "endMs": 2000, "easing": "fold", "draws": "Der First zündet als ein Strich vom Apex abwärts, das Fenster wird übersprungen." },
+    { "id": "halo", "track": null, "startMs": 1880, "endMs": 2280, "easing": "inOut", "draws": "Firstlicht-Halo steigt ohne Überschwinger auf 0,8." },
+    { "id": "base", "track": null, "startMs": 1900, "endMs": 2800, "easing": "inOut", "draws": "Korona-Grundschein breitet sich vom Apex aus (Maske r 20 bis 320 E)." },
+    { "id": "apex", "track": null, "startMs": 1960, "endMs": 2560, "easing": "inOut", "draws": "Apex-Halo r 62 E über dem First, additiv." },
+    { "id": "lap", "track": "spark", "startMs": 2040, "endMs": 4440, "easing": "lap", "draws": "Ein Funke läuft genau eine Runde im Uhrzeigersinn ab dem Apex; Schweif = Weg der letzten 420 ms. Ab der Ecke beim Bein läuft ein Ice-Ast mit gleicher Geschwindigkeit ins freie Bein." },
+    { "id": "homecoming", "track": "spark", "startMs": 4440, "endMs": 5360, "easing": "linear", "draws": "Heimkehr: Der Funke mündet in den Grat, der First glüht 180 ms auf und 740 ms ab." },
+    { "id": "lights-out", "track": "mark", "startMs": 4940, "endMs": 5840, "easing": "inOut", "draws": "Lichter aus; Ebenen, Apex-Halo und Grundschein blenden aus, der Bloom sinkt auf 0,40." },
+    { "id": "gap-close", "track": "ridge", "startMs": 5390, "endMs": 5640, "easing": "linear", "draws": "Der Grat schliesst sich über dem Fenster." },
+    { "id": "ridgeline", "track": "ridge", "startMs": 5640, "endMs": 6740, "easing": "tip", "draws": "Der Grat kippt um seinen Fuss um 62,1° im Uhrzeigersinn auf die Fugenachse (−27,9°)." },
+    { "id": "cool", "track": null, "startMs": 6140, "endMs": 6740, "easing": "linear", "draws": "Die Ridgeline kühlt von Firstglut zu Ice ab. Danach gehört die Linie dem Produkt." },
+    { "id": "ridge-fade", "track": "ridge", "startMs": 9140, "endMs": 9540, "easing": "linear", "draws": "Die Ice-Ridgeline blendet aus, die EdgePortal-Fuge bleibt." }
+  ],
+  "beatMs": 1200,
+  "signals": [
+    { "id": "cec-on", "source": "Der TV meldet per CEC «on». Startet die Zeitachse (t = 0)." },
+    { "id": "kiosk", "source": "Chromium übernimmt das Bild, ohne Schnitt nach dem Plymouth-Ruhebild." },
+    { "id": "bootstrap", "source": "Die lokale Bootstrap-Seite antwortet, auch offline." },
+    { "id": "network", "source": "NetworkManager meldet eine Verbindung (ok) oder keinen Träger (fail).", "values": ["ok", "fail"] },
+    { "id": "portal", "source": "Der EdgePortal-Server antwortet auf den Health-Check." },
+    { "id": "pairing", "source": "Der Geräteschlüssel gilt (paired), sonst folgt der Claim per QR (claim).", "values": ["paired", "claim"] },
+    { "id": "handoff", "source": "Agents Home übernimmt mit Slow Wake wie bei TV Wake." }
+  ],
+  "stages": [
+    { "index": 0, "id": "boot", "label": "Boot", "signal": "cec-on", "draws": "Plymouth zeigt rapold.io: Das R faltet sich, der First zündet, ein Funke umläuft das Haus und kehrt heim." },
+    { "index": 1, "id": "kiosk", "label": "Kiosk", "signal": "kiosk", "notBeforeMs": 6740, "class": "s1", "logKey": "kiosk", "draws": "Navy, Statuszeile, Azure-Punkt am Fugenanfang." },
+    { "index": 2, "id": "bootstrap", "label": "Bootstrap", "signal": "bootstrap", "class": "s2", "logKey": "local", "draws": "Die Fuge wächst vom Punkt bis zur Mitte (Segment A)." },
+    { "index": 3, "id": "network", "label": "Uplink", "signal": "network", "class": "s3", "logKey": "net", "failLogKey": "nonet", "failClass": "offline", "draws": "Die Fuge läuft weiter (Segment B), die Azure-Fläche gleitet entlang der Fugenachse heran. Bei fail: graue Silhouette, Fuge bricht, Diagnosehinweis." },
+    { "index": 4, "id": "portal", "label": "Portal", "signal": "portal", "class": "s4", "logKey": "portal", "draws": "Die Ice-Fläche gleitet heran, der Azure-Schein kommt erst jetzt." },
+    { "index": 5, "id": "pairing", "label": "Pairing", "signal": "pairing", "class": "s5", "logKey": { "paired": "paired", "claim": "claim" }, "subKey": { "paired": "home", "claim": "fresh" }, "valueClass": { "claim": "pair" }, "draws": "Wortmarke EdgePortal mit Endorsement «Ein System von rapold.io». Bei claim: Signet rückt nach links, QR-Tafel mit Code und Restzeit." },
+    { "index": 6, "id": "handoff", "label": "Handoff", "signal": "handoff", "requires": { "pairing": "paired" }, "class": "s6", "logKey": "handoff", "draws": "Das Signet wandert in die Ecke, Agents Home übernimmt mit Slow Wake." }
+  ],
+  "gating": {
+    "order": "strict",
+    "minHoldMs": 400,
+    "note": "Jede Stufe erscheint erst, wenn ihr Signal wirklich bereit ist, und hält mindestens 400 ms, auch wenn die Signale schneller kommen. Stufe 1 erscheint nie vor dem Kiosk-Punkt der Zeitachse (6740 ms)."
+  },
+  "scenarios": {
+    "normaler-start": {
+      "label": "Normaler Start",
+      "aliases": ["normal"],
+      "signals": [
+        { "signal": "kiosk", "atMs": 6740 },
+        { "signal": "bootstrap", "atMs": 7940 },
+        { "signal": "network", "value": "ok", "atMs": 9140 },
+        { "signal": "portal", "atMs": 10340 },
+        { "signal": "pairing", "value": "paired", "atMs": 11540 },
+        { "signal": "handoff", "atMs": 13940 }
+      ],
+      "staticEndStage": "pairing"
+    },
+    "erststart-claim": {
+      "label": "Erststart mit Claim",
+      "aliases": ["pair", "erststart"],
+      "signals": [
+        { "signal": "kiosk", "atMs": 6740 },
+        { "signal": "bootstrap", "atMs": 7940 },
+        { "signal": "network", "value": "ok", "atMs": 9140 },
+        { "signal": "portal", "atMs": 10340 },
+        { "signal": "pairing", "value": "claim", "atMs": 11540 }
+      ],
+      "staticEndStage": "pairing",
+      "claim": { "codes": ["3F9A2C", "B71E04", "5D0C93"], "ttlS": 300 }
+    },
+    "netz-fehlt": {
+      "label": "Netz fehlt",
+      "aliases": ["offline"],
+      "signals": [
+        { "signal": "kiosk", "atMs": 6740 },
+        { "signal": "bootstrap", "atMs": 7940 },
+        { "signal": "network", "value": "fail", "atMs": 9140 }
+      ],
+      "staticEndStage": "network",
+      "diagnostic": { "afterFailMs": 1800, "logKey": "diag" },
+      "recover": {
+        "label": "Netz kommt zurück",
+        "signals": [
+          { "signal": "network", "value": "ok", "afterMs": 0 },
+          { "signal": "portal", "afterMs": 1000 },
+          { "signal": "pairing", "value": "paired", "afterMs": 2100 },
+          { "signal": "handoff", "afterMs": 4400 }
+        ]
+      }
+    }
+  },
+  "defaultScenario": "normaler-start",
+  "levels": [
+    { "level": 1, "name": "Calm", "maxLines": 2 },
+    { "level": 2, "name": "Shell", "maxLines": 3 },
+    { "level": 3, "name": "Syslog", "maxLines": 6 },
+    { "level": 4, "name": "Uplink", "maxLines": 7 },
+    { "level": 5, "name": "Ghost", "maxLines": 8 }
+  ],
+  "defaultLevel": 2,
+  "texts": {
+    "note": "Wortlaut aus Fassung 5. Jede Logzeile entspricht einem echten Signal; der Hacker Level ändert nur den Ton. Namen, Codes, Zeitstempel und QR sind Beispiele. Index 0 bis 4 = Level 1 bis 5; null = keine Zeile. Level 4 trennt Signal und Ergebnis mit «|».",
+    "wordmark": "EdgePortal",
+    "endorsement": "Ein System von",
+    "log": {
+      "boot": [null, "[ .. ] boot · rapold.io", "plymouth: splash rapold.io", "rapold.io :: boot|..", "RAPOLD.IO :: SPLASH ... LOADING"],
+      "bootok": [null, "[ ok ] boot · rapold.io", "systemd[1]: reached graphical.target", "rapold.io :: boot|ok", "RAPOLD.IO :: BOOT SEQUENCE ... ENGAGED"],
+      "kiosk": ["01 / 05 · Kiosk online", "[ ok ] kiosk online", "edgeportal-kiosk.service: started", "spawn kiosk|ok", "SPAWN edgeportal-kiosk ... [ OK ]"],
+      "local": ["02 / 05 · Bootstrap bereit", "[ ok ] bootstrap bereit", "bootstrap: 127.0.0.1:8091 ready", "local node 127.0.0.1:8091|up", "LOCAL NODE 127.0.0.1:8091 ... ONLINE"],
+      "net": ["03 / 05 · Uplink steht", "[ ok ] uplink steht", "NetworkManager: wlan0 connected", "uplink wlan0|established", "UPLINK wlan0 ... ESTABLISHED"],
+      "portal": ["04 / 05 · Portal erreichbar", "[ ok ] portal erreichbar", "portal: GET /health 200", "handshake portal|200 OK", "HANDSHAKE edgeportal.rapold.io ... 200 OK"],
+      "paired": ["05 / 05 · Pairing bestätigt", "[ ok ] pairing bestätigt", "device: key valid · paired", "device key|verified", "DEVICE KEY VERIFIED · ACCESS GRANTED"],
+      "claim": ["05 / 05 · Wartet auf Claim", "[ .. ] wartet auf claim", "adoption: code 3F9A2C · ttl 300s", "awaiting claim|code 3F9A2C", "AWAITING CLAIM · CODE 3F9A2C · TTL 300S"],
+      "handoff": ["06 · Handoff an Agents Home", "[ ok ] handoff → agents home", "home: handoff · slow wake 12s/20s", "handoff home|slow wake 12s", "HANDOFF → AGENTS HOME ... WAKE 12S"],
+      "nonet": ["03 / 05 · Kein Uplink. Der Screen versucht es weiter.", "[fail] kein uplink · neuer versuch in 5 s", "NetworkManager: wlan0 no carrier · retry 5s", "uplink wlan0|FAILED · retry 5s", "UPLINK wlan0 ... NO CARRIER · RETRY IN 5S"],
+      "diag": ["Nach 90 s: Diagnose in edgeportal-setup.log auf der SD-Karte", "[info] diagnose: edgeportal-setup.log auf der sd-karte", "diag: edgeportal-setup.log on /boot/firmware", "diag|edgeportal-setup.log (sd)", "DIAG → edgeportal-setup.log (SD)"]
+    },
+    "sub": {
+      "home": ["Wohnzimmer · paired", "wohnzimmer · paired", "node wohnzimmer · paired", "node://wohnzimmer · paired", "NODE WOHNZIMMER · ACCESS GRANTED"],
+      "fresh": ["New Screen · edgeportal-3f9a2c41b7d0", "new screen · edgeportal-3f9a2c41b7d0", "node edgeportal-3f9a2c41b7d0 · unclaimed", "node://edgeportal-3f9a2c41b7d0 · unclaimed", "NODE EDGEPORTAL-3F9A2C41B7D0 · UNCLAIMED"]
+    },
+    "claimPrompt": ["Dein Screen. Ein Scan entfernt.", "Dein Screen. Ein Scan entfernt.", "Scannen. Übernehmen. Fertig.", "Scan to claim this node.", "SCAN TO CLAIM THIS NODE"],
+    "claimCode": "Code {code}",
+    "claimValidity": "gültig {m}:{ss} · danach neuer Code",
+    "handoff": [
+      ["Handoff an Agents Home", "Slow Wake · Bild 12 s · Ton 20 s"],
+      ["handoff → agents home", "> slow wake · bild 12 s · ton 20 s"],
+      ["Handoff → Agents Home", "home.wake(video=12s, audio=20s)"],
+      ["handoff → agents home", "slow wake .... video 12s · audio 20s"],
+      ["HANDOFF → AGENTS HOME", "SLOW WAKE // VIDEO 12S // AUDIO 20S"]
+    ],
+    "annotations": {
+      "note": "Echte Konstruktionswerte, nur Level 3 (Grat) und 4 bis 5 (alle), nur bis zum Lichter-aus, daneben und nie auf dem Zeichen.",
+      "grat": "GRAT · x 120,296",
+      "top": "197,333 / 62,519",
+      "foot": "43,259 / 224,296",
+      "leg": "212,741 / 232"
+    }
+  },
+  "diagnostic": {
+    "scenario": "netz-fehlt",
+    "logKey": "diag",
+    "signet": "Das Signet bleibt als graue Silhouette stehen (Ghost-Ebene 0,7 in --line); die Marke ist sichtbar, das Licht fehlt.",
+    "fuge": "Die Fuge bricht: Segment A wird zur grauen Linie, ein gestrichelter Stummel zeigt den fehlenden Abschnitt.",
+    "text": "texts.log.diag"
+  },
+  "staticEndState": {
+    "note": "Reduzierte Bewegung, Plymouth ohne Animation (edgeportal/first = static, Pi 3) und ?still=end zeigen den statischen Endzustand ohne Bewegung.",
+    "plymouth": "Gefaltetes R mit ruhendem Firstlicht, ohne Korona und ohne Ridgeline; steht mindestens 2 s, danach Schnitt.",
+    "plymouthMinHoldMs": 2000,
+    "kiosk": "Endbild der Stufe staticEndStage des Szenarios, ohne Handoff.",
+    "restImageMs": 6740,
+    "restImageNote": "Das Plymouth-Ruhebild ist das Bild bei t = 6740 ms und pixelgleich mit dem ersten Bild des Kiosks."
+  },
+  "rest": {
+    "note": "Nacht und Ruhezeit: kein CEC-Wecken, kein Ton, das R mit halber Helligkeit ohne Faltung, rund 2,5 s. Ohne gültige Uhr gilt Nacht. In boot.html noch nicht umgesetzt.",
+    "durationMs": 2500,
+    "brightness": 0.5
+  },
+  "sound": {
+    "default": "off",
+    "note": "Ton ist aus, bis er im Setup eingeschaltet wird, und schweigt in der Ruhezeit. Optional: Firstton beim Zünden, Glocke 1 bei der Heimkehr, Glocken 2 bis 5 je Signal, die Oktave nur bei echtem Pairing. boot.html spielt keinen Ton."
+  },
+  "corona": {
+    "mirrors": "brands/rapold-io/dna.json glow.corona",
+    "deviation": "A1",
+    "scope": "nur Systemstart (Plymouth und Bootsequenz eines Produkts), Vollbild auf Navy",
+    "laps": 1,
+    "lapsFirstBoot": 2,
+    "lapMs": 2400,
+    "startMs": 2040,
+    "easing": "cubic-bezier(0.4, 0, 0.3, 1)",
+    "tailHistoryMs": 420,
+    "headMaxPerFrame": 1,
+    "ridgeline": { "tipDeg": 62.1, "axisDeg": -27.9, "tipMs": 1100, "easing": "cubic-bezier(0.45, 0, 0.2, 1)", "coolMs": 600, "coolTo": "#A8EDFF" },
+    "minRenderedMarkHeightPx": 400,
+    "maxAreaShare": { "saturated": 0.0025, "firstglutTotal": 0.01 },
+    "tvFirstLight": { "corePx1080": 3, "glowPx1080": 10 },
+    "validOnlyIf": "Freigabe des Zeichens «Der First»"
+  },
+  "plymouth": {
+    "fps": 30,
+    "renderFromMs": 0,
+    "renderToMs": 6740,
+    "resolutions": { "720p": [1280, 720], "1080p": [1920, 1080], "4k": [3840, 2160] },
+    "outsideInitramfs": true,
+    "killSwitches": [
+      { "id": "plymouth.enable=0", "where": "Kernel-Kommandozeile (cmdline.txt auf der Bootpartition)", "effect": "kein Plymouth, ruhiger Kernel bleibt" },
+      { "id": "edgeportal/first", "where": "Datei auf der Bootpartition", "values": ["0", "static", "1"], "effect": "0 = kein First, static = Endbild ohne Animation, 1 = Animation" }
+    ],
+    "pi3": "static",
+    "cecGate": "Start der Zeitachse erst nach CEC «on» vom TV, Fallback 6 s."
+  }
+}
+</script>
+<script>
+(function(){
+  'use strict';
+  // Zeitachse und Wortlaut kommen ausschliesslich aus timeline.json (eingebettete Kopie oben, ein Test prüft die Gleichheit).
+  var TL = JSON.parse(document.getElementById('edgeportal-boot-timeline').textContent);
+  var Q = new URLSearchParams(location.search);
+  var RM = Q.get('rm') === '1' || (Q.get('rm') !== '0' && !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches));
+  var FT = TL.clock;
+  var UP = '<polygon points="122.72,29 216,65.08 150,97.64 40.88,160.12 40,103.8 122.72,67.72"/>';
+  var LO = '<polygon points="216,85.32 216,126.68 166.72,154.84 166.72,227 92.8,190.04 92.8,152.2"/>';
+  var RB = 'M 43.259 224.296 L 85.63 203.111 L 85.63 133.778 L 120.296 116.444 L 120.296 24 L 43.259 62.519 Z M 85.63 102.963 L 120.296 85.63 L 120.296 56.741 L 85.63 74.074 Z';
+  var RF = 'M 120.296 116.444 L 197.333 154.963 L 197.333 62.519 L 120.296 24 Z M 120.296 85.63 L 156.889 103.926 L 156.889 75.037 L 120.296 56.741 Z M 126.074 132.815 L 176.148 157.852 L 212.741 232 L 162.667 206.963 Z';
+
+  // Dachmarke «Der First» im Boot. Geometrie in Mark-Einheiten (256er-Raster), Grat bei x = 120.296.
+  var MK = 'translate(800 440) scale(1.9) translate(-128 -128)';
+  var OUTD = 'M 120.296 24 L 197.333 62.519 L 197.333 154.963 L 120.296 116.444 L 85.63 133.778 L 85.63 203.111 L 43.259 224.296 L 43.259 62.519 Z';
+  var LEGD = 'M 176.148 157.852 L 212.741 232 L 162.667 206.963 L 126.074 132.815 Z';
+  // Komet: vom Schweif zur Spitze, Farbweg über Weiss, damit warm und kalt nie in Grau kippen.
+  // [Anteil am Schweif, Farbe, Deckkraft Glow, Deckkraft Kern]
+  var CL = [[1, '--azure', .30, .35], [.72, '--sky', .34, .5], [.48, '--ice', .40, .7], [.33, '--fg', .42, .8], [.22, '--firstglut-core', .55, .9], [.10, '--firstglut', .9, 1]];
+  var CLL = [[1, '--azure', .30, .35], [.6, '--sky', .34, .5], [.35, '--ice', .45, .8]];
+
+  function cometPaths(d, layers, cls){
+    var s = '';
+    layers.forEach(function(l, i){
+      s += '<path class="c scr ' + cls + 'g' + i + '" d="' + d + '" stroke-width="6" filter="url(#ep-cg)" style="stroke:var(' + l[1] + ');opacity:0"/>'
+        + '<path class="c ' + cls + 'c' + i + '" d="' + d + '" stroke-width="2.6" style="stroke:var(' + l[1] + ');opacity:0"/>';
+    });
+    return s;
+  }
+  function flLines(){
+    var s = '';
+    [['s1', 24], ['gp', 56.741], ['s2', 85.63]].forEach(function(g){
+      var a = 'x1="120.296" y1="' + g[1] + '" x2="120.296" y2="' + g[1] + '"';
+      s += '<line class="fl-halo scr fl-' + g[0] + '" ' + a + ' stroke-width="10.5" filter="url(#ep-fl16)" style="opacity:0"/>'
+        + '<line class="fl-glut fl-' + g[0] + '" ' + a + ' stroke-width="4.5" filter="url(#ep-fl3)" style="opacity:0"/>'
+        + '<line class="fl-core fl-' + g[0] + '" ' + a + ' stroke-width="1.3" style="opacity:0"/>';
+    });
+    return s;
+  }
+  // Konstruktionsplatte aus DNA 3.1, nur auf Hacker Level 5 und nur während der Faltung
+  function plate(){
+    return '<g class="plate" style="opacity:0">'
+      + '<rect x="0" y="0" width="256" height="256" stroke-opacity=".22"/>'
+      + '<rect x="24" y="24" width="208" height="208" stroke-opacity=".16" stroke-dasharray="4 6"/>'
+      + '<line x1="120.296" y1="-12" x2="120.296" y2="268" stroke-opacity=".2"/>'
+      + '<line x1="0" y1="84.148" x2="256" y2="-43.852" stroke-opacity=".14"/>'
+      + '<line x1="0" y1="-36.148" x2="256" y2="91.852" stroke-opacity=".14"/>'
+      + '<text x="2" y="-4">256 · 256</text><text x="26" y="20">24</text><text x="124" y="266">u = 80 · GRAT</text><text x="206" y="-10">1 : 0,5</text></g>';
+  }
+  function firstMark(){
+    var sil = RB + ' ' + RF;
+    return '<ellipse class="bloomR scr" cx="800" cy="324" rx="992" ry="558" fill="url(#ep-bloom)" style="opacity:0"/>'
+      + '<g class="first" style="opacity:0"><g transform="' + MK + '">'
+      + plate()
+      + '<circle class="apex scr" cx="120.296" cy="22" r="62" fill="url(#ep-apex)" style="opacity:0"/>'
+      + '<g class="base" mask="url(#ep-reveal)" style="opacity:0">'
+      +   '<path class="scr" fill-rule="evenodd" d="' + sil + '" style="fill:var(--azure);opacity:.5" filter="url(#ep-sil24)"/>'
+      +   '<path class="scr" fill-rule="evenodd" d="' + sil + '" style="fill:var(--azure);opacity:.24" filter="url(#ep-sil9)"/></g>'
+      + '<g class="comet">' + cometPaths(OUTD, CL, 'm') + cometPaths(LEGD, CLL, 'l') + '</g>'
+      + '<path class="rbody" fill-rule="evenodd" fill="url(#ep-planeA)" d="' + RB + '"/>'
+      + '<line class="seam" x1="120.296" y1="24" x2="120.296" y2="56.741"/><line class="seam" x1="120.296" y1="85.63" x2="120.296" y2="116.444"/>'
+      + '<g class="rfold"><path class="rfacet-a" fill-rule="evenodd" fill="url(#ep-planeA)" d="' + RF + '"/>'
+      +   '<path class="rfacet-i" fill-rule="evenodd" fill="url(#ep-planeI)" d="' + RF + '" style="opacity:0"/></g>'
+      + '<g class="firstlight">' + flLines() + '</g>'
+      + '<circle class="spark scr" r="15" fill="url(#ep-spark)" style="opacity:0"/>'
+      + '<circle class="lspark scr" cx="212.741" cy="232" r="13" fill="url(#ep-sparkI)" style="opacity:0"/>'
+      + '<circle class="aspark scr" cx="120.296" cy="24" r="26" fill="url(#ep-spark)" style="opacity:0"/>'
+      + '</g></g>';
+  }
+  // Ridgeline: der Grat in Szenen-Koordinaten (Fuss 785.362 / 418.044, 175.64 lang). Er kippt um 62,1° auf die Fugenachse.
+  function ridgeline(){
+    var a = 'x1="0" y1="0" x2="0" y2="-175.64"';
+    return '<g class="ridgeline" style="opacity:0"><g class="rl-w">'
+      + '<line class="scr" ' + a + ' stroke-width="19.95" style="stroke:var(--firstglut);stroke-opacity:.55" filter="url(#ep-rl13)"/>'
+      + '<line ' + a + ' stroke-width="8.55" style="stroke:var(--firstglut)" filter="url(#ep-rl25)"/>'
+      + '<line ' + a + ' stroke-width="2.47" style="stroke:var(--firstglut-core)"/></g>'
+      + '<g class="rl-i" style="opacity:0">'
+      + '<line class="scr" ' + a + ' stroke-width="7.5" style="stroke:var(--ice);stroke-opacity:.35" filter="url(#ep-rl25)"/>'
+      + '<line ' + a + ' stroke-width="2" style="stroke:var(--ice)"/></g></g>';
+  }
+
+  // Zeitachse in ms ab «TV meldet on». Pro Bild gerechnet, damit Plymouth-Frames deterministisch exportierbar sind.
+  function bez(x1, y1, x2, y2){
+    function cx(t){ return 3 * x1 * t * (1 - t) * (1 - t) + 3 * x2 * t * t * (1 - t) + t * t * t; }
+    function cy(t){ return 3 * y1 * t * (1 - t) * (1 - t) + 3 * y2 * t * t * (1 - t) + t * t * t; }
+    return function(x){ if (x <= 0) return 0; if (x >= 1) return 1; var lo = 0, hi = 1, m = x;
+      for (var i = 0; i < 28; i++){ m = (lo + hi) / 2; if (cx(m) < x) lo = m; else hi = m; } return cy(m); };
+  }
+  var E_FOLD = bez.apply(null, TL.easings.fold), E_IO = bez.apply(null, TL.easings.inOut), E_TIP = bez.apply(null, TL.easings.tip), E_LAP = bez.apply(null, TL.easings.lap);
+  function cl(x){ return x < 0 ? 0 : x > 1 ? 1 : x; }
+  function seg(t, a, d){ return cl((t - a) / d); }
+  function sst(x){ x = cl(x); return x * x * (3 - 2 * x); }
+
+  // FirstEngine aus Fassung 5: rechnet jede Grösse pro Bild aus t, damit Plymouth-Frames deterministisch exportierbar sind.
+  // Ergänzt: lit = false unter 400 px gerenderter Zeichenhöhe (DNA 7.1): ohne Firstlicht und Korona, die Ridgeline startet in Ice.
+  function FirstEngine(tv){
+    var q = function(s){ return tv.querySelector(s); }, qa = function(s){ return Array.prototype.slice.call(tv.querySelectorAll(s)); };
+    this.tv = tv; this.level = TL.defaultLevel; this.lit = true;
+    this.g = q('.first'); this.bloom = q('.bloomR'); this.plate = q('.plate'); this.apex = q('.apex'); this.base = q('.base');
+    this.body = q('.rbody'); this.fold = q('.rfold'); this.fa = q('.rfacet-a'); this.fi = q('.rfacet-i'); this.seams = qa('.seam');
+    this.fl = { s1: qa('.fl-s1'), gp: qa('.fl-gp'), s2: qa('.fl-s2') };
+    this.mg = CL.map(function(_, i){ return [q('.mg' + i), q('.mc' + i)]; });
+    this.lg = CLL.map(function(_, i){ return [q('.lg' + i), q('.lc' + i)]; });
+    this.spark = q('.spark'); this.lspark = q('.lspark'); this.aspark = q('.aspark');
+    this.rl = q('.ridgeline'); this.rlw = q('.rl-w'); this.rli = q('.rl-i');
+    this.reveal = document.getElementById('ep-reveal-c');
+    this.L = this.mg[0][1].getTotalLength(); this.LL = this.lg[0][1].getTotalLength();
+    var target = 178.57 / this.L, lo = 0, hi = 1;   // Ecke beim Bein: 178,57 Einheiten nach dem Apex
+    for (var i = 0; i < 30; i++){ var m = (lo + hi) / 2; if (E_LAP(m) < target) lo = m; else hi = m; }
+    this.legT0 = FT.lap + lo * FT.lapDur;
+    this.legSpeed = this.L / FT.lapDur;           // gleiche Geschwindigkeit wie der Hauptumlauf im Mittel
+    this.legTip = this.legT0 + 82.69 / this.legSpeed;
+    this.legDur = this.LL / this.legSpeed;
+  }
+  FirstEngine.prototype.frame = function(t){
+    var rm = RM, lit = this.lit, L = this.L, LL = this.LL, cls = this.tv.classList, lvl = this.level;
+    var lo = lit ? 1 : 0;
+    function op(el, v){ if (el) el.style.opacity = v <= .001 ? 0 : (+v).toFixed(3); }
+    function dash(el, len, start, total, o){
+      if (len < .2 || o <= .001){ op(el, 0); return; }
+      el.setAttribute('stroke-dasharray', len.toFixed(2) + ' ' + (total - len + .01).toFixed(2));
+      el.setAttribute('stroke-dashoffset', (-start).toFixed(2)); op(el, o);
+    }
+    var gIn = rm ? (t < FT.handoff ? 1 : 0) : E_IO(seg(t, 0, FT.inDur));
+    var out = rm ? 1 : 1 - E_IO(seg(t, FT.handoff, FT.lightsOutDur));
+    op(this.g, t >= FT.firstHide ? 0 : gIn);
+    op(this.bloom, t < FT.handoff ? .85 * (rm ? 1 : E_IO(seg(t, 0, FT.bloomInDur))) : .85 - .45 * (rm ? 1 : E_IO(seg(t, FT.handoff, FT.lightsOutDur))));
+    // Faltung: Steigung linear interpoliert (DNA 3.1), Ice blendet mit der Drehung der Ebene ein
+    var e = rm ? 1 : E_FOLD(seg(t, FT.fold, FT.foldDur)), k = 1 - e;
+    if (k > .0005) this.fold.setAttribute('transform', 'matrix(1 ' + (-k).toFixed(4) + ' 0 1 0 ' + (120.296 * k).toFixed(3) + ')');
+    else this.fold.removeAttribute('transform');
+    op(this.fi, sst((e - .15) / .7) * out); op(this.fa, out); op(this.body, out);
+    this.seams.forEach(function(s){ op(s, k > .02 ? out : 0); });
+    // Zünden: ein Strich vom Apex abwärts, das Fenster wird übersprungen
+    var flare = rm ? 0 : (t < FT.dock ? 0 : t < FT.dock + FT.flareUp ? (t - FT.dock) / FT.flareUp : cl(1 - (t - FT.dock - FT.flareUp) / FT.flareDown));
+    var haloOp = rm ? .8 : .8 * E_IO(seg(t, FT.halo, FT.haloDur)) + .25 * flare;
+    var f = (rm ? 1 : E_FOLD(seg(t, FT.ignite, FT.igniteDur))) * 92.444;
+    var len1 = Math.min(f, 32.741), len2 = Math.max(0, Math.min(f - 61.63, 30.814));
+    var gap = rm ? 0 : seg(t, FT.gapClose, FT.gapCloseDur), take = !rm && t >= FT.take;
+    function ridge(list, y1, len){
+      list.forEach(function(l){ l.setAttribute('y2', (y1 + len).toFixed(3));
+        op(l, len > .05 && !take && lit ? (l.classList.contains('fl-halo') ? haloOp : 1) : 0); });
+    }
+    ridge(this.fl.s1, 24, len1); ridge(this.fl.s2, 85.63, len2); ridge(this.fl.gp, 56.741, 28.889 * gap);
+    // Reduzierte Bewegung: keine Korona (DNA 7.1), also weder Apex-Halo noch Grundschein; Fassung 5 zeigte beide.
+    op(this.apex, rm ? 0 : lo * E_IO(seg(t, FT.apex, FT.apexDur)) * out);
+    op(this.aspark, lo * .75 * flare * out);
+    var bo = rm ? 1 : E_IO(seg(t, FT.base, FT.baseDur));
+    op(this.base, rm ? 0 : lo * bo * out);
+    if (this.reveal) this.reveal.setAttribute('r', (20 + 300 * bo).toFixed(1));
+    op(this.plate, lvl === 5 && !rm ? seg(t, FT.plateIn, FT.plateInDur) * (1 - seg(t, FT.plateOut, FT.plateOutDur)) : 0);
+    // Ein Funke, eine Runde: startet am Apex, kehrt in den First zurück. Schweif = Weg der letzten 420 ms.
+    var hp = function(tt){ return L * E_LAP(seg(tt, FT.lap, FT.lapDur)); };
+    var show = lit && !rm && t >= FT.lap && t < FT.dock + FT.hist + 60;
+    var head = hp(t), tail = Math.max(0, head - hp(Math.max(FT.lap, t - FT.hist)));
+    var headOp = show ? Math.min(1, seg(t, FT.lap, 200)) * (1 - seg(t, FT.dock, 300)) : 0;
+    this.mg.forEach(function(pair, i){
+      var len = tail * CL[i][0];
+      if (i >= 4) len = headOp > 0 ? Math.max(len, i === 5 ? 7 : 12) : 0;
+      var o = (i >= 4 ? headOp : 1) * out;
+      dash(pair[0], show ? len : 0, head - len, L, CL[i][2] * o);
+      dash(pair[1], show ? len : 0, head - len, L, CL[i][3] * o);
+    });
+    if (headOp > 0){ var p = this.mg[0][1].getPointAtLength(head % L); this.spark.setAttribute('cx', p.x.toFixed(2)); this.spark.setAttribute('cy', p.y.toFixed(2)); }
+    op(this.spark, .9 * headOp * out);
+    // Ice-Ast ins freie Bein, gleiche Geschwindigkeit, endet mit einem Ice-Funken an der Beinspitze
+    var lshow = lit && !rm && t >= this.legT0 && t < this.legT0 + this.legDur + FT.hist + 60;
+    var lh = Math.min(LL, (t - this.legT0) * this.legSpeed), lts = Math.min(LL, Math.max(0, (t - FT.hist - this.legT0) * this.legSpeed));
+    var ltail = Math.max(0, lh - lts);
+    this.lg.forEach(function(pair, i){
+      var len = ltail * CLL[i][0];
+      dash(pair[0], lshow ? len : 0, lh - len, LL, CLL[i][2] * out);
+      dash(pair[1], lshow ? len : 0, lh - len, LL, CLL[i][3] * out);
+    });
+    var ls = rm || !lit || t < this.legTip ? 0 : t < this.legTip + FT.legSparkUp ? (t - this.legTip) / FT.legSparkUp : cl(1 - (t - this.legTip - FT.legSparkUp) / FT.legSparkDown);
+    op(this.lspark, .8 * ls * out);
+    // Ridgeline: Lichter aus, der Grat schliesst sich, kippt auf die Fuge und kühlt zu Ice
+    if (!rm && t >= FT.take && t < FT.end){
+      var u = E_TIP(seg(t, FT.take, FT.tipDur));
+      var px = 785.362 + 14.638 * u, py = 418.044 + 11.956 * u;
+      this.rl.setAttribute('transform', 'translate(' + px.toFixed(2) + ' ' + py.toFixed(2) + ') rotate(' + (62.1 * u).toFixed(3) + ')');
+      var cool = lit ? seg(t, FT.cool, FT.coolDur) : 1;
+      op(this.rlw, 1 - cool); op(this.rli, cool); op(this.rl, 1 - seg(t, FT.ridgeFade, FT.ridgeFadeDur));
+    } else op(this.rl, 0);
+    // Klassen für Log, Cursor und Annotationen
+    cls.toggle('pre', t < FT.end);
+    cls.toggle('curhold', !rm && t >= FT.ignite && t < FT.kiosk);
+    cls.toggle('curoff', !rm && t >= FT.ignite + FT.igniteDur && t < FT.kiosk);
+    var ann = !rm && t < FT.handoff;
+    cls.toggle('ann-g', ann && t >= FT.ignite + FT.igniteDur);
+    cls.toggle('ann-t', ann && t >= FT.lap && head >= 86.13);
+    cls.toggle('ann-f', ann && t >= FT.lap && head >= 420.2);
+    cls.toggle('ann-b', ann && t >= this.legTip);
+  };
+  // Statischer Endzustand: Zeichen und Bloom aus, Klassen der Zeitachse entfernt (wie stop() in Fassung 5)
+  FirstEngine.prototype.clear = function(){
+    this.frame(FT.end + 1); this.g.style.opacity = 0; this.bloom.style.opacity = 0;
+    var c = this.tv.classList; ['pre', 'curhold', 'curoff', 'ann-g', 'ann-t', 'ann-f', 'ann-b'].forEach(function(n){ c.remove(n); });
+  };
+
+  function scene(kind){
+    var s = '<svg class="scene" viewBox="0 0 1600 900" aria-hidden="true" focusable="false">';
+    s += kind === 'b' ? '<rect class="navy" width="1600" height="900" fill="url(#ep-floor)"/>' : '<rect class="navy" width="1600" height="900" style="fill:var(--bg)"/>';
+    if (kind === 'b') s += '<g class="gridwrap"><rect width="1600" height="900" fill="url(#ep-iso)" mask="url(#ep-fade)"/></g>';
+    if (kind === 'hero') s += firstMark();
+    if (kind === 'a' || kind === 'hero') s += '<ellipse class="bloom" cx="800" cy="430" rx="992" ry="558" fill="url(#ep-bloom)"/>';
+    if (kind !== 'b') {
+      s += '<g transform="translate(800 430) rotate(-27.9)"><g class="hair">';
+      if (kind === 'a') s += '<line class="seg segFull" x1="-1000" y1="0" x2="1000" y2="0"/>';
+      else {
+        s += kind === 'hero' ? '<line class="seg segA" x1="-620" y1="0" x2="0" y2="0"/>' : '<line class="seg segA" x1="-770" y1="0" x2="0" y2="0"/>';
+        if (kind === 'hero') s += '<line class="seg segB" x1="0" y1="0" x2="1000" y2="0"/><line class="segA-m" x1="-620" y1="0" x2="-40" y2="0"/><line class="stub" x1="30" y1="0" x2="170" y2="0"/>';
+      }
+      s += '</g></g>';
+      if (kind === 'hero') s += ridgeline() + '<circle class="dot" cx="252" cy="720" r="7"/>';
+      else if (kind !== 'a') s += '<circle class="dot" cx="120" cy="790" r="7"/>';
+    }
+    s += '<g class="shift"><g transform="translate(800 430) scale(1.1) translate(-128 -121.7)">';
+    if (kind === 'hero') s += '<g class="ghost">' + UP + LO + '</g>';
+    s += '<g class="plane up">' + UP + '</g><g class="plane lo">' + LO + '</g></g></g></svg>';
+    return s;
+  }
+
+  function qr(seed){
+    var n = 25, out = '', x, y, r = seed;
+    function rnd(){ r = (r * 1103515245 + 12345) % 2147483648; return r / 2147483648; }
+    function finder(fx, fy, px, py){ var dx = px - fx, dy = py - fy; if (dx < -1 || dy < -1 || dx > 7 || dy > 7) return -1;
+      if (dx < 0 || dy < 0 || dx > 6 || dy > 6) return 0;
+      return (dx === 0 || dy === 0 || dx === 6 || dy === 6 || (dx >= 2 && dx <= 4 && dy >= 2 && dy <= 4)) ? 1 : 0; }
+    for (y = 0; y < n; y++) for (x = 0; x < n; x++) {
+      var f = Math.max(finder(0,0,x,y), finder(n-7,0,x,y), finder(0,n-7,x,y));
+      var on = f === -1 ? rnd() > .52 : f === 1;
+      if (on) out += '<rect x="' + x + '" y="' + y + '" width="1.02" height="1.02"/>';
+    }
+    return '<svg viewBox="0 0 25 25" style="fill:var(--bg)" aria-hidden="true">' + out + '</svg>';
+  }
+
+  function endorse(left){
+    return '<div class="endorse' + (left ? ' left' : '') + '"><span>Ein System von</span><svg viewBox="0 0 499.63 110.358" role="img" aria-label="rapold.io"><use href="#rapold-lockup"/></svg></div>';
+  }
+  function overlays(kind){
+    var h = '';
+    if (kind !== 'b') h += '<div class="ov word"><span class="wm">EdgePortal</span>' + endorse(false) + '<div class="wsub"></div></div><div class="ov status"><div class="log"></div></div>';
+    if (kind === 'hero') h += '<div class="ov pairbox"><div class="pq"></div><div class="qr">' + qr(7) + '</div><div class="pcode">Code 3F9A2C</div><div class="pcount">gültig 5:00 · danach neuer Code</div></div>'
+      + '<div class="ov handoff"><b class="ho-b"></b><span class="ho-s"></span></div>'
+      + '<div class="ov ann a-g"><b>+</b>GRAT · x 120,296</div><div class="ov ann a-t"><b>+</b>197,333 / 62,519</div>'
+      + '<div class="ov ann a-f">43,259 / 224,296<b class="r">+</b></div><div class="ov ann a-b"><b>+</b>212,741 / 232</div>';
+    if (kind === 'b') h += '<div class="ov corner"><b>EdgePortal</b>' + endorse(true) + '</div><div class="ov room"><b>Wohnzimmer</b><span>Session «Abend» · 3 Screens</span></div><div class="ov tiles"><div class="tile on">Wohnzimmer</div><div class="tile">Büro</div><div class="tile">Küche</div></div>';
+    h += '<div class="ov safe"><i>5 % Overscan</i></div>';
+    return h;
+  }
+
+  // Wortlaut in fünf Stufen. Jede Zeile entspricht einem echten Signal; nur der Ton ändert sich.
+  function esc(s){ return s.replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  function colorize(s){
+    s = esc(s);
+    s = s.replace(/^\[ ok \]/, '<b class="k-ok">[ ok ]</b>').replace(/^\[fail\]/, '<b class="k-bad">[fail]</b>')
+         .replace(/^\[ \.\. \]/, '<b class="k-wait">[ .. ]</b>').replace(/^\[info\]/, '<b class="k-info">[info]</b>');
+    s = s.replace(/(200 OK|\[ OK \]|ACCESS GRANTED|ESTABLISHED|ENGAGED|ONLINE|established|verified|\bok|\bup)$/, '<b class="k-ok">$1</b>');
+    s = s.replace(/((?:FAILED|NO CARRIER).*)$/, '<b class="k-bad">$1</b>');
+    return s;
+  }
+  function format(raw, level, t){
+    if (level === 1) return esc(raw);
+    if (level === 3) return '<span class="k-ts">[' + (3.1 + t / 1000).toFixed(3).padStart(8, ' ') + ']</span> ' + colorize(raw);
+    if (level === 4) { var p = raw.split('|'); var dots = Math.max(3, 30 - p[0].length - 2); return colorize(p[0] + ' ' + '.'.repeat(dots) + ' ' + p[1]); }
+    return colorize(raw);
+  }
+
+  var T = TL.texts.log, SUB = TL.texts.sub, PQ = TL.texts.claimPrompt, HO = TL.texts.handoff;
+  var MAXL = TL.levels.map(function(l){ return l.maxLines; });
+  var STAGE = {}; TL.stages.forEach(function(s){ STAGE[s.id] = s; });
+  var SIGNALS = TL.signals.map(function(s){ return s.id; });
+
+  // Bühne mit Log, Untertitel und Klassen der Stufen (Engine aus Fassung 5, ohne Timer)
+  function Engine(el){
+    this.el = el; this.level = TL.defaultLevel; this.lines = [];
+    el.innerHTML = scene('hero') + overlays('hero');
+    this.log = el.querySelector('.log'); this.sub = el.querySelector('.wsub');
+  }
+  Engine.prototype.render = function(){
+    var cur = this.level > 1 ? '<i class="cur" aria-hidden="true">▌</i>' : '';
+    this.log.innerHTML = this.lines.map(function(l, i, a){ return '<div' + (i < a.length - 1 ? ' class="old"' : '') + '>' + l + (i === a.length - 1 ? cur : '') + '</div>'; }).join('');
+  };
+  Engine.prototype.push = function(raw, t, replace, replaceLast){
+    if (raw === undefined || raw === null) return;
+    if (replaceLast && this.lines.length){ this.lines[this.lines.length - 1] = format(raw, this.level, t); this.render(); return; }
+    if (replace) this.lines = [];
+    this.lines.push(format(raw, this.level, t));
+    this.lines = this.lines.slice(-MAXL[this.level - 1]);
+    this.render();
+  };
+  Engine.prototype.clear = function(){
+    var el = this.el;
+    ['pre','curhold','curoff','ann-g','ann-t','ann-f','ann-b','s1','s2','s3','s4','s5','s6','pair','offline'].forEach(function(c){ el.classList.remove(c); });
+    [1,2,3,4,5].forEach(function(i){ el.classList.toggle('lvl' + i, i === this.level); }, this);
+    el.querySelector('.pq').textContent = PQ[this.level - 1];
+    el.querySelector('.ho-b').textContent = HO[this.level - 1][0];
+    el.querySelector('.ho-s').textContent = HO[this.level - 1][1];
+    this.sub.textContent = '';
+    this.lines = []; this.render();
+  };
+  Engine.prototype.apply = function(step){
+    var el = this.el, L = this.level, t = step.t;
+    if (step.drop) el.classList.remove(step.drop);
+    if (step.add) step.add.forEach(function(c){ el.classList.add(c); });
+    if (step.s) el.classList.add('s' + step.s);
+    if (step.key) this.push(T[step.key][L - 1], t, L === 1, step.replaceLast && L !== 3);
+    if (step.diagKey) this.push(T[step.diagKey][L - 1], t, false);
+    if (step.subKey) this.sub.textContent = SUB[step.subKey][L - 1];
+  };
+
+  // Signal-Gates: Jede Stufe erscheint erst, wenn ihr Signal bereit ist, in fester Reihenfolge,
+  // nie vor dem Kiosk-Punkt und mindestens minHoldMs nach der vorherigen Stufe. Rein und deterministisch.
+  function plan(events, scenarioId){
+    var sc = TL.scenarios[scenarioId] || {}, hold = TL.gating.minHoldMs;
+    var steps = [ {t:100, key:'boot', step:0}, {t:FT.dock, key:'bootok', replaceLast:true} ];
+    var ev = events.slice().sort(function(a, b){ return a.at - b.at; });
+    function next(signal, from, value){
+      for (var i = 0; i < ev.length; i++){ var e = ev[i];
+        if (e.signal === signal && e.at >= from && (value === undefined || (e.value || 'ok') === value)) return e; }
+      return null;
+    }
+    var last = -Infinity, cursor = -Infinity, pairing = null;
+    var order = ['kiosk', 'bootstrap', 'network', 'portal', 'pairing', 'handoff'];
+    for (var i = 0; i < order.length; i++){
+      var st = STAGE[order[i]], e;
+      if (st.id === 'network'){
+        var okE = next('network', cursor, 'ok'), failE = next('network', cursor, 'fail');
+        if (failE && (!okE || failE.at < okE.at)){
+          var tf = Math.max(failE.at, last + hold);
+          steps.push({t:tf, add:[st.failClass], key:st.failLogKey, fail:st.index});
+          last = tf; cursor = failE.at;
+          okE = next('network', cursor, 'ok');
+          var diag = sc.diagnostic || TL.scenarios['netz-fehlt'].diagnostic;
+          var td = tf + diag.afterFailMs;
+          if (!okE || Math.max(okE.at, last + hold) > td) steps.push({t:td, diagKey:diag.logKey});
+          if (!okE) break;
+          var tr = Math.max(okE.at, last + hold);
+          steps.push({t:tr, s:st.index, key:st.logKey, drop:st.failClass});
+          last = tr; cursor = okE.at; continue;
+        }
+        e = okE;
+      } else e = next(st.signal, cursor);
+      if (!e) break;
+      if (st.requires && st.requires.pairing && pairing !== st.requires.pairing) break;
+      var ts = Math.max(e.at, last + hold, st.notBeforeMs || 0);
+      var step = {t:ts, s:st.index};
+      if (st.id === 'pairing'){
+        pairing = e.value || 'paired';
+        step.key = st.logKey[pairing]; step.subKey = st.subKey[pairing];
+        if (st.valueClass[pairing]) step.add = [st.valueClass[pairing]];
+        if (pairing === 'claim') step.claim = true;
+      } else step.key = st.logKey;
+      steps.push(step); last = ts; cursor = e.at;
+    }
+    return steps.sort(function(a, b){ return a.t - b.t; });
+  }
+
+  function scenarioId(name){
+    if (!name) return TL.defaultScenario;
+    if (TL.scenarios[name]) return name;
+    for (var k in TL.scenarios) if ((TL.scenarios[k].aliases || []).indexOf(name) >= 0) return k;
+    if (name === 'none' || name === 'live') return 'live';
+    return TL.defaultScenario;
+  }
+  function scenarioEvents(id, recoverAt){
+    var sc = TL.scenarios[id]; if (!sc) return [];
+    var ev = sc.signals.map(function(s){ return {signal:s.signal, value:s.value, at:s.atMs}; });
+    if (sc.recover && recoverAt !== null && recoverAt !== undefined && !isNaN(recoverAt))
+      sc.recover.signals.forEach(function(s){ ev.push({signal:s.signal, value:s.value, at:recoverAt + s.afterMs}); });
+    return ev;
+  }
+
+  // Zustand
+  var tvEl = document.getElementById('tv-hero');
+  if (RM) tvEl.classList.add('rm');
+  var hero = new Engine(tvEl), first = new FirstEngine(tvEl);
+  var level = Math.max(1, Math.min(5, parseInt(Q.get('level'), 10) || TL.defaultLevel));
+  hero.level = first.level = level;
+  var scen = scenarioId(Q.get('scenario'));
+  var recoverQ = Q.get('recover') !== null ? +Q.get('recover') : null;
+  var events = scen === 'live' || Q.get('mode') === 'live' ? [] : scenarioEvents(scen, recoverQ);
+  var claimSc = TL.scenarios['erststart-claim'].claim;
+  var running = false, raf = 0, t0 = 0, applied = 0, steps = [], gateTimer = 0, started = false;
+  if (Q.get('safe') === '1') document.body.classList.add('show-safe');
+
+  function markPx(){
+    var r = tvEl.getBoundingClientRect();
+    return r.height * (TL.scene.markHeightUnits * 1.9 / TL.scene.viewBox[1]) * (window.devicePixelRatio || 1);
+  }
+  function updateLit(){
+    var l = Q.get('light');
+    first.lit = l === 'on' ? true : l === 'off' ? false : markPx() >= TL.corona.minRenderedMarkHeightPx;
+    tvEl.dataset.lit = first.lit ? '1' : '0';
+  }
+  function claimClock(t){
+    var claimStep = null;
+    steps.forEach(function(s){ if (s.claim && s.t <= t) claimStep = s; });
+    if (!claimStep) return;
+    var el = Math.max(0, t - claimStep.t), ttl = claimSc.ttlS * 1000;
+    var cycle = Math.floor(el / ttl), left = claimSc.ttlS - Math.floor((el % ttl) / 1000);
+    var code = claimSc.codes[cycle % claimSc.codes.length];
+    tvEl.querySelector('.pcode').textContent = TL.texts.claimCode.replace('{code}', code);
+    tvEl.querySelector('.pcount').textContent = TL.texts.claimValidity.replace('{m}', Math.floor(left / 60)).replace('{ss}', String(left % 60).padStart(2, '0'));
+  }
+  function resetStage(){
+    tvEl.classList.add('reset');
+    hero.clear(); applied = 0;
+    claimClockReset();
+  }
+  function claimClockReset(){
+    tvEl.querySelector('.pcode').textContent = TL.texts.claimCode.replace('{code}', claimSc.codes[0]);
+    tvEl.querySelector('.pcount').textContent = TL.texts.claimValidity.replace('{m}', Math.floor(claimSc.ttlS / 60)).replace('{ss}', String(claimSc.ttlS % 60).padStart(2, '0'));
+  }
+
+  // Abspielen in Echtzeit: ein Takt pro Bild, Stufen werden zum geplanten Zeitpunkt angewendet.
+  function tick(now){
+    if (!running) return;
+    var t = now - t0;
+    first.frame(t);
+    while (applied < steps.length && steps[applied].t <= t){ hero.apply(steps[applied]); applied++; }
+    claimClock(t);
+    tvEl.dataset.t = String(Math.round(t));
+    raf = requestAnimationFrame(tick);
+  }
+  function play(){
+    cancelAnimationFrame(raf); clearTimeout(gateTimer); running = true; started = true;
+    tvEl.classList.remove('seek');
+    resetStage(); updateLit(); steps = plan(events, scen);
+    first.frame(0); void tvEl.offsetWidth; tvEl.classList.remove('reset');
+    t0 = performance.now(); raf = requestAnimationFrame(tick);
+  }
+  function now(){ return running ? performance.now() - t0 : 0; }
+
+  // Standbild bei t: First rechnet direkt; CSS-Übergänge der Stufen werden pausiert und auf ihre Zeit gesetzt.
+  function seek(t){
+    running = false; cancelAnimationFrame(raf); clearTimeout(gateTimer);
+    document.getAnimations().forEach(function(a){ a.cancel(); });
+    tvEl.classList.add('seek'); resetStage(); updateLit();
+    steps = plan(events, scen);
+    first.frame(t); void tvEl.offsetWidth;
+    tvEl.classList.remove('reset');
+    var starts = new Map(), due = steps.filter(function(s){ return s.t <= t; });
+    function collect(ts){ document.getAnimations().forEach(function(a){ if (!starts.has(a)){ starts.set(a, ts); a.pause(); } }); }
+    function advance(at){
+      var live = document.getAnimations();
+      starts.forEach(function(ts, a){ if (live.indexOf(a) >= 0) a.currentTime = Math.max(0, at - ts); });
+      void tvEl.offsetWidth;
+    }
+    due.forEach(function(st, i){
+      hero.apply(st); applied = i + 1; void tvEl.offsetWidth; collect(st.t);
+      advance(i + 1 < due.length ? due[i + 1].t : t);
+    });
+    claimClock(t);
+    tvEl.dataset.t = String(Math.round(t));
+  }
+
+  // Statischer Endzustand: reduzierte Bewegung, Plymouth «static» und ?still=end
+  function still(){
+    running = false; cancelAnimationFrame(raf); clearTimeout(gateTimer);
+    tvEl.classList.add('seek'); resetStage(); updateLit();
+    steps = plan(events, scen);
+    var sc = TL.scenarios[scen], endIdx = sc ? STAGE[sc.staticEndStage].index : 6;
+    steps.forEach(function(st){ if (!(st.s > endIdx)) hero.apply(st); });
+    first.clear(); claimClockReset();
+    void tvEl.offsetWidth; tvEl.classList.remove('reset');
+    tvEl.dataset.t = 'end';
+  }
+
+  // Signale setzen: window.edgeportalBoot.signal('portal'), signal('pairing', 'claim'), signal('network', 'fail')
+  function signal(name, value){
+    if (SIGNALS.indexOf(name) < 0) throw new Error('Unbekanntes Signal: ' + name + '. Bekannt: ' + SIGNALS.join(', '));
+    if (name === 'cec-on'){ if (!running) play(); return; }
+    if (!running) play();
+    events.push({signal:name, value:value, at:now()});
+    steps = plan(events, scen);
+  }
+  function recover(){
+    var sc = TL.scenarios['netz-fehlt'], at = now();
+    sc.recover.signals.forEach(function(s){ events.push({signal:s.signal, value:s.value, at:at + s.afterMs}); });
+    steps = plan(events, scen);
+  }
+
+  window.edgeportalBoot = {
+    timeline: TL, signals: SIGNALS.slice(), plan: plan,
+    signal: signal, recover: recover, play: play, seek: seek, still: still,
+    state: function(){ return { scenario: scen, level: level, reducedMotion: RM, lit: first.lit, t: now(), running: running, applied: applied, steps: steps.slice(), events: events.slice() }; }
+  };
+
+  function boot(){
+    var tq = Q.get('t');
+    if (Q.get('still') === 'end') { still(); }
+    else if (tq !== null) { seek(Math.max(0, +tq || 0)); }
+    else if (Q.get('gate') === 'cec') {
+      // Ruhebild halten, bis der TV «on» meldet; Fallback aus der Zeitachse
+      resetStage(); updateLit(); first.frame(0); tvEl.classList.remove('reset');
+      gateTimer = setTimeout(function(){ if (!started) play(); }, TL.gate.startFallbackMs);
+    }
+    else play();
+    document.documentElement.dataset.ready = '1';
+  }
+  var fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+  Promise.race([fontsReady, new Promise(function(r){ setTimeout(r, 1500); })]).then(boot);
+})();
+</script>
+</body>
+</html>
