@@ -1,6 +1,6 @@
 # Atlas in Produkten einbinden
 
-Kurzanleitung für Rapold-Produkte (Lotse, Cockpit, Auditor, Rapold Auth, PocketForge, Atlas, AI Fabric, ÆON Learn, Argus, EdgePortal, Agents). Alle Pfade liegen unter **https://atlas.rapold.io**. Für den Produktivbetrieb Dateien **ins Produkt-Repository kopieren** (oder beim Build herunterladen) und selbst ausliefern; Atlas ist die Quelle, kein CDN mit Verfügbarkeitszusage.
+Kurzanleitung für Rapold-Produkte (Lotse, Cockpit, Auditor, Rapold Auth, PocketForge, Atlas, Fabric, ÆON Learn, Argus, EdgePortal, Agents). Alle Pfade liegen unter **https://atlas.rapold.io**. Für den Produktivbetrieb Dateien **ins Produkt-Repository kopieren** (oder beim Build herunterladen) und selbst ausliefern; Atlas ist die Quelle, kein CDN mit Verfügbarkeitszusage.
 
 `<produkt>` steht für die ID aus [`identity.json`](https://atlas.rapold.io/brands/rapold/identity.json): `fabric`, `argus`, `learn`, `edgeportal`, `lotse`, `cockpit`, `auditor`, `auth`, `pocketforge`, `atlas`, `agents`.
 

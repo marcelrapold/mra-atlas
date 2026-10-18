@@ -64,7 +64,7 @@ Die Brand-Registry enthält vier Einträge:
 
 - Neutral (`neutral`): vollständige helle und dunkle Basis und Default.
 - Dominicano Express (`dominicano-express`): eigenständiges helles und dunkles Preset mit seinem Caja-Inhaltsbeispiel.
-- Rapold (`rapold`): gemeinsame Brand für AI Fabric, Argus, ÆON Learn und EdgePortal sowie Lotse, Cockpit, Auditor, Rapold Auth, PocketForge, Atlas selbst und Agents; elf freigegebene Signets. 55 SVG-Master, lokale Geist-Fonts und 572 reproduzierbare Exporte. Status `draft` für den UI-Adapter. Markenansicht: `/brand?brand=rapold`. [Quellen und Anwendung](brands/rapold/README.md). Die Dachmarke rapold.io «Der First» ist ein Vorschlag; die Freigabe steht aus ([Design-DNA](brands/rapold-io/DESIGN-DNA.md)).
+- Rapold (`rapold`): gemeinsame Brand für Fabric (bis 18.10.2026 AI Fabric), Argus, ÆON Learn und EdgePortal sowie Lotse, Cockpit, Auditor, Rapold Auth, PocketForge, Atlas selbst und Agents; elf freigegebene Signets. 55 SVG-Master, lokale Geist-Fonts und 572 reproduzierbare Exporte. Status `draft` für den UI-Adapter. Markenansicht: `/brand?brand=rapold`. [Quellen und Anwendung](brands/rapold/README.md). Die Dachmarke rapold.io «Der First» ist ein Vorschlag; die Freigabe steht aus ([Design-DNA](brands/rapold-io/DESIGN-DNA.md)).
 - RadioX (`radiox`): Brand im Look von radiox.cloud (Schwarz, Cyan, Glas, Glow) für die aus RadioX übernommenen Medien-, Status- und Player-Komponenten; Status `draft`. [Design-DNA und Ableitungen](brands/radiox/README.md).
 
 Firmenlogos, interne Vorgaben und lizenzierte Assets sind getrennt vom neutralen Core. Eine künftige freie Code-Lizenz erteilt keine Marken- oder Fontrechte.

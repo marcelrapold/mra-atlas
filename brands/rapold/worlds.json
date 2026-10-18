@@ -49,11 +49,11 @@
   "products": [
     {
       "id": "fabric",
-      "label": "AI Fabric",
+      "label": "Fabric",
       "title": "Signal & Glas",
       "description": "Aurora-Licht, ein verbundenes Signalnetz und transparente Karten. Die Raumfalte bringt die neue Identität in die bestehende Atmosphäre.",
-      "sourceLabel": "AI Fabric · Originalmuster",
-      "sourceUrl": "https://ai.rapold.io/login",
+      "sourceLabel": "Fabric · Originalmuster",
+      "sourceUrl": "https://fabric.rapold.io/login",
       "sourceKind": "original-adapted",
       "sourceNote": "Hintergrund und Karten basieren auf der öffentlichen AI-Fabric-Oberfläche. Anmeldung und Betriebsdaten sind kein Bestandteil dieses Gestaltungsbeispiels.",
       "layers": [

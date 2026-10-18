@@ -134,11 +134,11 @@
   "products": [
     {
       "id": "fabric",
-      "name": "AI Fabric",
+      "name": "Fabric",
       "shortName": "Fabric",
-      "domain": "ai.rapold.io",
-      "purpose": "Orchestrierung von KI-Agenten und Workflows.",
-      "namingNote": "Arbeitsbezeichnung in dieser CI",
+      "domain": "fabric.rapold.io",
+      "purpose": "Eigene Inferenz-Plattform: Sprache, Transkription, Sprachmodelle und Bilder über einen Gateway.",
+      "namingNote": "Seit 18.10.2026 Fabric unter fabric.rapold.io; vorher AI Fabric unter ai.rapold.io (Rapold Stack Naming, mra-fabric ADR 0015).",
       "status": "approved",
       "variants": {
         "dark": "assets/logos/fabric.svg",

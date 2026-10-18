@@ -51,12 +51,12 @@ test('Rapold is one product family with eleven approved signs and only establish
   assert.equal(identity.symbolOnly,true);
   assert.deepEqual(identity.viewBox,[0,0,256,256]);
   assert.deepEqual(identity.products.map(product=>product.id),productIds);
-  assert.deepEqual(identity.products.map(product=>product.name),['AI Fabric','Argus','ÆON Learn','EdgePortal','Lotse','Cockpit','Auditor','Rapold Auth','PocketForge','Atlas','Agents']);
-  assert.deepEqual(identity.products.map(product=>product.domain),['ai.rapold.io','argus.rapold.io','learn.rapold.io','edgeportal.rapold.io','lotse.rapold.io','cockpit.rapold.io','auditor.rapold.io','auth.rapold.io','game.rapold.io','atlas.rapold.io','agents.rapold.io']);
+  assert.deepEqual(identity.products.map(product=>product.name),['Fabric','Argus','ÆON Learn','EdgePortal','Lotse','Cockpit','Auditor','Rapold Auth','PocketForge','Atlas','Agents']);
+  assert.deepEqual(identity.products.map(product=>product.domain),['fabric.rapold.io','argus.rapold.io','learn.rapold.io','edgeportal.rapold.io','lotse.rapold.io','cockpit.rapold.io','auditor.rapold.io','auth.rapold.io','game.rapold.io','atlas.rapold.io','agents.rapold.io']);
   assert.ok(identity.products.every(product=>product.status==='approved'),'Every catalogued signet is approved');
   for(const product of identity.products.filter(product=>addedIds.includes(product.id)))assert.match(product.origin.repository,/^marcelrapold\/[a-z0-9-]+$/,product.id);
   assert.ok(!Object.hasOwn(identity,'logo'),'No invented umbrella logo');
-  assert.match(identity.products[0].namingNote,/Arbeitsbezeichnung/);
+  assert.match(identity.products[0].namingNote,/fabric\.rapold\.io/); // seit 18.10.2026 entschieden, vorher «Arbeitsbezeichnung»
   assert.equal(identity.palette.azure,'#009DFF');
   assert.equal(identity.palette.ice,'#A8EDFF');
   assert.equal(identity.palette.paper,'#F4FAFF');

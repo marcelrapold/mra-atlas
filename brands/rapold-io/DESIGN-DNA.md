@@ -31,7 +31,7 @@ Prinzipien:
 
 ```
 rapold.io                       Dachmarke · Studio «Fullstack Digital Operations»
-├── AI Fabric · Argus · ÆON Learn · EdgePortal · Lotse
+├── Fabric · Argus · ÆON Learn · EdgePortal · Lotse
 │   Cockpit · Auditor · Rapold Auth · PocketForge · Atlas
 │                               Produkte: eigenes Raumfalten-Signet, Name in Geist 600
 ├── RadioX                      eigenständige Produktmarke (endorsed), eigener Look
