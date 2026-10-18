@@ -9,6 +9,7 @@ import {useActiveBrand} from './framework-shell';
 // Wordmark treatments load with the Rapold brand page; worlds.css follows via RapoldWorlds.
 import '../../../../brands/rapold/wordmarks.css';
 import RapoldWorlds from './rapold-worlds';
+import RapoldEdgePortal from './rapold-edgeportal';
 
 type Product = typeof identity.products[number];
 type Variant = keyof Product['variants'];
@@ -164,7 +165,7 @@ export default function RapoldShowcase() {
     {product.status === 'proposal' && 'origin' in product && product.origin && <p className="muted">Vorschlag auf Basis des bisherigen Zeichens in {product.origin.repository} ({product.origin.previousMark}). Das Produkt verwendet sein bisheriges Zeichen, bis die Freigabe dokumentiert ist.</p>}
     {'namingNote' in product && <p className="muted">{product.name}: {product.namingNote}.</p>}
 
-    <nav className="rapold-section-links" aria-label="Markenreferenz"><a href="#rapold-umbrella">Dachmarke</a><a href="#rapold-all-signets">Alle Zeichen</a><a href="/contracts/produkte-einbinden.md">Einbindungsanleitung</a><a href="#rapold-worlds">Produktwelten</a><a href="#rapold-signets">Signets</a><a href="#rapold-formats">Formate</a><a href="#rapold-colours">Farbe & Schrift</a><a href="#rapold-downloads">Downloads</a><a href="#rapold-usage">Einbindung</a></nav>
+    <nav className="rapold-section-links" aria-label="Markenreferenz"><a href="#rapold-umbrella">Dachmarke</a><a href="#rapold-all-signets">Alle Zeichen</a><a href="/contracts/produkte-einbinden.md">Einbindungsanleitung</a><a href="#rapold-worlds">Produktwelten</a><a href="#edgeportal-ci">EdgePortal-CI</a><a href="#rapold-signets">Signets</a><a href="#rapold-formats">Formate</a><a href="#rapold-colours">Farbe & Schrift</a><a href="#rapold-downloads">Downloads</a><a href="#rapold-usage">Einbindung</a></nav>
 
     <section className="doc-section" id="rapold-all-signets" aria-labelledby="rapold-all-signets-title">
       <h2 id="rapold-all-signets-title">Alle Zeichen auf einen Blick</h2><p>{identity.products.length} Signets in allen Varianten. Ein Klick lädt das jeweilige SVG; Produktpakete stehen weiter unten bei den Downloads.</p>
@@ -179,6 +180,8 @@ export default function RapoldShowcase() {
     </section>
 
     <RapoldWorlds productId={product.id} onProductChange={selectProduct} wordmarkTreatment={wordmarkTreatment} onWordmarkChange={setWordmarkTreatment}/>
+
+    <RapoldEdgePortal/>
 
     <section className="doc-section" id="rapold-signets">
       <h2>Das Zeichen in jeder Umgebung</h2><p>Alle Varianten verwenden dieselben Pfade und Proportionen. Die Produktnamen bleiben editierbarer Text ausserhalb der SVGs.</p>
