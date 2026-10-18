@@ -21,7 +21,7 @@ Prinzipien:
 
 1. **Weiterentwickeln, nicht ersetzen.** Die Dachmarke verwendet die freigegebene Raumfalten-Grammatik genau: 256er-Raster, 24 Einheiten Schutzraum, Iso-Steigung 1:0,5, ein Azure-Körper mit Ice-Facetten, ausgeschnittene Negative und die offene Fuge. Neben den zehn Signets wirkt sie als ihr Elternteil.
 2. **Licht als Material.** Die Bühne ist Navy, Licht kommt als Azure-Bloom, als Glaskante oder als Firstlicht hinzu. Farbe wird nicht als Fläche verteilt.
-3. **Ein warmer Funke.** Firstglut `#FFA36C` ist der einzige warme Ton im kalten Azure/Ice-Kosmos. Er gehört allein der Dachmarke und erscheint auf dem leuchtenden First und als ein Rautenpunkt pro Folie.
+3. **Ein warmer Funke.** Firstglut `#FFA36C` ist der einzige warme Ton im kalten Azure/Ice-Kosmos. Er gehört allein der Dachmarke und erscheint auf dem leuchtenden First, als Kopf der Korona im Systemstart (siehe 7.1) und als ein Rautenpunkt pro Folie.
 4. **Eine Schriftfamilie.** Geist und Geist Mono stehen unter OFL 1.1 und sind bereits gebündelt. Charakter entsteht aus Grösse und Kontrast, ohne zweite Schrift.
 5. **Ruhig, präzise, ohne Show.** Die Grafik ist gross und einzeln gesetzt, die Typografie hart, die Metadaten in Mono. Es gibt keine Glitches, keinen Shimmer und keinen Regenbogen.
 
@@ -82,7 +82,7 @@ Lesart: Oben steht ein Satteldach (der First). Die Punze wird zum Hausfenster, a
 
 **Monochrom mit First-Fuge.** In der einfarbigen Fassung ist der Grat als Luft ausgespart: 6 Einheiten aus der fallenden Ebene. Die Regel lautet: In Farbe liegt auf dem First Licht, einfarbig liegt dort Luft. Damit bleibt die Faltung ohne zweite Farbe lesbar, und Stempel, Gravur und Fax funktionieren. Unter 32 px schliesst sich die Fuge optisch, und das Zeichen bleibt ein klares R.
 
-**Firstlicht** existiert nur als gerendertes Licht in Supergrafiken, nicht in Logo-Dateien (siehe 5.3). Die Firstglut-Kante des Konzepts las sich unter etwa 200 px wie ein Passerfehler und wurde deshalb aus den Logos entfernt.
+**Firstlicht** existiert nur als gerendertes Licht in Supergrafiken, nicht in Logo-Dateien (siehe 4.3). Die Firstglut-Kante des Konzepts las sich unter etwa 200 px wie ein Passerfehler und wurde deshalb aus den Logos entfernt.
 
 ### 3.3 Wortmarke
 
@@ -108,6 +108,7 @@ Lesart: Oben steht ein Satteldach (der First). Die Punze wird zum Hausfenster, a
 | Zeichen | 24/256 der Kantenlänge (im Master enthalten) | 16 px Bildschirm, 6 mm Druck |
 | Wortmarke | Höhe der Raute auf allen Seiten | 14 px Schriftgrösse |
 | Lockup mit Deskriptor | Höhe des «r» | 240 px Breite |
+| Korona und Ridgeline (Systemstart) | – | Zeichenhöhe ab 400 px, nur zusammen mit Firstlicht |
 | Kompakter Lockup | Höhe des «r» | 96 px Breite |
 | Firstlicht (Supergrafik) | – | Zeichenhöhe ab 400 px |
 
@@ -171,6 +172,12 @@ Diagramme: dunkel Azure, Ice, `#597DFF` und `#42D6EC`; hell `#0066B3`, `#2B89B5`
   - Glut: 8 px `#FFA36C`, Blur 3
   - Kern: 2 px `#FFE2CC`
   - Ein Filter auf einer senkrechten Linie braucht `filterUnits="userSpaceOnUse"`, sonst ist die Filterregion 0 breit und das Licht fehlt.
+- **Korona (nur Systemstart, siehe 7.1):**
+  - Grundschein: Silhouette des R in Azure, zweimal weichgezeichnet (Blur 2,4 E mit 0,5 und Blur 9 E mit 0,24), additiv (screen). E sind Einheiten des 256er-Rasters.
+  - Funke: Der Schweif ist der Weg der letzten 420 ms. Schichten nach Anteil am Schweif: Azure 1,0, Sky `#38B8FF` 0,72, Ice 0,48, Ink `#EDF5FF` 0,33, Firstglut-Kern 0,22, Firstglut 0,10. Je Schicht ein Glow mit 6 E (Blur 2,2) und ein Kern mit 2,6 E, beide hinter den Ebenen.
+  - Spitze: radial r 15 E, Firstglut-Kern 0,95, Firstglut 0,55 bei 22 %, 0,12 bei 55 %, 0 am Rand.
+  - Apex-Halo im Systemstart: r 62 E, 2 E über dem Apex, Firstglut-Kern 0,30, Firstglut 0,22 bei 14 %, 0,07 bei 42 %, 0,018 bei 72 %, 0 am Rand, additiv.
+  - Firstlicht für den TV-Abstand (3–4 m): Kern 3 px, Glut 10 px bei 1080p; Halo wie oben.
 - **Glaskarte dunkel:** `#0B1528` mit 70 %, backdrop-blur 24 px, 1 px Weiss mit 10 %, Radius 16, kein Schatten. In PPTX: 30 % Transparenz und 0,75 pt Rand mit 90 % Transparenz.
 
 ## 5. Typografie
@@ -230,6 +237,33 @@ Der Schlusspunkt der Hauptaussage einer Folie ist die 45°-Raute (Halbdiagonale 
 - **Verboten:** Glitch, RGB-Split, Shimmer und alles über 3 Hz. Ambient pausiert in verborgenen Tabs. Parallax gibt es nur bei feinem Zeiger und mit höchstens 12 px.
 - **prefers-reduced-motion:** statischer Endzustand. Das Zeichen ist gefaltet, der First leuchtet, und es gibt keine Ambient-Bewegung.
 - **Statische Folien-Fassung:** Jeder Hintergrund wird einmal als Platte (3200 × 1800 PNG) gerendert: Boden, Bloom, Halo, Raster, Glas-Zeichen mit Firstlicht, Schleier und Körnung. Text bleibt live. Übergänge: Fade 0,3 s, Cover → Kapitel als Morph 0,9 s (die Supergrafik wandert von Skala 4,0 rechts nach Skala 3,2 links), Aufbau mit Fade und 8 % Einflug.
+
+### 7.1 Korona und Ridgeline im Systemstart (bewusste Abweichung A1)
+
+Nach dem Zünden umläuft ein Funke einmal das R und kehrt in den First zurück. Danach legt sich der Grat hin und wird zur Fuge des Produkts, das startet. Nur in diesem Moment verlässt Firstglut den Grat. Referenz ist die EdgePortal-Bootsequenz.
+
+- **Ort:** nur im Systemstart (Plymouth und Bootsequenz eines Produkts) als Vollbild auf Navy. Nie auf Folienplatten, im Ambient, in Logo-Dateien, im Lockup oder im Endorsement.
+- **Nie für Produkte:** Signets, Produktnamen und RadioX erhalten keine Korona. Die Ridgeline erreicht ein Produkt erst, wenn sie zu Ice abgekühlt ist.
+- **Ablauf** in ms ab dem Moment, in dem der TV per CEC «on» meldet:
+  - 0–1000: Das flache R blendet ein (`cubic-bezier(.45,0,.55,1)`), dahinter der Azure-Bloom `bloomClosing`.
+  - 1200–2100: Faltung mit fold-Easing. Die Steigung wird linear interpoliert, die Ice-Facette blendet mit der Drehung ein.
+  - 1760: Der First zündet als ein Strich vom Apex abwärts (240 ms), das Fenster wird übersprungen. Der Halo steigt ohne Überschwinger auf 0,8.
+  - 1900–2800: Der Grundschein breitet sich vom Apex aus.
+  - 2040–4440: Ein Funke läuft genau eine Runde im Uhrzeigersinn ab dem Apex, sanft beschleunigt und gebremst. Ab der Ecke beim Bein läuft ein Ice-Ast mit gleicher Geschwindigkeit ins freie Bein und endet mit einem Ice-Funken an der Beinspitze.
+  - 4440: Heimkehr. Der Funke mündet in den Grat, der First glüht 180 ms auf und 740 ms ab.
+  - 4940: Lichter aus (900 ms). Der Grat schliesst sich über dem Fenster.
+  - 5640–6740: Ridgeline. Der Grat kippt um seinen Fuss um 62,1° im Uhrzeigersinn auf die Iso-Achse (−27,9°) und kühlt ab 6140 in 600 ms zu Ice ab. Danach gehört die Linie dem Produkt.
+- **Ein Kopf:** In jedem Bild gibt es genau einen Firstglut-Kopf. Das freie Bein trägt nur Ice.
+- **Farbweg:** vom Kopf zum Schweif Firstglut, Firstglut-Kern, Ink, Ice, Sky, Azure. Warm erscheint nur bei hoher Helligkeit (OKLab L ≥ 0,75). Ausserhalb des Gratkerns gibt es kein Pixel mit Farbton 20–90° und L < 0,5, warm und kalt treffen sich also nie in Grau oder Malve.
+- **Lage:** Die Lichtkante läuft hinter den Ebenen, sichtbar ist nur ihr äusserer Teil. Das Zeichen wird weiterhin nicht konturiert (§9).
+- **Licht mischt additiv:** Halo, Apex-Halo, Grundschein und Glow liegen im Modus screen. Glut und Kern des Grats bleiben deckend, sonst verliert der Grat seine Wärme.
+- **Glas:** Im Systemstart trägt das R die Glasebenen aus 4.3, ohne Randlinie.
+- **Grösse:** nur ab 400 px gerenderter Zeichenhöhe, zusammen mit Firstlicht. Darunter gibt es keine Korona, und die Ridgeline startet in Ice.
+- **Menge:** Gesättigte Firstglut bedeckt höchstens 0,25 % der Bildfläche pro Bild, Firstglut mit Apex-Halo höchstens 1 %.
+- **Nie in Schleife:** Dauert der Start länger, ruht das gefaltete Zeichen mit Firstlicht, und der Apex-Halo atmet über 12 s wie im Ambient. Beim ersten Start sind zwei Runden erlaubt.
+- **Reduzierte Bewegung:** keine Korona und keine Ridgeline. Das gefaltete Zeichen mit ruhendem Firstlicht steht mindestens 2 s, danach folgt ein Schnitt.
+- **Hacker Level eines Produkts:** Licht und Flächen des Firsts sind auf jedem Level gleich. Annotationen mit echten Konstruktionswerten (Konstruktionsplatte aus 3.1, Eckkoordinaten) stehen daneben, nie darauf. Keine Scanlines.
+- **Plymouth:** Die Bilder entstehen aus derselben deterministischen Zeitachse (30 fps, Bewegungsunschärfe, statisches Dither). Das Ruhebild am Ende ist pixelgleich mit dem ersten Bild des Kiosks.
 
 ## 8. Präsentationen
 
@@ -293,6 +327,7 @@ Lesbarkeit: Jeder Text liegt auf ruhiger Fläche (Schleier, Ausblendung), alle T
 
 - Firstglut als Fläche, für Produkte, in Fliesstext oder für mehr als einen Punkt pro Folie verwenden.
 - Firstglut-Kanten in Logo-Dateien setzen.
+- Die Korona ausserhalb des Systemstarts einsetzen, mit mehr als einem Kopf, in Schleife, auf der Fläche des Zeichens oder an einem Produkt.
 - Das Zeichen drehen, spiegeln, entfalten, konturieren oder mit Schatten versehen.
 - Violett oder Spektrum für die Dachmarke einsetzen.
 - Fraunces, Inter Tight oder JetBrains Mono verwenden.
@@ -329,6 +364,15 @@ Lesbarkeit: Jeder Text liegt auf ruhiger Fläche (Schleier, Ausblendung), alle T
 - Mono mit 62 % Deckkraft, ersetzt durch die First-Fuge.
 - Violett und Spektrum.
 - Gefaltetes Quadrat als zweite Punktform.
+
+**Bewusste Abweichungen**
+
+- **A1 Korona und Ridgeline (18.10.2026)**
+  - *Quelle:* Marcel Rapold hat die Korona mit Firstglut-Spitze am 18.10.2026 im Review der EdgePortal-Bootsequenz gewollt und als Abweichung freigegeben.
+  - *Abweichung:* Firstglut verlässt im Systemstart den Grat (Prinzip 3), und eine Lichtkante folgt der Kontur des Zeichens (§9, «nicht konturieren»).
+  - *Annahme:* Der Moment trägt nur, solange Firstglut knapp bleibt. Deshalb gelten die Grenzen aus 7.1.
+  - *Verfeinerung:* Zwölf Fachperspektiven (Motion, Licht, Farbe, Konstruktion, Marke, Creative Direction, TV-Technik, Plymouth, Übergang und Typografie, Barrierefreiheit, Ritual und Ton, Hacker-Ästhetik) haben die erste Fassung geprüft. Daraus entstanden der eine Kopf, die eine Runde mit Heimkehr in den First, der Farbweg über Weiss, das additive Licht, die Glasebenen und die Ridgeline als Übergabe an das Produkt.
+  - *Gültigkeit:* Die Abweichung gilt erst, wenn das Zeichen «Der First» freigegeben ist.
 
 **Offen**
 
