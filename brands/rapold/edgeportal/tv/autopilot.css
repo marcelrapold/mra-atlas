@@ -1,0 +1,58 @@
+/* Ist-Stand des EdgePortal-TVs, übernommen aus marcelrapold/mra-edgeportal @ e46563c (18.10.2026): app/autopilot.css.
+   Atlas hält diese Kopie als Referenz, damit der TV-Stand reproduzierbar bleibt. Unverändert.
+   Nicht von Hand angleichen: Änderungen kommen aus dem Produkt und werden hier mit Commit nachgeführt. */
+
+/*
+ * Stage autopilot (components/stage/use-autopilot.ts). Only data attributes on the stage root,
+ * set while the autopilot is on; stages without it are untouched.
+ *
+ * Dim: a black overlay above everything (pointer-events none), opacity in 5 % steps (data-ap-dim).
+ * Opacity is compositor-only, so the 4 s fade costs nothing on a Raspberry Pi.
+ */
+.stage[data-autopilot="on"]::before {
+  content: ""; position: absolute; inset: 0; z-index: 90; pointer-events: none;
+  background: #000; opacity: 0; transition: opacity 4s cubic-bezier(.2, .7, .2, 1);
+}
+.stage[data-ap-dim="5"]::before { opacity: 0.05; }
+.stage[data-ap-dim="10"]::before { opacity: 0.10; }
+.stage[data-ap-dim="15"]::before { opacity: 0.15; }
+.stage[data-ap-dim="20"]::before { opacity: 0.20; }
+.stage[data-ap-dim="25"]::before { opacity: 0.25; }
+.stage[data-ap-dim="30"]::before { opacity: 0.30; }
+.stage[data-ap-dim="35"]::before { opacity: 0.35; }
+.stage[data-ap-dim="40"]::before { opacity: 0.40; }
+.stage[data-ap-dim="45"]::before { opacity: 0.45; }
+.stage[data-ap-dim="50"]::before { opacity: 0.50; }
+.stage[data-ap-dim="55"]::before { opacity: 0.55; }
+.stage[data-ap-dim="60"]::before { opacity: 0.60; }
+.stage[data-ap-dim="65"]::before { opacity: 0.65; }
+.stage[data-ap-dim="70"]::before { opacity: 0.70; }
+.stage[data-ap-dim="75"]::before { opacity: 0.75; }
+.stage[data-ap-dim="80"]::before { opacity: 0.80; }
+.stage[data-ap-dim="85"]::before { opacity: 0.85; }
+.stage[data-ap-dim="90"]::before { opacity: 0.90; }
+
+/*
+ * OLED burn-in protection: every few minutes the stage content moves to one of nine positions
+ * within 2 px. It jumps (no animation), which is invisible at viewing distance and is no motion.
+ * `translate` composes with each element's own `transform`.
+ */
+.stage[data-ap-shift="1"] > * { translate: 2px 0px; }
+.stage[data-ap-shift="2"] > * { translate: 2px 2px; }
+.stage[data-ap-shift="3"] > * { translate: 0px 2px; }
+.stage[data-ap-shift="4"] > * { translate: -2px 2px; }
+.stage[data-ap-shift="5"] > * { translate: -2px 0px; }
+.stage[data-ap-shift="6"] > * { translate: -2px -2px; }
+.stage[data-ap-shift="7"] > * { translate: 0px -2px; }
+.stage[data-ap-shift="8"] > * { translate: 2px -2px; }
+
+/* Night and calm idle mode: the ambience drifts much slower. */
+.stage[data-ap-slow="true"] .stage-ambience span:nth-child(n) { animation-duration: 180s; }
+
+/* Speaker emphasis: the other agents step back a little while one speaks. Opacity only. */
+.stage[data-ap-speaking] .stage-agent:not([data-speaking="true"]) { opacity: .62; transition: opacity .5s cubic-bezier(.2, .7, .2, 1); }
+.stage[data-ap-speaking] .stage-agent[data-speaking="true"] { opacity: 1; transition: opacity .5s cubic-bezier(.2, .7, .2, 1); }
+
+@media (prefers-reduced-motion: reduce) {
+  .stage[data-autopilot="on"]::before { transition-duration: .16s; }
+}

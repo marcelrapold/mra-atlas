@@ -1,18 +1,17 @@
 # EdgePortal in Atlas
 
-**Am TV: Ist-Stand, verbindlich.** Atlas dokumentiert den Fernseher so, wie EdgePortal ihn heute zeigt, und baut ihn 1:1 nach. Atlas ändert am TV nichts. Sichtbar auf der Brand-Seite unter [EdgePortal: der TV, wie er ist](https://atlas.rapold.io/brand?brand=rapold#edgeportal-ci).
+**Am TV: Ist-Stand, verbindlich.** Atlas dokumentiert den Fernseher so, wie EdgePortal ihn heute zeigt, und baut ihn 1:1 nach: jede Ansicht mit Auslöser und Quelle im Katalog `views.json`, nach Bereichen von der Bühne bis zu den lokalen Seiten des Pi. Atlas ändert am TV nichts. Sichtbar auf der Brand-Seite unter [EdgePortal: der TV, wie er ist](https://atlas.rapold.io/brand?brand=rapold#edgeportal-ci).
 
 **Steuerung (edgeportal.rapold.io): Atlas-Standard.** Die Admin-Oberfläche darf sich leicht an Atlas angleichen, mit Atlas-Komponenten und Tokens und später als npm-Paket.
 
 | Datei | Inhalt |
 |---|---|
-| [`tv/stage.css`](tv/stage.css) | Kopie von `app/stage.css`: Bühne, Kopfzeile, Poster-Karten, Zustände, RadioX-Leiste, Fokus, Terminals |
-| [`tv/presence.css`](tv/presence.css) | Kopie von `app/presence.css`: Präsenz, Gast, Ruhemodus, Kamerahinweis |
-| [`tv/screen-nav.css`](tv/screen-nav.css) | Kopie von `app/screen-nav.css`: Übersicht und Kameras, im Rahmen positioniert |
-| [`tv/tv-power.css`](tv/tv-power.css) | Kopie von `app/tv-power.css`: TV an und aus, im Rahmen positioniert |
+| [`tv/`](tv/) | Kopien der TV-Stylesheets, je mit Quelle und Commit im Kopf: `base.css` (Grundregeln aus `globals.css`), `stage.css`, `autopilot.css`, `hermes-stack.css`, `argus.css`, `presence.css`, `voice.css`, `perception.css`, `screen-nav.css`, `radiox.css`, `tv-power.css`, `mirror.css`, `screen.css`, dazu `pi-setup.css` und `bootstrap.css` für die lokalen Seiten des Pi |
+| [`views.json`](views.json) | Katalog aller Ansichten am TV mit Bereich, Auslöser, Quelle und Stand («nachgebaut» oder «dokumentiert» mit Grund) |
 | [`edgeportal.json`](edgeportal.json) | Werte, Zustände, Texte, Tasten und Grüsse am TV; Regeln der Steuerung; Namen; optionale Ideen |
 | [`edgeportal.css`](edgeportal.css) | Seitenrahmen für den Nachbau und die Steuerung auf dem Phone |
-| `tests/edgeportal-ci.test.mjs` | Prüft Commit-Angaben, Skalierung, Tokens gegen die Kopien und gegen die Rapold-Rollen, Zustände und Grüsse |
+| `apps/docs/app/_components/edgeportal/*.tsx` | Nachbau je Bereich: gemeinsames Markup in `shared.tsx`, Ansichten als Liste mit Id; die Brand-Seite ordnet sie nach `views.json` |
+| `tests/edgeportal-ci.test.mjs` | Prüft Commit-Angaben aller Kopien, Skalierung, Tokens gegen die Kopien und gegen die Rapold-Rollen, Zustände, Grüsse und dass Katalog und Nachbau übereinstimmen |
 
 ## Quelle
 
@@ -20,12 +19,15 @@
 
 Umgerechnet für den Rahmen und nur dort:
 
-- Übersicht und TV an/aus: `position: fixed` wird `absolute`, `vw` wird `cqi`. Der Rahmen ist ein virtueller TV mit 3840 × 2160 Pixeln, der als Ganzes verkleinert wird, deshalb gelten alle Werte unverändert.
+- Der Rahmen ist ein virtueller TV mit 3840 × 2160 Pixeln (Hochformat 2160 × 3840, ultrabreit 5120 × 2160), der als Ganzes verkleinert wird. Deshalb gelten alle Werte unverändert.
+- `position: fixed` wird `absolute`, `vw` wird `cqi`, wo eine Kopie das braucht. Regeln aus `globals.css` stehen in einem Block `:where(.ep-tv-screen)` und gelten nur im Rahmen.
+- Grundregeln der Atlas-Doku, die das Produkt nicht hat (Laufweite von `h2` und `h3`, `pre`, Strichstärke der Icons), setzt `edgeportal.css` im Rahmen zurück.
 - Ausgelassen sind die Controller-Einstellungen in `stage.css` und eine Handy-Regel in `screen-nav.css`.
+- Momentaufnahmen von Blenden halten Deckkraft und Animation inline fest; im Produkt laufen sie über Sekunden.
 
 ## Nachführen
 
-Ändert sich der TV im Produkt, werden die vier Kopien und `edgeportal.json` mit dem neuen Commit nachgeführt. Von Hand angeglichen wird nichts. Bis EdgePortal Atlas als Paket bezieht, bleibt das Produkt die Quelle für den TV.
+Ändert sich der TV im Produkt, werden die Kopien, `edgeportal.json` und `views.json` mit dem neuen Commit nachgeführt. Eine neue Ansicht kommt zuerst in den Katalog und dann als Rahmen in das passende Modul. Von Hand angeglichen wird nichts. Bis EdgePortal Atlas als Paket bezieht, bleibt das Produkt die Quelle für den TV.
 
 ## Öffentlich
 

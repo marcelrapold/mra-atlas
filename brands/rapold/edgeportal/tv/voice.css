@@ -1,0 +1,34 @@
+/* Ist-Stand des EdgePortal-TVs, übernommen aus marcelrapold/mra-edgeportal @ e46563c (18.10.2026): app/voice.css.
+   Atlas hält diese Kopie als Referenz, damit der TV-Stand reproduzierbar bleibt. Unverändert: die Masse sind schon Container-Einheiten der Bühne.
+   --line, --card-strong, --quiet und --warn sind im Produkt nirgends definiert und bleiben es hier; Rahmen und Hintergrund fallen weg, Farben werden geerbt, wie am TV.
+   Nicht von Hand angleichen: Änderungen kommen aus dem Produkt und werden hier mit Commit nachgeführt. */
+
+/* Voice assistant on the stage (components/stage/voice-assistant.tsx). Sizes follow the stage container. */
+.voice-dock { position: absolute; right: 2.2cqw; top: 8cqw; z-index: 30; display: flex; justify-content: flex-end; }
+.voice-button { display: inline-grid; grid-template-columns: auto auto; align-items: center; column-gap: .6em; row-gap: .1em;
+  padding: .7em 1.2em; border-radius: 999px; border: 1px solid var(--line); background: var(--card-strong); color: #e6f2ff;
+  font-weight: 600; font-size: 1.05em; }
+.voice-button svg { width: 1.3em; height: 1.3em; grid-row: span 2; color: var(--accent); }
+.voice-button small { grid-column: 2; font-size: .72em; font-weight: 500; color: var(--quiet); }
+.voice-button:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.voice-button:disabled { opacity: .75; }
+.voice-dock[data-phase="thinking"] .voice-button svg { animation: voice-pulse 1.2s ease-in-out infinite; }
+/* The open microphone is always unmistakable: red, labelled, with a stop button. */
+.voice-live { display: inline-flex; align-items: center; gap: .7em; padding: .7em .8em .7em 1.1em; border-radius: 999px;
+  background: rgba(70, 8, 14, .92); border: 2px solid #ef4444; color: #fff; font-size: 1.1em;
+  box-shadow: 0 0 0 .3em rgba(239, 68, 68, .25), 0 1cqw 3cqw -1cqw rgba(0, 0, 0, .7); }
+.voice-live span:not(.voice-dot) { color: #fecaca; font-variant-numeric: tabular-nums; }
+.voice-dot { width: .8em; height: .8em; border-radius: 50%; background: #ef4444; animation: voice-pulse 1s ease-in-out infinite; }
+.voice-stop { display: inline-flex; align-items: center; gap: .4em; padding: .45em .9em; border-radius: 999px; background: #fff; color: #7f1d1d; font-weight: 700; }
+.voice-stop svg { width: .9em; height: .9em; }
+.voice-stop:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.voice-caption { position: absolute; left: 50%; bottom: 14cqw; z-index: 25; width: min(70%, 110em); transform: translateX(-50%);
+  display: grid; gap: .5em; padding: 1cqw 1.5cqw; border-radius: 1.4cqw; background: rgba(4, 9, 20, .86);
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent); }
+.voice-caption p { font-size: 1.3em; line-height: 1.4; display: flex; gap: .8em; align-items: baseline; }
+.voice-caption strong { flex: none; color: var(--accent); font-size: .85em; }
+.voice-you { color: var(--quiet); }
+.voice-error { color: var(--warn); }
+.voice-note { color: var(--quiet); }
+@keyframes voice-pulse { 50% { opacity: .35; } }
+@media (prefers-reduced-motion: reduce) { .voice-dot, .voice-button svg { animation: none !important; } }

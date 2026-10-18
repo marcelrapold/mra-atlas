@@ -1,0 +1,37 @@
+/* Ist-Stand des EdgePortal-TVs, übernommen aus marcelrapold/mra-edgeportal @ e46563c (18.10.2026): app/perception.css.
+   Atlas hält diese Kopie als Referenz, damit der TV-Stand reproduzierbar bleibt. Unverändert: die Masse sind schon Container-Einheiten der Bühne.
+   --line, --card-strong, --quiet und --warn sind im Produkt nirgends definiert und bleiben es hier; Rahmen und Hintergrund fallen weg, Farben werden geerbt, wie am TV.
+   Nicht von Hand angleichen: Änderungen kommen aus dem Produkt und werden hier mit Commit nachgeführt. */
+
+/* Wahrnehmung on the stage (components/stage/perception-indicator.tsx). Sizes follow the stage container. */
+.perception-dock { position: absolute; left: 2.2cqw; top: 8cqw; z-index: 31; display: grid; justify-items: start; gap: .5em;
+  max-width: min(46%, 60em); }
+/* Audio analysis is always unmistakable: red, large, labelled, with a pause button. */
+.perception-live { display: inline-flex; align-items: center; gap: .7em; padding: .75em .8em .75em 1.1em; border-radius: 999px;
+  background: rgba(70, 8, 14, .94); border: 3px solid #ef4444; color: #fff; font-size: 1.25em;
+  box-shadow: 0 0 0 .35em rgba(239, 68, 68, .3), 0 1cqw 3cqw -1cqw rgba(0, 0, 0, .7); }
+.perception-live svg { width: 1.2em; height: 1.2em; color: #fecaca; }
+.perception-live strong { font-weight: 800; letter-spacing: .02em; }
+.perception-live span:not(.perception-dot) { color: #fecaca; font-size: .78em; }
+.perception-dot { width: .9em; height: .9em; border-radius: 50%; background: #ef4444; animation: perception-pulse 1s ease-in-out infinite; }
+.perception-chip { display: inline-flex; align-items: center; gap: .6em; padding: .5em .6em .5em .9em; border-radius: 999px;
+  background: var(--card-strong); border: 1px solid var(--line); color: #e6f2ff; font-size: .95em; }
+.perception-chip svg { width: 1.1em; height: 1.1em; color: var(--accent); }
+.perception-stop { display: inline-flex; align-items: center; gap: .35em; padding: .4em .85em; border-radius: 999px;
+  background: #fff; color: #7f1d1d; font-weight: 700; font-size: .85em; }
+.perception-stop svg { width: .9em; height: .9em; color: inherit; }
+.perception-stop:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.perception-stop:disabled { opacity: .7; }
+/* Wake word from the camera: the badge names the agent, the caption shows what was understood. */
+.perception-live[data-wake] { font-size: 1.45em; }
+.perception-heard { display: flex; flex-wrap: wrap; gap: .3em .7em; align-items: baseline; max-width: 100%; padding: .55em .95em;
+  border-radius: .9em; background: rgba(4, 9, 20, .86); border: 1px solid rgba(239, 68, 68, .45); color: #fff; font-size: 1.15em; line-height: 1.35; }
+.perception-heard strong { color: #fecaca; font-size: .8em; }
+.perception-heard em { color: var(--accent); font-style: normal; font-weight: 700; font-size: .85em; }
+.perception-scene { padding: .4em .8em; border-radius: .8em; background: rgba(4, 9, 20, .72); color: var(--quiet); font-size: .9em; }
+.perception-notice { color: var(--warn); font-size: .85em; }
+.perception-answer { bottom: 22cqw; }
+@keyframes perception-pulse { 50% { opacity: .3; } }
+/* Reduced motion keeps the badge fully visible, only without pulsing. */
+@media (prefers-reduced-motion: reduce) { .perception-dot { animation: none !important; } }
+.stage[data-motion="reduced"] .perception-dot { animation: none; }

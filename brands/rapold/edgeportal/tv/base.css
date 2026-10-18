@@ -1,0 +1,53 @@
+/* Ist-Stand des EdgePortal-TVs, übernommen aus marcelrapold/mra-edgeportal @ e46563c (18.10.2026): app/globals.css,
+   Zeilen 93–103 (* und body) und 116–141 (h1, h2, h3, p). Diese Grundregeln gelten im Produkt auf jeder TV-Seite.
+   Atlas hält diese Kopie als Referenz, damit der TV-Stand reproduzierbar bleibt. Für den Rahmen angepasst, nur zur Abgrenzung:
+   - Die Regeln stehen in einem Block :where(.ep-tv-screen) { … } (CSS-Nesting) und gelten nur im virtuellen TV.
+     body wird zum Rahmen selbst (&), vw wird cqi.
+   - Die drei gelesenen Tokens stehen mit den Werten aus globals.css :root (Zeilen 9, 10, 25) auf dem Rahmen;
+     das Produkt setzt auf Screens keine Klasse .dark.
+   Sonst unverändert. Nicht von Hand angleichen: Änderungen kommen aus dem Produkt und werden hier mit Commit nachgeführt. */
+
+:where(.ep-tv-screen) {
+  --background: 207.3 100% 97.8%; /* #F4FAFF */
+  --foreground: 212 58.4% 15.1%; /* #10253D */
+  --border: 209.1 49.3% 86.9%; /* #CDDEEE */
+
+  * {
+    box-sizing: border-box;
+    border-color: hsl(var(--border));
+  }
+  & {
+    margin: 0;
+    background: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-geist-sans), sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  p {
+    margin: 0;
+  }
+  h1 {
+    font-size: clamp(1.875rem, 3cqi, 2.25rem);
+    font-weight: 650;
+    letter-spacing: -0.035em;
+    line-height: 1.12;
+  }
+  h2 {
+    font-size: 1.125rem;
+    font-weight: 650;
+    line-height: 1.12;
+  }
+  h3 {
+    font-size: 1rem;
+    font-weight: 650;
+    line-height: 1.12;
+  }
+  p {
+    line-height: 1.6;
+    max-width: 70ch;
+  }
+}

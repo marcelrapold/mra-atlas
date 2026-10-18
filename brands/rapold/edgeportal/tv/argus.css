@@ -1,0 +1,44 @@
+/* Ist-Stand des EdgePortal-TVs, übernommen aus marcelrapold/mra-edgeportal @ e46563c (18.10.2026): app/globals.css,
+   Zeilen 653–672 (Argus-Kamerakarte) und Zeile 622 (.argus-orbit, die der leere Zustand der Karte nutzt).
+   Atlas hält diese Kopie als Referenz, damit der TV-Stand reproduzierbar bleibt. Für den Rahmen angepasst, nur zur Abgrenzung:
+   - Im Produkt gelten die Regeln global. Hier stehen sie unverändert in einem Block :where(.ep-tv-screen) { … } (CSS-Nesting),
+     gelten also nur im virtuellen TV und nicht in den Atlas-Docs. :where() hat Spezifität 0, die Bühnenhaut in stage.css
+     (.stage-argus .argus-…) gewinnt deshalb wie im Produkt.
+   - Die Regeln lesen Screen-Tokens aus globals.css :root («Screens are always dark», modusunabhängig; .dark überschreibt
+     sie nicht). Die sechs benötigten Tokens stehen mit den Werten aus :root auf demselben Rahmen.
+   Sonst unverändert. Nicht von Hand angleichen: Änderungen kommen aus dem Produkt und werden hier mit Commit nachgeführt. */
+
+:where(.ep-tv-screen) {
+/* Tokens aus globals.css :root */
+--screen-bg: #050B19;
+--screen-line: #23334A;
+--screen-muted: #9AADC7;
+--screen-warning: #FBBF24;
+--screen-ink: #10253D;
+--screen-success: #34D399;
+
+/* globals.css Zeile 622 */
+.argus-orbit { display: grid; place-items: center; border: 1px solid var(--screen-line); border-radius: 50%; width: 9cqw; height: 9cqw; min-width: 72px; min-height: 72px; margin-bottom: 24px; color: var(--screen-muted); }
+
+/* globals.css Zeilen 653–672 */
+/* Argus camera card (operations dashboard and stage) */
+.argus-panel { display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+.argus-panel.argus-empty { justify-content: center; }
+.argus-frame { position: relative; overflow: hidden; border-radius: 14px; aspect-ratio: 16 / 9; background: var(--screen-bg); border: 1px solid var(--screen-line);
+  display: grid; place-items: center; color: var(--screen-muted); font-size: 14px; }
+.argus-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.argus-frame em { position: absolute; right: 10px; top: 10px; font-style: normal; font-size: 12px; padding: 2px 8px; border-radius: 999px;
+  background: var(--screen-warning); color: var(--screen-ink); }
+.argus-panel[data-motion="true"] .argus-frame { border-color: var(--screen-warning); outline: 1px solid var(--screen-warning); }
+.argus-meta { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; color: var(--screen-muted); font-size: 14px; }
+.argus-cam, .argus-motion { display: inline-flex; align-items: center; gap: 8px; }
+.argus-motion svg { width: 16px; height: 16px; }
+.argus-motion[data-on="true"] { color: var(--screen-warning); }
+.argus-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--screen-muted); }
+.argus-dot[data-on="true"] { background: var(--screen-success); }
+.argus-events { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 14px; color: var(--screen-muted); }
+.argus-events li { display: grid; grid-template-columns: 18px 1fr auto; align-items: center; gap: 10px; }
+.argus-events svg { width: 16px; height: 16px; color: var(--screen-muted); }
+.argus-events time { color: var(--screen-muted); font-variant-numeric: tabular-nums; }
+.argus-note { color: var(--screen-muted); }
+}

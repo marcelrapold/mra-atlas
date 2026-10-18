@@ -1,123 +1,32 @@
 'use client';
 
-import {Fragment, useEffect, useRef, useState, type CSSProperties, type ReactNode} from 'react';
-import {Clapperboard, EyeOff, OctagonX, Radio, ScanFace, Tv, Volume2, VolumeX} from 'lucide-react';
-import identity from '../../../../brands/rapold/identity.json';
+import {Fragment} from 'react';
 import ci from '../../../../brands/rapold/edgeportal/edgeportal.json';
+import catalog from '../../../../brands/rapold/edgeportal/views.json';
 // Der TV-Stand kommt als Kopie aus dem Produkt (brands/rapold/edgeportal/tv), geladen mit der Brand-Seite.
+import '../../../../brands/rapold/edgeportal/tv/base.css';
 import '../../../../brands/rapold/edgeportal/tv/stage.css';
 import '../../../../brands/rapold/edgeportal/tv/presence.css';
 import '../../../../brands/rapold/edgeportal/tv/screen-nav.css';
 import '../../../../brands/rapold/edgeportal/tv/tv-power.css';
 import '../../../../brands/rapold/edgeportal/edgeportal.css';
+import {signet, ViewFigure, type ViewEntry} from './edgeportal/shared';
+import {coreViews} from './edgeportal/core';
+import {stageStateViews} from './edgeportal/stage-states';
+import {presenceViews} from './edgeportal/presence';
+import {powerViews} from './edgeportal/power';
+import {modesViews} from './edgeportal/modes';
+import {radioxViews} from './edgeportal/radiox';
+import {overlayViews} from './edgeportal/overlays';
+import {contentViews} from './edgeportal/content';
 
-type Level = 'bereit' | 'arbeitet' | 'frage' | 'dialog' | 'haengt' | 'aus';
-type DemoAgent = {name: string; color: string; role: string; level: Level; since: string; model: string; fallback?: string; autonomy: 'fragt' | 'meldet' | 'voll'};
-const base = identity.publicBase;
-const signet = (id: string) => base + (identity.products.find(product => product.id === id)?.variants.dark ?? '');
-const level = Object.fromEntries(ci.tv.states.agent.map(state => [state.id, state])) as unknown as Record<Level, {word: string; shape: string}>;
-const css = (vars: Record<string, string | number>) => vars as CSSProperties;
-
-// Platzhalter-Porträt: eine Büste in Agentfarbe. Die echten Kino-Porträts kommen aus dem Agents-System und sind nicht Teil von Atlas.
-const portrait = (color: string) => 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800"><defs><radialGradient id="g" cx="50%" cy="34%" r="70%"><stop offset="0" stop-color="#142741"/><stop offset="1" stop-color="#02060F"/></radialGradient><linearGradient id="r" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${color}" stop-opacity=".05"/><stop offset="1" stop-color="${color}" stop-opacity=".7"/></linearGradient></defs><rect width="600" height="800" fill="url(#g)"/><path d="M300 150c-72 0-122 60-122 146 0 66 31 121 72 144v40c-96 20-178 76-206 168v152h512V648c-28-92-110-148-206-168v-40c41-23 72-78 72-144 0-86-50-146-122-146z" fill="#0B1528" stroke="url(#r)" stroke-width="5"/><path d="M214 278c26-18 60-26 86-26s60 8 86 26" fill="none" stroke="${color}" stroke-opacity=".45" stroke-width="10" stroke-linecap="round"/></svg>`);
-
-const AEON: DemoAgent = {name: 'ÆON', color: '#009DFF', role: 'AI-Operator', level: 'bereit', since: 'seit 4 h 20 min', model: 'gemma4 31b', fallback: 'Einstellung', autonomy: 'voll'};
-const AETHRA: DemoAgent = {name: 'ÆTHRA', color: '#7C5CFF', role: 'AI-Operatorin', level: 'bereit', since: 'seit 4 h 15 min', model: 'gemma4 31b', fallback: 'Einstellung', autonomy: 'voll'};
-
-function Poster({agent}: {agent: DemoAgent}) {
-  const waiting = agent.level === 'frage' || agent.level === 'dialog';
-  return <article className="stage-agent is-poster" data-level={agent.level} data-speaking="false" data-compact="false" style={css({'--agent': agent.color})}>
-    <div className="stage-agent-head">
-      <div className="stage-avatar is-poster" data-level={agent.level} data-speaking="false" data-kind="kino" style={css({'--agent': agent.color})}>
-        <span className="stage-avatar-ring" aria-hidden="true"/>
-        <div className="stage-avatar-media"><div className="stage-avatar-layer is-top"><img src={portrait(agent.color)} alt=""/></div></div>
-      </div>
-      <div className="stage-agent-id">
-        <h2>{agent.name}</h2>
-        <div className="stage-model"><span className="stage-model-name">{agent.model}</span>{agent.fallback && <span className="stage-model-fallback">Ersatz<span> · {agent.fallback}</span></span>}</div>
-        <p>{agent.role}</p>
-        <span className="stage-state" data-level={agent.level}><span className="stage-state-form" aria-hidden="true">{level[agent.level].shape}</span><span>{level[agent.level].word}</span><span className="stage-state-since">{agent.since}</span></span>
-        <div className="stage-autonomy" data-level={agent.autonomy}><span className="stage-autonomy-level" aria-hidden="true">{agent.autonomy}</span></div>
-      </div>
-    </div>
-    {waiting && <p className="stage-agent-flag" data-level={agent.level}>{agent.level === 'dialog' ? 'Braucht dich' : 'Frage an dich'}</p>}
-  </article>;
-}
-
-function Stage({agents, guest = false, attention, children}: {agents: DemoAgent[]; guest?: boolean; attention?: DemoAgent; children?: ReactNode}) {
-  return <section className="stage ambience-aurora radio-leiste" data-preview="false" data-attention={attention ? 'true' : 'false'} data-lowpower="false" data-mode="dark" data-motion="full" data-overscan="false" data-agents="true"
-    style={css({'--accent': '#38B8FF', '--agent-a': agents[0].color, '--agent-b': agents[1]?.color ?? '#38B8FF', '--overscan': 0})}>
-    <div className="stage-ambience" aria-hidden="true"><span/><span/><span/></div>
-    <header className="stage-header">
-      <div className="stage-brand">
-        <img className="signet" src={signet('edgeportal')} width={48} height={48} alt=""/>
-        <div><span className="stage-eyebrow">Agents · Home</span><strong>AI Fabric<span className="stage-glut" aria-hidden="true">◆</span></strong></div>
-      </div>
-      {attention && <div className="stage-attention" role="alert"><span data-level={attention.level} style={css({'--agent': attention.color})}><span className="stage-attention-form" aria-hidden="true">{level[attention.level].shape}</span><strong>{attention.name}</strong> {attention.level === 'dialog' ? 'braucht dich' : 'hat eine Frage'}</span></div>}
-      <div className="stage-status">
-        <span className="stage-voice"><Volume2 aria-hidden="true"/>Stimme an</span>
-        <time className="stage-clock"><strong>21:18</strong><span>Sonntag, 18. Oktober</span></time>
-      </div>
-    </header>
-    <div className="stage-body">
-      <div className="stage-agents view-buehne" data-count={agents.length} style={css({'--count': agents.length})}>{agents.map(agent => <Poster key={agent.name} agent={agent}/>)}</div>
-      <section className="stage-radio placement-leiste" data-state="live" aria-label="RadioX">
-        <div className="stage-radio-cover"><Radio aria-hidden="true"/></div>
-        <div className="stage-radio-main">
-          <div className="stage-radio-kicker"><span className="stage-eyebrow">RadioX · 2026</span><span className="stage-live"><span className="stage-live-dot" aria-hidden="true"/>Live</span></div>
-          <h3>Midnight Signal (Extended Mix)</h3>
-          <p className="stage-radio-artist">Glass Harbour</p>
-          <div className="stage-radio-progress" aria-hidden="true"><span style={{transform: 'scaleX(.9)'}}/><small>3:54</small><small>4:20</small></div>
-          <div className="stage-radio-meta"><span>Danach: <strong>Northern Lights</strong> · Tidewater</span><span>On Air: <strong>ÆON</strong></span></div>
-        </div>
-        <div className="stage-radio-stream" data-state="aus" title="Stream"><VolumeX aria-hidden="true"/><span>Stream auf dem Screen</span></div>
-      </section>
-    </div>
-    {guest && <div className="presence-dock" aria-label="Anwesenheit"><span className="presence-badge" data-kind="private"><EyeOff aria-hidden="true"/>Gast im Raum · Privates ausgeblendet</span></div>}
-    <span className="presence-camera"><ScanFace aria-hidden="true"/>Kamera mit Gesichtserkennung aktiv</span>
-    {children}
-  </section>;
-}
-
-// Virtueller TV in Originalauflösung, als Ganzes auf die Rahmenbreite verkleinert.
-const TV_WIDTH = 3840;
-function Frame({label, caption, wide = false, children}: {label: string; caption: ReactNode; wide?: boolean; children: ReactNode}) {
-  const frame = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(wide ? 1200 / TV_WIDTH : 600 / TV_WIDTH);
-  useEffect(() => {
-    const element = frame.current;
-    if (!element) return;
-    const observer = new ResizeObserver(([entry]) => setScale(entry.contentRect.width / TV_WIDTH));
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, []);
-  return <figure className={`ep-ci-figure${wide ? ' ep-ci-wide' : ''}`}>
-    <div className="ep-tv-frame" ref={frame} role="img" aria-label={label}><div className="ep-tv-screen" style={{transform: `scale(${scale})`}}>{children}</div></div>
-    <figcaption>{caption}</figcaption>
-  </figure>;
-}
-
-const launcherTiles = [
-  {kind: 'buehne', icon: Tv, eyebrow: 'Start', title: 'Bühne', status: 'Zuletzt hier · Konfigurierte Ansicht', focused: true, current: true},
-  {kind: 'radiox', icon: Radio, eyebrow: 'Radio', title: 'RadioX', status: 'Live-Radio im Vollbild'},
-  {kind: 'szene', icon: Clapperboard, eyebrow: 'Szene', title: 'Abend mit Radio', status: ''},
-  {kind: 'notbremse', icon: OctagonX, eyebrow: 'Agents', title: 'Notbremse', status: 'Alle Agents sofort anhalten · OK zweimal'},
-];
-
-function Launcher() {
-  return <div className="nav-layer"><section className="nav-overview" aria-label="Übersicht">
-    <header className="nav-head"><span className="nav-eyebrow">EdgePortal · Übersicht</span><h1>Übersicht<span className="nav-glut" aria-hidden="true">◆</span></h1></header>
-    <div className="nav-grid" style={css({'--cols': 4})} role="list">{launcherTiles.map((tile, index) => {
-      const Icon = tile.icon;
-      return <div role="listitem" key={tile.kind}><span className="nav-tile" data-focused={tile.focused ? 'true' : 'false'} data-kind={tile.kind} aria-current={tile.current ? 'page' : undefined}>
-        <span className="nav-thumb"><span className="nav-thumb-icon"><Icon aria-hidden="true" strokeWidth={1.5}/></span></span>
-        <span className="nav-tile-text"><span className="nav-eyebrow">{index + 1} · {tile.eyebrow}</span><strong>{tile.title}</strong><span className="nav-status">{tile.status}</span></span>
-      </span></div>;
-    })}</div>
-    <p className="nav-keys">◀ ▶ ▲ ▼ wählen · OK öffnen · Zurück: «Bühne» · 0: Start</p>
-  </section></div>;
-}
+// Jede Gruppe liefert Ansichten mit Markup; Titel, Bereich, Auslöser und Quelle kommen aus views.json.
+const views = new Map<string, ViewEntry>([...coreViews, ...stageStateViews, ...modesViews, ...presenceViews, ...overlayViews, ...radioxViews, ...powerViews, ...contentViews].map(view => [view.id, view]));
+type Item = (typeof catalog.items)[number] & {reason?: string};
+const items: Item[] = catalog.items;
+const built = items.filter(item => item.status === 'nachgebaut');
+const documented = items.filter(item => item.status === 'dokumentiert');
+const inArea = (area: string) => items.filter(item => item.area === area);
 
 const swatch = (name: string, value: string) => <li key={name}><i style={{background: value}}/><span>--{name}<code>{value}</code></span></li>;
 
@@ -129,22 +38,36 @@ export default function RapoldEdgePortal() {
     <p>{t.rule} Quelle: {ci.reference.repository}, Commit <code>{ci.reference.commit}</code>; die Stylesheets liegen als Kopie in <code>{ci.reference.copies}</code>. {ci.privacy}</p>
     <div className="ep-ci-principles">{ci.principles.map(principle => <div key={principle.id}><h3>{principle.name}</h3><p>{principle.rule}</p></div>)}</div>
 
-    <h3 className="ep-ci-h">Am TV<span>{t.status}</span></h3>
-    <p className="ep-ci-lead">Gebaut aus dem echten Markup und den kopierten Stylesheets. Jeder Rahmen ist ein virtueller Fernseher mit 3840 × 2160 Pixeln, als Ganzes verkleinert. Porträts sind Platzhalter, Namen und Titel Beispiele.</p>
-    <div className="ep-ci-gallery">
-      <Frame wide label="Bühne mit zwei Agents, Gast im Raum, RadioX als Leiste" caption={<><strong>Bühne</strong> · Gast im Raum. So steht der Wohnzimmer-Screen heute da: Poster-Karten, RadioX-Leiste, Präsenz oben, Kamerahinweis unten.</>}>
-        <Stage agents={[AEON, AETHRA]} guest/>
-      </Frame>
-      <Frame label="Bühne mit einer Frage an dich" caption={<><strong>Bühne</strong> · Aufmerksamkeit: Tonrahmen, Hinweis in der Kopfzeile und Wort, ohne Pulsieren.</>}>
-        <Stage agents={[{...AEON, level: 'arbeitet', since: 'seit 12 min', fallback: undefined, autonomy: 'meldet'}, {...AETHRA, level: 'frage', since: 'seit 2 min', fallback: undefined}]} attention={{...AETHRA, level: 'frage'}}/>
-      </Frame>
-      <Frame label="Übersicht mit vier Kacheln" caption={<><strong>Übersicht</strong> · Zurück-Taste. Die Notbremse braucht zweimal OK.</>}>
-        <Launcher/>
-      </Frame>
-      <Frame label="TV an: Grussformel über der Bühne" caption={<><strong>TV an</strong> · {t.greetings.timing}</>}>
-        <Stage agents={[AEON, AETHRA]}><div className="tv-power" data-phase="message" data-action="an"><div className="tv-power-black"/><p className="tv-power-message">Guten Abend</p></div></Stage>
-      </Frame>
-    </div>
+    <h3 className="ep-ci-h">Am TV<span>{t.status} · {built.length} Ansichten nachgebaut{documented.length ? `, ${documented.length} dokumentiert` : ''}</span></h3>
+    <p className="ep-ci-lead">Gebaut aus dem echten Markup und den kopierten Stylesheets. Jeder Rahmen ist ein virtueller Fernseher mit 3840 × 2160 Pixeln, als Ganzes verkleinert. Porträts, Cover und Szenenbilder sind Platzhalter, Namen und Titel Beispiele.</p>
+    <nav className="ep-ci-areas" aria-label="Bereiche am TV">{catalog.areas.map(area => {
+      const count = inArea(area.id).length;
+      return count ? <a key={area.id} href={`#ep-area-${area.id}`}>{area.name}<span>{count}</span></a> : null;
+    })}</nav>
+    <details className="ep-ci-note">
+      <summary>Abdeckung: alle Ansichten mit Auslöser und Quelle</summary>
+      <p>{catalog.rule}</p>
+      <div className="ep-ci-scroll"><table className="ep-ci-table ep-ci-coverage">
+        <thead><tr><th scope="col">Ansicht</th><th scope="col">Auslöser</th><th scope="col">Quelle</th><th scope="col">Stand</th></tr></thead>
+        <tbody>{catalog.areas.map(area => <Fragment key={area.id}>{inArea(area.id).map(item => <tr key={item.id}>
+          <td>{item.status === 'nachgebaut' ? <a href={`#ep-view-${item.id}`}>{item.title}</a> : item.title}<small>{area.name}</small></td>
+          <td>{item.trigger}{item.reason && <small>{item.reason}</small>}</td><td><code>{item.source}</code></td><td>{item.status}</td>
+        </tr>)}</Fragment>)}</tbody>
+      </table></div>
+    </details>
+    {catalog.areas.map(area => {
+      const list = inArea(area.id);
+      if (!list.length) return null;
+      const rest = list.filter(item => item.status === 'dokumentiert');
+      return <section className="ep-ci-area" id={`ep-area-${area.id}`} key={area.id} aria-labelledby={`ep-area-${area.id}-title`}>
+        <h4 className="ep-ci-h" id={`ep-area-${area.id}-title`}>{area.name}<span>{area.note}</span></h4>
+        <div className="ep-ci-gallery">{list.map(item => {
+          const view = item.status === 'nachgebaut' ? views.get(item.id) : undefined;
+          return view ? <ViewFigure key={item.id} view={{...view, title: item.title}}/> : null;
+        })}</div>
+        {rest.length > 0 && <ul className="ep-ci-documented">{rest.map(item => <li key={item.id}><strong>{item.title}</strong> · {item.trigger}{item.reason ? `. ${item.reason}` : ''}</li>)}</ul>}
+      </section>;
+    })}
 
     <h3 className="ep-ci-h">Werte am TV<span>aus {ci.reference.files[0]}</span></h3>
     <div className="ep-ci-facts">
