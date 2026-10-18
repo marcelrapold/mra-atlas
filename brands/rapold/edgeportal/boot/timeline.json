@@ -1,0 +1,265 @@
+{
+  "schemaVersion": 1,
+  "id": "edgeportal-boot",
+  "status": "boot-kit",
+  "statusNote": "Boot-Kit in Atlas, ändert nichts an den Pis.",
+  "version": 5,
+  "source": "Prototyp EdgePortal-Bootsequenz, Fassung 5 (18.10.2026), von Marcel Rapold freigegeben",
+  "rules": {
+    "dna": "brands/rapold-io/DESIGN-DNA.md §4.3, §7.1, §9, §10 (Abweichung A1)",
+    "values": "brands/rapold-io/dna.json glow.corona, motion.systemStart, deviations"
+  },
+  "scene": {
+    "viewBox": [1600, 900],
+    "markTransform": "translate(800 440) scale(1.9) translate(-128 -128)",
+    "markHeightUnits": 200.296,
+    "signetTransform": "translate(800 430) scale(1.1) translate(-128 -121.7)",
+    "fugeAxisDeg": -27.9,
+    "fugeCenter": [800, 430],
+    "ridgeFoot": [785.362, 418.044],
+    "ridgeLength": 175.64
+  },
+  "gate": {
+    "startSignal": "cec-on",
+    "startFallbackMs": 6000,
+    "note": "Die Zeitachse startet erst, wenn der TV per CEC «on» meldet; vorher hält das Ruhebild. Fallback 6 s."
+  },
+  "easings": {
+    "fold": [0.2, 0.7, 0.2, 1],
+    "inOut": [0.45, 0, 0.55, 1],
+    "tip": [0.45, 0, 0.2, 1],
+    "lap": [0.4, 0, 0.3, 1],
+    "smoothstep": "x * x * (3 - 2 * x)",
+    "linear": "x"
+  },
+  "clock": {
+    "inDur": 1000,
+    "fold": 1200,
+    "foldDur": 900,
+    "ignite": 1760,
+    "igniteDur": 240,
+    "halo": 1880,
+    "haloDur": 400,
+    "apex": 1960,
+    "apexDur": 600,
+    "base": 1900,
+    "baseDur": 900,
+    "bloomInDur": 1600,
+    "lap": 2040,
+    "lapDur": 2400,
+    "hist": 420,
+    "dock": 4440,
+    "flareUp": 180,
+    "flareDown": 740,
+    "handoff": 4940,
+    "lightsOutDur": 900,
+    "gapClose": 5390,
+    "gapCloseDur": 250,
+    "take": 5640,
+    "tipDur": 1100,
+    "cool": 6140,
+    "coolDur": 600,
+    "kiosk": 6740,
+    "firstHide": 7140,
+    "ridgeFade": 9140,
+    "ridgeFadeDur": 400,
+    "end": 9640,
+    "plateIn": 200,
+    "plateInDur": 500,
+    "plateOut": 2260,
+    "plateOutDur": 900,
+    "legSparkUp": 90,
+    "legSparkDown": 530
+  },
+  "phases": [
+    { "id": "fade-in", "track": "mark", "startMs": 0, "endMs": 1000, "easing": "inOut", "draws": "Das flache R blendet auf Navy ein, dahinter der Azure-Bloom." },
+    { "id": "bloom-in", "track": null, "startMs": 0, "endMs": 1600, "easing": "inOut", "draws": "Azure-Bloom steigt auf 0,85." },
+    { "id": "plate", "track": null, "startMs": 200, "endMs": 3160, "easing": "linear", "draws": "Konstruktionsplatte aus DNA 3.1, nur Hacker Level 5 (Ghost), nur während der Faltung." },
+    { "id": "fold", "track": "mark", "startMs": 1200, "endMs": 2100, "easing": "fold", "draws": "Faltung um den Grat; Steigung linear interpoliert, die Ice-Facette blendet mit der Drehung ein (smoothstep)." },
+    { "id": "ignite", "track": "ridge", "startMs": 1760, "endMs": 2000, "easing": "fold", "draws": "Der First zündet als ein Strich vom Apex abwärts, das Fenster wird übersprungen." },
+    { "id": "halo", "track": null, "startMs": 1880, "endMs": 2280, "easing": "inOut", "draws": "Firstlicht-Halo steigt ohne Überschwinger auf 0,8." },
+    { "id": "base", "track": null, "startMs": 1900, "endMs": 2800, "easing": "inOut", "draws": "Korona-Grundschein breitet sich vom Apex aus (Maske r 20 bis 320 E)." },
+    { "id": "apex", "track": null, "startMs": 1960, "endMs": 2560, "easing": "inOut", "draws": "Apex-Halo r 62 E über dem First, additiv." },
+    { "id": "lap", "track": "spark", "startMs": 2040, "endMs": 4440, "easing": "lap", "draws": "Ein Funke läuft genau eine Runde im Uhrzeigersinn ab dem Apex; Schweif = Weg der letzten 420 ms. Ab der Ecke beim Bein läuft ein Ice-Ast mit gleicher Geschwindigkeit ins freie Bein." },
+    { "id": "homecoming", "track": "spark", "startMs": 4440, "endMs": 5360, "easing": "linear", "draws": "Heimkehr: Der Funke mündet in den Grat, der First glüht 180 ms auf und 740 ms ab." },
+    { "id": "lights-out", "track": "mark", "startMs": 4940, "endMs": 5840, "easing": "inOut", "draws": "Lichter aus; Ebenen, Apex-Halo und Grundschein blenden aus, der Bloom sinkt auf 0,40." },
+    { "id": "gap-close", "track": "ridge", "startMs": 5390, "endMs": 5640, "easing": "linear", "draws": "Der Grat schliesst sich über dem Fenster." },
+    { "id": "ridgeline", "track": "ridge", "startMs": 5640, "endMs": 6740, "easing": "tip", "draws": "Der Grat kippt um seinen Fuss um 62,1° im Uhrzeigersinn auf die Fugenachse (−27,9°)." },
+    { "id": "cool", "track": null, "startMs": 6140, "endMs": 6740, "easing": "linear", "draws": "Die Ridgeline kühlt von Firstglut zu Ice ab. Danach gehört die Linie dem Produkt." },
+    { "id": "ridge-fade", "track": "ridge", "startMs": 9140, "endMs": 9540, "easing": "linear", "draws": "Die Ice-Ridgeline blendet aus, die EdgePortal-Fuge bleibt." }
+  ],
+  "beatMs": 1200,
+  "signals": [
+    { "id": "cec-on", "source": "Der TV meldet per CEC «on». Startet die Zeitachse (t = 0)." },
+    { "id": "kiosk", "source": "Chromium übernimmt das Bild, ohne Schnitt nach dem Plymouth-Ruhebild." },
+    { "id": "bootstrap", "source": "Die lokale Bootstrap-Seite antwortet, auch offline." },
+    { "id": "network", "source": "NetworkManager meldet eine Verbindung (ok) oder keinen Träger (fail).", "values": ["ok", "fail"] },
+    { "id": "portal", "source": "Der EdgePortal-Server antwortet auf den Health-Check." },
+    { "id": "pairing", "source": "Der Geräteschlüssel gilt (paired), sonst folgt der Claim per QR (claim).", "values": ["paired", "claim"] },
+    { "id": "handoff", "source": "Agents Home übernimmt mit Slow Wake wie bei TV Wake." }
+  ],
+  "stages": [
+    { "index": 0, "id": "boot", "label": "Boot", "signal": "cec-on", "draws": "Plymouth zeigt rapold.io: Das R faltet sich, der First zündet, ein Funke umläuft das Haus und kehrt heim." },
+    { "index": 1, "id": "kiosk", "label": "Kiosk", "signal": "kiosk", "notBeforeMs": 6740, "class": "s1", "logKey": "kiosk", "draws": "Navy, Statuszeile, Azure-Punkt am Fugenanfang." },
+    { "index": 2, "id": "bootstrap", "label": "Bootstrap", "signal": "bootstrap", "class": "s2", "logKey": "local", "draws": "Die Fuge wächst vom Punkt bis zur Mitte (Segment A)." },
+    { "index": 3, "id": "network", "label": "Uplink", "signal": "network", "class": "s3", "logKey": "net", "failLogKey": "nonet", "failClass": "offline", "draws": "Die Fuge läuft weiter (Segment B), die Azure-Fläche gleitet entlang der Fugenachse heran. Bei fail: graue Silhouette, Fuge bricht, Diagnosehinweis." },
+    { "index": 4, "id": "portal", "label": "Portal", "signal": "portal", "class": "s4", "logKey": "portal", "draws": "Die Ice-Fläche gleitet heran, der Azure-Schein kommt erst jetzt." },
+    { "index": 5, "id": "pairing", "label": "Pairing", "signal": "pairing", "class": "s5", "logKey": { "paired": "paired", "claim": "claim" }, "subKey": { "paired": "home", "claim": "fresh" }, "valueClass": { "claim": "pair" }, "draws": "Wortmarke EdgePortal mit Endorsement «Ein System von rapold.io». Bei claim: Signet rückt nach links, QR-Tafel mit Code und Restzeit." },
+    { "index": 6, "id": "handoff", "label": "Handoff", "signal": "handoff", "requires": { "pairing": "paired" }, "class": "s6", "logKey": "handoff", "draws": "Das Signet wandert in die Ecke, Agents Home übernimmt mit Slow Wake." }
+  ],
+  "gating": {
+    "order": "strict",
+    "minHoldMs": 400,
+    "note": "Jede Stufe erscheint erst, wenn ihr Signal wirklich bereit ist, und hält mindestens 400 ms, auch wenn die Signale schneller kommen. Stufe 1 erscheint nie vor dem Kiosk-Punkt der Zeitachse (6740 ms)."
+  },
+  "scenarios": {
+    "normaler-start": {
+      "label": "Normaler Start",
+      "aliases": ["normal"],
+      "signals": [
+        { "signal": "kiosk", "atMs": 6740 },
+        { "signal": "bootstrap", "atMs": 7940 },
+        { "signal": "network", "value": "ok", "atMs": 9140 },
+        { "signal": "portal", "atMs": 10340 },
+        { "signal": "pairing", "value": "paired", "atMs": 11540 },
+        { "signal": "handoff", "atMs": 13940 }
+      ],
+      "staticEndStage": "pairing"
+    },
+    "erststart-claim": {
+      "label": "Erststart mit Claim",
+      "aliases": ["pair", "erststart"],
+      "signals": [
+        { "signal": "kiosk", "atMs": 6740 },
+        { "signal": "bootstrap", "atMs": 7940 },
+        { "signal": "network", "value": "ok", "atMs": 9140 },
+        { "signal": "portal", "atMs": 10340 },
+        { "signal": "pairing", "value": "claim", "atMs": 11540 }
+      ],
+      "staticEndStage": "pairing",
+      "claim": { "codes": ["3F9A2C", "B71E04", "5D0C93"], "ttlS": 300 }
+    },
+    "netz-fehlt": {
+      "label": "Netz fehlt",
+      "aliases": ["offline"],
+      "signals": [
+        { "signal": "kiosk", "atMs": 6740 },
+        { "signal": "bootstrap", "atMs": 7940 },
+        { "signal": "network", "value": "fail", "atMs": 9140 }
+      ],
+      "staticEndStage": "network",
+      "diagnostic": { "afterFailMs": 1800, "logKey": "diag" },
+      "recover": {
+        "label": "Netz kommt zurück",
+        "signals": [
+          { "signal": "network", "value": "ok", "afterMs": 0 },
+          { "signal": "portal", "afterMs": 1000 },
+          { "signal": "pairing", "value": "paired", "afterMs": 2100 },
+          { "signal": "handoff", "afterMs": 4400 }
+        ]
+      }
+    }
+  },
+  "defaultScenario": "normaler-start",
+  "levels": [
+    { "level": 1, "name": "Calm", "maxLines": 2 },
+    { "level": 2, "name": "Shell", "maxLines": 3 },
+    { "level": 3, "name": "Syslog", "maxLines": 6 },
+    { "level": 4, "name": "Uplink", "maxLines": 7 },
+    { "level": 5, "name": "Ghost", "maxLines": 8 }
+  ],
+  "defaultLevel": 2,
+  "texts": {
+    "note": "Wortlaut aus Fassung 5. Jede Logzeile entspricht einem echten Signal; der Hacker Level ändert nur den Ton. Namen, Codes, Zeitstempel und QR sind Beispiele. Index 0 bis 4 = Level 1 bis 5; null = keine Zeile. Level 4 trennt Signal und Ergebnis mit «|».",
+    "wordmark": "EdgePortal",
+    "endorsement": "Ein System von",
+    "log": {
+      "boot": [null, "[ .. ] boot · rapold.io", "plymouth: splash rapold.io", "rapold.io :: boot|..", "RAPOLD.IO :: SPLASH ... LOADING"],
+      "bootok": [null, "[ ok ] boot · rapold.io", "systemd[1]: reached graphical.target", "rapold.io :: boot|ok", "RAPOLD.IO :: BOOT SEQUENCE ... ENGAGED"],
+      "kiosk": ["01 / 05 · Kiosk online", "[ ok ] kiosk online", "edgeportal-kiosk.service: started", "spawn kiosk|ok", "SPAWN edgeportal-kiosk ... [ OK ]"],
+      "local": ["02 / 05 · Bootstrap bereit", "[ ok ] bootstrap bereit", "bootstrap: 127.0.0.1:8091 ready", "local node 127.0.0.1:8091|up", "LOCAL NODE 127.0.0.1:8091 ... ONLINE"],
+      "net": ["03 / 05 · Uplink steht", "[ ok ] uplink steht", "NetworkManager: wlan0 connected", "uplink wlan0|established", "UPLINK wlan0 ... ESTABLISHED"],
+      "portal": ["04 / 05 · Portal erreichbar", "[ ok ] portal erreichbar", "portal: GET /health 200", "handshake portal|200 OK", "HANDSHAKE edgeportal.rapold.io ... 200 OK"],
+      "paired": ["05 / 05 · Pairing bestätigt", "[ ok ] pairing bestätigt", "device: key valid · paired", "device key|verified", "DEVICE KEY VERIFIED · ACCESS GRANTED"],
+      "claim": ["05 / 05 · Wartet auf Claim", "[ .. ] wartet auf claim", "adoption: code 3F9A2C · ttl 300s", "awaiting claim|code 3F9A2C", "AWAITING CLAIM · CODE 3F9A2C · TTL 300S"],
+      "handoff": ["06 · Handoff an Agents Home", "[ ok ] handoff → agents home", "home: handoff · slow wake 12s/20s", "handoff home|slow wake 12s", "HANDOFF → AGENTS HOME ... WAKE 12S"],
+      "nonet": ["03 / 05 · Kein Uplink. Der Screen versucht es weiter.", "[fail] kein uplink · neuer versuch in 5 s", "NetworkManager: wlan0 no carrier · retry 5s", "uplink wlan0|FAILED · retry 5s", "UPLINK wlan0 ... NO CARRIER · RETRY IN 5S"],
+      "diag": ["Nach 90 s: Diagnose in edgeportal-setup.log auf der SD-Karte", "[info] diagnose: edgeportal-setup.log auf der sd-karte", "diag: edgeportal-setup.log on /boot/firmware", "diag|edgeportal-setup.log (sd)", "DIAG → edgeportal-setup.log (SD)"]
+    },
+    "sub": {
+      "home": ["Wohnzimmer · paired", "wohnzimmer · paired", "node wohnzimmer · paired", "node://wohnzimmer · paired", "NODE WOHNZIMMER · ACCESS GRANTED"],
+      "fresh": ["New Screen · edgeportal-3f9a2c41b7d0", "new screen · edgeportal-3f9a2c41b7d0", "node edgeportal-3f9a2c41b7d0 · unclaimed", "node://edgeportal-3f9a2c41b7d0 · unclaimed", "NODE EDGEPORTAL-3F9A2C41B7D0 · UNCLAIMED"]
+    },
+    "claimPrompt": ["Dein Screen. Ein Scan entfernt.", "Dein Screen. Ein Scan entfernt.", "Scannen. Übernehmen. Fertig.", "Scan to claim this node.", "SCAN TO CLAIM THIS NODE"],
+    "claimCode": "Code {code}",
+    "claimValidity": "gültig {m}:{ss} · danach neuer Code",
+    "handoff": [
+      ["Handoff an Agents Home", "Slow Wake · Bild 12 s · Ton 20 s"],
+      ["handoff → agents home", "> slow wake · bild 12 s · ton 20 s"],
+      ["Handoff → Agents Home", "home.wake(video=12s, audio=20s)"],
+      ["handoff → agents home", "slow wake .... video 12s · audio 20s"],
+      ["HANDOFF → AGENTS HOME", "SLOW WAKE // VIDEO 12S // AUDIO 20S"]
+    ],
+    "annotations": {
+      "note": "Echte Konstruktionswerte, nur Level 3 (Grat) und 4 bis 5 (alle), nur bis zum Lichter-aus, daneben und nie auf dem Zeichen.",
+      "grat": "GRAT · x 120,296",
+      "top": "197,333 / 62,519",
+      "foot": "43,259 / 224,296",
+      "leg": "212,741 / 232"
+    }
+  },
+  "diagnostic": {
+    "scenario": "netz-fehlt",
+    "logKey": "diag",
+    "signet": "Das Signet bleibt als graue Silhouette stehen (Ghost-Ebene 0,7 in --line); die Marke ist sichtbar, das Licht fehlt.",
+    "fuge": "Die Fuge bricht: Segment A wird zur grauen Linie, ein gestrichelter Stummel zeigt den fehlenden Abschnitt.",
+    "text": "texts.log.diag"
+  },
+  "staticEndState": {
+    "note": "Reduzierte Bewegung, Plymouth ohne Animation (edgeportal/first = static, Pi 3) und ?still=end zeigen den statischen Endzustand ohne Bewegung.",
+    "plymouth": "Gefaltetes R mit ruhendem Firstlicht, ohne Korona und ohne Ridgeline; steht mindestens 2 s, danach Schnitt.",
+    "plymouthMinHoldMs": 2000,
+    "kiosk": "Endbild der Stufe staticEndStage des Szenarios, ohne Handoff.",
+    "restImageMs": 6740,
+    "restImageNote": "Das Plymouth-Ruhebild ist das Bild bei t = 6740 ms und pixelgleich mit dem ersten Bild des Kiosks."
+  },
+  "rest": {
+    "note": "Nacht und Ruhezeit: kein CEC-Wecken, kein Ton, das R mit halber Helligkeit ohne Faltung, rund 2,5 s. Ohne gültige Uhr gilt Nacht. In boot.html noch nicht umgesetzt.",
+    "durationMs": 2500,
+    "brightness": 0.5
+  },
+  "sound": {
+    "default": "off",
+    "note": "Ton ist aus, bis er im Setup eingeschaltet wird, und schweigt in der Ruhezeit. Optional: Firstton beim Zünden, Glocke 1 bei der Heimkehr, Glocken 2 bis 5 je Signal, die Oktave nur bei echtem Pairing. boot.html spielt keinen Ton."
+  },
+  "corona": {
+    "mirrors": "brands/rapold-io/dna.json glow.corona",
+    "deviation": "A1",
+    "scope": "nur Systemstart (Plymouth und Bootsequenz eines Produkts), Vollbild auf Navy",
+    "laps": 1,
+    "lapsFirstBoot": 2,
+    "lapMs": 2400,
+    "startMs": 2040,
+    "easing": "cubic-bezier(0.4, 0, 0.3, 1)",
+    "tailHistoryMs": 420,
+    "headMaxPerFrame": 1,
+    "ridgeline": { "tipDeg": 62.1, "axisDeg": -27.9, "tipMs": 1100, "easing": "cubic-bezier(0.45, 0, 0.2, 1)", "coolMs": 600, "coolTo": "#A8EDFF" },
+    "minRenderedMarkHeightPx": 400,
+    "maxAreaShare": { "saturated": 0.0025, "firstglutTotal": 0.01 },
+    "tvFirstLight": { "corePx1080": 3, "glowPx1080": 10 },
+    "validOnlyIf": "Freigabe des Zeichens «Der First»"
+  },
+  "plymouth": {
+    "fps": 30,
+    "renderFromMs": 0,
+    "renderToMs": 6740,
+    "resolutions": { "720p": [1280, 720], "1080p": [1920, 1080], "4k": [3840, 2160] },
+    "outsideInitramfs": true,
+    "killSwitches": [
+      { "id": "plymouth.enable=0", "where": "Kernel-Kommandozeile (cmdline.txt auf der Bootpartition)", "effect": "kein Plymouth, ruhiger Kernel bleibt" },
+      { "id": "edgeportal/first", "where": "Datei auf der Bootpartition", "values": ["0", "static", "1"], "effect": "0 = kein First, static = Endbild ohne Animation, 1 = Animation" }
+    ],
+    "pi3": "static",
+    "cecGate": "Start der Zeitachse erst nach CEC «on» vom TV, Fallback 6 s."
+  }
+}
