@@ -70,7 +70,7 @@ function glassMark(id,tx,ty,s,{light=1,fade}={}){
   +`<path d="${seg}" stroke="#FFA36C" stroke-opacity="${n(.55*light)}" stroke-width="${n(24*s/4)}" stroke-linecap="round" filter="url(#${id}h)"/><path d="${seg}" stroke="#FFA36C" stroke-opacity="${light}" stroke-width="${n(8*s/4)}" stroke-linecap="round" filter="url(#${id}g)"/><path d="${seg}" stroke="#FFE2CC" stroke-opacity="${light}" stroke-width="${n(Math.max(2,2*s/4))}" stroke-linecap="round"/>`;
  return {defs:defs+warm,body:`<rect width="${W}" height="${H}" fill="url(#${id}w)"/><g${fade?` mask="url(#${id}f)"`:''}>${g}</g>`};
 }
-// The ten approved product signets as the family row (no text; names stay live elsewhere).
+// The approved product signets as the family row (no text; names stay live elsewhere).
 const identity=JSON.parse(await readFile(join(root,'brands/rapold/identity.json'),'utf8'));
 const signets=await Promise.all(identity.products.filter(p=>p.status==='approved').map(p=>readFile(join(root,'brands/rapold',p.variants.dark),'utf8')));
 const family=(x,y,size,pitch,opacity)=>`<g opacity="${opacity}">${signets.map((svg,i)=>`<svg x="${n(x+i*pitch)}" y="${n(y)}" width="${size}" height="${size}" viewBox="0 0 256 256">${inner(svg)}</svg>`).join('')}</g>`;
@@ -82,13 +82,13 @@ function darkBackdrop(title,{bloomAt,grid,mark,veilStops,row}){
  return doc(title,floor+bloom('bloom',...bloomAt)+gDefs+m.defs+veil('veil',veilStops),
   `<rect width="${W}" height="${H}" fill="url(#floor)"/><rect width="${W}" height="${H}" fill="url(#bloom)"/>${gPath}${m.body}<rect width="${W}" height="${H}" fill="url(#veil)"/>${row??''}`);
 }
-// Family row: hairline + ten signets (40 px at 1600 wide), left on the margin used by the deck.
+// Family row: hairline + all approved signets (40 px at 1600 wide), left on the margin used by the deck.
 const rowLeft=44,rowY=792;
 const hairline=(x,y,w)=>`<rect x="${x}" y="${y}" width="${w}" height="1" fill="#A8EDFF" fill-opacity="0.12"/>`;
 const out={
  'cover.svg':darkBackdrop('rapold.io Deck-Cover (Vorschlag Dachmarke)',{bloomAt:[.74,.34],grid:[.7,.4],mark:[905,-40,4,{fade:[.62,.95]}],veilStops:[[0,.92],[.52,.55],[.7,0]],row:hairline(rowLeft,rowY-16,W-2*rowLeft)+family(rowLeft,rowY,40,52,.92)}),
  'section.svg':darkBackdrop('rapold.io Kapitel (Vorschlag Dachmarke)',{bloomAt:[.72,.46],grid:[.75,.5],mark:[860,40,5.2,{fade:[.7,1]}],veilStops:[[0,.94],[.4,.6],[.62,0]]}),
- 'closing.svg':darkBackdrop('rapold.io Schluss (Vorschlag Dachmarke)',{bloomAt:[.76,.36],grid:[.76,.4],mark:[990,46,2.9],veilStops:[[0,.9],[.5,.4],[.62,0]],row:hairline(rowLeft,rowY-16,W-2*rowLeft)+family((W-(9*60+40))/2,rowY,40,60,.85)}),
+ 'closing.svg':darkBackdrop('rapold.io Schluss (Vorschlag Dachmarke)',{bloomAt:[.76,.36],grid:[.76,.4],mark:[990,46,2.9],veilStops:[[0,.9],[.5,.4],[.62,0]],row:hairline(rowLeft,rowY-16,W-2*rowLeft)+family((W-((signets.length-1)*60+40))/2,rowY,40,60,.85)}),
  'content.svg':doc('rapold.io Inhalt hell (Vorschlag Dachmarke)',`<radialGradient id="b" cx="1" cy="0" r="0.55"><stop offset="0" stop-color="#009DFF" stop-opacity="0.10"/><stop offset="1" stop-color="#009DFF" stop-opacity="0"/></radialGradient>`,
   `<rect width="${W}" height="${H}" fill="#F4FAFF"/><rect width="${W}" height="${H}" fill="url(#b)"/><path d="M 1340 0 L 1600 0 L 1600 130 Z" fill="#0066B3" fill-opacity="0.06"/>`),
 };

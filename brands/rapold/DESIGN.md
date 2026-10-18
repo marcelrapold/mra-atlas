@@ -4,13 +4,13 @@ Version des Adapters: **0.2.0**. Status: **draft**. Ausgangspaket: **rapold.io B
 
 ## 1. Zuständigkeit
 
-`packages/brands/src/rapold.json` ist die kanonische Framework-Ableitung. Sie ergänzt genau einen optionalen Registry-Eintrag. Die Produktzeichen (zehn freigegeben, eines als Vorschlag) werden separat in `brands/rapold/identity.json` und `brands/rapold/assets/logos/` verwaltet. Diese Grenze gilt auch für neue Anwendungen, Präsentationen und Exporte.
+`packages/brands/src/rapold.json` ist die kanonische Framework-Ableitung. Sie ergänzt genau einen optionalen Registry-Eintrag. Die elf Produktzeichen werden separat in `brands/rapold/identity.json` und `brands/rapold/assets/logos/` verwaltet. Diese Grenze gilt auch für neue Anwendungen, Präsentationen und Exporte.
 
 Die Marke wird ausdrücklich ausgewählt. Ohne Auswahl gilt die neutrale Basis. Ein fehlendes Rapold-Dachsymbol wird weder erfunden noch durch eines der Produktzeichen ersetzt. Der Adapter setzt deshalb kein `assets.logo` und verlangt kein Logo auf einer allgemeinen Rapold-Titelfolie.
 
 ## 2. Freigabe und Quellen
 
-Die Freigabe betrifft die Formfamilie und die zehn SVG-Signets ohne sichtbare Schrift. Die vollständige semantische UI-Zuordnung, abgeleitete Hover- und Statuswerte sowie die Funktionskonturen sind dokumentierte Verfeinerungen. Dafür bleibt `status: draft` gesetzt.
+Die Freigabe betrifft die Formfamilie und die elf SVG-Signets ohne sichtbare Schrift. Die vollständige semantische UI-Zuordnung, abgeleitete Hover- und Statuswerte sowie die Funktionskonturen sind dokumentierte Verfeinerungen. Dafür bleibt `status: draft` gesetzt.
 
 Die unveränderte Tokenquelle liegt unter `sources/brand-tokens.json`. `sources/provenance.json` dokumentiert Datum, Freigabeumfang, SHA-256-Prüfsumme, direkte Rollenabbildungen und jede Farbableitung. Öffentliche Contract-Exporte führen diese Dateien als `brand-tokens.json` und `provenance.json` im jeweiligen Brand-Verzeichnis.
 

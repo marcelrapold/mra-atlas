@@ -12,9 +12,8 @@ const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const canonical=join(root,'brands/rapold');
 const published=join(root,'apps/docs/public/brands/rapold');
 const originalIds=['fabric','argus','learn','edgeportal'];
-const addedIds=['lotse','cockpit','auditor','auth','pocketforge','atlas'];
-const proposalIds=['agents'];
-const productIds=[...originalIds,...addedIds,...proposalIds];
+const addedIds=['lotse','cockpit','auditor','auth','pocketforge','atlas','agents'];
+const productIds=[...originalIds,...addedIds];
 const variantIds=['dark','light','mono-white','mono-black','current-color'];
 const pngSignature=Buffer.from([137,80,78,71,13,10,26,10]);
 const digest=buffer=>createHash('sha256').update(buffer).digest('hex');
@@ -46,7 +45,7 @@ function dimensions(buffer,label) {
   return [buffer.readUInt32BE(16),buffer.readUInt32BE(20)];
 }
 
-test('Rapold is one product family with ten approved signs, one labelled proposal and only established domains',async()=>{
+test('Rapold is one product family with eleven approved signs and only established domains',async()=>{
   assert.equal(identity.brandId,'rapold');
   assert.equal(identity.publicBase,'/brands/rapold/');
   assert.equal(identity.symbolOnly,true);
@@ -54,8 +53,8 @@ test('Rapold is one product family with ten approved signs, one labelled proposa
   assert.deepEqual(identity.products.map(product=>product.id),productIds);
   assert.deepEqual(identity.products.map(product=>product.name),['AI Fabric','Argus','ÆON Learn','EdgePortal','Lotse','Cockpit','Auditor','Rapold Auth','PocketForge','Atlas','Agents']);
   assert.deepEqual(identity.products.map(product=>product.domain),['ai.rapold.io','argus.rapold.io','learn.rapold.io','edgeportal.rapold.io','lotse.rapold.io','cockpit.rapold.io','auditor.rapold.io','auth.rapold.io','game.rapold.io','atlas.rapold.io','agents.rapold.io']);
-  for(const product of identity.products)assert.equal(product.status,proposalIds.includes(product.id)?'proposal':'approved',product.id);
-  for(const product of identity.products.filter(product=>[...addedIds,...proposalIds].includes(product.id)))assert.match(product.origin.repository,/^marcelrapold\/[a-z0-9-]+$/,product.id);
+  assert.ok(identity.products.every(product=>product.status==='approved'),'Every catalogued signet is approved');
+  for(const product of identity.products.filter(product=>addedIds.includes(product.id)))assert.match(product.origin.repository,/^marcelrapold\/[a-z0-9-]+$/,product.id);
   assert.ok(!Object.hasOwn(identity,'logo'),'No invented umbrella logo');
   assert.match(identity.products[0].namingNote,/Arbeitsbezeichnung/);
   assert.equal(identity.palette.azure,'#009DFF');

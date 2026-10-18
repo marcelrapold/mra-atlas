@@ -256,7 +256,7 @@
         "Eyebrow y 333: Ice-Raute 12px + Geist Mono 15px #A8EDFF 0.24em «RAPOLD.IO / THEMA / JAHR»",
         "Titel zweizeilig Geist 600 136px −0,05 em, Grundlinien 476 und 618: Zeile 1 #EDF5FF, Zeile 2 #009DFF, Rautenpunkt #FFA36C",
         "Lead y 692: Geist 400 26px #9AADC7, max. 900px breit (Spalten 1–7)",
-        "Familienleiste: Haarlinie y 776 Ice @ 0.12, zehn Signets 40px ab x 112 im 52px-Takt (Opazität 0.92), rechts Mono 14px «NAME · ROLLE · DATUM»"
+        "Familienleiste: Haarlinie y 776 Ice @ 0.12, freigegebene Signets (derzeit elf) 40px ab x 112 im 52px-Takt (Opazität 0.92), rechts Mono 14px «NAME · ROLLE · DATUM»"
       ],
       "section": [
         "Platte section-dark.png",
@@ -279,7 +279,7 @@
         "Aussage zentriert Geist 600 72px: Zeile 1 Ink «Gebaut. Betrieben.» (Grundlinie 512), Zeile 2 Azure «Unter einem Dach» + Firstglut-Rautenpunkt (Grundlinie 596)",
         "kompakter Lockup 30px zentriert, Grundlinie 700",
         "Mono 14px zentriert y 760: «MARCEL@RAPOLD.IO · RAPOLD.IO · MARCEL.RAPOLD.IO»",
-        "Haarlinie y 808, zehn Signets 40px zentriert im 60px-Takt (Opazität 0.85)"
+        "Haarlinie y 808, freigegebene Signets (derzeit elf) 40px zentriert im 60px-Takt (Opazität 0.85)"
       ]
     },
     "mocks": "brands/rapold-io/sources/deck-cover|section|content|closing.webp"

@@ -45,7 +45,7 @@
       "approvalEvidence": "Chat-Anweisung von Marcel Rapold am 12.10.2026: «Fix it» (zweimal), nachdem die offene Signet-Freigabe als letzter Punkt benannt war. Freigabe gilt für die Zeichen in der Fassung von Atlas 0.7.0."
     },
     "agentsProposal": {
-      "status": "proposal",
+      "status": "approved",
       "recordedOn": "2026-10-18",
       "scope": [
         "agents"
@@ -54,7 +54,9 @@
       "evidence": "Hinweis von Marcel Rapold am 18.10.2026: Das Produkt agents.rapold.io, sein natives Web-Agents-Terminal, fehlt in der Familie; es ist bewusst ein eigenes Produkt neben EdgePortal.",
       "construction": "scripts/build-signet-proposals.mjs",
       "basis": "marcelrapold/mra-hermes hermes_agents/leitstand/marken/rapold/signet.svg ist das AI-Fabric-Signet; ein eigenes Zeichen fehlt. Neu als humanoider Kopf mit Schultern, senkrecht gefaltet, mit Visier. Vorgabe von Marcel Rapold am 18.10.2026: Agents sind humanoide Roboter und Menschen; ein erster Entwurf als Terminal-Prompt wurde deshalb verworfen. Aus drei humanoiden Varianten gewählt: das gefaltete Gesicht mit Visier.",
-      "note": "Vorschlag ohne Freigabe. Nach Freigabe mit Datum und Beleg status auf approved setzen, den Katalogeintrag agents auf approved stellen und das Zeichen im Leitstand von mra-hermes separat übernehmen."
+      "note": "Freigegeben. Das Produkt-Repo mra-hermes übernimmt das Zeichen separat.",
+      "approvedOn": "2026-10-18",
+      "approvalEvidence": "Nachricht von Marcel Rapold am 18.10.2026 in der Claude-Session «Agenten auf maximale Autonomie», von dort an die Atlas-Session weitergeleitet: «Agents signet fregeben». Freigabe gilt für das Zeichen in der Fassung von Atlas-Commit 9d7d801 (humanoider Kopf mit Visier)."
     },
     "uiAdapter": {
       "status": "draft",

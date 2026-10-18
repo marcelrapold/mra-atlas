@@ -2,7 +2,7 @@
 
 ## Unveröffentlicht
 
-- **Agents (agents.rapold.io)** als elftes Rapold-Produkt im Katalog: das native Web-Terminal für KI-Agents, bewusst eigenständig neben EdgePortal. Signet-Vorschlag in der Raumfalten-Familie B (humanoider Kopf mit Schultern, senkrecht gefaltet, mit Visier), Status `proposal`; Nachweis `agentsProposal` in `provenance.json`. Decks zeigen weiterhin nur freigegebene Signets.
+- **Agents (agents.rapold.io)** als elftes Rapold-Produkt im Katalog: das native Web-Terminal für KI-Agents, bewusst eigenständig neben EdgePortal. Signet in der Raumfalten-Familie B (humanoider Kopf mit Schultern, senkrecht gefaltet, mit Visier), am 18.10.2026 freigegeben; Nachweis `agentsProposal` in `provenance.json`. Der Deck-Generator nimmt alle freigegebenen Signets in die Familienleiste auf und zentriert sie auf der Schlussfolie nach der Anzahl; die Platten und PPTX-Vorschauen werden mit dem nächsten Linux-Rendering nachgezogen.
 
 ## 0.11.0 — 2026-10-14
 

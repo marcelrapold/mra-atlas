@@ -4,7 +4,7 @@
   "brandId": "rapold",
   "name": "Rapold",
   "publicBase": "/brands/rapold/",
-  "model": "Ein Theme mit eigenständigen Produktzeichen: zehn freigegeben, eines als Vorschlag.",
+  "model": "Ein Theme mit elf eigenständigen, freigegebenen Produktzeichen.",
   "symbolOnly": true,
   "viewBox": [
     0,
@@ -313,7 +313,7 @@
       "shortName": "Agents",
       "domain": "agents.rapold.io",
       "purpose": "Natives Web-Terminal für KI-Agents: Sitzungen im Raster, Leitstand und angemeldeter Zugang im Browser.",
-      "status": "proposal",
+      "status": "approved",
       "origin": {
         "repository": "marcelrapold/mra-hermes",
         "previousMark": "Kein eigenes Zeichen; der Leitstand trägt bisher das AI-Fabric-Signet"
