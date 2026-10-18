@@ -1,0 +1,88 @@
+/* Ist-Stand des EdgePortal-TVs, übernommen aus marcelrapold/mra-edgeportal @ e46563c (18.10.2026): app/screen-nav.css.
+   Atlas hält diese Kopie als Referenz, damit der TV-Stand reproduzierbar bleibt. Für den Rahmen umgerechnet: position fixed -> absolute, vw -> cqi (der Rahmen ist ein virtueller TV); Handy-Regel ausgelassen.
+   Nicht von Hand angleichen: Änderungen kommen aus dem Produkt und werden hier mit Commit nachgeführt. */
+
+/* Screen navigation: overview (Übersicht) and camera views above the configured content (components/screen-nav.tsx).
+   Atlas 0.11 dark roles, Geist with mono eyebrows, no shadows; TV distance: one fluid unit, big targets, 3px focus ring. */
+.nav-layer {
+  --nv-bg: #050b19; --nv-abyss: #02060f; --nv-fg: #edf5ff; --nv-card: #0b1528; --nv-popover: #142741;
+  --nv-muted-fg: #9aadc7; --nv-ring: #38b8ff; --nv-input: #5f7089; --nv-border: #23334a;
+  --nv-danger: #fb7185; --nv-surface-danger: #1e1c2f; --nv-firstglut: #ffa36c;
+  --nv-fs: clamp(16px, 1.25cqi, 40px);
+  position: absolute; inset: 0; z-index: 200; overflow: hidden auto;
+  background: var(--nv-bg); color: var(--nv-fg); font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: var(--nv-fs); line-height: 1.6;
+  padding: calc(var(--nv-fs) * 2.5) calc(var(--nv-fs) * 3);
+  animation: nav-in 180ms cubic-bezier(0, 0, .2, 1) both;
+}
+@keyframes nav-in { from { opacity: 0; } }
+.nav-eyebrow { display: block; font-family: var(--font-geist-mono), ui-monospace, monospace; font-size: .8em; line-height: 1.2;
+  letter-spacing: .2em; text-transform: uppercase; color: var(--nv-muted-fg); }
+.nav-head { display: grid; gap: .4em; margin-block-end: 1.6em; }
+.nav-head h1 { margin: 0; font-size: 2.4em; line-height: 1.05; font-weight: 650; letter-spacing: -.01em; }
+.nav-glut { color: var(--nv-firstglut); font-size: .5em; margin-inline-start: .15em; }
+.nav-grid { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: 1.4em; list-style: none; margin: 0; padding: 0; }
+.nav-tile, .nav-cam {
+  display: grid; text-align: start; inline-size: 100%; min-block-size: 44px; padding: 0; overflow: hidden; cursor: pointer;
+  color: inherit; font: inherit; background: var(--nv-card); border: 2px solid var(--nv-border); border-radius: 24px;
+  transition: border-color 150ms cubic-bezier(.2, .7, .2, 1), transform 180ms cubic-bezier(.2, .7, .2, 1);
+}
+.nav-tile:focus, .nav-cam:focus { outline: none; }
+.nav-tile[data-focused="true"], .nav-cam[data-focused="true"], .nav-tile:focus-visible, .nav-cam:focus-visible {
+  outline: 3px solid var(--nv-ring); outline-offset: 4px; border-color: var(--nv-ring);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .nav-tile[data-focused="true"], .nav-cam[data-focused="true"] { transform: scale(1.02); }
+  .nav-tile:active, .nav-cam:active { transform: scale(.97); }
+}
+.nav-thumb { position: relative; display: grid; place-items: center; aspect-ratio: 16 / 9; overflow: hidden; background: var(--nv-abyss); border-block-end: 1px solid var(--nv-border); }
+.nav-thumb .nav-frame { position: absolute; inset: 0; }
+.nav-thumb-icon svg { inline-size: 3.2em; block-size: 3.2em; color: var(--nv-ring); }
+.nav-tile-text { display: grid; gap: .25em; padding: .9em 1.1em 1.1em; }
+.nav-tile-text strong { font-size: 1.4em; line-height: 1.12; font-weight: 650; }
+.nav-status { color: var(--nv-muted-fg); font-size: .95em; }
+.nav-tile[aria-current="page"] .nav-status { color: var(--nv-fg); }
+.nav-frame { position: relative; display: grid; place-items: center; inline-size: 100%; block-size: 100%; background: var(--nv-abyss); }
+.nav-frame img { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: contain; display: block; }
+.nav-frame[data-cover="true"] img { object-fit: cover; }
+.nav-frame-state { color: var(--nv-muted-fg); font-size: .9em; padding: 1em; text-align: center; }
+.nav-note { margin: 1.6em 0 0; padding: .8em 1.1em; border: 1px dashed var(--nv-input); border-radius: 16px; color: var(--nv-muted-fg); max-inline-size: 60em; }
+.nav-keys { margin: 1.6em 0 0; font-family: var(--font-geist-mono), ui-monospace, monospace; font-size: .85em; color: var(--nv-muted-fg); letter-spacing: .02em; }
+/* Camera grid and Totale */
+.nav-view.nav-totale { position: absolute; inset: 0; display: grid; background: #000; }
+.nav-totale .nav-frame { position: absolute; inset: 0; background: #000; }
+.nav-totale .nav-head { position: absolute; inset-block-start: calc(var(--nv-fs) * 1.5); inset-inline-start: calc(var(--nv-fs) * 2);
+  margin: 0; padding: .6em 1em; border-radius: 16px; background: color-mix(in srgb, var(--nv-bg) 82%, transparent); }
+.nav-totale .nav-head strong { font-size: 1.5em; font-weight: 650; line-height: 1.12; }
+.nav-totale .nav-keys { position: absolute; inset-block-end: calc(var(--nv-fs) * 1.5); inset-inline-start: calc(var(--nv-fs) * 2); margin: 0;
+  padding: .5em 1em; border-radius: 999px; background: color-mix(in srgb, var(--nv-bg) 82%, transparent); }
+.nav-cam { position: relative; aspect-ratio: 16 / 9; overflow: hidden; }
+.nav-cam .nav-frame { position: absolute; inset: 0; }
+.nav-cam-label { position: absolute; inset-inline-start: .8em; inset-block-end: .8em; padding: .2em .7em; border-radius: 8px;
+  background: color-mix(in srgb, var(--nv-bg) 85%, transparent); font-weight: 650; }
+/* Privacy notice: always visible while a camera picture is on screen; the word carries the meaning, the dot only adds to it. */
+.nav-live { position: absolute; z-index: 2; inset-block-start: calc(var(--nv-fs) * 1.5); inset-inline-end: calc(var(--nv-fs) * 2);
+  display: inline-flex; align-items: center; gap: .6em; padding: .35em .9em .35em .75em; border-radius: 999px;
+  font-family: var(--font-geist-mono), ui-monospace, monospace; letter-spacing: .2em; text-transform: uppercase; font-size: .9em;
+  color: var(--nv-fg); background: var(--nv-surface-danger); border: 2px solid color-mix(in srgb, var(--nv-danger) 70%, transparent); }
+.nav-live-dot { inline-size: .7em; block-size: .7em; border-radius: 50%; background: var(--nv-danger); }
+@media (prefers-reduced-motion: no-preference) { .nav-live-dot { animation: nav-pulse 2s cubic-bezier(.4, 0, 1, 1) infinite; } }
+@keyframes nav-pulse { 50% { opacity: .35; } }
+/* Mouse and touch: shown on movement only, so a resting kiosk cursor leaves the picture clean. */
+.nav-pointer { position: absolute; z-index: 201; inset-block-end: 24px; inset-inline-start: 24px; display: inline-flex; align-items: center; gap: 8px;
+  min-block-size: 44px; padding: 0 16px; border-radius: 8px; border: 1px solid #5f7089; background: #0b1528; color: #edf5ff;
+  font: 650 16px/1 var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif; cursor: pointer; opacity: 0; pointer-events: none;
+  transition: opacity 180ms cubic-bezier(.2, .7, .2, 1); }
+.nav-pointer svg { inline-size: 20px; block-size: 20px; }
+.nav-pointer[data-shown="true"] { opacity: 1; pointer-events: auto; }
+.nav-pointer:focus-visible { outline: 3px solid #38b8ff; outline-offset: 2px; opacity: 1; pointer-events: auto; }
+.nav-pointer-home { inset-block-end: 96px; }
+/* While something lies above it, the stage below pauses its animations. */
+html[data-nav="over"] .stage *, html[data-nav="over"] .stage *::before, html[data-nav="over"] .stage *::after { animation-play-state: paused !important; }
+/* Ausgelassen: @media (max-width: 720px) – Viewport-Regel für Handys, nicht für den TV. */
+
+/* Notbremse tile: danger icon; after the first OK it is armed (danger border, the status says to press OK again). */
+.nav-tile[data-kind="notbremse"] .nav-thumb-icon svg { color: var(--nv-danger); }
+.nav-tile[data-armed="true"] { border-color: var(--nv-danger); background: var(--nv-surface-danger); }
+.nav-tile[data-armed="true"][data-focused="true"] { outline-color: var(--nv-danger); }
+.nav-tile[data-armed="true"] .nav-status { color: var(--nv-fg); font-weight: 650; }

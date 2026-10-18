@@ -1,0 +1,51 @@
+/* Ist-Stand des EdgePortal-TVs, übernommen aus marcelrapold/mra-edgeportal @ e46563c (18.10.2026): app/tv-power.css.
+   Atlas hält diese Kopie als Referenz, damit der TV-Stand reproduzierbar bleibt. Für den Rahmen umgerechnet: position fixed -> absolute, vw -> cqi (der Rahmen ist ein virtueller TV).
+   Nicht von Hand angleichen: Änderungen kommen aus dem Produkt und werden hier mit Commit nachgeführt. */
+
+/* TV an/aus (components/tv-power.tsx): goodbye, fade to black, dark; black, fade in, greeting. */
+.tv-power {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  cursor: none;
+}
+.tv-power-black {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  transition: opacity var(--tv-fade, 600ms) ease-in-out;
+}
+.tv-power[data-phase="message"] .tv-power-black { opacity: 0.55; }
+.tv-power[data-phase="message"][data-action="an"] .tv-power-black { opacity: 0.3; }
+.tv-power[data-phase="fading-out"] .tv-power-black,
+.tv-power[data-phase="dark"] .tv-power-black,
+.tv-power[data-phase="black"] .tv-power-black { opacity: 1; }
+.tv-power[data-phase="fading-in"] .tv-power-black { opacity: 0; }
+.tv-power-message {
+  position: relative;
+  margin: 0;
+  padding: 0 6cqi;
+  max-width: 18ch;
+  text-align: center;
+  font-family: var(--font-geist-sans), sans-serif;
+  font-weight: 300;
+  font-size: clamp(48px, 7cqi, 132px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: #f4f7fb;
+  text-wrap: balance;
+  opacity: 1;
+  transition: opacity var(--tv-fade, 600ms) ease-in-out;
+}
+.tv-power[data-phase="fading-out"] .tv-power-message { opacity: 0; }
+@media (prefers-reduced-motion: no-preference) {
+  .tv-power[data-phase="message"] .tv-power-message { animation: tv-power-rise 900ms ease-out both; }
+}
+@keyframes tv-power-rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
