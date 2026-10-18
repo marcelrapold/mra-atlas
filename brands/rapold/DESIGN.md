@@ -4,7 +4,7 @@ Version des Adapters: **0.2.0**. Status: **draft**. Ausgangspaket: **rapold.io B
 
 ## 1. Zuständigkeit
 
-`packages/brands/src/rapold.json` ist die kanonische Framework-Ableitung. Sie ergänzt genau einen optionalen Registry-Eintrag. Die zehn Produktzeichen werden separat in `brands/rapold/identity.json` und `brands/rapold/assets/logos/` verwaltet. Diese Grenze gilt auch für neue Anwendungen, Präsentationen und Exporte.
+`packages/brands/src/rapold.json` ist die kanonische Framework-Ableitung. Sie ergänzt genau einen optionalen Registry-Eintrag. Die Produktzeichen (zehn freigegeben, eines als Vorschlag) werden separat in `brands/rapold/identity.json` und `brands/rapold/assets/logos/` verwaltet. Diese Grenze gilt auch für neue Anwendungen, Präsentationen und Exporte.
 
 Die Marke wird ausdrücklich ausgewählt. Ohne Auswahl gilt die neutrale Basis. Ein fehlendes Rapold-Dachsymbol wird weder erfunden noch durch eines der Produktzeichen ersetzt. Der Adapter setzt deshalb kein `assets.logo` und verlangt kein Logo auf einer allgemeinen Rapold-Titelfolie.
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## Unveröffentlicht
+
+- **Agents (agents.rapold.io)** als elftes Rapold-Produkt im Katalog: das native Web-Terminal für KI-Agents, bewusst eigenständig neben EdgePortal. Signet-Vorschlag in der Raumfalten-Familie B (humanoider Kopf mit Schultern, senkrecht gefaltet, mit Visier), Status `proposal`; Nachweis `agentsProposal` in `provenance.json`. Decks zeigen weiterhin nur freigegebene Signets.
+
 ## 0.11.0 — 2026-10-14
 
 Optimierungsrunde: 13 Fachperspektiven (Tokens, Komponenten-API, Barrierefreiheit, Performance, modernes CSS, Bewegung, Doku und DX, KI-Agenten, Theming, visuelles Handwerk, Engineering, Sicherheit und SEO, Sprache) haben Atlas gegen aktuelle externe Referenzen geprüft (W3C DTCG, shadcn/ui, Radix, React Aria, WAI-ARIA APG, WCAG 2.2, Vercel Geist, Primer, Polaris u. a.). Daraus entstanden 12 Arbeitspakete, jedes umgesetzt, adversarial geprüft und nachgebessert.

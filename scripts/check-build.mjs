@@ -44,7 +44,7 @@ const {createHash}=await import('node:crypto');
 // Check the actual deployable asset tree, not just its source manifest.
 const rapoldAssets=JSON.parse(await readFile(new URL('brands/rapold/assets-manifest.json',out),'utf8'));
 assert.equal(rapoldAssets.brandId,'rapold');
-assert.equal(rapoldAssets.products.length,10,'Ten approved Rapold signets');
+assert.equal(rapoldAssets.products.length,11,'Ten approved Rapold signets and one proposal');
 assert.equal(rapoldAssets.assets.length,52*rapoldAssets.products.length);
 assert.equal(rapoldAssets.resources.length,5*rapoldAssets.products.length+7);
 for(const entry of [...rapoldAssets.assets,...rapoldAssets.resources]){

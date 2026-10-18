@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 /**
- * Construction source for the five proposed Rapold signets (status "proposal").
+ * Construction source for the Rapold signets added after the original four (approved and "proposal").
  * Writes brands/rapold/assets/logos/{,light/,mono-white/,mono-black/,current-color/}<id>.svg.
  * Not part of the build: the written SVGs are the canonical masters. Re-run only when
- * the proposal geometry changes; approved signets are never generated from here.
+ * a proposal's geometry changes; the masters of approved signets must stay byte-identical.
  */
 import {writeFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
@@ -70,6 +70,15 @@ export const signets={
   const panel=k=>[top[k],top[k+1],[top[k+1][0],top[k+1][1]+h],[top[k][0],top[k][1]+h]];
   return {name:'Atlas',desc:'Gefaltete Karte als Leporello aus vier Feldern: steigende Felder blau, fallende Felder hell, mit einer freigestellten rautenförmigen Ortsmarke. Das Designsystem, das die Faltungen der Familie festlegt.',
    body:[panel(0),panel(2),[[151.5,108],[165,128],[151.5,148],[138,128]]],facets:[panel(1),panel(3)]};})(),
+ agents:(()=>{
+  // Humanoid head and shoulders folded along the vertical axis: left half blue, right half light.
+  // The visor slot crosses both halves; shoulder edges follow the family slope 1 : 0.5.
+  const m=p=>p.map(([x,y])=>[256-x,y]).reverse(),v0=86,v1=102,vx=100,ex=y=>174-6*((y-84)/40);
+  const headL=[[128,34],[92,46],[82,84],[88,124],[108,146],[128,152]],shoulderL=[[128,168],[128,224],[40,224],[40,212]];
+  return {name:'Agents',desc:'Humanoider Kopf mit Schultern, senkrecht gefaltet: linke Hälfte blau, rechte Hälfte hell, ein freigestelltes Visier quer über beide Hälften. Agents als humanoide Gegenüber.',
+   body:[headL,[[128,v0],[128,v1],[vx,v1],[vx,v0]],shoulderL],
+   facets:[[[128,34],[164,46],[174,84],[ex(v0),v0],[128,v0]],[[128,v1],[ex(v1),v1],[168,124],[148,146],[128,152]],
+     [[256-vx,v0],[ex(v0),v0],[ex(v1),v1],[256-vx,v1]],m(shoulderL)]};})(),
 };
 function svg(id,{body='#009DFF',facet='#A8EDFF',variant='default'}={}){const s=signets[id];const bp=s.bodyPath??d(s.body);
  return `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img">\n  <title>${s.name} – Signet</title>\n  <desc>${s.desc} Transparente Vektorgrafik ohne sichtbare Schrift. Variante: ${variant}.</desc>\n  <path data-part="body" fill="${body}" fill-rule="evenodd" d="${bp}"/>\n${s.facets.map((f,i)=>`  <polygon data-part="facet-${i+1}" fill="${facet}" points="${pts(f)}"/>`).join('\n')}\n</svg>\n`;}

@@ -7,7 +7,7 @@ Dieses Repository ist **Atlas**, das Designsystem von Rapold, live unter https:/
 - Website-Identität «Atlas» mit eigenem Signet (gefaltete Karte aus dem Rapold-Produktkatalog) in der Seitenleiste; Titel, Metadaten, Suche und Fusszeile tragen den Namen Atlas.
 - Core-UI-Module und markenfähige Portale, vollständig beschrieben im [Komponentenvertrag](https://atlas.rapold.io/contracts/components.md); die indexierten Referenzseiten listet `/sitemap.xml` (41 im Build von 0.11.0).
 - Aktive Brands: `neutral`, `dominicano-express`, `rapold` und `radiox`. Die Musterdeck-Vorschauen sind per Hash an ihre Render-Quellen gebunden; ein Build-Gate prüft ihre Aktualität.
-- Rapold: zehn freigegebene Signets; Dachmarke «Der First» als Vorschlag, Freigabe ausstehend. Der UI-Adapter bleibt `draft`.
+- Rapold: zehn freigegebene Signets, Agents (agents.rapold.io) als Signet-Vorschlag; Dachmarke «Der First» als Vorschlag, Freigabe ausstehend. Der UI-Adapter bleibt `draft`.
 - RadioX: Brand nach der Design-DNA aus radiox.cloud und dem RadioX-Code, Status `draft`; die visuelle Abnahme steht aus.
 - Die npm-Paketnamen `@rapold/framework-*` bleiben vorerst unverändert.
 

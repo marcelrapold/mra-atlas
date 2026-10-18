@@ -64,7 +64,7 @@ function RapoldUmbrella() {
       <div className="rapold-umbrella-copy">
         <p className="rapold-umbrella-eyebrow"><span className="rapold-umbrella-badge">{umbrella.label}</span>Dachmarke rapold.io / «Der First»</p>
         <h2 id="rapold-umbrella-title">Systeme, die laufen<span className="rapold-point" aria-hidden="true"/></h2>
-        <p>Ein R, einmal um einen senkrechten Grat gefaltet: oben ein Satteldach, die Punze wird zum Fenster. Dieselbe Faltregel wie die zehn Signets, als ihr Elternzeichen. Das Zeichen ist ein Vorschlag; die Freigabe durch Marcel Rapold steht aus.</p>
+        <p>Ein R, einmal um einen senkrechten Grat gefaltet: oben ein Satteldach, die Punze wird zum Fenster. Dieselbe Faltregel wie die Produktsignets, als ihr Elternzeichen. Das Zeichen ist ein Vorschlag; die Freigabe durch Marcel Rapold steht aus.</p>
         <img className="rapold-umbrella-lockup" src={svgUrl('lockup-horizontal-dark')} width={529} height={156} alt="rapold.io, Fullstack Digital Operations"/>
       </div>
       <div className="rapold-umbrella-mark" aria-hidden="true"><img src={svgUrl('mark-dark')} width={256} height={256} alt=""/></div>
@@ -73,7 +73,7 @@ function RapoldUmbrella() {
     <div className="rapold-umbrella-grid">
       <div>
         <h3>Markenarchitektur</h3>
-        <p>Branded House mit Endorsement. rapold.io steht über den zehn Produkten; jedes Produkt behält sein freigegebenes Signet. Nur der First trägt Licht.</p>
+        <p>Branded House mit Endorsement. rapold.io steht über den Produkten; jedes Produkt behält sein eigenes Signet. Nur der First trägt Licht.</p>
         <div className="rapold-architecture">
           <div className="rapold-architecture-root"><img src={svgUrl(mode === 'dark' ? 'lockup-compact-dark' : 'lockup-compact-light')} width={181} height={40} alt="rapold.io"/><span>Dachmarke · Studio</span></div>
           <ul className="rapold-architecture-products" aria-label="Produkte unter der Dachmarke">{identity.products.map(item => <li key={item.id}><img src={base + item.variants[mode]} width={36} height={36} alt=""/><span>{item.shortName}</span></li>)}</ul>
