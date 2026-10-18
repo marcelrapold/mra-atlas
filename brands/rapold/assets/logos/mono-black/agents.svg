@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img">
+  <title>Agents – Signet</title>
+  <desc>Humanoider Kopf mit Schultern, senkrecht gefaltet: linke Hälfte blau, rechte Hälfte hell, ein freigestelltes Visier quer über beide Hälften. Agents als humanoide Gegenüber. Transparente Vektorgrafik ohne sichtbare Schrift. Variante: mono-black.</desc>
+  <path data-part="body" fill="#000000" fill-rule="evenodd" d="M 128 34 L 92 46 L 82 84 L 88 124 L 108 146 L 128 152 Z M 128 86 L 128 102 L 100 102 L 100 86 Z M 128 168 L 128 224 L 40 224 L 40 212 Z"/>
+  <polygon data-part="facet-1" fill="#000000" points="128,34 164,46 174,84 173.7,86 128,86"/>
+  <polygon data-part="facet-2" fill="#000000" points="128,102 171.3,102 168,124 148,146 128,152"/>
+  <polygon data-part="facet-3" fill="#000000" points="156,86 173.7,86 171.3,102 156,102"/>
+  <polygon data-part="facet-4" fill="#000000" points="216,212 216,224 128,224 128,168"/>
+</svg>

@@ -72,7 +72,7 @@ function glassMark(id,tx,ty,s,{light=1,fade}={}){
 }
 // The ten approved product signets as the family row (no text; names stay live elsewhere).
 const identity=JSON.parse(await readFile(join(root,'brands/rapold/identity.json'),'utf8'));
-const signets=await Promise.all(identity.products.map(p=>readFile(join(root,'brands/rapold',p.variants.dark),'utf8')));
+const signets=await Promise.all(identity.products.filter(p=>p.status==='approved').map(p=>readFile(join(root,'brands/rapold',p.variants.dark),'utf8')));
 const family=(x,y,size,pitch,opacity)=>`<g opacity="${opacity}">${signets.map((svg,i)=>`<svg x="${n(x+i*pitch)}" y="${n(y)}" width="${size}" height="${size}" viewBox="0 0 256 256">${inner(svg)}</svg>`).join('')}</g>`;
 const doc=(title,defs,layers)=>`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">\n<title>${title}</title>\n<defs>${defs}</defs>\n${layers}\n</svg>\n`;
 const veil=(id,stops,dir='0')=>`<linearGradient id="${id}" x1="${dir==='rtl'?1:0}" y1="0" x2="${dir==='rtl'?0:1}" y2="0">${stops.map(([o,a])=>`<stop offset="${o}" stop-color="#050B19" stop-opacity="${a}"/>`).join('')}</linearGradient>`;
